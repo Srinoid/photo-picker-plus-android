@@ -12,12 +12,7 @@ Setup
   [https://github.com/chute/chute-tutorials/tree/master/Android/ProjectSetup](https://github.com/chute/chute-tutorials/tree/master/Android/ProjectSetup) for a complete guide on how to setup the chute SDK.
   
 * Additionally you can visit http://developer.getchute.com/ for more information about creating a new developer account and obtaining chute credentials.
-  You can create a Chute developer account and make a new app in Chute at http://apps.getchute.com/
-	*  For the URL you can enter http://getchute.com/ if you don't have a site for your app.
-	*  For the Callback URL you can use http://getchute.com/oauth/callback if you don't need callbacks for another purpose.
-	
-	![IMG_TUTORIAL3](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_Tutorial3.png)![IMG_TUTORIAL4](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_Tutorial4.png)  
-  
+ 
 * Add the PhotoPicker+ component to your project by either copying all the resources and source code or by adding it as an Android Library project.
 
 * The next thing you need to do is register the activities, services and the application class into the AndroidManifest.xml file:
