@@ -9,9 +9,11 @@ You can download the Chute SDK for Android at:
 [https://github.com/chute/photo-picker-plus/tree/master/Android/SDK](https://github.com/chute/photo-picker-plus/tree/master/Android/SDK).
 
 Additionally you can visit [http://developer.getchute.com/](http://developer.getchute.com/) for more information about creating a new developer account and obtaining chute credentials.
+
 You can create a Chute developer account and make a new app in Chute at http://apps.getchute.com/
-*  For the URL you can enter http://getchute.com/ if you don't have a site for your app.
-*  For the Callback URL you can use http://getchute.com/oauth/callback if you don't need callbacks for another purpose.
+
+- For the URL you can enter http://getchute.com/ if you don't have a site for your app.
+- For the Callback URL you can use http://getchute.com/oauth/callback if you don't need callbacks for another purpose.
 	
 	![image1](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/1.png)![image2](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/2.png)  
 
