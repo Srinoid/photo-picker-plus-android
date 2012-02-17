@@ -3,13 +3,12 @@ Introduction
 
 PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPicker+ component. It contains Chute SDK library as well as PhotoPicker+ library. This tutorial enables browsing albums and photos on your social services and device gallery, selecting a photo and display of the selected photo and its data.
 
-![IMG_TUTORIAL1](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_Tutorial1.png)![IMG_TUTORIAL2](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_Tutorial2.png)
+![IMG_TUTORIAL8](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_Tutorial8.png)![IMG_TUTORIAL9](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_Tutorial9.png)
 
 Setup
 ====
 
-* Follow the ProjectSetup tutorial that can be found and downloaded at  
-  [https://github.com/chute/chute-tutorials/tree/master/Android/ProjectSetup](https://github.com/chute/chute-tutorials/tree/master/Android/ProjectSetup) for a complete guide on how to setup the chute SDK.
+* Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/master/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for a complete guide on how to setup the chute SDK.
   
 * Additionally you can visit http://developer.getchute.com/ for more information about creating a new developer account and obtaining chute credentials.
  
