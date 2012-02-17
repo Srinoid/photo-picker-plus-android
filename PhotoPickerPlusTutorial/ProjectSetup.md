@@ -13,7 +13,7 @@ You can create a Chute developer account and make a new app in Chute at http://a
 *  For the URL you can enter http://getchute.com/ if you don't have a site for your app.
 *  For the Callback URL you can use http://getchute.com/oauth/callback if you don't need callbacks for another purpose.
 	
-	![IMG_TUTORIAL1](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_TUTORIAL1.png)![IMG_TUTORIAL2](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_TUTORIAL2.png)  
+	![image1](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/1.png)![image2](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/2.png)  
 
 Basic SDK Setup
 ====
@@ -21,7 +21,7 @@ Basic SDK Setup
 * Download the SDK 
 * In Eclipse click File -> Import -> Existing Projects into Workspace
 
-![IMG_TUTORIAL3](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_TUTORIAL3.png)
+![image3](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/3.png)
 
 * Browse to the downloaded root directory of the downloaded sdk.
 * Check the SDK project and click Finish.
@@ -40,15 +40,15 @@ Basic New Project Setup
 * Open Eclipse and create new Android project by selecting File->New->Android Project.
 * Type the name of the project, it can be anything you like, I'll name it NewProject.
 
-       ![IMG_TUTORIAL4](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_TUTORIAL4.png)
+       ![image4](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/4.png)
   
 * Select build target. I'll use Android 2.1 API Level 7.  
  
-       ![IMG_TUTORIAL5](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_TUTORIAL5.png)
+       ![image5](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/5.png)
   
 * Add a package name. The package name I added is: com.android.newproject
 
-       ![IMG_TUTORIAL6](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_TUTORIAL6.png)
+       ![image6](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/6.png)
   
 Adding the SDK library to your project
 ====
@@ -59,7 +59,7 @@ Adding the SDK library to your project
 
 * Select Project -> Properties -> Android and add ChuteSDK as a library project.
 
-       ![IMG_TUTORIAL7](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/IMG_TUTORIAL7.png)
+       ![image7](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/7.png)
   
     
 Android manifest setup
