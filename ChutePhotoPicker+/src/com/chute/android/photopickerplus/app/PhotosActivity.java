@@ -3,8 +3,10 @@ package com.chute.android.photopickerplus.app;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 
 import com.chute.android.photopickerplus.R;
@@ -19,72 +21,99 @@ import com.chute.sdk.model.GCHttpRequestParameters;
 
 public class PhotosActivity extends Activity {
 
-    public static final String TAG = PhotosActivity.class.getSimpleName();
+	public static final String TAG = PhotosActivity.class.getSimpleName();
 
-    private GridView grid;
-    private PhotosAdapter adapter;
+	private GridView grid;
+	private PhotosAdapter adapter;
 
-    private String accountId;
-    private String albumId;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.photos_select);
-
-	grid = (GridView) findViewById(R.id.gridView);
-
-	PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(getIntent());
-	accountId = wrapper.getAccountId();
-	albumId = wrapper.getAlbumId();
-	grid.setEmptyView(findViewById(R.id.empty_view_layout));
-	GCAccounts
-		.objectMedia(getApplicationContext(), accountId, albumId, new PhotoListCallback())
-		.executeAsync();
-    }
-
-    private final class PhotoListCallback implements GCHttpCallback<GCAccountMediaCollection> {
+	private String accountId;
+	private String albumId;
 
 	@Override
-	public void onSuccess(GCAccountMediaCollection responseData) {
-	    adapter = new PhotosAdapter(PhotosActivity.this, responseData);
-	    grid.setAdapter(adapter);
-	    grid.setOnItemClickListener(new OnGridItemClickListener());
-	    NotificationUtil.showPhotosAdapterToast(getApplicationContext(), adapter.getCount());
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.photos_select);
+
+		grid = (GridView) findViewById(R.id.gridView);
+
+		Button ok = (Button) findViewById(R.id.btnOk);
+		ok.setOnClickListener(new OkClickListener());
+		Button cancel = (Button) findViewById(R.id.btnCancel);
+		cancel.setOnClickListener(new CancelClickListener());
+
+		PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(
+				getIntent());
+		accountId = wrapper.getAccountId();
+		albumId = wrapper.getAlbumId();
+		grid.setEmptyView(findViewById(R.id.empty_view_layout));
+		GCAccounts.objectMedia(getApplicationContext(), accountId, albumId,
+				new PhotoListCallback()).executeAsync();
 	}
 
-	@Override
-	public void onHttpException(GCHttpRequestParameters params, Throwable exception) {
-	    NotificationUtil.makeConnectionProblemToast(getApplicationContext());
-	    toggleEmptyViewErrorMessage();
+	private final class PhotoListCallback implements
+			GCHttpCallback<GCAccountMediaCollection> {
+
+		@Override
+		public void onSuccess(GCAccountMediaCollection responseData) {
+			adapter = new PhotosAdapter(PhotosActivity.this, responseData);
+			grid.setAdapter(adapter);
+			grid.setOnItemClickListener(new OnGridItemClickListener());
+			NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
+					adapter.getCount());
+		}
+
+		@Override
+		public void onHttpException(GCHttpRequestParameters params,
+				Throwable exception) {
+			NotificationUtil
+					.makeConnectionProblemToast(getApplicationContext());
+			toggleEmptyViewErrorMessage();
+		}
+
+		@Override
+		public void onHttpError(int responseCode, String statusMessage) {
+			NotificationUtil.makeServerErrorToast(getApplicationContext());
+			toggleEmptyViewErrorMessage();
+		}
+
+		@Override
+		public void onParserException(int responseCode, Throwable exception) {
+			NotificationUtil.makeParserErrorToast(getApplicationContext());
+			toggleEmptyViewErrorMessage();
+		}
+
+		public void toggleEmptyViewErrorMessage() {
+			findViewById(R.id.empty_view_layout).setVisibility(View.GONE);
+		}
 	}
 
-	@Override
-	public void onHttpError(int responseCode, String statusMessage) {
-	    NotificationUtil.makeServerErrorToast(getApplicationContext());
-	    toggleEmptyViewErrorMessage();
+	private final class OnGridItemClickListener implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(final AdapterView<?> parent, final View view,
+				final int position, final long id) {
+			adapter.toggleTick(position);
+		}
 	}
 
-	@Override
-	public void onParserException(int responseCode, Throwable exception) {
-	    NotificationUtil.makeParserErrorToast(getApplicationContext());
-	    toggleEmptyViewErrorMessage();
+	private final class OkClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			IntentUtil.deliverDataToInitialActivity(PhotosActivity.this,
+					adapter.getPhotoCollection(), null, null);
+			setResult(RESULT_OK);
+			finish();
+		}
+
 	}
 
-	public void toggleEmptyViewErrorMessage() {
-	    findViewById(R.id.empty_view_layout).setVisibility(View.GONE);
-	}
-    }
+	private final class CancelClickListener implements OnClickListener {
 
-    private final class OnGridItemClickListener implements OnItemClickListener {
+		@Override
+		public void onClick(View v) {
+			finish();
+		}
 
-	@Override
-	public void onItemClick(final AdapterView<?> parent, final View view, final int position,
-		final long id) {
-	    IntentUtil.deliverDataToInitialActivity(PhotosActivity.this, adapter.getItem(position),
-		    albumId, accountId);
-	    setResult(Activity.RESULT_OK);
-	    finish();
 	}
-    }
 }

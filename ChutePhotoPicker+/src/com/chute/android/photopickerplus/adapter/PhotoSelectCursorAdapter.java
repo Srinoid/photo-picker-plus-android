@@ -1,9 +1,13 @@
 package com.chute.android.photopickerplus.adapter;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.SyncStateContract.Constants;
@@ -30,6 +34,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 	private static LayoutInflater inflater = null;
 	public ImageLoader loader;
 	private final int dataIndex;
+	public HashMap<Integer, String> tick;
 	private boolean shouldLoadImages = true;
 	private final DisplayMetrics displayMetrics;
 
@@ -40,10 +45,12 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 		loader = ImageLoader.getLoader(context);
 		dataIndex = c.getColumnIndex(MediaStore.Images.Media.DATA);
 		displayMetrics = context.getResources().getDisplayMetrics();
+		tick = new HashMap<Integer, String>();
 	}
 
 	public static class ViewHolder {
 		public ImageView image;
+		public ImageView tick;
 	}
 
 	@Override
@@ -51,6 +58,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 		ViewHolder holder = (ViewHolder) view.getTag();
 		String path = cursor.getString(dataIndex);
 		holder.image.setTag(path);
+		holder.tick.setTag(cursor.getPosition());
 		if (shouldLoadImages) {
 			loader.displayImage(Uri.fromFile(new File(path)).toString(),
 					holder.image);
@@ -61,6 +69,14 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 				displayMetrics.widthPixels / 3 - 2,
 				displayMetrics.widthPixels / 3 - 2));
 		holder.image.setScaleType(ScaleType.CENTER_CROP);
+		if (tick.containsKey(cursor.getPosition())) {
+			holder.tick.setVisibility(View.VISIBLE);
+			view.setBackgroundColor(context.getResources().getColor(
+					R.color.orange));
+		} else {
+			holder.tick.setVisibility(View.GONE);
+			view.setBackgroundColor(Color.BLACK);
+		}
 	}
 
 	@Override
@@ -69,6 +85,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 		View vi = inflater.inflate(R.layout.photos_select_adapter, null);
 		holder = new ViewHolder();
 		holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
+		holder.tick = (ImageView) vi.findViewById(R.id.imageTick);
 		vi.setTag(holder);
 		return vi;
 	}
@@ -100,5 +117,32 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 			break;
 		}
 	}
+	
+	public ArrayList<String> getSelectedFilePath() {
+		final ArrayList<String> photos = new ArrayList<String>();
+		final Iterator<String> iterator = tick.values().iterator();
+		while (iterator.hasNext()) {
+			photos.add(iterator.next());
+		}
+		return photos;
+	}
+	
+	public boolean hasSelectedItems() {
+		return tick.size() > 0;
+	}
+
+	public int getSelectedItemsCount() {
+		return tick.size();
+	}
+	
+	public void toggleTick(int position) {
+		if (tick.containsKey(position)) {
+			tick.remove(position);
+		} else {
+			tick.put(position, getItem(position));
+		}
+		notifyDataSetChanged();
+	}
+
 
 }

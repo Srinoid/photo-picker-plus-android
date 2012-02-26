@@ -3,23 +3,43 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/background"
-    android:orientation="vertical"  >
+    android:orientation="vertical" >
 
-    <Button android:id="@+id/btnPhotoPicker"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/btn_icon"
-        android:text="@string/start_photo_picker"    
-        android:textColor="@color/grey"
-        android:textSize="15sp"
-        android:drawablePadding="10dp" android:paddingRight="20dp" android:paddingLeft="20dp" android:layout_centerInParent="true"/>
-
+    <!--
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_above="@+id/btnPhotoPicker"
         android:layout_centerHorizontal="true" />
+    -->
+
+    <GridView
+        android:id="@+id/grid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnPhotoPicker"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:fadingEdgeLength="0dip"
+        android:fastScrollEnabled="true"
+        android:horizontalSpacing="0dip"
+        android:numColumns="3"
+        android:verticalSpacing="0dip" />
+
+    <Button
+        android:id="@+id/btnPhotoPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/btn_icon"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/start_photo_picker"
+        android:textColor="@color/grey"
+        android:textSize="15sp" />
 
 </RelativeLayout>

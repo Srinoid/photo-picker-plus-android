@@ -27,7 +27,8 @@
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttons"
         android:layout_below="@+id/txt_linear"
         android:fadingEdgeLength="0dip"
         android:fastScrollEnabled="true"
@@ -36,6 +37,7 @@
         android:verticalSpacing="0dip" />
 
     <!-- Empty View -->
+
     <LinearLayout
         android:id="@+id/empty_view_layout"
         android:layout_width="wrap_content"
@@ -46,20 +48,46 @@
         android:padding="20dip"
         android:visibility="gone" >
 
-    <ProgressBar android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progress_bar_rotation" />
+
+        <TextView
+            android:id="@+id/progressbar_loaded_photos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dip"
+            android:gravity="center"
+            android:text="@string/loading_photos"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:indeterminateDrawable="@drawable/progress_bar_rotation"
-        android:layout_gravity="center" />
-    <TextView android:id="@+id/progressbar_loaded_photos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dip"
-        android:gravity="center"
-        android:text="@string/loading_photos"/>
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
     </LinearLayout>
 
 </RelativeLayout>

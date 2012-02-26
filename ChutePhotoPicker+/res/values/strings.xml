@@ -18,7 +18,7 @@
     
     <!-- UI -->
     <string name="cancel">Cancel</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="albums">Albums</string>
     <string name="start_slide_chute">PhotoPicker+</string>
     <string name="device_photos">Device Photos</string>

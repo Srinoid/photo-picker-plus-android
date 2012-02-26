@@ -11,12 +11,21 @@ import com.chute.sdk.model.GCAccountMediaModel;
 public class IntentUtil {
 
 	public static void deliverDataToInitialActivity(final Activity context,
+			final GCAccountMediaCollection collection) {
+		deliverDataToInitialActivity(context, collection, null, null);
+	}
+
+	public static void deliverDataToInitialActivity(final Activity context,
 			final GCAccountMediaCollection collection, final String albumId,
 			final String accountId) {
 		final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(
 				new Intent(context, ChooseServiceActivity.class));
-		wrapper.setAccountId(accountId);
-		wrapper.setAlbumId(albumId);
+		if (!TextUtils.isEmpty(accountId)) {
+			wrapper.setAccountId(accountId);
+		}
+		if (!TextUtils.isEmpty(albumId)) {
+			wrapper.setAlbumId(albumId);
+		}
 		wrapper.setMediaCollection(collection);
 		wrapper.getIntent().addFlags(
 				Intent.FLAG_ACTIVITY_CLEAR_TOP
