@@ -7,7 +7,6 @@ import android.os.Parcelable;
 
 import com.chute.android.photopickerplus.app.PhotosActivity;
 import com.chute.sdk.collections.GCAccountMediaCollection;
-import com.chute.sdk.model.GCAccountMediaModel;
 
 public class PhotoActivityIntentWrapper extends IntentWrapper {
 
@@ -50,14 +49,6 @@ public class PhotoActivityIntentWrapper extends IntentWrapper {
 
     public void setMediaCollection(GCAccountMediaCollection mediaCollection) {
 	getIntent().putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
-    }
-
-    public GCAccountMediaModel getMediaModel() {
-	return getIntent().getExtras().getParcelable(KEY_PHOTO_MODEL);
-    }
-
-    public void setMediaModel(GCAccountMediaModel model) {
-	getIntent().putExtra(KEY_PHOTO_MODEL, model);
     }
 
     public void startActivityForResult(Activity context, int code) {

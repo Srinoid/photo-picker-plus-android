@@ -119,7 +119,8 @@ public class ChooseServiceActivity extends Activity {
 	public void onClick(View v) {
 	    accountType = (AccountType) v.getTag();
 	    if (PreferenceUtil.get().hasAccountId(accountType)) {
-		accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
+		accountClicked(PreferenceUtil.get().getAccountId(accountType),
+			accountType.getName());
 	    } else {
 		GCAccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(
 			ChooseServiceActivity.this, accountType, Constants.PERMISSIONS_SCOPE,
@@ -201,6 +202,7 @@ public class ChooseServiceActivity extends Activity {
 		model.setLargeUrl(path);
 		model.setThumbUrl(path);
 		model.setUrl(path);
+
 		IntentUtil.deliverDataToInitialActivity(this, model);
 	    }
 	}
