@@ -65,10 +65,10 @@ public class PhotosAdapter extends BaseAdapter {
 		public ImageView tick;
 	}
 
-//	public void changeData(final GCAccountMediaCollection collection) {
-//		this.collection = collection;
-//		notifyDataSetChanged();
-//	}
+	public void changeData(final GCAccountMediaCollection collection) {
+		this.collection = collection;
+		notifyDataSetChanged();
+	}
 
 	@Override
 	public View getView(final int position, final View convertView, final ViewGroup parent) {

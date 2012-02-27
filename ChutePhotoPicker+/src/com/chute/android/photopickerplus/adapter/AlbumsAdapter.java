@@ -45,7 +45,6 @@ public class AlbumsAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-	// ImageView cover;
 	TextView name;
     }
 

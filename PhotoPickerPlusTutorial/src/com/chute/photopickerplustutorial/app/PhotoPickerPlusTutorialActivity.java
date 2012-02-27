@@ -44,7 +44,6 @@ public class PhotoPickerPlusTutorialActivity extends Activity {
 	}
 	final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(data);
 	grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this, wrapper.getMediaCollection()));
-//	ImageLoader.getLoader(this).displayImage(wrapper.getMediaModel().getUrl(), image);
 	Log.d(TAG, wrapper.toString());
 
 //	String path;
