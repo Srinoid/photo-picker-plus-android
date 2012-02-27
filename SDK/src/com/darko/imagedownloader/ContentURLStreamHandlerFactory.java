@@ -34,18 +34,18 @@ import android.content.ContentResolver;
  * @author Darko.Grozdanovski
  * 
  * 
- * {@link URLStreamHandlerFactory} for {@code content://}, {@code file://}, and
- * {@code android.resource://} URIs.
+ *         {@link URLStreamHandlerFactory} for {@code content://},
+ *         {@code file://}, and {@code android.resource://} URIs.
  **/
-class ContentURLStreamHandlerFactory implements URLStreamHandlerFactory {
+public class ContentURLStreamHandlerFactory implements URLStreamHandlerFactory {
 
     private final ContentResolver resolver;
 
     public ContentURLStreamHandlerFactory(ContentResolver resolver) {
-        if (resolver == null) {
-            throw new NullPointerException();
-        }
-        this.resolver = resolver;
+	if (resolver == null) {
+	    throw new NullPointerException();
+	}
+	this.resolver = resolver;
     }
 
     /**
@@ -53,12 +53,13 @@ class ContentURLStreamHandlerFactory implements URLStreamHandlerFactory {
      */
     @Override
     public URLStreamHandler createURLStreamHandler(String protocol) {
-        if (ContentResolver.SCHEME_CONTENT.equals(protocol) || ContentResolver.SCHEME_FILE.equals(protocol)
-                || ContentResolver.SCHEME_ANDROID_RESOURCE.equals(protocol)) {
-            return new ContentURLStreamHandler(this.resolver);
-        } else {
-            return null;
-        }
+	if (ContentResolver.SCHEME_CONTENT.equals(protocol)
+		|| ContentResolver.SCHEME_FILE.equals(protocol)
+		|| ContentResolver.SCHEME_ANDROID_RESOURCE.equals(protocol)) {
+	    return new ContentURLStreamHandler(this.resolver);
+	} else {
+	    return null;
+	}
     }
 
 }
