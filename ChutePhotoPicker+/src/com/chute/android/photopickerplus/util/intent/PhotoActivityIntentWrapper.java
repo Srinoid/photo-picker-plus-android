@@ -19,48 +19,59 @@ import com.chute.sdk.collections.GCAccountMediaCollection;
 
 public class PhotoActivityIntentWrapper extends IntentWrapper {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = PhotoActivityIntentWrapper.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = PhotoActivityIntentWrapper.class
+			.getSimpleName();
 
-    public static final int ACTIVITY_FOR_RESULT_PHOTO_KEY = 115;
-    private static final String KEY_ACCOUNT_ID = "accountId";
-    private static final String KEY_ALBUM_ID = "albumId";
-    private static final String KEY_PHOTO_COLLECTION = "photoCollection";
-    private static final String KEY_PHOTO_MODEL = "photoModel";
+	public static final int ACTIVITY_FOR_RESULT_PHOTO_KEY = 115;
+	private static final String KEY_ACCOUNT_ID = "accountId";
+	private static final String KEY_ALBUM_ID = "albumId";
+	private static final String KEY_PHOTO_COLLECTION = "photoCollection";
+	private static final String KEY_PHOTO_MODEL = "photoModel";
+	private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
 
-    public PhotoActivityIntentWrapper(Context context) {
-	super(context, PhotosActivity.class);
-    }
+	public PhotoActivityIntentWrapper(Context context) {
+		super(context, PhotosActivity.class);
+	}
 
-    public PhotoActivityIntentWrapper(Intent intent) {
-	super(intent);
-    }
+	public PhotoActivityIntentWrapper(Intent intent) {
+		super(intent);
+	}
 
-    public String getAccountId() {
-	return getIntent().getExtras().getString(KEY_ACCOUNT_ID);
-    }
+	public String getAccountId() {
+		return getIntent().getExtras().getString(KEY_ACCOUNT_ID);
+	}
 
-    public void setAccountId(String accountId) {
-	getIntent().putExtra(KEY_ACCOUNT_ID, accountId);
-    }
+	public void setAccountId(String accountId) {
+		getIntent().putExtra(KEY_ACCOUNT_ID, accountId);
+	}
 
-    public String getAlbumId() {
-	return getIntent().getExtras().getString(KEY_ALBUM_ID);
-    }
+	public String getAlbumId() {
+		return getIntent().getExtras().getString(KEY_ALBUM_ID);
+	}
 
-    public void setAlbumId(String albumId) {
-	getIntent().putExtra(KEY_ALBUM_ID, albumId);
-    }
+	public void setAlbumId(String albumId) {
+		getIntent().putExtra(KEY_ALBUM_ID, albumId);
+	}
 
-    public GCAccountMediaCollection getMediaCollection() {
-	return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
-    }
+	public GCAccountMediaCollection getMediaCollection() {
+		return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
+	}
 
-    public void setMediaCollection(GCAccountMediaCollection mediaCollection) {
-	getIntent().putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
-    }
+	public void setMediaCollection(GCAccountMediaCollection mediaCollection) {
+		getIntent()
+				.putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
+	}
 
-    public void startActivityForResult(Activity context, int code) {
-	context.startActivityForResult(getIntent(), code);
-    }
+	public boolean getIsMultiPicker() {
+		return getIntent().getExtras().getBoolean(FLAG_MULTI_PICKER);
+	}
+
+	public void setMultiPicker(boolean flag) {
+		getIntent().putExtra(FLAG_MULTI_PICKER, flag);
+	}
+
+	public void startActivityForResult(Activity context, int code) {
+		context.startActivityForResult(getIntent(), code);
+	}
 }

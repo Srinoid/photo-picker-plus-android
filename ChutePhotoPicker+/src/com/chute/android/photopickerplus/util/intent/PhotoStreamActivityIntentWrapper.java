@@ -26,6 +26,7 @@ public class PhotoStreamActivityIntentWrapper {
 	private static final String EXTRA_KEY_PATH = "key_path";
 	private static final String EXTRA_KEY_CURSOR_PHOTOS = "cursor_photos";
 	private static final String EXTRA_KEY_PHOTOMODEL = "photoModel";
+	private static final String FLAG_MULTI_PICKER = "flagMulti";
 
 	public static final int TYPE_CAMERA_ROLL = 0;
 	public static final int TYPE_ALL_PHOTOS = 1;
@@ -85,6 +86,14 @@ public class PhotoStreamActivityIntentWrapper {
 
 	public void setMediaModel(GCAccountMediaModel model) {
 		getIntent().putExtra(EXTRA_KEY_PHOTOMODEL, model);
+	}
+	
+	public boolean getIsMultiPicker() {
+		return intent.getExtras().getBoolean(FLAG_MULTI_PICKER);
+	}
+	
+	public void setMultiPicker(boolean flag) {
+		intent.putExtra(FLAG_MULTI_PICKER, flag);
 	}
 
 	public void startActivityForResult(Activity context, int code) {

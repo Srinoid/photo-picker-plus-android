@@ -33,7 +33,7 @@ import android.widget.RelativeLayout;
 import com.chute.android.photopickerplus.R;
 import com.darko.imagedownloader.ImageLoader;
 
-public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollListener {
+public class PhotoSelectCursorMultiAdapter extends CursorAdapter implements OnScrollListener {
 
     private static LayoutInflater inflater = null;
     public ImageLoader loader;
@@ -42,7 +42,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
     private boolean shouldLoadImages = true;
     private final DisplayMetrics displayMetrics;
 
-    public PhotoSelectCursorAdapter(Context context, Cursor c) {
+    public PhotoSelectCursorMultiAdapter(Context context, Cursor c) {
 	super(context, c);
 	inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	loader = ImageLoader.getLoader(context);
@@ -82,7 +82,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 	ViewHolder holder;
-	View vi = inflater.inflate(R.layout.photos_select_adapter, null);
+	View vi = inflater.inflate(R.layout.photos_select_adapter_multi, null);
 	holder = new ViewHolder();
 	holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
 	holder.tick = (ImageView) vi.findViewById(R.id.imageTick);

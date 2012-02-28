@@ -19,7 +19,8 @@ import android.widget.Button;
 import android.widget.GridView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.adapter.PhotosAdapter;
+import com.chute.android.photopickerplus.adapter.PhotosMultiAdapter;
+import com.chute.android.photopickerplus.adapter.PhotosSingleAdapter;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoActivityIntentWrapper;
@@ -33,7 +34,9 @@ public class PhotosActivity extends Activity {
 	public static final String TAG = PhotosActivity.class.getSimpleName();
 
 	private GridView grid;
-	private PhotosAdapter adapter;
+	private PhotosMultiAdapter adapterMulti;
+	private PhotosSingleAdapter adapterSingle;
+	private PhotoActivityIntentWrapper wrapper;
 
 	private String accountId;
 	private String albumId;
@@ -50,8 +53,7 @@ public class PhotosActivity extends Activity {
 		Button cancel = (Button) findViewById(R.id.btnCancel);
 		cancel.setOnClickListener(new CancelClickListener());
 
-		PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(
-				getIntent());
+		wrapper = new PhotoActivityIntentWrapper(getIntent());
 		accountId = wrapper.getAccountId();
 		albumId = wrapper.getAlbumId();
 		grid.setEmptyView(findViewById(R.id.empty_view_layout));
@@ -64,11 +66,21 @@ public class PhotosActivity extends Activity {
 
 		@Override
 		public void onSuccess(GCAccountMediaCollection responseData) {
-			adapter = new PhotosAdapter(PhotosActivity.this, responseData);
-			grid.setAdapter(adapter);
-			grid.setOnItemClickListener(new OnGridItemClickListener());
-			NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
-					adapter.getCount());
+			if (wrapper.getIsMultiPicker() == true) {
+				adapterMulti = new PhotosMultiAdapter(PhotosActivity.this,
+						responseData);
+				grid.setAdapter(adapterMulti);
+				grid.setOnItemClickListener(new OnGridItemClickListener());
+				NotificationUtil.showPhotosAdapterToast(
+						getApplicationContext(), adapterMulti.getCount());
+			} else {
+				adapterSingle = new PhotosSingleAdapter(PhotosActivity.this,
+						responseData);
+				grid.setAdapter(adapterSingle);
+				grid.setOnItemClickListener(new OnGridItemClickListener());
+				NotificationUtil.showPhotosAdapterToast(
+						getApplicationContext(), adapterSingle.getCount());
+			}
 		}
 
 		@Override
@@ -101,7 +113,14 @@ public class PhotosActivity extends Activity {
 		@Override
 		public void onItemClick(final AdapterView<?> parent, final View view,
 				final int position, final long id) {
-			adapter.toggleTick(position);
+			if (wrapper.getIsMultiPicker() == true) {
+				adapterMulti.toggleTick(position);
+			} else {
+				IntentUtil.deliverDataToInitialActivity(PhotosActivity.this,
+						adapterSingle.getItem(position));
+				setResult(RESULT_OK);
+				finish();
+			}
 		}
 	}
 
@@ -109,12 +128,16 @@ public class PhotosActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			IntentUtil.deliverDataToInitialActivity(PhotosActivity.this,
-					adapter.getPhotoCollection(), null, null);
-			setResult(RESULT_OK);
-			finish();
-		}
+			if (wrapper.getIsMultiPicker() == true) {
+				IntentUtil.deliverDataToInitialActivity(PhotosActivity.this,
+						adapterMulti.getPhotoCollection(), null, null);
+				setResult(RESULT_OK);
+				finish();
+			} else {
+				finish();
+			}
 
+		}
 	}
 
 	private final class CancelClickListener implements OnClickListener {
@@ -125,4 +148,5 @@ public class PhotosActivity extends Activity {
 		}
 
 	}
+
 }

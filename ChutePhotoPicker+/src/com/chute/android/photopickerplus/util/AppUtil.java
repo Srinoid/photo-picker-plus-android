@@ -20,6 +20,8 @@ import android.os.Environment;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 
+import com.chute.sdk.collections.GCAccountMediaCollection;
+import com.chute.sdk.model.GCAccountMediaModel;
 import com.chute.sdk.utils.GCUtils;
 
 public class AppUtil {
@@ -85,4 +87,26 @@ public class AppUtil {
         return Character.toUpperCase(target.charAt(0))
                 + (target.length() > 1 ? target.substring(1) : "");
     }
+    
+    public static GCAccountMediaCollection getPhotoCollection(ArrayList<String> paths) {
+		final GCAccountMediaCollection collection = new GCAccountMediaCollection();
+		for (String path : paths) {
+			final GCAccountMediaModel model = new GCAccountMediaModel();
+			path = Uri.fromFile(new File(path)).toString();
+			model.setLargeUrl(path);
+			model.setThumbUrl(path);
+			model.setUrl(path);
+			collection.add(model);
+		}
+		return collection;
+	}
+    
+    public static GCAccountMediaModel getMediaModel(String path) {
+		final GCAccountMediaModel model = new GCAccountMediaModel();
+		path = Uri.fromFile(new File(path)).toString();
+		model.setLargeUrl(path);
+		model.setThumbUrl(path);
+		model.setUrl(path);
+		return model;
+	}
 }

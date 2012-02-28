@@ -9,12 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.app;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -25,19 +21,20 @@ import android.widget.Button;
 import android.widget.GridView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.adapter.PhotoSelectCursorAdapter;
+import com.chute.android.photopickerplus.adapter.PhotoSelectCursorMultiAdapter;
+import com.chute.android.photopickerplus.adapter.PhotoSelectCursorSingleAdapter;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoStreamActivityIntentWrapper;
-import com.chute.sdk.collections.GCAccountMediaCollection;
-import com.chute.sdk.model.GCAccountMediaModel;
 
 public class PhotoStreamActivity extends Activity {
 
 	public static final String TAG = PhotoStreamActivity.class.getSimpleName();
 	private GridView grid;
-	private PhotoSelectCursorAdapter gridAdapter;
+	private PhotoSelectCursorMultiAdapter gridAdapterMulti;
+	private PhotoSelectCursorSingleAdapter gridAdapterSingle;
 	PhotoStreamActivityIntentWrapper photoStreamWrapper;
 
 	/** Called when the activity is first created. */
@@ -77,16 +74,30 @@ public class PhotoStreamActivity extends Activity {
 			if (result == null) {
 				return;
 			}
-			if (gridAdapter == null) {
-				gridAdapter = new PhotoSelectCursorAdapter(
-						PhotoStreamActivity.this, result);
-				grid.setAdapter(gridAdapter);
-				grid.setOnItemClickListener(new OnGridItemClickListener());
+			if (photoStreamWrapper.getIsMultiPicker() == true) {
+				if (gridAdapterMulti == null) {
+					gridAdapterMulti = new PhotoSelectCursorMultiAdapter(
+							PhotoStreamActivity.this, result);
+					grid.setAdapter(gridAdapterMulti);
+					grid.setOnItemClickListener(new OnGridItemClickListener());
+				} else {
+					gridAdapterMulti.changeCursor(result);
+				}
+				NotificationUtil.showPhotosAdapterToast(
+						getApplicationContext(), gridAdapterMulti.getCount());
 			} else {
-				gridAdapter.changeCursor(result);
+				if (gridAdapterSingle == null) {
+					gridAdapterSingle = new PhotoSelectCursorSingleAdapter(
+							PhotoStreamActivity.this, result);
+					grid.setAdapter(gridAdapterSingle);
+					grid.setOnItemClickListener(new OnGridItemClickListener());
+				} else {
+					gridAdapterSingle.changeCursor(result);
+				}
+				NotificationUtil.showPhotosAdapterToast(
+						getApplicationContext(), gridAdapterSingle.getCount());
 			}
-			NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
-					gridAdapter.getCount());
+
 		}
 	}
 
@@ -95,7 +106,15 @@ public class PhotoStreamActivity extends Activity {
 		@Override
 		public void onItemClick(final AdapterView<?> parent, final View view,
 				final int position, final long id) {
-			gridAdapter.toggleTick(position);
+			if (photoStreamWrapper.getIsMultiPicker() == true) {
+				gridAdapterMulti.toggleTick(position);
+			} else {
+				IntentUtil.deliverDataToInitialActivity(
+						PhotoStreamActivity.this,
+						AppUtil.getMediaModel(gridAdapterSingle.getItem(position)));
+				setResult(RESULT_OK);
+				finish();
+			}
 		}
 	}
 
@@ -112,26 +131,18 @@ public class PhotoStreamActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			IntentUtil.deliverDataToInitialActivity(PhotoStreamActivity.this,
-					getPhotoCollection(gridAdapter.getSelectedFilePaths()),
-					null, null);
-			setResult(RESULT_OK);
-			finish();
+			if (photoStreamWrapper.getIsMultiPicker() == true) {
+				IntentUtil.deliverDataToInitialActivity(
+						PhotoStreamActivity.this, AppUtil
+								.getPhotoCollection(gridAdapterMulti
+										.getSelectedFilePaths()), null, null);
+				setResult(RESULT_OK);
+				finish();
+			} else {
+				finish();
+			}
 		}
 
-	}
-
-	public GCAccountMediaCollection getPhotoCollection(ArrayList<String> paths) {
-		final GCAccountMediaCollection collection = new GCAccountMediaCollection();
-		for (String path : paths) {
-			final GCAccountMediaModel model = new GCAccountMediaModel();
-			path = Uri.fromFile(new File(path)).toString();
-			model.setLargeUrl(path);
-			model.setThumbUrl(path);
-			model.setUrl(path);
-			collection.add(model);
-		}
-		return collection;
 	}
 
 }

@@ -9,9 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.adapter;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -28,18 +25,18 @@ import com.chute.sdk.collections.GCAccountMediaCollection;
 import com.chute.sdk.model.GCAccountMediaModel;
 import com.darko.imagedownloader.ImageLoader;
 
-public class PhotosAdapter extends BaseAdapter {
+public class PhotosSingleAdapter extends BaseAdapter {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = PhotosAdapter.class.getSimpleName();
+	private static final String TAG = PhotosSingleAdapter.class.getSimpleName();
 	private static LayoutInflater inflater;
 	public ImageLoader loader;
 	private GCAccountMediaCollection collection;
-	public HashMap<Integer, GCAccountMediaModel> tick;
 	private final DisplayMetrics displayMetrics;
 	private final Activity context;
 
-	public PhotosAdapter(final Activity context, final GCAccountMediaCollection collection) {
+	public PhotosSingleAdapter(final Activity context,
+			final GCAccountMediaCollection collection) {
 		if (collection == null) {
 			this.collection = new GCAccountMediaCollection();
 		} else {
@@ -50,7 +47,6 @@ public class PhotosAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		loader = ImageLoader.getLoader(context);
 		displayMetrics = context.getResources().getDisplayMetrics();
-		tick = new HashMap<Integer, GCAccountMediaModel>();
 	}
 
 	@Override
@@ -71,7 +67,6 @@ public class PhotosAdapter extends BaseAdapter {
 	public static class ViewHolder {
 
 		public ImageView image;
-		public ImageView tick;
 	}
 
 	public void changeData(final GCAccountMediaCollection collection) {
@@ -80,61 +75,25 @@ public class PhotosAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, final View convertView, final ViewGroup parent) {
+	public View getView(final int position, final View convertView,
+			final ViewGroup parent) {
 		View vi = convertView;
 		ViewHolder holder;
 		if (convertView == null) {
-			vi = inflater.inflate(R.layout.photos_select_adapter, null);
+			vi = inflater.inflate(R.layout.photos_select_adapter_single, null);
 			holder = new ViewHolder();
 			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
 			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(
 					displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
 			holder.image.setScaleType(ScaleType.CENTER_CROP);
-			holder.tick = (ImageView) vi.findViewById(R.id.imageTick);
-			holder.tick.setTag(position);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
 
-		if (tick.containsKey(position)) {
-			holder.tick.setVisibility(View.VISIBLE);
-			vi.setBackgroundColor(context.getResources().getColor(
-					R.color.orange));
-		} else {
-			holder.tick.setVisibility(View.GONE);
-			vi.setBackgroundColor(context.getResources().getColor(
-					R.color.transparent));
-		}
 		loader.displayImage(getItem(position).getThumbUrl(), holder.image);
 		return vi;
-	}
-
-	public GCAccountMediaCollection getPhotoCollection() {
-		final GCAccountMediaCollection photos = new GCAccountMediaCollection();
-		final Iterator<GCAccountMediaModel> iterator = tick.values().iterator();
-		while (iterator.hasNext()) {
-			photos.add(iterator.next());
-		}
-		return photos;
-	}
-
-	public boolean hasSelectedItems() {
-		return tick.size() > 0;
-	}
-
-	public int getSelectedItemsCount() {
-		return tick.size();
-	}
-
-	public void toggleTick(final int position) {
-		if (tick.containsKey(position)) {
-			tick.remove(position);
-		} else {
-			tick.put(position, getItem(position));
-		}
-		notifyDataSetChanged();
 	}
 
 }

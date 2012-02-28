@@ -112,19 +112,21 @@ public class PhotoPickerPlusTutorialApp extends Application {
 PhotoPickerPlusTutorialApp can also be neglected by registering PhotoPickerPlusApp into the manifest instead of PhotoPickerPlusTutoiralApp if the developer doesn't have the need for extending the Application class.
 
 ##PhotoPickerPlusTutorialActivity.java 
-This class is an Activity class. It contains a Button and an ImageView. When the button is clicked, PhotoPickerPlusIntentWrapper starts ChooseServiceActivity. PhotoPickerPlusIntentWrapper is a wrapper class that wraps the parameters needed for the intent.
+This class is an Activity class. It contains a Button and a GridView. When the button is clicked, PhotoPickerPlusIntentWrapper starts ChooseServiceActivity. PhotoPickerPlusIntentWrapper is a wrapper class that wraps the parameters needed for the intent.
 
 <pre><code>
 private class OnPhotoPickerClickListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
-	    PhotoPickerPlusIntentWrapper.startPhotoPicker(PhotoPickerPlusTutorialActivity.this);
+	    PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(PhotoPickerPlusTutorialActivity.this);
+		wrapper.setMultiPicker(isMultiPicker);
+	    wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this, PhotoPickerPlusIntentWrapper.REQUEST_CODE);
 	}
     }
 </code></pre>
 
 ChooseServiceActivity contains a list of services and device photos albums. You can authenticate using Facebook, Flickr, Instagram and Picasa, browse albums and photos, browse device photos as well as take a photo with the camera. 
-After clicking a photo, a result is returned to the activity that started the component where the selected photo is displayed using the ImageLoader.
+After selecting photos, a result is returned to the activity that started the component where the selected photos are displayed in a grid.
 
 <pre><code>
 @Override
@@ -134,7 +136,7 @@ After clicking a photo, a result is returned to the activity that started the co
 	    return;
 	}
 	final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(data);
-	ImageLoader.get(this).displayImage(wrapper.getMediaModel().getUrl(), image);
+	grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this, wrapper.getMediaCollection()));
 	Log.d(TAG, wrapper.toString());
     }
 </code></pre>

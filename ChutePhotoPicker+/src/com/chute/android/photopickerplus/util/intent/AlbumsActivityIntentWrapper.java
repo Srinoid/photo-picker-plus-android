@@ -23,6 +23,7 @@ public class AlbumsActivityIntentWrapper {
 
 	private static final String KEY_ACCOUNT_ID = "accountId";
 	private static final String KEY_ACCOUNT_NAME = "accountName";
+	private static final String KEY_MULTI_PICKER = "keyMultiPicker";
 
 	private final Intent intent;
 
@@ -59,6 +60,14 @@ public class AlbumsActivityIntentWrapper {
 
 	public void setAccountName(String accountName) {
 		intent.putExtra(KEY_ACCOUNT_NAME, accountName);
+	}
+
+	public boolean getIsMultiPicker() {
+		return intent.getExtras().getBoolean(KEY_MULTI_PICKER);
+	}
+
+	public void setMultiPicker(boolean flag) {
+		intent.putExtra(KEY_MULTI_PICKER, flag);
 	}
 
 	public void startActivity(Activity context) {

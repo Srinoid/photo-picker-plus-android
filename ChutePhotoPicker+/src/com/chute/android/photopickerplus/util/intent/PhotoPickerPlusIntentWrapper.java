@@ -10,21 +10,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package com.chute.android.photopickerplus.util.intent;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import com.chute.android.photopickerplus.app.ChooseServiceActivity;
 
 public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
-    public static final int REQUEST_CODE = 1;
-    public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
+	public static final int REQUEST_CODE = 1;
+	public static final String TAG = PhotoPickerPlusIntentWrapper.class
+			.getSimpleName();
+	public static final String FLAG_MULTI_PP = "flagMultiPp";
 
-    public PhotoPickerPlusIntentWrapper(Intent intent) {
-        super(intent);
-    }
+	public PhotoPickerPlusIntentWrapper(Intent intent) {
+		super(intent);
+	}
 
-    public static void startSlideChute(Activity context) {
-        context.startActivityForResult(new Intent(context, ChooseServiceActivity.class), REQUEST_CODE);
-    }
+	public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
+		super(packageContext, cls);
+	}
+
+	public PhotoPickerPlusIntentWrapper(Context packageContext) {
+		super(new Intent(packageContext, ChooseServiceActivity.class));
+	}
+
+	public boolean getIsMultiPicker() {
+		return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
+	}
+
+	public void setMultiPicker(boolean flag) {
+		getIntent().putExtra(FLAG_MULTI_PP, flag);
+	}
+
+	public void startActivityForResult(Activity context, int code) {
+		context.startActivityForResult(getIntent(), code);
+	}
 
 }
