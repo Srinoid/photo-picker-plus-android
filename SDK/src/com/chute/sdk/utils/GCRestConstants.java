@@ -76,9 +76,9 @@ public class GCRestConstants {
     // Chutes
     public static final String URL_CHUTES_GET = BASE_URL + "/v1/chutes";
     public static final String URL_CHUTES_CREATE = BASE_URL + "/v1/chutes";
-    public static final String URL_CHUTES_GET_SPECIFIC = BASE_URL + "/v1/chutes/%s";
+    public static final String URL_CHUTES_GET_SPECIFIC = BASE_URL + "/v1/chutes/%s/assets";
     public static final String URL_CHUTES_UPDATE = BASE_URL + "/v1/chutes/%s";
-    public static final String URL_CHUTES_DELETE = BASE_URL + "/v1/chutes/%s";
+    public static final String URL_CHUTES_DELETE = BASE_URL + "/v1/chutes/%s/assets";
     public static final String URL_CHUTES_SEARCH = BASE_URL + "/v1/chutes/search?url=%s";
     public static final String URL_CHUTES_ALL = BASE_URL + "/v1/%s/chutes/all";
 
