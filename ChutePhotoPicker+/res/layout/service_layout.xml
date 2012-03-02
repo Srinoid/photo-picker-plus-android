@@ -101,6 +101,29 @@
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:background="@drawable/divider_album_list"/> 
+                <!-- Last photo taken -->
+        <LinearLayout android:id="@+id/last_photo_linear"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" android:background="@drawable/row_selector">
+                <ImageView android:id="@+id/last_photo_icon"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/default_thumb" android:scaleType="centerCrop"/>
+                <TextView android:id="@+id/last_photo_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_photo"
+                    android:layout_marginLeft="10dip"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>            
+           <ImageView android:id="@+id/divider_album3"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:background="@drawable/divider_album_list"/>  
            <!-- Take a Photo --> 
           <LinearLayout android:id="@+id/album3_linear"
                 android:layout_width="fill_parent"

@@ -34,6 +34,7 @@
     <string name="title_user">User</string>
     <string name="camera_shots">Camera shots</string>
     <string name="all_photos">All photos</string>
+    <string name="last_photo">Last photo taken</string>
     
     <!-- Toast -->
     <string name="toast_choose_photos">Please select photos</string>

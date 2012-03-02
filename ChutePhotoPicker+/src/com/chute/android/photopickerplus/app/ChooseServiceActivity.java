@@ -62,8 +62,10 @@ public class ChooseServiceActivity extends Activity {
 	private LinearLayout flickr;
 	private LinearLayout allPhotos;
 	private LinearLayout cameraPhotos;
+	private LinearLayout lastPhoto;
 	private ImageView img_all_photos;
 	private ImageView img_camera_photos;
+	private ImageView img_last_photo;
 	private AccountType accountType;
 	private ImageLoader loader;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
@@ -100,9 +102,13 @@ public class ChooseServiceActivity extends Activity {
 
 		cameraPhotos = (LinearLayout) findViewById(R.id.camera_shots_linear);
 		cameraPhotos.setOnClickListener(new OnCameraRollListener());
+		
+		lastPhoto  = (LinearLayout) findViewById(R.id.last_photo_linear);
+		lastPhoto.setOnClickListener(new OnLastPhotoClickListener());
 
 		img_all_photos = (ImageView) findViewById(R.id.all_photos_icon);
 		img_camera_photos = (ImageView) findViewById(R.id.camera_shots_icon);
+		img_last_photo = (ImageView) findViewById(R.id.last_photo_icon);
 
 		Cursor cursorAllPhotos = MediaDAO
 				.getAllMediaPhotos(ChooseServiceActivity.this);
@@ -120,6 +126,15 @@ public class ChooseServiceActivity extends Activity {
 					.getColumnIndex(MediaStore.Images.Media.DATA));
 			loader.displayImage(Uri.fromFile(new File(path)).toString(),
 					img_camera_photos);
+		}
+		
+		Cursor cursorLastPhoto = MediaDAO
+				.getCameraPhotos(ChooseServiceActivity.this);
+		if (cursorLastPhoto != null && cursorLastPhoto.moveToLast()) {
+			String path = cursorLastPhoto.getString(cursorLastPhoto
+					.getColumnIndex(MediaStore.Images.Media.DATA));
+			loader.displayImage(Uri.fromFile(new File(path)).toString(),
+					img_last_photo);
 		}
 
 		take_photos = (LinearLayout) findViewById(R.id.album3_linear);
@@ -291,6 +306,16 @@ public class ChooseServiceActivity extends Activity {
 							PhotoStreamActivityIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 		}
 
+	}
+	
+	private final class OnLastPhotoClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(getApplicationContext(), LastPhotoActivity.class);
+			startActivity(intent);
+		}
+		
 	}
 
 	@Override
