@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.adapter.PhotoSelectCursorMultiAdapter;
@@ -36,6 +37,7 @@ public class PhotoStreamActivity extends Activity {
 	private PhotoSelectCursorMultiAdapter gridAdapterMulti;
 	private PhotoSelectCursorSingleAdapter gridAdapterSingle;
 	PhotoStreamActivityIntentWrapper photoStreamWrapper;
+	private TextView selectPhotos;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -43,6 +45,7 @@ public class PhotoStreamActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.photos_select);
 
+		selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
 		grid = (GridView) findViewById(R.id.gridView);
 		grid.setEmptyView(findViewById(R.id.empty_view_layout));
 		photoStreamWrapper = new PhotoStreamActivityIntentWrapper(getIntent());
@@ -75,6 +78,7 @@ public class PhotoStreamActivity extends Activity {
 				return;
 			}
 			if (photoStreamWrapper.getIsMultiPicker() == true) {
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_photos));
 				if (gridAdapterMulti == null) {
 					gridAdapterMulti = new PhotoSelectCursorMultiAdapter(
 							PhotoStreamActivity.this, result);
@@ -86,6 +90,7 @@ public class PhotoStreamActivity extends Activity {
 				NotificationUtil.showPhotosAdapterToast(
 						getApplicationContext(), gridAdapterMulti.getCount());
 			} else {
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_a_photo));
 				if (gridAdapterSingle == null) {
 					gridAdapterSingle = new PhotoSelectCursorSingleAdapter(
 							PhotoStreamActivity.this, result);
