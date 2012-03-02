@@ -101,7 +101,7 @@
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:background="@drawable/divider_album_list"/> 
-           <!-- Album3 --> 
+           <!-- Take a Photo --> 
           <LinearLayout android:id="@+id/album3_linear"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

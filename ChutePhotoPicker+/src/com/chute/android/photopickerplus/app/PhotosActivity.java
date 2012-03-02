@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.adapter.PhotosMultiAdapter;
@@ -37,6 +38,7 @@ public class PhotosActivity extends Activity {
 	private PhotosMultiAdapter adapterMulti;
 	private PhotosSingleAdapter adapterSingle;
 	private PhotoActivityIntentWrapper wrapper;
+	private TextView selectPhotos;
 
 	private String accountId;
 	private String albumId;
@@ -47,6 +49,7 @@ public class PhotosActivity extends Activity {
 		setContentView(R.layout.photos_select);
 
 		grid = (GridView) findViewById(R.id.gridView);
+		selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
 
 		Button ok = (Button) findViewById(R.id.btnOk);
 		ok.setOnClickListener(new OkClickListener());
@@ -67,6 +70,7 @@ public class PhotosActivity extends Activity {
 		@Override
 		public void onSuccess(GCAccountMediaCollection responseData) {
 			if (wrapper.getIsMultiPicker() == true) {
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_photos));
 				adapterMulti = new PhotosMultiAdapter(PhotosActivity.this,
 						responseData);
 				grid.setAdapter(adapterMulti);
@@ -74,6 +78,7 @@ public class PhotosActivity extends Activity {
 				NotificationUtil.showPhotosAdapterToast(
 						getApplicationContext(), adapterMulti.getCount());
 			} else {
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_a_photo));
 				adapterSingle = new PhotosSingleAdapter(PhotosActivity.this,
 						responseData);
 				grid.setAdapter(adapterSingle);
