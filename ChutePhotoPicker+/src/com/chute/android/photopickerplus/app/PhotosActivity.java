@@ -20,8 +20,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.adapter.PhotosMultiAdapter;
-import com.chute.android.photopickerplus.adapter.PhotosSingleAdapter;
+import com.chute.android.photopickerplus.adapter.PhotosAdapter;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoActivityIntentWrapper;
@@ -32,126 +31,121 @@ import com.chute.sdk.model.GCHttpRequestParameters;
 
 public class PhotosActivity extends Activity {
 
-	public static final String TAG = PhotosActivity.class.getSimpleName();
+    public static final String TAG = PhotosActivity.class.getSimpleName();
 
-	private GridView grid;
-	private PhotosMultiAdapter adapterMulti;
-	private PhotosSingleAdapter adapterSingle;
-	private PhotoActivityIntentWrapper wrapper;
-	private TextView selectPhotos;
+    private GridView grid;
+    private PhotosAdapter adapter;
+    private PhotoActivityIntentWrapper wrapper;
+    private TextView selectPhotos;
 
-	private String accountId;
-	private String albumId;
+    private String accountId;
+    private String albumId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.photos_select);
+
+	grid = (GridView) findViewById(R.id.gridView);
+	selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
+
+	Button ok = (Button) findViewById(R.id.btnOk);
+	ok.setOnClickListener(new OkClickListener());
+	Button cancel = (Button) findViewById(R.id.btnCancel);
+	cancel.setOnClickListener(new CancelClickListener());
+
+	wrapper = new PhotoActivityIntentWrapper(getIntent());
+	accountId = wrapper.getAccountId();
+	albumId = wrapper.getAlbumId();
+	grid.setEmptyView(findViewById(R.id.empty_view_layout));
+	if (!wrapper.getIsMultiPicker()) {
+	    ok.setVisibility(View.GONE);
+	}
+	GCAccounts
+		.objectMedia(getApplicationContext(), accountId, albumId, new PhotoListCallback())
+		.executeAsync();
+    }
+
+    private final class PhotoListCallback implements GCHttpCallback<GCAccountMediaCollection> {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.photos_select);
+	public void onSuccess(GCAccountMediaCollection responseData) {
+	    adapter = new PhotosAdapter(PhotosActivity.this, responseData);
+	    grid.setAdapter(adapter);
 
-		grid = (GridView) findViewById(R.id.gridView);
-		selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
-
-		Button ok = (Button) findViewById(R.id.btnOk);
-		ok.setOnClickListener(new OkClickListener());
-		Button cancel = (Button) findViewById(R.id.btnCancel);
-		cancel.setOnClickListener(new CancelClickListener());
-
-		wrapper = new PhotoActivityIntentWrapper(getIntent());
-		accountId = wrapper.getAccountId();
-		albumId = wrapper.getAlbumId();
-		grid.setEmptyView(findViewById(R.id.empty_view_layout));
-		GCAccounts.objectMedia(getApplicationContext(), accountId, albumId,
-				new PhotoListCallback()).executeAsync();
+	    if (wrapper.getIsMultiPicker() == true) {
+		selectPhotos.setText(getApplicationContext().getResources().getString(
+			R.string.select_photos));
+		grid.setOnItemClickListener(new OnMultiGridItemClickListener());
+	    } else {
+		selectPhotos.setText(getApplicationContext().getResources().getString(
+			R.string.select_a_photo));
+		grid.setOnItemClickListener(new OnSingleGridItemClickListener());
+	    }
+	    NotificationUtil.showPhotosAdapterToast(getApplicationContext(), adapter.getCount());
 	}
 
-	private final class PhotoListCallback implements
-			GCHttpCallback<GCAccountMediaCollection> {
-
-		@Override
-		public void onSuccess(GCAccountMediaCollection responseData) {
-			if (wrapper.getIsMultiPicker() == true) {
-				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_photos));
-				adapterMulti = new PhotosMultiAdapter(PhotosActivity.this,
-						responseData);
-				grid.setAdapter(adapterMulti);
-				grid.setOnItemClickListener(new OnGridItemClickListener());
-				NotificationUtil.showPhotosAdapterToast(
-						getApplicationContext(), adapterMulti.getCount());
-			} else {
-				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_a_photo));
-				adapterSingle = new PhotosSingleAdapter(PhotosActivity.this,
-						responseData);
-				grid.setAdapter(adapterSingle);
-				grid.setOnItemClickListener(new OnGridItemClickListener());
-				NotificationUtil.showPhotosAdapterToast(
-						getApplicationContext(), adapterSingle.getCount());
-			}
-		}
-
-		@Override
-		public void onHttpException(GCHttpRequestParameters params,
-				Throwable exception) {
-			NotificationUtil
-					.makeConnectionProblemToast(getApplicationContext());
-			toggleEmptyViewErrorMessage();
-		}
-
-		@Override
-		public void onHttpError(int responseCode, String statusMessage) {
-			NotificationUtil.makeServerErrorToast(getApplicationContext());
-			toggleEmptyViewErrorMessage();
-		}
-
-		@Override
-		public void onParserException(int responseCode, Throwable exception) {
-			NotificationUtil.makeParserErrorToast(getApplicationContext());
-			toggleEmptyViewErrorMessage();
-		}
-
-		public void toggleEmptyViewErrorMessage() {
-			findViewById(R.id.empty_view_layout).setVisibility(View.GONE);
-		}
+	@Override
+	public void onHttpException(GCHttpRequestParameters params, Throwable exception) {
+	    NotificationUtil.makeConnectionProblemToast(getApplicationContext());
+	    toggleEmptyViewErrorMessage();
 	}
 
-	private final class OnGridItemClickListener implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view,
-				final int position, final long id) {
-			if (wrapper.getIsMultiPicker() == true) {
-				adapterMulti.toggleTick(position);
-			} else {
-				IntentUtil.deliverDataToInitialActivity(PhotosActivity.this,
-						adapterSingle.getItem(position));
-				setResult(RESULT_OK);
-				finish();
-			}
-		}
+	@Override
+	public void onHttpError(int responseCode, String statusMessage) {
+	    NotificationUtil.makeServerErrorToast(getApplicationContext());
+	    toggleEmptyViewErrorMessage();
 	}
 
-	private final class OkClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			if (wrapper.getIsMultiPicker() == true) {
-				IntentUtil.deliverDataToInitialActivity(PhotosActivity.this,
-						adapterMulti.getPhotoCollection(), null, null);
-				setResult(RESULT_OK);
-				finish();
-			} else {
-				finish();
-			}
-
-		}
+	@Override
+	public void onParserException(int responseCode, Throwable exception) {
+	    NotificationUtil.makeParserErrorToast(getApplicationContext());
+	    toggleEmptyViewErrorMessage();
 	}
 
-	private final class CancelClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			finish();
-		}
-
+	public void toggleEmptyViewErrorMessage() {
+	    findViewById(R.id.empty_view_layout).setVisibility(View.GONE);
 	}
+    }
+
+    private final class OnSingleGridItemClickListener implements OnItemClickListener {
+
+	@Override
+	public void onItemClick(final AdapterView<?> parent, final View view, final int position,
+		final long id) {
+	    IntentUtil.deliverDataToInitialActivity(PhotosActivity.this, adapter.getItem(position));
+	    setResult(RESULT_OK);
+	    finish();
+	}
+    }
+
+    private final class OnMultiGridItemClickListener implements OnItemClickListener {
+
+	@Override
+	public void onItemClick(final AdapterView<?> parent, final View view, final int position,
+		final long id) {
+	    adapter.toggleTick(position);
+	}
+    }
+
+    private final class OkClickListener implements OnClickListener {
+
+	@Override
+	public void onClick(View v) {
+	    IntentUtil.deliverDataToInitialActivity(PhotosActivity.this,
+		    adapter.getPhotoCollection(), null, null);
+	    setResult(RESULT_OK);
+	    finish();
+	}
+    }
+
+    private final class CancelClickListener implements OnClickListener {
+
+	@Override
+	public void onClick(View v) {
+	    finish();
+	}
+
+    }
 
 }

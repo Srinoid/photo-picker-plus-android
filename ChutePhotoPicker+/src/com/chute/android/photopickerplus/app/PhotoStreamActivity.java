@@ -22,8 +22,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.adapter.PhotoSelectCursorMultiAdapter;
-import com.chute.android.photopickerplus.adapter.PhotoSelectCursorSingleAdapter;
+import com.chute.android.photopickerplus.adapter.PhotoSelectCursorAdapter;
 import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -34,9 +33,8 @@ public class PhotoStreamActivity extends Activity {
 
     public static final String TAG = PhotoStreamActivity.class.getSimpleName();
     private GridView grid;
-    private PhotoSelectCursorMultiAdapter gridAdapterMulti;
-    private PhotoSelectCursorSingleAdapter gridAdapterSingle;
-    PhotoStreamActivityIntentWrapper photoStreamWrapper;
+    private PhotoSelectCursorAdapter adapter;
+    PhotoStreamActivityIntentWrapper wrapper;
     private TextView selectPhotos;
 
     /** Called when the activity is first created. */
@@ -48,7 +46,7 @@ public class PhotoStreamActivity extends Activity {
 	selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
 	grid = (GridView) findViewById(R.id.gridView);
 	grid.setEmptyView(findViewById(R.id.empty_view_layout));
-	photoStreamWrapper = new PhotoStreamActivityIntentWrapper(getIntent());
+	wrapper = new PhotoStreamActivityIntentWrapper(getIntent());
 	new LoadCursorTask().execute();
 
 	Button ok = (Button) findViewById(R.id.btnOk);
@@ -62,9 +60,9 @@ public class PhotoStreamActivity extends Activity {
 
 	@Override
 	protected Cursor doInBackground(final Void... arg0) {
-	    if (photoStreamWrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_ALL_PHOTOS) {
+	    if (wrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_ALL_PHOTOS) {
 		return MediaDAO.getAllMediaPhotos(getApplicationContext());
-	    } else if (photoStreamWrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_CAMERA_ROLL) {
+	    } else if (wrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_CAMERA_ROLL) {
 		return MediaDAO.getCameraPhotos(getApplicationContext());
 	    } else {
 		return null;
@@ -77,50 +75,39 @@ public class PhotoStreamActivity extends Activity {
 	    if (result == null) {
 		return;
 	    }
-	    if (photoStreamWrapper.getIsMultiPicker() == true) {
+	    adapter = new PhotoSelectCursorAdapter(PhotoStreamActivity.this, result);
+	    grid.setAdapter(adapter);
+	    if (wrapper.getIsMultiPicker() == true) {
 		selectPhotos.setText(getApplicationContext().getResources().getString(
 			R.string.select_photos));
-		if (gridAdapterMulti == null) {
-		    gridAdapterMulti = new PhotoSelectCursorMultiAdapter(PhotoStreamActivity.this,
-			    result);
-		    grid.setAdapter(gridAdapterMulti);
-		    grid.setOnItemClickListener(new OnGridItemClickListener());
-		} else {
-		    gridAdapterMulti.changeCursor(result);
-		}
-		NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
-			gridAdapterMulti.getCount());
+		grid.setOnItemClickListener(new OnMultiSelectGridItemClickListener());
 	    } else {
 		selectPhotos.setText(getApplicationContext().getResources().getString(
 			R.string.select_a_photo));
-		if (gridAdapterSingle == null) {
-		    gridAdapterSingle = new PhotoSelectCursorSingleAdapter(
-			    PhotoStreamActivity.this, result);
-		    grid.setAdapter(gridAdapterSingle);
-		    grid.setOnItemClickListener(new OnGridItemClickListener());
-		} else {
-		    gridAdapterSingle.changeCursor(result);
-		}
-		NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
-			gridAdapterSingle.getCount());
+		grid.setOnItemClickListener(new OnSingleSelectGridItemClickListener());
 	    }
-
+	    NotificationUtil.showPhotosAdapterToast(getApplicationContext(), adapter.getCount());
 	}
     }
 
-    private final class OnGridItemClickListener implements OnItemClickListener {
+    private final class OnMultiSelectGridItemClickListener implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(final AdapterView<?> parent, final View view, final int position,
 		final long id) {
-	    if (photoStreamWrapper.getIsMultiPicker() == true) {
-		gridAdapterMulti.toggleTick(position);
-	    } else {
-		IntentUtil.deliverDataToInitialActivity(PhotoStreamActivity.this,
-			AppUtil.getMediaModel(gridAdapterSingle.getItem(position)));
-		setResult(RESULT_OK);
-		finish();
-	    }
+	    adapter.toggleTick(position);
+	}
+    }
+
+    private final class OnSingleSelectGridItemClickListener implements OnItemClickListener {
+
+	@Override
+	public void onItemClick(final AdapterView<?> parent, final View view, final int position,
+		final long id) {
+	    IntentUtil.deliverDataToInitialActivity(PhotoStreamActivity.this,
+		    AppUtil.getMediaModel(adapter.getItem(position)));
+	    setResult(RESULT_OK);
+	    finish();
 	}
     }
 
@@ -137,15 +124,10 @@ public class PhotoStreamActivity extends Activity {
 
 	@Override
 	public void onClick(View v) {
-	    if (photoStreamWrapper.getIsMultiPicker() == true) {
-		IntentUtil.deliverDataToInitialActivity(PhotoStreamActivity.this,
-			AppUtil.getPhotoCollection(gridAdapterMulti.getSelectedFilePaths()), null,
-			null);
-		setResult(RESULT_OK);
-		finish();
-	    } else {
-		finish();
-	    }
+	    IntentUtil.deliverDataToInitialActivity(PhotoStreamActivity.this,
+		    AppUtil.getPhotoCollection(adapter.getSelectedFilePaths()), null, null);
+	    setResult(RESULT_OK);
+	    finish();
 	}
 
     }
