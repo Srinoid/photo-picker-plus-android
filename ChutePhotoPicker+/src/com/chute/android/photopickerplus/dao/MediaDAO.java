@@ -9,10 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.dao;
 
+import java.io.File;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 public class MediaDAO {
 
@@ -22,15 +25,51 @@ public class MediaDAO {
     }
 
     public static Cursor getCameraPhotos(final Context context) {
-        final String[] projection = new String[] {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA};
-        final Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        final String query = MediaStore.Images.Media.DATA + " LIKE \"%DCIM%\"";
-        return context.getContentResolver().query(images, projection, query, null, null);
+	final String[] projection = new String[] { MediaStore.Images.Media._ID,
+		MediaStore.Images.Media.DATA };
+	final Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+	final String query = MediaStore.Images.Media.DATA + " LIKE \"%DCIM%\"";
+	return context.getContentResolver().query(images, projection, query, null,
+		MediaStore.Images.Media.DATE_ADDED + " DESC");
     }
 
     public static Cursor getAllMediaPhotos(final Context context) {
-        final String[] projection = new String[] {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA};
-        final Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        return context.getContentResolver().query(images, projection, null, null, null);
+	final String[] projection = new String[] { MediaStore.Images.Media._ID,
+		MediaStore.Images.Media.DATA };
+	final Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+	return context.getContentResolver().query(images, projection, null, null,
+		MediaStore.Images.Media.DATE_ADDED + " DESC");
+    }
+
+    public static Uri getLastPhotoFromAllPhotos(final Context context) {
+	Cursor allMediaPhotos = getAllMediaPhotos(context);
+	Uri uri = getFirstItemUri(allMediaPhotos);
+	safelyCloseCursor(allMediaPhotos);
+	return uri;
+    }
+
+    public static Uri getLastPhotoFromCameraPhotos(final Context context) {
+	Cursor allMediaPhotos = getCameraPhotos(context);
+	Uri uri = getFirstItemUri(allMediaPhotos);
+	safelyCloseCursor(allMediaPhotos);
+	return uri;
+    }
+
+    private static Uri getFirstItemUri(Cursor allMediaPhotos) {
+	if (allMediaPhotos != null && allMediaPhotos.moveToFirst()) {
+	    return Uri.fromFile(new File(allMediaPhotos.getString(allMediaPhotos
+		    .getColumnIndex(MediaStore.Images.Media.DATA))));
+	}
+	return null;
+    }
+
+    public static void safelyCloseCursor(final Cursor c) {
+	try {
+	    if (c != null) {
+		c.close();
+	    }
+	} catch (Exception e) {
+	    Log.d(TAG, "", e);
+	}
     }
 }

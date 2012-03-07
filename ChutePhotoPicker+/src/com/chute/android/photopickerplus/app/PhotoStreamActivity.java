@@ -32,122 +32,122 @@ import com.chute.android.photopickerplus.util.intent.PhotoStreamActivityIntentWr
 
 public class PhotoStreamActivity extends Activity {
 
-	public static final String TAG = PhotoStreamActivity.class.getSimpleName();
-	private GridView grid;
-	private PhotoSelectCursorMultiAdapter gridAdapterMulti;
-	private PhotoSelectCursorSingleAdapter gridAdapterSingle;
-	PhotoStreamActivityIntentWrapper photoStreamWrapper;
-	private TextView selectPhotos;
+    public static final String TAG = PhotoStreamActivity.class.getSimpleName();
+    private GridView grid;
+    private PhotoSelectCursorMultiAdapter gridAdapterMulti;
+    private PhotoSelectCursorSingleAdapter gridAdapterSingle;
+    PhotoStreamActivityIntentWrapper photoStreamWrapper;
+    private TextView selectPhotos;
 
-	/** Called when the activity is first created. */
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.photos_select);
+
+	selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
+	grid = (GridView) findViewById(R.id.gridView);
+	grid.setEmptyView(findViewById(R.id.empty_view_layout));
+	photoStreamWrapper = new PhotoStreamActivityIntentWrapper(getIntent());
+	new LoadCursorTask().execute();
+
+	Button ok = (Button) findViewById(R.id.btnOk);
+	ok.setOnClickListener(new OkClickListener());
+	Button cancel = (Button) findViewById(R.id.btnCancel);
+	cancel.setOnClickListener(new CancelClickListener());
+
+    }
+
+    private class LoadCursorTask extends AsyncTask<Void, Void, Cursor> {
+
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.photos_select);
-
-		selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
-		grid = (GridView) findViewById(R.id.gridView);
-		grid.setEmptyView(findViewById(R.id.empty_view_layout));
-		photoStreamWrapper = new PhotoStreamActivityIntentWrapper(getIntent());
-		new LoadCursorTask().execute();
-
-		Button ok = (Button) findViewById(R.id.btnOk);
-		ok.setOnClickListener(new OkClickListener());
-		Button cancel = (Button) findViewById(R.id.btnCancel);
-		cancel.setOnClickListener(new CancelClickListener());
-
+	protected Cursor doInBackground(final Void... arg0) {
+	    if (photoStreamWrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_ALL_PHOTOS) {
+		return MediaDAO.getAllMediaPhotos(getApplicationContext());
+	    } else if (photoStreamWrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_CAMERA_ROLL) {
+		return MediaDAO.getCameraPhotos(getApplicationContext());
+	    } else {
+		return null;
+	    }
 	}
 
-	private class LoadCursorTask extends AsyncTask<Void, Void, Cursor> {
-
-		@Override
-		protected Cursor doInBackground(final Void... arg0) {
-			if (photoStreamWrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_ALL_PHOTOS) {
-				return MediaDAO.getAllMediaPhotos(getApplicationContext());
-			} else if (photoStreamWrapper.getFilterType() == PhotoStreamActivityIntentWrapper.TYPE_CAMERA_ROLL) {
-				return MediaDAO.getCameraPhotos(getApplicationContext());
-			} else {
-				return null;
-			}
+	@Override
+	protected void onPostExecute(final Cursor result) {
+	    super.onPostExecute(result);
+	    if (result == null) {
+		return;
+	    }
+	    if (photoStreamWrapper.getIsMultiPicker() == true) {
+		selectPhotos.setText(getApplicationContext().getResources().getString(
+			R.string.select_photos));
+		if (gridAdapterMulti == null) {
+		    gridAdapterMulti = new PhotoSelectCursorMultiAdapter(PhotoStreamActivity.this,
+			    result);
+		    grid.setAdapter(gridAdapterMulti);
+		    grid.setOnItemClickListener(new OnGridItemClickListener());
+		} else {
+		    gridAdapterMulti.changeCursor(result);
 		}
-
-		@Override
-		protected void onPostExecute(final Cursor result) {
-			super.onPostExecute(result);
-			if (result == null) {
-				return;
-			}
-			if (photoStreamWrapper.getIsMultiPicker() == true) {
-				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_photos));
-				if (gridAdapterMulti == null) {
-					gridAdapterMulti = new PhotoSelectCursorMultiAdapter(
-							PhotoStreamActivity.this, result);
-					grid.setAdapter(gridAdapterMulti);
-					grid.setOnItemClickListener(new OnGridItemClickListener());
-				} else {
-					gridAdapterMulti.changeCursor(result);
-				}
-				NotificationUtil.showPhotosAdapterToast(
-						getApplicationContext(), gridAdapterMulti.getCount());
-			} else {
-				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_a_photo));
-				if (gridAdapterSingle == null) {
-					gridAdapterSingle = new PhotoSelectCursorSingleAdapter(
-							PhotoStreamActivity.this, result);
-					grid.setAdapter(gridAdapterSingle);
-					grid.setOnItemClickListener(new OnGridItemClickListener());
-				} else {
-					gridAdapterSingle.changeCursor(result);
-				}
-				NotificationUtil.showPhotosAdapterToast(
-						getApplicationContext(), gridAdapterSingle.getCount());
-			}
-
+		NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
+			gridAdapterMulti.getCount());
+	    } else {
+		selectPhotos.setText(getApplicationContext().getResources().getString(
+			R.string.select_a_photo));
+		if (gridAdapterSingle == null) {
+		    gridAdapterSingle = new PhotoSelectCursorSingleAdapter(
+			    PhotoStreamActivity.this, result);
+		    grid.setAdapter(gridAdapterSingle);
+		    grid.setOnItemClickListener(new OnGridItemClickListener());
+		} else {
+		    gridAdapterSingle.changeCursor(result);
 		}
-	}
-
-	private final class OnGridItemClickListener implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view,
-				final int position, final long id) {
-			if (photoStreamWrapper.getIsMultiPicker() == true) {
-				gridAdapterMulti.toggleTick(position);
-			} else {
-				IntentUtil.deliverDataToInitialActivity(
-						PhotoStreamActivity.this,
-						AppUtil.getMediaModel(gridAdapterSingle.getItem(position)));
-				setResult(RESULT_OK);
-				finish();
-			}
-		}
-	}
-
-	private final class CancelClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			finish();
-		}
+		NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
+			gridAdapterSingle.getCount());
+	    }
 
 	}
+    }
 
-	private final class OkClickListener implements OnClickListener {
+    private final class OnGridItemClickListener implements OnItemClickListener {
 
-		@Override
-		public void onClick(View v) {
-			if (photoStreamWrapper.getIsMultiPicker() == true) {
-				IntentUtil.deliverDataToInitialActivity(
-						PhotoStreamActivity.this, AppUtil
-								.getPhotoCollection(gridAdapterMulti
-										.getSelectedFilePaths()), null, null);
-				setResult(RESULT_OK);
-				finish();
-			} else {
-				finish();
-			}
-		}
-
+	@Override
+	public void onItemClick(final AdapterView<?> parent, final View view, final int position,
+		final long id) {
+	    if (photoStreamWrapper.getIsMultiPicker() == true) {
+		gridAdapterMulti.toggleTick(position);
+	    } else {
+		IntentUtil.deliverDataToInitialActivity(PhotoStreamActivity.this,
+			AppUtil.getMediaModel(gridAdapterSingle.getItem(position)));
+		setResult(RESULT_OK);
+		finish();
+	    }
 	}
+    }
+
+    private final class CancelClickListener implements OnClickListener {
+
+	@Override
+	public void onClick(View v) {
+	    finish();
+	}
+
+    }
+
+    private final class OkClickListener implements OnClickListener {
+
+	@Override
+	public void onClick(View v) {
+	    if (photoStreamWrapper.getIsMultiPicker() == true) {
+		IntentUtil.deliverDataToInitialActivity(PhotoStreamActivity.this,
+			AppUtil.getPhotoCollection(gridAdapterMulti.getSelectedFilePaths()), null,
+			null);
+		setResult(RESULT_OK);
+		finish();
+	    } else {
+		finish();
+	    }
+	}
+
+    }
 
 }
