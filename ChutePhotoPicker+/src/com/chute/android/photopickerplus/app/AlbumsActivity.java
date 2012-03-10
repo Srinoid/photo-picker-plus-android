@@ -24,6 +24,7 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotoActivityIntentWrapper;
+import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.account.GCAccounts;
 import com.chute.sdk.collections.GCAccountObjectCollection;
@@ -94,13 +95,21 @@ public class AlbumsActivity extends Activity {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	    final String albumId = adapter.getItem(position).getId();
-	    final PhotoActivityIntentWrapper photosWrapper = new PhotoActivityIntentWrapper(
-		    AlbumsActivity.this);
-	    photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
-	    photosWrapper.setAlbumId(albumId);
-	    photosWrapper.setAccountId(wrapper.getAccountId());
-	    photosWrapper.startActivityForResult(AlbumsActivity.this,
-		    PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
+//	    final PhotoActivityIntentWrapper photosWrapper = new PhotoActivityIntentWrapper(
+//		    AlbumsActivity.this);
+//	    photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
+//	    photosWrapper.setAlbumId(albumId);
+//	    photosWrapper.setAccountId(wrapper.getAccountId());
+//	    photosWrapper.startActivityForResult(AlbumsActivity.this,
+//		    PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
+	    final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(
+			    AlbumsActivity.this);
+	        photosWrapper.setFilterType(PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS);
+		    photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
+		    photosWrapper.setAlbumId(albumId);
+		    photosWrapper.setAccountId(wrapper.getAccountId());
+		    photosWrapper.startActivityForResult(AlbumsActivity.this,
+			    PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
 	}
 
     }
