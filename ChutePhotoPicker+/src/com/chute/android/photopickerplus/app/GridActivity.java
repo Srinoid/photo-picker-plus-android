@@ -34,6 +34,7 @@ public class GridActivity extends Activity {
 	private PhotosAdapter socialAdapter;
 	private PhotosIntentWrapper wrapper;
 	private TextView selectPhotos;
+	private View emptyView;
 
 	private String accountId;
 	private String albumId;
@@ -45,7 +46,8 @@ public class GridActivity extends Activity {
 
 		selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
 		grid = (GridView) findViewById(R.id.gridView);
-		grid.setEmptyView(findViewById(R.id.empty_view_layout));
+		emptyView = findViewById(R.id.empty_view_layout);
+		grid.setEmptyView(emptyView);
 
 		wrapper = new PhotosIntentWrapper(getIntent());
 
@@ -88,6 +90,11 @@ public class GridActivity extends Activity {
 			cursorAdapter = new PhotoSelectCursorAdapter(GridActivity.this,
 					result);
 			grid.setAdapter(cursorAdapter);
+
+			if (cursorAdapter.getCount() == 0) {
+				emptyView.setVisibility(View.GONE);
+			}
+
 			if (wrapper.getIsMultiPicker() == true) {
 				selectPhotos.setText(getApplicationContext().getResources()
 						.getString(R.string.select_photos));
@@ -141,6 +148,10 @@ public class GridActivity extends Activity {
 		public void onSuccess(GCAccountMediaCollection responseData) {
 			socialAdapter = new PhotosAdapter(GridActivity.this, responseData);
 			grid.setAdapter(socialAdapter);
+
+			if (socialAdapter.getCount() == 0) {
+				emptyView.setVisibility(View.GONE);
+			}
 
 			if (wrapper.getIsMultiPicker() == true) {
 				selectPhotos.setText(getApplicationContext().getResources()

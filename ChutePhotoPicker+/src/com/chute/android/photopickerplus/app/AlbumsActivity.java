@@ -38,6 +38,7 @@ public class AlbumsActivity extends Activity {
     private ListView albums;
     private AlbumsAdapter adapter;
     private AlbumsActivityIntentWrapper wrapper;
+    private View emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,8 @@ public class AlbumsActivity extends Activity {
 	setContentView(R.layout.albums_activity);
 
 	albums = (ListView) findViewById(R.id.albumList);
-	albums.setEmptyView(findViewById(R.id.empty_view_layout));
+	emptyView = findViewById(R.id.empty_view_layout);
+	albums.setEmptyView(emptyView);
 	wrapper = new AlbumsActivityIntentWrapper(getIntent());
 
 	TextView title = (TextView) findViewById(R.id.title);
@@ -63,6 +65,9 @@ public class AlbumsActivity extends Activity {
 	public void onSuccess(GCAccountObjectCollection responseData) {
 	    adapter = new AlbumsAdapter(AlbumsActivity.this, responseData);
 	    albums.setAdapter(adapter);
+	    if (adapter.getCount()==0) {
+	    	emptyView.setVisibility(View.GONE);
+	    }
 	    albums.setOnItemClickListener(new OnAlbumsClickListener());
 	    NotificationUtil.showAlbumsAdapterToast(getApplicationContext(), adapter.getCount());
 	}
@@ -95,13 +100,6 @@ public class AlbumsActivity extends Activity {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	    final String albumId = adapter.getItem(position).getId();
-//	    final PhotoActivityIntentWrapper photosWrapper = new PhotoActivityIntentWrapper(
-//		    AlbumsActivity.this);
-//	    photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
-//	    photosWrapper.setAlbumId(albumId);
-//	    photosWrapper.setAccountId(wrapper.getAccountId());
-//	    photosWrapper.startActivityForResult(AlbumsActivity.this,
-//		    PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
 	    final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(
 			    AlbumsActivity.this);
 	        photosWrapper.setFilterType(PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS);
