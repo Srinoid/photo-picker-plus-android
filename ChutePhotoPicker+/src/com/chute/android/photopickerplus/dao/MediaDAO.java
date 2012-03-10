@@ -45,6 +45,9 @@ public class MediaDAO {
 	Cursor allMediaPhotos = getAllMediaPhotos(context);
 	Uri uri = getFirstItemUri(allMediaPhotos);
 	safelyCloseCursor(allMediaPhotos);
+	if (uri == null) {
+	    return Uri.parse("");
+	}
 	return uri;
     }
 
@@ -52,6 +55,9 @@ public class MediaDAO {
 	Cursor allMediaPhotos = getCameraPhotos(context);
 	Uri uri = getFirstItemUri(allMediaPhotos);
 	safelyCloseCursor(allMediaPhotos);
+	if (uri == null) {
+	    return Uri.parse("");
+	}
 	return uri;
     }
 
