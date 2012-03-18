@@ -82,10 +82,11 @@ If the developer decides to extend the Application class instead of PhotoPickerP
 <pre><code>
 public class PhotoPickerPlusTutorialApp extends Application {
     private static ImageLoader createImageLoader(Context context) {
-	ImageLoader imageLoader = new ImageLoader(context, R.drawable.placeholder);
-	imageLoader.setRequiredSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-		75, context.getResources().getDisplayMetrics()));
-	return imageLoader;
+		ImageLoader imageLoader = new ImageLoader(context, R.drawable.placeholder);
+		imageLoader.setDefaultImageSize((int) TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 75, context.getResources()
+						.getDisplayMetrics()));
+		return imageLoader;
     }
 
     private ImageLoader mImageLoader;
