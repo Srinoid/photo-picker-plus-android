@@ -113,7 +113,7 @@ public class PhotoPickerPlusTutorialApp extends Application {
 PhotoPickerPlusTutorialApp can also be neglected by registering PhotoPickerPlusApp into the manifest instead of PhotoPickerPlusTutoiralApp if the developer doesn't have the need for extending the Application class.
 
 ##PhotoPickerPlusTutorialActivity.java 
-This class is an Activity class. It contains a Button and a GridView. When the button is clicked, PhotoPickerPlusIntentWrapper starts ChooseServiceActivity. PhotoPickerPlusIntentWrapper is a wrapper class that wraps the parameters needed for the intent.
+This Activity class contains a Button and a GridView. When the button is clicked, PhotoPickerPlusIntentWrapper starts ChooseServiceActivity. PhotoPickerPlusIntentWrapper is a wrapper class that wraps the parameters needed for the intent.
 
 <pre><code>
 private class OnPhotoPickerClickListener implements OnClickListener {
