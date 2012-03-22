@@ -30,7 +30,6 @@ import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
-import com.chute.android.photopickerplus.util.PreferenceUtil;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
@@ -43,6 +42,7 @@ import com.chute.sdk.model.GCAccountMediaModel;
 import com.chute.sdk.model.GCAccountModel;
 import com.chute.sdk.model.GCAccountStore;
 import com.chute.sdk.model.GCHttpRequestParameters;
+import com.chute.sdk.utils.GCPreferenceUtil;
 import com.darko.imagedownloader.ImageLoader;
 
 public class ChooseServiceActivity extends Activity {
@@ -133,8 +133,9 @@ public class ChooseServiceActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			accountType = (AccountType) v.getTag();
-			if (PreferenceUtil.get().hasAccountId(accountType)) {
-				accountClicked(PreferenceUtil.get().getAccountId(accountType),
+			if (GCPreferenceUtil.get().hasAccountId(accountType)) {
+				accountClicked(
+						GCPreferenceUtil.get().getAccountId(accountType),
 						accountType.getName());
 			} else {
 				GCAccountStore.getInstance(getApplicationContext())
@@ -158,9 +159,9 @@ public class ChooseServiceActivity extends Activity {
 			for (GCAccountModel accountModel : responseData) {
 				if (accountModel.getType().equalsIgnoreCase(
 						accountType.getName())) {
-					PreferenceUtil.get().setNameForAccount(accountType,
+					GCPreferenceUtil.get().setNameForAccount(accountType,
 							accountModel.getUser().getName());
-					PreferenceUtil.get().setIdForAccount(accountType,
+					GCPreferenceUtil.get().setIdForAccount(accountType,
 							accountModel.getId());
 					accountClicked(accountModel.getId(), accountType.getName());
 				}
@@ -314,28 +315,28 @@ public class ChooseServiceActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-				txtPicasa.setText(PreferenceUtil.get().getAccountName(
+		if (GCPreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
+			if (GCPreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+				txtPicasa.setText(GCPreferenceUtil.get().getAccountName(
 						AccountType.PICASA));
 
 			}
 		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-				txtFacebook.setText(PreferenceUtil.get().getAccountName(
+		if (GCPreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
+			if (GCPreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+				txtFacebook.setText(GCPreferenceUtil.get().getAccountName(
 						AccountType.FACEBOOK));
 			}
 		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-				txtFlickr.setText(PreferenceUtil.get().getAccountName(
+		if (GCPreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
+			if (GCPreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+				txtFlickr.setText(GCPreferenceUtil.get().getAccountName(
 						AccountType.FLICKR));
 			}
 		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-				txtInstagram.setText(PreferenceUtil.get().getAccountName(
+		if (GCPreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
+			if (GCPreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+				txtInstagram.setText(GCPreferenceUtil.get().getAccountName(
 						AccountType.INSTAGRAM));
 			}
 		}
