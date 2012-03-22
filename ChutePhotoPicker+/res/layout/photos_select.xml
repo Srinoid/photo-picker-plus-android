@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <GridView
@@ -51,35 +51,13 @@
         android:verticalSpacing="0dip" />
 
     <!-- Empty View -->
-
-    <LinearLayout
+      <include
         android:id="@+id/empty_view_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/progress_bar_window"
-        android:orientation="vertical"
-        android:padding="20dip"
-        android:visibility="gone" >
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminateDrawable="@drawable/progress_bar_rotation" />
-
-        <TextView
-            android:id="@+id/progressbar_loaded_photos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dip"
-            android:gravity="center"
-            android:text="@string/loading_photos"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
-    </LinearLayout>
+        layout="@layout/empty_view_photos_layout" />
+    
 
     <LinearLayout
         android:id="@+id/buttons"
