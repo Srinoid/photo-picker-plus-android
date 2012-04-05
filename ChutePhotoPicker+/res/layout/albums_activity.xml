@@ -44,6 +44,7 @@
         android:footerDividersEnabled="false"
         android:scrollingCache="false" >
     </ListView>
+    <!-- Preview: listitem=@layout/album_list_item -->
 
 
     <!-- Empty View -->

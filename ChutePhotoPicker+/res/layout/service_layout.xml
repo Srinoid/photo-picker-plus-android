@@ -51,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" android:background="@drawable/row_selector">
                 <ImageView android:id="@+id/camera_shots_icon"
+                    android:background="@drawable/default_thumb"
                     style="@style/defaultImage" />
                 <TextView android:id="@+id/txt_camera_shots"
                     android:layout_width="wrap_content"
@@ -59,15 +60,14 @@
                     style="@style/textServices" />
             </LinearLayout>            
            <ImageView android:id="@+id/divider_camera"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:background="@drawable/divider_album_list"/> 
+                style="@style/dividerLine" />
            <!-- All Photos --> 
            <LinearLayout android:id="@+id/all_photos_linear"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" android:background="@drawable/row_selector">
                 <ImageView android:id="@+id/all_photos_icon"
+                    android:background="@drawable/default_thumb"
                     style="@style/defaultImage" />
                 <TextView android:id="@+id/txt_all_photos"
                     android:layout_width="wrap_content"
@@ -76,15 +76,14 @@
                     style="@style/textServices" />
             </LinearLayout>            
            <ImageView android:id="@+id/divider_all_photos"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:background="@drawable/divider_album_list"/> 
+                    style="@style/dividerLine" />
                 <!-- Last photo taken -->
         <LinearLayout android:id="@+id/last_photo_linear"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" android:background="@drawable/row_selector">
                 <ImageView android:id="@+id/last_photo_icon"
+                    android:background="@drawable/default_thumb"
                     style="@style/defaultImage" />
                 <TextView android:id="@+id/last_photo_txt"
                     android:layout_width="wrap_content"
@@ -93,16 +92,15 @@
                     style="@style/textServices" />
             </LinearLayout>            
            <ImageView android:id="@+id/divider_album3"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:background="@drawable/divider_album_list"/>  
+                style="@style/dividerLine" />
            <!-- Take a Photo --> 
           <LinearLayout android:id="@+id/album3_linear"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" android:background="@drawable/row_selector">
                 <ImageView android:id="@+id/album3_icon"
-                    style="@style/defaultImage" />
+                    style="@style/defaultImage" 
+                    android:background="@drawable/icon_camera" />
                 <TextView android:id="@+id/album3_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -110,9 +108,7 @@
                     style="@style/textServices" />
             </LinearLayout>            
            <ImageView android:id="@+id/divider_album3"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:background="@drawable/divider_album_list"/>  
+                    style="@style/dividerLine" />
         </LinearLayout> 
         
        <!-- User title -->     
@@ -150,9 +146,7 @@
             android:text="@string/facebook" />
     </LinearLayout>
     <ImageView android:id="@+id/fb_divider"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
     <!-- Flickr -->
     <LinearLayout android:id="@+id/linear_flickr"
         android:layout_width="fill_parent"
@@ -169,9 +163,7 @@
             android:text="@string/flickr" />
     </LinearLayout>
     <ImageView android:id="@+id/flickr_divider"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
     <!-- Instagram -->
     <LinearLayout android:id="@+id/linear_instagram"
         android:layout_width="fill_parent"
@@ -188,9 +180,7 @@
             style="@style/textServices" />
     </LinearLayout>
     <ImageView android:id="@+id/instagram_divider"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
     <!-- Picasa -->
     <LinearLayout android:id="@+id/linear_picasa"
         android:layout_width="fill_parent"
@@ -207,8 +197,6 @@
             style="@style/textServices" />
     </LinearLayout>
     <ImageView android:id="@+id/picasa_divider"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
 </LinearLayout>
 </RelativeLayout>

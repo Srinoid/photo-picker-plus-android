@@ -32,9 +32,7 @@
 
         <TextView
             android:id="@+id/txt_select_photos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            style="@style/defaultText"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -49,6 +47,7 @@
         android:horizontalSpacing="0dip"
         android:numColumns="3"
         android:verticalSpacing="0dip" />
+        <!-- Preview listitem=@layout/photos_select_adapter -->
 
     <!-- Empty View -->
       <include
