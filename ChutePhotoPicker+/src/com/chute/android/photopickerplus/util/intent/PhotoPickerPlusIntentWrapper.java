@@ -21,6 +21,7 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 	public static final String TAG = PhotoPickerPlusIntentWrapper.class
 			.getSimpleName();
 	public static final String FLAG_MULTI_PP = "flagMultiPp";
+	public static final String KEY_PP_CHUTE_ID = "chuteID";
 
 	public PhotoPickerPlusIntentWrapper(Intent intent) {
 		super(intent);
@@ -40,6 +41,14 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
 	public void setMultiPicker(boolean flag) {
 		getIntent().putExtra(FLAG_MULTI_PP, flag);
+	}
+	
+	public String getChuteId() {
+		return getIntent().getExtras().getString(KEY_PP_CHUTE_ID);
+	}
+
+	public void setChuteId(String id) {
+		getIntent().putExtra(KEY_PP_CHUTE_ID, id);
 	}
 
 	public void startActivityForResult(Activity context, int code) {

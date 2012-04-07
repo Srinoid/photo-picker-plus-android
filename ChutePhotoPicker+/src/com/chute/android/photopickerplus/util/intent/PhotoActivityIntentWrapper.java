@@ -29,6 +29,7 @@ public class PhotoActivityIntentWrapper extends IntentWrapper {
 	private static final String KEY_PHOTO_COLLECTION = "photoCollection";
 	private static final String KEY_PHOTO_MODEL = "photoModel";
 	private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
+	private static final String KEY_CHUTE_ID = "key_chuteId";
 
 	public PhotoActivityIntentWrapper(Context context) {
 		super(context, GridActivity.class);
@@ -69,6 +70,14 @@ public class PhotoActivityIntentWrapper extends IntentWrapper {
 
 	public void setMultiPicker(boolean flag) {
 		getIntent().putExtra(FLAG_MULTI_PICKER, flag);
+	}
+
+	public String getChuteId() {
+		return getIntent().getExtras().getString(KEY_CHUTE_ID);
+	}
+
+	public void setChuteId(String id) {
+		getIntent().putExtra(KEY_CHUTE_ID, id);
 	}
 
 	public void startActivityForResult(Activity context, int code) {

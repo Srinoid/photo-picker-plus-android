@@ -230,7 +230,7 @@ public class ChooseServiceActivity extends Activity {
 				model.setThumbUrl(path);
 				model.setUrl(path);
 
-				IntentUtil.deliverDataToInitialActivity(this, model);
+				IntentUtil.deliverDataToInitialActivity(this, model, ppWrapper.getChuteId());
 			}
 		}
 	}
@@ -266,6 +266,7 @@ public class ChooseServiceActivity extends Activity {
 					ChooseServiceActivity.this);
 			wrapper.setFilterType(PhotosIntentWrapper.TYPE_ALL_PHOTOS);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+			wrapper.setChuteId(ppWrapper.getChuteId());
 			wrapper.startActivityForResult(ChooseServiceActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 		}
@@ -279,6 +280,7 @@ public class ChooseServiceActivity extends Activity {
 					ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setFilterType(PhotosIntentWrapper.TYPE_CAMERA_ROLL);
+			wrapper.setChuteId(ppWrapper.getChuteId());
 			wrapper.startActivityForResult(ChooseServiceActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 		}
@@ -298,7 +300,7 @@ public class ChooseServiceActivity extends Activity {
 				model.setUrl(uri.toString());
 
 				IntentUtil.deliverDataToInitialActivity(
-						ChooseServiceActivity.this, model);
+						ChooseServiceActivity.this, model, ppWrapper.getChuteId());
 			}
 		}
 

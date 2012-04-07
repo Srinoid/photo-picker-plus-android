@@ -35,6 +35,8 @@ public class PhotosIntentWrapper extends IntentWrapper {
 	public static final int TYPE_ALL_PHOTOS = 1;
 	public static final int TYPE_SOCIAL_PHOTOS = 2;
 
+	private static final String EXTRA_KEY_CHUTE_ID = "key_chute_id";
+
 	public PhotosIntentWrapper(Context context) {
 		super(context, GridActivity.class);
 	}
@@ -106,6 +108,14 @@ public class PhotosIntentWrapper extends IntentWrapper {
 
 	public void setMediaModel(GCAccountMediaModel model) {
 		getIntent().putExtra(KEY_PHOTO_MODEL, model);
+	}
+
+	public String getChuteId() {
+		return getIntent().getExtras().getString(EXTRA_KEY_CHUTE_ID);
+	}
+
+	public void setChuteId(String id) {
+		getIntent().putExtra(EXTRA_KEY_CHUTE_ID, id);
 	}
 
 	public void startActivityForResult(Activity context, int code) {

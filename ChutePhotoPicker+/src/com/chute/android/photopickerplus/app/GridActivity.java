@@ -126,7 +126,7 @@ public class GridActivity extends Activity {
 		public void onItemClick(final AdapterView<?> parent, final View view,
 				final int position, final long id) {
 			IntentUtil.deliverDataToInitialActivity(GridActivity.this,
-					AppUtil.getMediaModel(cursorAdapter.getItem(position)));
+					AppUtil.getMediaModel(cursorAdapter.getItem(position)), wrapper.getChuteId());
 			setResult(RESULT_OK);
 			finish();
 		}
@@ -198,7 +198,7 @@ public class GridActivity extends Activity {
 		public void onItemClick(final AdapterView<?> parent, final View view,
 				final int position, final long id) {
 			IntentUtil.deliverDataToInitialActivity(GridActivity.this,
-					socialAdapter.getItem(position));
+					socialAdapter.getItem(position), wrapper.getChuteId());
 			setResult(RESULT_OK);
 			finish();
 		}
@@ -220,13 +220,13 @@ public class GridActivity extends Activity {
 		public void onClick(View v) {
 			if (wrapper.getFilterType() == PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS) {
 				IntentUtil.deliverDataToInitialActivity(GridActivity.this,
-						socialAdapter.getPhotoCollection(), null, null);
+						socialAdapter.getPhotoCollection(), null, null, wrapper.getChuteId());
 				setResult(RESULT_OK);
 			} else if ((wrapper.getFilterType() == PhotosIntentWrapper.TYPE_ALL_PHOTOS)
 					|| (wrapper.getFilterType() == PhotosIntentWrapper.TYPE_CAMERA_ROLL)) {
 				IntentUtil.deliverDataToInitialActivity(GridActivity.this,
 						AppUtil.getPhotoCollection(cursorAdapter
-								.getSelectedFilePaths()), null, null);
+								.getSelectedFilePaths()), null, null, wrapper.getChuteId());
 				setResult(RESULT_OK);
 			}
 			finish();
