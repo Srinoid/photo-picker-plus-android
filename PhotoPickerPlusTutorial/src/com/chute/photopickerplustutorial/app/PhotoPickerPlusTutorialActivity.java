@@ -64,7 +64,7 @@ public class PhotoPickerPlusTutorialActivity extends Activity {
 	final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(data);
 	grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this, wrapper
 		.getMediaCollection()));
-//	Log.d(TAG, wrapper.toString());
+//	Log.d("debug", wrapper.toString());
 
 	// String path;
 	// Uri uri = Uri.parse(wrapper.getMediaCollection().get(0).getUrl());
