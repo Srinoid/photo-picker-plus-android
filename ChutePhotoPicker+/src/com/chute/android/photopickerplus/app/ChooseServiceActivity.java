@@ -201,7 +201,7 @@ public class ChooseServiceActivity extends Activity {
 			u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(
 				getContentResolver(), tempFile.getAbsolutePath(), null, null));
 			tempFile.delete();
-			path = convertMediaUriToPath(u);
+			path =Uri.fromFile(new File(convertMediaUriToPath(u))).toString();
 		    } catch (FileNotFoundException e) {
 			Log.d(TAG, "", e);
 		    }
