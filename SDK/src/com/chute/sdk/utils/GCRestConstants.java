@@ -30,6 +30,7 @@ public class GCRestConstants {
 
     public static final String BASE_URL = "http://api.getchute.com";
     public static final String BASE_AUTH_URL = "http://getchute.com";
+    public static final String BASE_ACCOUNTS_ROUTER = "http://accounts.getchute.com";
 
     // Accounts
     public static final String URL_ACCOUNTS = BASE_URL + "/v1/accounts";

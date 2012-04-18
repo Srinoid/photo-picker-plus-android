@@ -50,7 +50,7 @@ import com.chute.sdk.model.GCUploadToken;
 import com.chute.sdk.utils.GCConstants;
 import com.darko.imagedownloader.BitmapContentHandler;
 
-class GCS3Uploader {
+public class GCS3Uploader {
 
     private static final String TAG = GCS3Uploader.class.getSimpleName();
 
