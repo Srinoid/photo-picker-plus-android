@@ -23,63 +23,41 @@
 // OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 // OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-package com.darko.imagedownloader;
+package com.darko.imagedownloader.queue;
 
-import java.io.File;
-
-import android.content.Context;
-import android.os.Environment;
+import java.util.Stack;
 
 /**
- * @author Darko.Grozdanovski
- **/
-public class FileCache {
+ * @author darko.grozdanovski
+ * @param <E>
+ */
+public class StackStrategy<E> implements DequeStrategy<E> {
 
-	private static final String SDCARD_FOLDER = Environment
-			.getExternalStorageDirectory() + "/Android/data/%s/files/";
-	private static final String TEMP_CACHE = "/temp/";
+	final Stack<E> stack = new Stack<E>();
 
-	private static File cacheDir;
-
-	public FileCache(Context context) {
-		if (android.os.Environment.getExternalStorageState().equals(
-				android.os.Environment.MEDIA_MOUNTED)) {
-			cacheDir = new File(getSdCacheLocation(context));
-
-		} else {
-			cacheDir = context.getCacheDir();
-		}
-		if (!cacheDir.exists()) {
-			cacheDir.mkdirs();
-		}
+	@Override
+	public E get(int index) {
+		return stack.get(index);
 	}
 
-	public static String getSdCacheLocation(Context context) {
-		return String.format(SDCARD_FOLDER, context.getPackageName());
+	@Override
+	public void remove(int index) {
+		stack.remove(index);
 	}
 
-	public static File getTempFile(String filename) {
-		File f = new File(cacheDir + TEMP_CACHE);
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-		return new File(f, MD5.md5(filename));
+	@Override
+	public int size() {
+		return stack.size();
 	}
 
-	public File getFile(String url) {
-		String filename = String.valueOf(MD5.md5(url));
-		File f = new File(cacheDir, filename);
-		return f;
+	@Override
+	public void push(E element) {
+		stack.push(element);
+
 	}
 
-	public void clearCache() {
-		File[] files = cacheDir.listFiles();
-		for (File f : files) {
-			try {
-				f.delete();
-			} catch (Exception e) {
-			}
-		}
+	@Override
+	public E pop() {
+		return stack.pop();
 	}
-
 }

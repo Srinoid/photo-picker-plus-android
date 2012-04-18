@@ -25,61 +25,59 @@
 //
 package com.darko.imagedownloader;
 
-import java.io.File;
+import com.darko.imagedownloader.queue.DequeStrategy;
+import com.darko.imagedownloader.queue.QueueStrategy;
+import com.darko.imagedownloader.queue.StackStrategy;
 
-import android.content.Context;
-import android.os.Environment;
+import android.widget.ImageView;
 
 /**
- * @author Darko.Grozdanovski
- **/
-public class FileCache {
+ * @author darko.grozdanovski
+ */
+public class PhotosQueue {
 
-	private static final String SDCARD_FOLDER = Environment
-			.getExternalStorageDirectory() + "/Android/data/%s/files/";
-	private static final String TEMP_CACHE = "/temp/";
+	final DequeStrategy<PhotoToLoad> photosToLoad;
 
-	private static File cacheDir;
+	public enum QueueMethod {
+		STACK, QUEUE;
+	}
 
-	public FileCache(Context context) {
-		if (android.os.Environment.getExternalStorageState().equals(
-				android.os.Environment.MEDIA_MOUNTED)) {
-			cacheDir = new File(getSdCacheLocation(context));
-
-		} else {
-			cacheDir = context.getCacheDir();
+	public PhotosQueue(QueueMethod method) {
+		super();
+		if (method == QueueMethod.STACK) {
+			photosToLoad = new StackStrategy<PhotoToLoad>();
+			return;
 		}
-		if (!cacheDir.exists()) {
-			cacheDir.mkdirs();
+		if (method == QueueMethod.QUEUE) {
+			photosToLoad = new QueueStrategy<PhotoToLoad>();
+			return;
 		}
+		throw new IllegalArgumentException("Input a valid dequeue method, See "
+				+ QueueMethod.class.getName());
 	}
 
-	public static String getSdCacheLocation(Context context) {
-		return String.format(SDCARD_FOLDER, context.getPackageName());
-	}
-
-	public static File getTempFile(String filename) {
-		File f = new File(cacheDir + TEMP_CACHE);
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-		return new File(f, MD5.md5(filename));
-	}
-
-	public File getFile(String url) {
-		String filename = String.valueOf(MD5.md5(url));
-		File f = new File(cacheDir, filename);
-		return f;
-	}
-
-	public void clearCache() {
-		File[] files = cacheDir.listFiles();
-		for (File f : files) {
-			try {
-				f.delete();
-			} catch (Exception e) {
+	// removes all instances of this ImageView
+	public void clean(ImageView image) {
+		for (int j = 0; j < photosToLoad.size();) {
+			if (photosToLoad.get(j).imageView == image) {
+				photosToLoad.remove(j);
+			} else {
+				++j;
 			}
 		}
 	}
 
+	// Task for the queue
+	static class PhotoToLoad {
+
+		public String url;
+		public ImageView imageView;
+		public final int photoSizeInPixels;
+
+		public PhotoToLoad(String u, ImageView i, int photoSizeInPixels) {
+			url = u;
+			imageView = i;
+			this.photoSizeInPixels = photoSizeInPixels;
+		}
+	}
 }

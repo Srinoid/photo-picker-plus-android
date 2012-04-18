@@ -23,63 +23,52 @@
 // OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 // OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-package com.darko.imagedownloader;
+package com.darko.imagedownloader.queue;
 
-import java.io.File;
-
-import android.content.Context;
-import android.os.Environment;
+import java.util.EmptyStackException;
+import java.util.Vector;
 
 /**
- * @author Darko.Grozdanovski
- **/
-public class FileCache {
+ * @author darko.grozdanovski
+ * @param <E>
+ */
+public class QueueStrategy<E> implements DequeStrategy<E> {
 
-	private static final String SDCARD_FOLDER = Environment
-			.getExternalStorageDirectory() + "/Android/data/%s/files/";
-	private static final String TEMP_CACHE = "/temp/";
+	final Vector<E> queue = new Vector<E>();
 
-	private static File cacheDir;
+	@Override
+	public E get(int index) {
+		return queue.get(index);
+	}
 
-	public FileCache(Context context) {
-		if (android.os.Environment.getExternalStorageState().equals(
-				android.os.Environment.MEDIA_MOUNTED)) {
-			cacheDir = new File(getSdCacheLocation(context));
+	@Override
+	public void remove(int index) {
+		queue.remove(index);
+	}
 
-		} else {
-			cacheDir = context.getCacheDir();
+	@Override
+	public int size() {
+		return queue.size();
+	}
+
+	@Override
+	public void push(E element) {
+		queue.addElement(element);
+	}
+
+	@Override
+	public E pop() {
+		E obj;
+		obj = peek();
+		queue.removeElementAt(0);
+		return obj;
+	}
+
+	public synchronized E peek() {
+		int len = size();
+		if (len == 0) {
+			throw new EmptyStackException();
 		}
-		if (!cacheDir.exists()) {
-			cacheDir.mkdirs();
-		}
+		return queue.elementAt(0);
 	}
-
-	public static String getSdCacheLocation(Context context) {
-		return String.format(SDCARD_FOLDER, context.getPackageName());
-	}
-
-	public static File getTempFile(String filename) {
-		File f = new File(cacheDir + TEMP_CACHE);
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-		return new File(f, MD5.md5(filename));
-	}
-
-	public File getFile(String url) {
-		String filename = String.valueOf(MD5.md5(url));
-		File f = new File(cacheDir, filename);
-		return f;
-	}
-
-	public void clearCache() {
-		File[] files = cacheDir.listFiles();
-		for (File f : files) {
-			try {
-				f.delete();
-			} catch (Exception e) {
-			}
-		}
-	}
-
 }

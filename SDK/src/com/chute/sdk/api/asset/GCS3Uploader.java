@@ -49,6 +49,7 @@ import com.chute.sdk.api.asset.CountingInputStreamEntity.UploadListener;
 import com.chute.sdk.model.GCUploadToken;
 import com.chute.sdk.utils.GCConstants;
 import com.darko.imagedownloader.BitmapContentHandler;
+import com.darko.imagedownloader.FileCache;
 
 public class GCS3Uploader {
 
@@ -73,8 +74,7 @@ public class GCS3Uploader {
         if (onProgressUpdate != null) {
             try {
                 URL thumb;
-                BitmapContentHandler handler = new BitmapContentHandler();
-                handler.setDefaultImageSize(50);
+                BitmapContentHandler handler = new BitmapContentHandler(50, new File(token.getFilepath()));
                 thumb = new URL(Uri.fromFile(new File(token.getFilepath())).toString());
                 onProgressUpdate.onUploadStarted(token.getAssetId(), token.getFilepath(),
                         handler.getContent(thumb.openConnection()));

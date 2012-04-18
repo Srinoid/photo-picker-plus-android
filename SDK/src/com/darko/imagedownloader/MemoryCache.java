@@ -35,84 +35,86 @@ import android.graphics.Bitmap;
 /**
  * @author Darko.Grozdanovski
  **/
-class MemoryCache {
+public class MemoryCache {
 
-    private static int HARD_CACHE_CAPACITY;
-    // Hard cache, with a fixed maximum capacity and a life duration
-    private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2,
-            0.75f,
-            true) {
+	private static int HARD_CACHE_CAPACITY;
+	// Hard cache, with a fixed maximum capacity and a life duration
+	private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(
+			HARD_CACHE_CAPACITY / 2, 0.75f, true) {
 
-        private static final long serialVersionUID = -3956509122620786256L;
+		private static final long serialVersionUID = -3956509122620786256L;
 
-        @Override
-        protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
-            if (size() > HARD_CACHE_CAPACITY) {
-                // Entries push-out of hard reference cache are transferred to
-                // soft reference cache
-                softReference.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
-                return true;
-            } else {
-                return false;
-            }
-        }
-    };
+		@Override
+		protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
+			if (size() > HARD_CACHE_CAPACITY) {
+				// Entries push-out of hard reference cache are transferred to
+				// soft reference cache
+				softReference.put(eldest.getKey(), new SoftReference<Bitmap>(
+						eldest.getValue()));
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
 
-    /**
-     * Set the size of the hard cache, note that the soft cache will still be filled with displayed
-     * photos
-     * 
-     * @param hardCacheCapacity
-     */
-    public MemoryCache(int hardCacheCapacity) {
-        super();
-        HARD_CACHE_CAPACITY = hardCacheCapacity;
-    }
+	/**
+	 * Set the size of the hard cache, note that the soft cache will still be
+	 * filled with displayed photos
+	 * 
+	 * @param hardCacheCapacity
+	 */
+	public MemoryCache(int hardCacheCapacity) {
+		super();
+		HARD_CACHE_CAPACITY = hardCacheCapacity;
+	}
 
-    private final static ConcurrentHashMap<String, SoftReference<Bitmap>> softReference = new ConcurrentHashMap<String, SoftReference<Bitmap>>(HARD_CACHE_CAPACITY / 2);
+	private final static ConcurrentHashMap<String, SoftReference<Bitmap>> softReference = new ConcurrentHashMap<String, SoftReference<Bitmap>>(
+			HARD_CACHE_CAPACITY / 2);
 
-    public Bitmap get(String id) {
-        // First try the hard reference cache
-        synchronized (sHardBitmapCache) {
-            final Bitmap bitmap = sHardBitmapCache.get(id);
-            if (bitmap != null) {
-                // Bitmap found in hard cache
-                // Move element to first position, so that it is removed last
-                sHardBitmapCache.remove(id);
-                sHardBitmapCache.put(id, bitmap);
-                return bitmap;
-            }
-        }
+	public Bitmap get(String id) {
+		// First try the hard reference cache
+		synchronized (sHardBitmapCache) {
+			final Bitmap bitmap = sHardBitmapCache.get(id);
+			if (bitmap != null) {
+				// Bitmap found in hard cache
+				// Move element to first position, so that it is removed last
+				sHardBitmapCache.remove(id);
+				sHardBitmapCache.put(id, bitmap);
+				return bitmap;
+			}
+		}
 
-        // Then try the soft reference cache
-        SoftReference<Bitmap> bitmapReference = softReference.get(id);
-        if (bitmapReference != null) {
-            final Bitmap bitmap = bitmapReference.get();
-            if (bitmap != null) {
-                // Bitmap found in soft cache
-                return bitmap;
-            }
-        }
-        // Soft reference has been Garbage Collected
-        softReference.remove(id);
-        return null;
-    }
+		// Then try the soft reference cache
+		SoftReference<Bitmap> bitmapReference = softReference.get(id);
+		if (bitmapReference != null) {
+			final Bitmap bitmap = bitmapReference.get();
+			if (bitmap != null) {
+				// Bitmap found in soft cache
+				return bitmap;
+			}
+		}
+		// Soft reference has been Garbage Collected
+		softReference.remove(id);
+		return null;
+	}
 
-    public void put(String id, Bitmap bitmap) {
-        if (bitmap != null) {
-            synchronized (sHardBitmapCache) {
-                sHardBitmapCache.put(id, bitmap);
-            }
-        }
-    }
+	public void put(String id, Bitmap bitmap) {
+		if (bitmap != null) {
+			synchronized (sHardBitmapCache) {
+				sHardBitmapCache.put(id, bitmap);
+			}
+		}
+	}
 
-    public String getObjectCounters() {
-        return "Hard Cache: " + sHardBitmapCache.size() + " Soft Reference" + softReference.size();
-    }
+	public String getObjectCounters() {
+		return "Hard Cache: " + sHardBitmapCache.size() + " Soft Reference"
+				+ softReference.size();
+	}
 
-    public void clear() {
-        softReference.clear();
-        sHardBitmapCache.clear();
-    }
+	public void clear() {
+		softReference.clear();
+		sHardBitmapCache.clear();
+	}
 
 }
