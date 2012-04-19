@@ -284,7 +284,9 @@ public class ChooseServiceActivity extends Activity {
 	@Override
 	public void onClick(View v) {
 	    Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
-	    if (uri != null) {
+	    if (uri.toString().equals("")) {
+	    	NotificationUtil.makeToast(getApplicationContext(), getResources().getString(R.string.no_camera_photos));
+	    } else {
 		final GCAccountMediaModel model = new GCAccountMediaModel();
 		model.setLargeUrl(uri.toString());
 		model.setThumbUrl(uri.toString());
@@ -292,7 +294,7 @@ public class ChooseServiceActivity extends Activity {
 
 		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, model,
 			ppWrapper.getChuteId());
-	    }
+	    } 
 	}
 
     }

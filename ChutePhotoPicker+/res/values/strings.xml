@@ -39,5 +39,6 @@
     <!-- Toast -->
     <string name="toast_choose_photos">Please select photos</string>
     <string name="toast_feature_camera">Your device doesn\'t have a camera</string>
+    <string name="no_camera_photos">No photos in camera roll</string>
 
 </resources>
