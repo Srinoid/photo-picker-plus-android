@@ -9,7 +9,6 @@ import com.chute.sdk.api.authentication.GCAuthenticationFactory.AccountType;
 public class GCPreferenceUtil {
 
 	public static final String TAG = GCPreferenceUtil.class.getSimpleName();
-	private static final String KEY_LAUNCH_WIZARD = "key_should_launch_wizard";
 	private final Context context;
 
 	private GCPreferenceUtil(Context context) {
@@ -76,17 +75,6 @@ public class GCPreferenceUtil {
 	public String getAccountName(AccountType accountType) {
 		return getPreferences()
 				.getString(accountType.getName() + "_name", null);
-	}
-
-	// Should launch wizard
-	public boolean shouldLaunchWizard() {
-		SharedPreferences settings = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		return settings.getBoolean(KEY_LAUNCH_WIZARD, true);
-	}
-
-	public void setShouldLaunchWizard(boolean value) {
-		setPreference(KEY_LAUNCH_WIZARD, value);
 	}
 
 }
