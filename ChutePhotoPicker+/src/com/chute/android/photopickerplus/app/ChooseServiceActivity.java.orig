@@ -48,6 +48,91 @@ import com.darko.imagedownloader.ImageLoader;
 
 public class ChooseServiceActivity extends Activity {
 
+<<<<<<< HEAD
+    public static final String TAG = ChooseServiceActivity.class.getSimpleName();
+
+    private TextView txtFacebook;
+    private TextView txtPicasa;
+    private TextView txtFlickr;
+    private TextView txtInstagram;
+    private LinearLayout linearLayoutServices;
+    private LinearLayout take_photos;
+    private LinearLayout facebook;
+    private LinearLayout picasa;
+    private LinearLayout instagram;
+    private LinearLayout flickr;
+    private LinearLayout allPhotos;
+    private LinearLayout cameraPhotos;
+    private LinearLayout lastPhoto;
+    private ImageView img_all_photos;
+    private ImageView img_camera_photos;
+    private ImageView img_last_photo;
+    private AccountType accountType;
+    private ImageLoader loader;
+    private PhotoPickerPlusIntentWrapper ppWrapper;
+
+    private TextView textViewLabelUser;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	requestWindowFeature(Window.FEATURE_NO_TITLE);
+	setContentView(R.layout.service_layout);
+
+	loader = ImageLoader.getLoader(ChooseServiceActivity.this);
+
+	ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
+
+	linearLayoutServices = (LinearLayout) findViewById(R.id.services_linear);
+	textViewLabelUser = (TextView) findViewById(R.id.txt_user);
+	PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(
+		getIntent());
+	if (photoPickerPlusIntentWrapper.areServicesHidden()) {
+	    linearLayoutServices.setVisibility(View.GONE);
+	    textViewLabelUser.setVisibility(View.GONE);
+	}
+	txtFacebook = (TextView) findViewById(R.id.txt_facebook);
+	txtFacebook.setTag(AccountType.FACEBOOK);
+	txtPicasa = (TextView) findViewById(R.id.txt_picasa);
+	txtPicasa.setTag(AccountType.PICASA);
+	txtFlickr = (TextView) findViewById(R.id.txt_flickr);
+	txtFlickr.setTag(AccountType.FLICKR);
+	txtInstagram = (TextView) findViewById(R.id.txt_instagram);
+	txtInstagram.setTag(AccountType.INSTAGRAM);
+
+	facebook = (LinearLayout) findViewById(R.id.linear_fb);
+	facebook.setTag(AccountType.FACEBOOK);
+	flickr = (LinearLayout) findViewById(R.id.linear_flickr);
+	flickr.setTag(AccountType.FLICKR);
+	picasa = (LinearLayout) findViewById(R.id.linear_picasa);
+	picasa.setTag(AccountType.PICASA);
+	instagram = (LinearLayout) findViewById(R.id.linear_instagram);
+	instagram.setTag(AccountType.INSTAGRAM);
+
+	allPhotos = (LinearLayout) findViewById(R.id.all_photos_linear);
+	allPhotos.setOnClickListener(new OnPhotoStreamListener());
+
+	cameraPhotos = (LinearLayout) findViewById(R.id.camera_shots_linear);
+	cameraPhotos.setOnClickListener(new OnCameraRollListener());
+
+	lastPhoto = (LinearLayout) findViewById(R.id.last_photo_linear);
+	lastPhoto.setOnClickListener(new OnLastPhotoClickListener());
+
+	img_all_photos = (ImageView) findViewById(R.id.all_photos_icon);
+	img_camera_photos = (ImageView) findViewById(R.id.camera_shots_icon);
+	img_last_photo = (ImageView) findViewById(R.id.last_photo_icon);
+
+	loader.displayImage(MediaDAO.getLastPhotoFromAllPhotos(getApplicationContext()).toString(),
+		img_all_photos);
+
+	Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
+	if (uri != null) {
+	    loader.displayImage(uri.toString(), img_camera_photos);
+	    loader.displayImage(uri.toString(), img_last_photo);
+	}
+	take_photos = (LinearLayout) findViewById(R.id.album3_linear);
+	take_photos.setOnClickListener(new OnCameraClickListener());
+=======
 	public static final String TAG = ChooseServiceActivity.class
 			.getSimpleName();
 
@@ -55,7 +140,6 @@ public class ChooseServiceActivity extends Activity {
 	private TextView txtPicasa;
 	private TextView txtFlickr;
 	private TextView txtInstagram;
-    private LinearLayout linearLayoutServices;
 	private LinearLayout take_photos;
 	private LinearLayout facebook;
 	private LinearLayout picasa;
@@ -70,27 +154,17 @@ public class ChooseServiceActivity extends Activity {
 	private AccountType accountType;
 	private ImageLoader loader;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
-
-    private TextView textViewLabelUser;
+>>>>>>> f1b4c4492719948260277ba549f4ff4424f27ad2
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.service_layout);
 
 		loader = ImageLoader.getLoader(ChooseServiceActivity.this);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 
-	linearLayoutServices = (LinearLayout) findViewById(R.id.services_linear);
-	textViewLabelUser = (TextView) findViewById(R.id.txt_user);
-	PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(
-		getIntent());
-	if (photoPickerPlusIntentWrapper.areServicesHidden()) {
-	    linearLayoutServices.setVisibility(View.GONE);
-	    textViewLabelUser.setVisibility(View.GONE);
-	}
 		txtFacebook = (TextView) findViewById(R.id.txt_facebook);
 		txtFacebook.setTag(AccountType.FACEBOOK);
 		txtPicasa = (TextView) findViewById(R.id.txt_picasa);
@@ -311,8 +385,8 @@ public class ChooseServiceActivity extends Activity {
 			Uri uri = MediaDAO
 					.getLastPhotoFromCameraPhotos(getApplicationContext());
 			if (uri.toString().equals("")) {
-		NotificationUtil.makeToast(getApplicationContext(),
-			getResources().getString(R.string.no_camera_photos));
+				NotificationUtil.makeToast(getApplicationContext(),
+						getResources().getString(R.string.no_camera_photos));
 			} else {
 				final GCAccountMediaModel model = new GCAccountMediaModel();
 				model.setLargeUrl(uri.toString());
@@ -328,11 +402,28 @@ public class ChooseServiceActivity extends Activity {
 	}
 
 	@Override
+<<<<<<< HEAD
+	public void onClick(View v) {
+	    Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
+	    if (uri.toString().equals("")) {
+		NotificationUtil.makeToast(getApplicationContext(),
+			getResources().getString(R.string.no_camera_photos));
+	    } else {
+		final GCAccountMediaModel model = new GCAccountMediaModel();
+		model.setLargeUrl(uri.toString());
+		model.setThumbUrl(uri.toString());
+		model.setUrl(uri.toString());
+
+		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, model,
+			ppWrapper.getChuteId());
+	    }
+=======
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setResult(Activity.RESULT_OK,
 				new Intent().putExtras(intent.getExtras()));
 		finish();
+>>>>>>> f1b4c4492719948260277ba549f4ff4424f27ad2
 	}
 
 	@Override

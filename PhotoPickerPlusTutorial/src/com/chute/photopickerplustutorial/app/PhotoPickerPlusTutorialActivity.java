@@ -12,7 +12,6 @@ package com.chute.photopickerplustutorial.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
@@ -26,7 +25,7 @@ public class PhotoPickerPlusTutorialActivity extends Activity {
 
     public static final String TAG = PhotoPickerPlusTutorialActivity.class.getSimpleName();
     private GridView grid;
-    /*
+    /**
      * PhotoPicker+ component enables choosing multiple photos or a single photo
      * in a grid. If you wish to enable multi-picking functionality, set
      * isMultipicker=true, otherwise set isMultiPicker=false.

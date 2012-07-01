@@ -41,13 +41,29 @@ public class AlbumsActivity extends Activity {
 	private AlbumsActivityIntentWrapper wrapper;
 	private View emptyView;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+<<<<<<< HEAD
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
 
 	requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+	setContentView(R.layout.albums_activity);
+
+	albums = (ListView) findViewById(R.id.albumList);
+	emptyView = findViewById(R.id.empty_view_layout);
+	albums.setEmptyView(emptyView);
+	wrapper = new AlbumsActivityIntentWrapper(getIntent());
+
+	TextView title = (TextView) findViewById(R.id.title);
+	String albumName = AppUtil.asUpperCaseFirstChar(wrapper.getAccountName().concat(" Albums"));
+	title.setText(albumName);
+=======
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.albums_activity);
+>>>>>>> f1b4c4492719948260277ba549f4ff4424f27ad2
 
 		albums = (ListView) findViewById(R.id.albumList);
 		emptyView = findViewById(R.id.empty_view_layout);
@@ -62,6 +78,24 @@ public class AlbumsActivity extends Activity {
 		GCAccounts.objects(getApplicationContext(), wrapper.getAccountId(),
 				new ObjectsCallback()).executeAsync();
 
+<<<<<<< HEAD
+	@Override
+	public void onSuccess(GCAccountObjectCollection responseData) {
+	    adapter = new AlbumsAdapter(AlbumsActivity.this, responseData);
+	    albums.setAdapter(adapter);
+	    if (adapter.getCount() == 0) {
+		emptyView.setVisibility(View.GONE);
+	    }
+	    albums.setOnItemClickListener(new OnAlbumsClickListener());
+	    NotificationUtil.showAlbumsAdapterToast(getApplicationContext(), adapter.getCount());
+	}
+
+	@Override
+	public void onHttpException(GCHttpRequestParameters params, Throwable exception) {
+	    NotificationUtil.makeConnectionProblemToast(getApplicationContext());
+	    toggleEmptyViewErrorMessage();
+=======
+>>>>>>> f1b4c4492719948260277ba549f4ff4424f27ad2
 	}
 
 	private final class ObjectsCallback implements
@@ -71,8 +105,8 @@ public class AlbumsActivity extends Activity {
 		public void onSuccess(GCAccountObjectCollection responseData) {
 			adapter = new AlbumsAdapter(AlbumsActivity.this, responseData);
 			albums.setAdapter(adapter);
-	    if (adapter.getCount() == 0) {
-		emptyView.setVisibility(View.GONE);
+			if (adapter.getCount() == 0) {
+				emptyView.setVisibility(View.GONE);
 			}
 			albums.setOnItemClickListener(new OnAlbumsClickListener());
 			NotificationUtil.showAlbumsAdapterToast(getApplicationContext(),
@@ -110,6 +144,22 @@ public class AlbumsActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			final String albumId = adapter.getItem(position).getId();
+			final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(
+					AlbumsActivity.this);
+			photosWrapper.setFilterType(PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS);
+			photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
+			photosWrapper.setAlbumId(albumId);
+			photosWrapper.setAccountId(wrapper.getAccountId());
+			photosWrapper.startActivityForResult(AlbumsActivity.this,
+					PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
+		}
+
+	}
+
+	@Override
+<<<<<<< HEAD
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	    final String albumId = adapter.getItem(position).getId();
 	    final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(AlbumsActivity.this);
 	    photosWrapper.setFilterType(PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS);
 	    photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
@@ -117,16 +167,22 @@ public class AlbumsActivity extends Activity {
 	    photosWrapper.setAccountId(wrapper.getAccountId());
 	    photosWrapper.startActivityForResult(AlbumsActivity.this,
 		    PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
-		}
-
 	}
 
-	@Override
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	super.onActivityResult(requestCode, resultCode, data);
+	if (resultCode == RESULT_OK) {
+	    finish();
+=======
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			finish();
 		}
+>>>>>>> f1b4c4492719948260277ba549f4ff4424f27ad2
 	}
 
 }
