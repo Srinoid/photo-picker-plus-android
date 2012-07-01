@@ -27,6 +27,8 @@ package com.chute.sdk.api.asset;
 
 import android.graphics.Bitmap;
 
+import com.chute.sdk.model.GCAssetModel;
+
 /**
  * <b> IMPORTANT!! runs the updates in the thread that executed the request</b>
  * 
@@ -37,7 +39,7 @@ public interface GCUploadProgressListener {
     /**
      * This is triggered when the
      * 
-     * @param assetId
+     * @param id
      *            the id of the asset you are currently uploading
      * @param filepath
      *            the filepath of the asset
@@ -45,7 +47,7 @@ public interface GCUploadProgressListener {
      *            a small thumbnail that will be created from the asset before
      *            the upload starts
      */
-    public void onUploadStarted(String assetId, String filepath, final Bitmap thumbnail);
+    public void onUploadStarted(GCAssetModel asset, final Bitmap thumbnail);
 
     /**
      * @param total
@@ -59,10 +61,10 @@ public interface GCUploadProgressListener {
      * This triggers when the upload has finished, it doesnt carry the
      * information about the status of the upload request
      * 
-     * @param assetId
+     * @param id
      *            the id of the asset
      * @param filepath
      *            the filepath of the asset
      */
-    public void onUploadFinished(String assetId, String filepath);
+    public void onUploadFinished(GCAssetModel assetModel);
 }

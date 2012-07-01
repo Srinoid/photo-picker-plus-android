@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -43,6 +44,9 @@ public class AlbumsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
+
+	requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 	setContentView(R.layout.albums_activity);
 
 	albums = (ListView) findViewById(R.id.albumList);
@@ -65,8 +69,8 @@ public class AlbumsActivity extends Activity {
 	public void onSuccess(GCAccountObjectCollection responseData) {
 	    adapter = new AlbumsAdapter(AlbumsActivity.this, responseData);
 	    albums.setAdapter(adapter);
-	    if (adapter.getCount()==0) {
-	    	emptyView.setVisibility(View.GONE);
+	    if (adapter.getCount() == 0) {
+		emptyView.setVisibility(View.GONE);
 	    }
 	    albums.setOnItemClickListener(new OnAlbumsClickListener());
 	    NotificationUtil.showAlbumsAdapterToast(getApplicationContext(), adapter.getCount());
@@ -100,14 +104,13 @@ public class AlbumsActivity extends Activity {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	    final String albumId = adapter.getItem(position).getId();
-	    final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(
-			    AlbumsActivity.this);
-	        photosWrapper.setFilterType(PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS);
-		    photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
-		    photosWrapper.setAlbumId(albumId);
-		    photosWrapper.setAccountId(wrapper.getAccountId());
-		    photosWrapper.startActivityForResult(AlbumsActivity.this,
-			    PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
+	    final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(AlbumsActivity.this);
+	    photosWrapper.setFilterType(PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS);
+	    photosWrapper.setMultiPicker(wrapper.getIsMultiPicker());
+	    photosWrapper.setAlbumId(albumId);
+	    photosWrapper.setAccountId(wrapper.getAccountId());
+	    photosWrapper.startActivityForResult(AlbumsActivity.this,
+		    PhotoActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
 	}
 
     }

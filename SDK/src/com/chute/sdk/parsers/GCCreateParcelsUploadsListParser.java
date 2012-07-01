@@ -33,18 +33,20 @@ import com.chute.sdk.model.response.GCParcelCreateResponse;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
 public class GCCreateParcelsUploadsListParser implements
-	GCHttpResponseParser<GCParcelCreateResponse> {
+		GCHttpResponseParser<GCParcelCreateResponse> {
 
-    @Override
-    public GCParcelCreateResponse parse(final String response) throws JSONException {
-	JSONObject obj = new JSONObject(response);
-	JSONArray array = obj.getJSONArray("uploads");
-	GCParcelCreateResponse parcelResponse = new GCParcelCreateResponse();
-	parcelResponse.setLocalAssetCollection(new GCLocalAssetListObjectParser().parse(array
-		.toString()));
-	parcelResponse.setId(obj.getString("id"));
-	parcelResponse.setParcelShareUrl(obj.getString("share_url"));
-	return parcelResponse;
-    }
+	@Override
+	public GCParcelCreateResponse parse(final String response)
+			throws JSONException {
+		JSONObject obj = new JSONObject(response);
+		JSONArray array = obj.getJSONArray("uploads");
+		GCParcelCreateResponse parcelResponse = new GCParcelCreateResponse();
+		parcelResponse
+				.setLocalAssetCollection(new GCLocalAssetListObjectParser()
+						.parse(array.toString()));
+		parcelResponse.setId(obj.getString("id"));
+		parcelResponse.setParcelShareUrl(obj.getString("share_url"));
+		return parcelResponse;
+	}
 
 }

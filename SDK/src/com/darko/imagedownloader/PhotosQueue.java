@@ -25,11 +25,11 @@
 //
 package com.darko.imagedownloader;
 
+import android.widget.ImageView;
+
 import com.darko.imagedownloader.queue.DequeStrategy;
 import com.darko.imagedownloader.queue.QueueStrategy;
 import com.darko.imagedownloader.queue.StackStrategy;
-
-import android.widget.ImageView;
 
 /**
  * @author darko.grozdanovski

@@ -44,7 +44,7 @@ public class BitmapContentHandler extends ContentHandler {
 	/** Default value */
 	private int defaultImageSize = 75;
 	private final File tempFile;
-	
+
 	public BitmapContentHandler(int defaultImageSize, File tempFile) {
 		super();
 		this.defaultImageSize = defaultImageSize;
