@@ -37,26 +37,11 @@ import android.graphics.Bitmap;
  **/
 public class MemoryCache {
 
-	private static int HARD_CACHE_CAPACITY;
+	private final ConcurrentHashMap<String, SoftReference<Bitmap>> softReference;
+
 	// Hard cache, with a fixed maximum capacity and a life duration
-	private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(
-			HARD_CACHE_CAPACITY / 2, 0.75f, true) {
-
-		private static final long serialVersionUID = -3956509122620786256L;
-
-		@Override
-		protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
-			if (size() > HARD_CACHE_CAPACITY) {
-				// Entries push-out of hard reference cache are transferred to
-				// soft reference cache
-				softReference.put(eldest.getKey(), new SoftReference<Bitmap>(
-						eldest.getValue()));
-				return true;
-			} else {
-				return false;
-			}
-		}
-	};
+	private final HashMap<String, Bitmap> sHardBitmapCache;
+	private int hardCacheCapacity = 25;
 
 	/**
 	 * Set the size of the hard cache, note that the soft cache will still be
@@ -66,11 +51,12 @@ public class MemoryCache {
 	 */
 	public MemoryCache(int hardCacheCapacity) {
 		super();
-		HARD_CACHE_CAPACITY = hardCacheCapacity;
+		this.hardCacheCapacity = hardCacheCapacity;
+		sHardBitmapCache = new LinkedHashMapExtension(hardCacheCapacity / 2,
+				0.75f, true);
+		softReference = new ConcurrentHashMap<String, SoftReference<Bitmap>>(
+				hardCacheCapacity / 2);
 	}
-
-	private final static ConcurrentHashMap<String, SoftReference<Bitmap>> softReference = new ConcurrentHashMap<String, SoftReference<Bitmap>>(
-			HARD_CACHE_CAPACITY / 2);
 
 	public Bitmap get(String id) {
 		// First try the hard reference cache
@@ -117,4 +103,26 @@ public class MemoryCache {
 		sHardBitmapCache.clear();
 	}
 
+	private final class LinkedHashMapExtension extends
+			LinkedHashMap<String, Bitmap> {
+		private static final long serialVersionUID = -3956509122620786256L;
+
+		private LinkedHashMapExtension(int initialCapacity, float loadFactor,
+				boolean accessOrder) {
+			super(initialCapacity, loadFactor, accessOrder);
+		}
+
+		@Override
+		protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
+			if (size() > hardCacheCapacity) {
+				// Entries push-out of hard reference cache are transferred to
+				// soft reference cache
+				softReference.put(eldest.getKey(), new SoftReference<Bitmap>(
+						eldest.getValue()));
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
 }

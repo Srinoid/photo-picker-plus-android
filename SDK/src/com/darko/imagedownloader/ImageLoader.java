@@ -33,9 +33,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import com.darko.imagedownloader.PhotosQueue.PhotoToLoad;
-import com.darko.imagedownloader.PhotosQueue.QueueMethod;
-
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -47,6 +44,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.darko.imagedownloader.PhotosQueue.PhotoToLoad;
+import com.darko.imagedownloader.PhotosQueue.QueueMethod;
+
 /**
  * @author Darko.Grozdanovski
  **/
@@ -56,7 +56,7 @@ public class ImageLoader {
 	private final MemoryCache memoryCache;
 	private static final String TAG = ImageLoader.class.getSimpleName();
 	private boolean loggerEnable = false;
-	public static final int DEFAULT_HARD_CACHE_SIZE = 25;
+	public static final int DEFAULT_HARD_CACHE_SIZE = 10;
 	private final FileCache fileCache;
 	private final boolean shouldCacheOnSD;
 	private final Map<ImageView, String> imageViews = Collections

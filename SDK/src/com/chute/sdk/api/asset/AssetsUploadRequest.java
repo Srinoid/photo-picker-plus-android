@@ -25,200 +25,184 @@
 // 
 package com.chute.sdk.api.asset;
 
-import org.apache.http.HttpStatus;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.chute.sdk.api.GCHttpCallback;
+import com.chute.sdk.api.GCHttpCallbackImpl;
 import com.chute.sdk.api.GCHttpRequest;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCHttpRequestStore;
+import com.chute.sdk.collections.GCAssetCollection;
+import com.chute.sdk.collections.GCChuteCollection;
 import com.chute.sdk.collections.GCLocalAssetCollection;
 import com.chute.sdk.model.GCAssetModel;
-import com.chute.sdk.model.GCHttpRequestParameters;
-import com.chute.sdk.model.GCLocalAssetModel;
+import com.chute.sdk.model.GCChuteModel;
 import com.chute.sdk.model.GCUploadToken;
+import com.chute.sdk.model.response.GCUploadTokenResponse;
 import com.chute.sdk.parsers.GCTokenObjectParser;
 import com.chute.sdk.parsers.GCUploadCompleteObjectParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCConstants;
-import com.chute.sdk.utils.GCRest.RequestMethod;
+import com.chute.sdk.utils.Logger;
+import com.chute.sdk.utils.rest.GCS3Uploader;
+import com.darko.imagedownloader.Utils;
 
-public class AssetsUploadRequest<T> extends GCHttpRequestImpl<T> {
-    private final class TokenListener implements GCHttpCallback<GCUploadToken> {
+public class AssetsUploadRequest implements GCHttpRequest {
 
-	@Override
-	public void onSuccess(GCUploadToken responseData) {
-	    uploadToken = responseData;
-	    resumeThread();
-	}
-
-	@Override
-	public void onParserException(int responseCode, Throwable exception) {
-	    try {
-		obj.put("code", responseCode);
-	    } catch (JSONException e) {
-		Log.w(TAG, "", e);
-	    }
-	    resumeThread();
-	}
-
-	@Override
-	public void onHttpException(GCHttpRequestParameters params, Throwable exception) {
-	    try {
-		obj.put("code", HttpStatus.SC_REQUEST_TIMEOUT);
-	    } catch (JSONException e) {
-		Log.w(TAG, "", e);
-	    }
-	    resumeThread();
-	}
-
-	@Override
-	public void onHttpError(int responseCode, String statusMessage) {
-	    try {
-		obj.put("code", responseCode);
-	    } catch (JSONException e) {
-		Log.w(TAG, "", e);
-	    }
-	    resumeThread();
-	}
-    }
-
-    private final class UploadCompleteListener implements GCHttpCallback<GCAssetModel> {
-
-	@Override
-	public void onSuccess(GCAssetModel responseData) {
-	    try {
-		obj.put("url", responseData.getUrl());
-		obj.put("code", HttpStatus.SC_OK);
-	    } catch (JSONException e) {
-		Log.w(TAG, "", e);
-	    }
-	}
-
-	@Override
-	public void onHttpException(GCHttpRequestParameters params, Throwable exception) {
-	    try {
-		obj.put("code", HttpStatus.SC_REQUEST_TIMEOUT);
-	    } catch (JSONException e1) {
-		Log.w(TAG, "", e1);
-	    }
-	}
-
-	@Override
-	public void onHttpError(int responseCode, String statusMessage) {
-	    try {
-		obj.put("code", responseCode);
-	    } catch (JSONException e1) {
-		Log.w(TAG, "", e1);
-	    }
-	}
-
-	@Override
-	public void onParserException(int responseCode, Throwable exception) {
-	    try {
-		obj.put("code", responseCode);
-	    } catch (JSONException e1) {
-		Log.w(TAG, "", e1);
-	    }
-	}
-    }
-
-    @SuppressWarnings("unused")
-    private static final String TAG = AssetsUploadRequest.class.getSimpleName();
-    private final GCLocalAssetCollection assetIds;
+    public static final String TAG = AssetsUploadRequest.class.getSimpleName();
+    private final GCLocalAssetCollection localAssetCollection;
     private final GCUploadProgressListener onProgressUpdate;
-    private JSONArray array;
-    private JSONObject obj = new JSONObject();
-    private GCUploadToken uploadToken;
+    private final GCHttpCallback<GCAssetCollection> callback;
+    private static final Handler handler = new Handler(Looper.getMainLooper());
+
+    private GCUploadTokenResponse list;
+
+    private final Context context;
+    final ArrayList<String> chuteIds = new ArrayList<String>();
 
     public void resumeThread() {
 	synchronized (this) {
 	    Log.w(TAG, "Resumed thread");
 	    this.notifyAll();
 	}
-
     }
 
-    public AssetsUploadRequest(Context context, GCUploadProgressListener onProgressUpdate,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback,
-	    GCLocalAssetCollection assetCollection) {
-	super(context, RequestMethod.POST, parser, callback);
+    public AssetsUploadRequest(final Context context,
+	    final GCUploadProgressListener onProgressUpdate,
+	    final GCHttpCallback<GCAssetCollection> callback,
+	    final GCLocalAssetCollection assetCollection, final GCChuteCollection chuteCollection) {
+	this.context = context;
+	this.callback = callback;
+
 	if (assetCollection == null || assetCollection.size() == 0) {
 	    throw new NullPointerException(
 		    "Need to provide an array with at least 1 item (Not NULL)");
 	}
+	for (final GCChuteModel chuteModel : chuteCollection) {
+	    chuteIds.add(chuteModel.getId());
+	}
 	this.onProgressUpdate = onProgressUpdate;
-	this.assetIds = assetCollection;
-    }
-
-    @Override
-    protected void prepareParams() {
+	this.localAssetCollection = assetCollection;
     }
 
     @Override
     public void execute() {
 	final GCS3Uploader uploader = new GCS3Uploader(onProgressUpdate);
-	array = new JSONArray();
-
-	for (GCLocalAssetModel asset : assetIds) {
-	    obj = new JSONObject();
-	    try {
-		obj.put("assetId", asset);
-		GCHttpRequest token = getToken(getContext(), asset.getAssetId(),
-			new TokenListener());
-
-		synchronized (this) {
-		    Log.w(TAG, "Wait thread");
-		    token.execute();
-		    this.wait(4000);
-		}
-		if (uploadToken != null) {
-		    uploader.startUpload(uploadToken);
-		    uploadComplete(getContext(), uploadToken.getAssetId(),
-			    new UploadCompleteListener()).execute();
-		} else {
-		    if (GCConstants.DEBUG) {
-			Log.e(TAG, "TOKEN IS NULL");
-		    }
-		}
-	    } catch (Exception e) {
-		if (GCConstants.DEBUG) {
-		    Log.e(TAG, "Error in the Upload Request", e);
-		}
-	    } finally {
-		array.put(obj);
-	    }
-	}
 	try {
-	    getCallback().onSuccess(getParser().parse(array.toString()));
-	} catch (JSONException e) {
-	    Log.w(TAG, "", e);
-	    getCallback().onParserException(HttpStatus.SC_BAD_REQUEST, e);
+	    final GCHttpRequest token = getToken(context, localAssetCollection, chuteIds,
+		    new TokenListener());
+	    synchronized (this) {
+		Log.w(TAG, "Wait thread");
+		token.execute();
+		this.wait(4000);
+	    }
+	    for (int i = 0; i < list.getAssetCollection().size(); i++) {
+		final GCUploadToken uploadToken = list.getToken().get(i);
+		final GCAssetModel asset = list.getAssetCollection().get(i);
+		if (onProgressUpdate != null) {
+		    onProgressUpdate.onUploadStarted(asset, getThumbnailIfPossible(uploadToken));
+		}
+		Logger.d(TAG, "Reading Token");
+		if (uploadToken != null && uploadToken.getUploadInfo() != null) {
+		    uploader.startUpload(uploadToken);
+		    Logger.d(TAG, "Calling upload complete");
+		    Logger.d(TAG, "Need to upload");
+
+		}
+		if (onProgressUpdate != null) {
+		    onProgressUpdate.onUploadFinished(asset);
+		}
+	    }
+	    uploadComplete(context, list.getUploadId(), new GCUploadCompleteObjectParser(),
+		    new UploadCompleteListener()).execute();
+	    handler.post(new Runnable() {
+
+		@Override
+		public void run() {
+		    callback.onSuccess(list.getAssetCollection());
+		}
+	    });
+	} catch (final Exception e) {
+	    Logger.e(TAG, "Error in the Upload Request", e);
+	    handler.post(new Runnable() {
+
+		@Override
+		public void run() {
+		    callback.onHttpException(null, e);
+		}
+	    });
+	}
+    }
+
+    private Bitmap getThumbnailIfPossible(GCUploadToken uploadToken) {
+	try {
+	    if (uploadToken == null) {
+		return null;
+	    }
+	    if (uploadToken.getUploadInfo() == null) {
+		return null;
+	    }
+	    return Utils.getThumbnailFromFilename(uploadToken.getUploadInfo().getFilepath());
+	} catch (Exception e) {
+	    Log.d(TAG, "", e);
+	}
+	return null;
+    }
+
+    private final class TokenListener extends GCHttpCallbackImpl<GCUploadTokenResponse> {
+
+	@Override
+	public void onSuccess(final GCUploadTokenResponse list) {
+	    Logger.d("Success " + list.toString());
+	    AssetsUploadRequest.this.list = list;
+	    resumeThread();
 	}
 
+	@Override
+	public void onGeneralError(final int responseCode, final String message) {
+	    Logger.d("Error " + responseCode + " " + message);
+	    super.onGeneralError(responseCode, message);
+	    resumeThread();
+	}
     }
 
-    public static GCHttpRequest getToken(final Context context, final String assetId,
-	    GCHttpCallback<GCUploadToken> callback) {
-	return getToken(context, assetId, new GCTokenObjectParser(), callback);
+    private final class UploadCompleteListener extends GCHttpCallbackImpl<Void> {
+
+	@Override
+	public void onSuccess(final Void responseData) {
+	}
+
+	@Override
+	public void onGeneralError(final int responseCode, final String message) {
+	    super.onGeneralError(responseCode, message);
+	}
     }
 
-    public static GCHttpRequest uploadComplete(final Context context, final String assetId,
-	    GCHttpCallback<GCAssetModel> callback) {
-	return uploadComplete(context, assetId, new GCUploadCompleteObjectParser(), callback);
+    public static GCHttpRequest getToken(final Context context,
+	    final GCLocalAssetCollection localAssetCollection, final ArrayList<String> chuteIds,
+	    final GCHttpCallback<GCUploadTokenResponse> callback) {
+	return getToken(context, localAssetCollection, chuteIds, new GCTokenObjectParser(),
+		callback);
     }
 
-    public static <T> GCHttpRequest getToken(final Context context, final String id,
+    public static <T> GCHttpRequest getToken(final Context context,
+	    final GCLocalAssetCollection localAssetCollection, final ArrayList<String> chuteIds,
 	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
-	return new AssetsTokenRequest<T>(context, id, parser, callback);
+	return new AssetsTokenRequest<T>(context, localAssetCollection, chuteIds, parser, callback);
     }
 
     public static <T> GCHttpRequest uploadComplete(final Context context, final String id,
 	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
 	return new AssetsUploadCompleteRequest<T>(context, id, parser, callback);
     }
+
+    @Override
+    public void executeAsync() {
+	GCHttpRequestStore.getInstance(context).launchServiceIntent(this);
+    }
+
 }

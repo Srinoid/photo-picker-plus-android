@@ -77,4 +77,18 @@ public class GCPreferenceUtil {
 				.getString(accountType.getName() + "_name", null);
 	}
 
+	// Account UID
+	public void setUidForAccount(AccountType accountType, String uid) {
+		setPreference(accountType.getName() + "__name", uid);
+	}
+
+	public boolean hasUid(AccountType accountType) {
+		return getPreferences().contains(accountType.getName() + "__name");
+	}
+
+	public String getUidForAccount(AccountType accountType) {
+		return getPreferences().getString(accountType.getName() + "__name",
+				null);
+	}
+
 }
