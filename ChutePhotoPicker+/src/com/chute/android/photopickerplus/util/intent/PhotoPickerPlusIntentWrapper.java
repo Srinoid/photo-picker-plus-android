@@ -17,42 +17,50 @@ import com.chute.android.photopickerplus.app.ChooseServiceActivity;
 
 public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
-	public static final int REQUEST_CODE = 1;
-	public static final String TAG = PhotoPickerPlusIntentWrapper.class
-			.getSimpleName();
-	public static final String FLAG_MULTI_PP = "flagMultiPp";
-	public static final String KEY_PP_CHUTE_ID = "chuteID";
+    public static final int REQUEST_CODE = 1;
+    public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
+    public static final String FLAG_MULTI_PP = "flagMultiPp";
+    public static final String FLAG_SERVICES_HIDE = "flagHideServices";
+    public static final String KEY_PP_CHUTE_ID = "chuteID";
 
-	public PhotoPickerPlusIntentWrapper(Intent intent) {
-		super(intent);
-	}
+    public PhotoPickerPlusIntentWrapper(Intent intent) {
+	super(intent);
+    }
 
-	public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
-		super(packageContext, cls);
-	}
+    public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
+	super(packageContext, cls);
+    }
 
-	public PhotoPickerPlusIntentWrapper(Context packageContext) {
-		super(new Intent(packageContext, ChooseServiceActivity.class));
-	}
+    public PhotoPickerPlusIntentWrapper(Context packageContext) {
+	super(new Intent(packageContext, ChooseServiceActivity.class));
+    }
 
-	public boolean getIsMultiPicker() {
-		return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
-	}
+    public boolean getIsMultiPicker() {
+	return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
+    }
 
-	public void setMultiPicker(boolean flag) {
-		getIntent().putExtra(FLAG_MULTI_PP, flag);
-	}
-	
-	public String getChuteId() {
-		return getIntent().getExtras().getString(KEY_PP_CHUTE_ID);
-	}
+    public void setMultiPicker(boolean flag) {
+	getIntent().putExtra(FLAG_MULTI_PP, flag);
+    }
 
-	public void setChuteId(String id) {
-		getIntent().putExtra(KEY_PP_CHUTE_ID, id);
-	}
+    public String getChuteId() {
+	return getIntent().getExtras().getString(KEY_PP_CHUTE_ID);
+    }
 
-	public void startActivityForResult(Activity context, int code) {
-		context.startActivityForResult(getIntent(), code);
-	}
+    public void setChuteId(String id) {
+	getIntent().putExtra(KEY_PP_CHUTE_ID, id);
+    }
+
+    public boolean areServicesHidden() {
+	return getIntent().getExtras().getBoolean(FLAG_SERVICES_HIDE);
+    }
+
+    public void setServicesHidden(boolean flag) {
+	getIntent().putExtra(FLAG_SERVICES_HIDE, flag);
+    }
+
+    public void startActivityForResult(Activity context, int code) {
+	context.startActivityForResult(getIntent(), code);
+    }
 
 }
