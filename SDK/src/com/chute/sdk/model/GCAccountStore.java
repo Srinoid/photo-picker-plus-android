@@ -50,7 +50,7 @@ import com.chute.sdk.utils.GCConstants;
 
 public class GCAccountStore {
 
-    public static String APP_ID = null;
+    private static String APP_ID = null;
 
     public static final int AUTHENTICATION_REQUEST_CODE = 423532;
 
@@ -103,8 +103,12 @@ public class GCAccountStore {
 	    addHeader("x-device-os", "Android");
 	    addHeader("x-device-version", android.os.Build.VERSION.RELEASE);
 	    if (TextUtils.isEmpty(APP_ID)) {
-		throw new RuntimeException("You Need to set your APP_ID In " + TAG
-			+ "Inside the SDK");
+		String restoredAppId = restoreAppId(context);
+		if (restoredAppId == null) {
+		    throw new RuntimeException("You Need to set your APP_ID In " + TAG
+			    + "Inside the SDK", new Throwable());
+		}
+		APP_ID = restoredAppId;
 	    }
 	    addHeader("x-client_id", APP_ID);
 	} catch (Exception e) {
@@ -129,6 +133,11 @@ public class GCAccountStore {
 	return password;
     }
 
+    public static void setAppId(Context context, String appId) {
+	APP_ID = appId;
+	saveAppId(context, appId);
+    }
+
     public void addHeader(String name, String value) {
 	headers.add(new BasicNameValuePair(name, value));
     }
@@ -140,6 +149,7 @@ public class GCAccountStore {
     private static final String API_KEY = "api_key";
     private static final String DEVICE_ID = "device_id";
     private static final String USER_ID = "user_id";
+    private static final String KEY_APP_ID = "key_app_id";
 
     private GCAuthConstants authConstants;
 
@@ -299,6 +309,17 @@ public class GCAccountStore {
     public String restoreUserId(Context context) {
 	SharedPreferences savedSession = PreferenceManager.getDefaultSharedPreferences(context);
 	return savedSession.getString(USER_ID, "");
+    }
+
+    private static boolean saveAppId(Context context, String appId) {
+	Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+	editor.putString(KEY_APP_ID, appId);
+	return editor.commit();
+    }
+
+    private static String restoreAppId(Context context) {
+	SharedPreferences savedSession = PreferenceManager.getDefaultSharedPreferences(context);
+	return savedSession.getString(KEY_APP_ID, null);
     }
 
     /**

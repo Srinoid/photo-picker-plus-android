@@ -35,9 +35,18 @@ Setup
 	);
     </code></pre>
 
-6. This will return a result in onActivityResult according to the status of the sign in.
-7. The Authentication token will be persisted and used from inside GCAccount in every request towards the Chute API.
+   This will return a result in onActivityResult according to the status of the sign in.
+   The Authentication token will be persisted and used from inside GCAccount in every request towards the Chute API.
 
+6. If your application doesn't use authentication, you must add the APP_ID inside your application class:
+
+   <pre><code>
+    @Override
+	public void onCreate() {
+		super.onCreate();
+		GCAccountStore.setAppId(getApplicationContext(), "4f15d1f138ecef6af9000004");
+	}
+	</code></pre>
 Key Concepts
 ========
 
