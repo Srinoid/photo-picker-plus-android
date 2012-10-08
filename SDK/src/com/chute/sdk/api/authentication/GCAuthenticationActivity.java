@@ -93,9 +93,9 @@ public class GCAuthenticationActivity extends AccountAuthenticatorActivity {
 	frameLayout.addView(webViewAuthentication);
 	frameLayout.addView(pb);
 	setContentView(frameLayout);
-	GCAccountStore.setAppId(getApplicationContext(), authConstants.clientId);
 	authConstants = GCAccountStore.getInstance(getApplicationContext()).getAuthConstants();
 	authenticationFactory = new GCAuthenticationFactory(authConstants);
+	GCAccountStore.setAppId(getApplicationContext(), authConstants.clientId);
 	webViewAuthentication.loadUrl(authenticationFactory.getAuthenticationURL());
     }
 
