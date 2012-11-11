@@ -46,6 +46,7 @@ import com.chute.sdk.model.GCHttpRequestParameters;
 import com.chute.sdk.utils.GCPreferenceUtil;
 import com.darko.imagedownloader.ImageLoader;
 
+
 public class ChooseServiceActivity extends Activity {
 
 	public static final String TAG = ChooseServiceActivity.class
@@ -55,7 +56,7 @@ public class ChooseServiceActivity extends Activity {
 	private TextView txtPicasa;
 	private TextView txtFlickr;
 	private TextView txtInstagram;
-    private LinearLayout linearLayoutServices;
+	private LinearLayout linearLayoutServices;
 	private LinearLayout take_photos;
 	private LinearLayout facebook;
 	private LinearLayout picasa;
@@ -71,26 +72,26 @@ public class ChooseServiceActivity extends Activity {
 	private ImageLoader loader;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
 
-    private TextView textViewLabelUser;
+	private TextView textViewLabelUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.service_layout);
 
 		loader = ImageLoader.getLoader(ChooseServiceActivity.this);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 
-	linearLayoutServices = (LinearLayout) findViewById(R.id.services_linear);
-	textViewLabelUser = (TextView) findViewById(R.id.txt_user);
-	PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(
-		getIntent());
-	if (photoPickerPlusIntentWrapper.areServicesHidden()) {
-	    linearLayoutServices.setVisibility(View.GONE);
-	    textViewLabelUser.setVisibility(View.GONE);
-	}
+		linearLayoutServices = (LinearLayout) findViewById(R.id.services_linear);
+		textViewLabelUser = (TextView) findViewById(R.id.txt_user);
+		PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(
+				getIntent());
+		if (photoPickerPlusIntentWrapper.areServicesHidden()) {
+			linearLayoutServices.setVisibility(View.GONE);
+			textViewLabelUser.setVisibility(View.GONE);
+		}
 		txtFacebook = (TextView) findViewById(R.id.txt_facebook);
 		txtFacebook.setTag(AccountType.FACEBOOK);
 		txtPicasa = (TextView) findViewById(R.id.txt_picasa);
@@ -217,20 +218,18 @@ public class ChooseServiceActivity extends Activity {
 				finish();
 			} else if (requestCode == Constants.CAMERA_PIC_REQUEST) {
 				// Bitmap image = (Bitmap) data.getExtras().get("data");
+
 				String path = "";
 				File tempFile = AppUtil.getTempFile(getApplicationContext());
 				if (AppUtil.hasImageCaptureBug() == false
 						&& tempFile.length() > 0) {
-					Uri u;
 					try {
-						u = Uri.parse(android.provider.MediaStore.Images.Media
-								.insertImage(getContentResolver(),
-										tempFile.getAbsolutePath(), null, null));
+						android.provider.MediaStore.Images.Media.insertImage(
+								getContentResolver(),
+								tempFile.getAbsolutePath(), null, null);
 						tempFile.delete();
-						path = Uri.fromFile(
-								new File(AppUtil.convertMediaUriToPath(
-										getApplicationContext(), u)))
-								.toString();
+						path = MediaDAO.getLastPhotoFromCameraPhotos(
+								getApplicationContext()).toString();
 					} catch (FileNotFoundException e) {
 						Log.d(TAG, "", e);
 					}
@@ -311,8 +310,8 @@ public class ChooseServiceActivity extends Activity {
 			Uri uri = MediaDAO
 					.getLastPhotoFromCameraPhotos(getApplicationContext());
 			if (uri.toString().equals("")) {
-		NotificationUtil.makeToast(getApplicationContext(),
-			getResources().getString(R.string.no_camera_photos));
+				NotificationUtil.makeToast(getApplicationContext(),
+						getResources().getString(R.string.no_camera_photos));
 			} else {
 				final GCAccountMediaModel model = new GCAccountMediaModel();
 				model.setLargeUrl(uri.toString());
