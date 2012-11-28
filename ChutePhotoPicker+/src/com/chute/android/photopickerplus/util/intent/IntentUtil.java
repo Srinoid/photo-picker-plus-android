@@ -19,37 +19,40 @@ import com.chute.sdk.model.GCAccountMediaModel;
 
 public class IntentUtil {
 
-    public static void deliverDataToInitialActivity(final Activity context,
-	    final GCAccountMediaModel model, final String chuteId) {
-	deliverDataToInitialActivity(context, model, null, null, chuteId);
-    }
-
-    public static void deliverDataToInitialActivity(final Activity context,
-	    final GCAccountMediaModel model, final String albumId, final String accountId, final String chuteId) {
-	GCAccountMediaCollection mediaCollection = new GCAccountMediaCollection();
-	mediaCollection.add(model);
-	deliverDataToInitialActivity(context, mediaCollection, chuteId);
-    }
-
-    public static void deliverDataToInitialActivity(final Activity context,
-	    final GCAccountMediaCollection collection, final String chuteId) {
-	deliverDataToInitialActivity(context, collection, null, null, chuteId);
-    }
-
-    public static void deliverDataToInitialActivity(final Activity context,
-	    final GCAccountMediaCollection collection, final String albumId, final String accountId, final String chuteId) {
-	final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(new Intent(
-		context, ChooseServiceActivity.class));
-	if (!TextUtils.isEmpty(accountId)) {
-	    wrapper.setAccountId(accountId);
+	public static void deliverDataToInitialActivity(final Activity context,
+			final GCAccountMediaModel model, final String chuteId) {
+		deliverDataToInitialActivity(context, model, null, null, chuteId);
 	}
-	if (!TextUtils.isEmpty(albumId)) {
-	    wrapper.setAlbumId(albumId);
+
+	public static void deliverDataToInitialActivity(final Activity context,
+			final GCAccountMediaModel model, final String albumId,
+			final String accountId, final String chuteId) {
+		GCAccountMediaCollection mediaCollection = new GCAccountMediaCollection();
+		mediaCollection.add(model);
+		deliverDataToInitialActivity(context, mediaCollection, chuteId);
 	}
-	wrapper.setChuteId(chuteId);
-	wrapper.setMediaCollection(collection);
-	wrapper.getIntent().addFlags(
-		Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-	wrapper.startActivity(context);
-    }
+
+	public static void deliverDataToInitialActivity(final Activity context,
+			final GCAccountMediaCollection collection, final String chuteId) {
+		deliverDataToInitialActivity(context, collection, null, null, chuteId);
+	}
+
+	public static void deliverDataToInitialActivity(final Activity context,
+			final GCAccountMediaCollection collection, final String albumId,
+			final String accountId, final String chuteId) {
+		final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(
+				new Intent(context, ChooseServiceActivity.class));
+		if (!TextUtils.isEmpty(accountId)) {
+			wrapper.setAccountId(accountId);
+		}
+		if (!TextUtils.isEmpty(albumId)) {
+			wrapper.setAlbumId(albumId);
+		}
+		wrapper.setChuteId(chuteId);
+		wrapper.setMediaCollection(collection);
+		wrapper.getIntent().addFlags(
+				Intent.FLAG_ACTIVITY_CLEAR_TOP
+						| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		wrapper.startActivity(context);
+	}
 }

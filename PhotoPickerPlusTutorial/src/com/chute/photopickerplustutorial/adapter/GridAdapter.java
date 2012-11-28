@@ -23,7 +23,8 @@ import android.widget.ImageView.ScaleType;
 import com.chute.photopickerplustutorial.R;
 import com.chute.sdk.collections.GCAccountMediaCollection;
 import com.chute.sdk.model.GCAccountMediaModel;
-import com.darko.imagedownloader.ImageLoader;
+
+import darko.imagedownloader.ImageLoader;
 
 public class GridAdapter extends BaseAdapter {
 

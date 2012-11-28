@@ -15,35 +15,38 @@ import android.util.TypedValue;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.sdk.utils.GCPreferenceUtil;
-import com.darko.imagedownloader.ImageLoader;
+
+import darko.imagedownloader.ImageLoader;
 
 public class PhotoPickerPlusApp extends Application {
 
-    public static final String TAG = PhotoPickerPlusApp.class.getSimpleName();
+	public static final String TAG = PhotoPickerPlusApp.class.getSimpleName();
 
-    private static ImageLoader createImageLoader(Context context) {
-	ImageLoader imageLoader = new ImageLoader(context, R.drawable.placeholder);
-	imageLoader.setDefaultBitmapSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-		75, context.getResources().getDisplayMetrics()));
-	return imageLoader;
-    }
-
-    private ImageLoader mImageLoader;
-
-    @Override
-    public void onCreate() {
-	super.onCreate();
-	mImageLoader = createImageLoader(this);
-	GCPreferenceUtil.init(getApplicationContext());
-    }
-
-    @Override
-    public Object getSystemService(String name) {
-	if (ImageLoader.IMAGE_LOADER_SERVICE.equals(name)) {
-	    return mImageLoader;
-	} else {
-	    return super.getSystemService(name);
+	private static ImageLoader createImageLoader(Context context) {
+		ImageLoader imageLoader = new ImageLoader(context,
+				R.drawable.placeholder);
+		imageLoader.setDefaultBitmapSize((int) TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 75, context.getResources()
+						.getDisplayMetrics()));
+		return imageLoader;
 	}
-    }
+
+	private ImageLoader mImageLoader;
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		mImageLoader = createImageLoader(this);
+		GCPreferenceUtil.init(getApplicationContext());
+	}
+
+	@Override
+	public Object getSystemService(String name) {
+		if (ImageLoader.IMAGE_LOADER_SERVICE.equals(name)) {
+			return mImageLoader;
+		} else {
+			return super.getSystemService(name);
+		}
+	}
 
 }

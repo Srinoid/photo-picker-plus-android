@@ -37,15 +37,15 @@ import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrappe
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.account.GCAccounts;
-import com.chute.sdk.api.authentication.GCAuthenticationFactory.AccountType;
 import com.chute.sdk.collections.GCAccountsCollection;
 import com.chute.sdk.model.GCAccountMediaModel;
 import com.chute.sdk.model.GCAccountModel;
 import com.chute.sdk.model.GCAccountStore;
 import com.chute.sdk.model.GCHttpRequestParameters;
+import com.chute.sdk.api.authentication.GCAuthenticationFactory.AccountType;
 import com.chute.sdk.utils.GCPreferenceUtil;
-import com.darko.imagedownloader.ImageLoader;
 
+import darko.imagedownloader.ImageLoader;
 
 public class ChooseServiceActivity extends Activity {
 

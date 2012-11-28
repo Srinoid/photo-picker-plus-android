@@ -23,7 +23,7 @@ import android.util.Log;
 
 import com.chute.sdk.collections.GCAccountMediaCollection;
 import com.chute.sdk.model.GCAccountMediaModel;
-import com.chute.sdk.utils.GCUtils;
+import com.chute.sdk.v2.utils.Utils;
 
 public class AppUtil {
 
@@ -34,7 +34,7 @@ public class AppUtil {
 	    + "/Android/data/%s/files/";
 
     public static String getThumbSmallUrl(String urlNormal) {
-	return GCUtils.getCustomSizePhotoURL(urlNormal, 100, 100);
+	return Utils.getCustomSizePhotoURL(urlNormal, 100, 100);
     }
 
     public static File getTempFile(Context context) {
