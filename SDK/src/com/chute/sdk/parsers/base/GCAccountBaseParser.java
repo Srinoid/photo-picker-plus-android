@@ -15,7 +15,6 @@ public class GCAccountBaseParser {
 		GCAccountModel model = new GCAccountModel();
 		model.setId(obj.getString("id"));
 		model.setName(obj.getString("name"));
-		model.setNotificationsEnabled(obj.getBoolean("notifications_enabled"));
 		model.setStatus(obj.getInt("status"));
 		model.setType(obj.getString("type"));
 		model.setUid(obj.getString("uid"));
