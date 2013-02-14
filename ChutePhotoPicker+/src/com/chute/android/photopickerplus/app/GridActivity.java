@@ -98,6 +98,8 @@ public class GridActivity extends Activity {
 		protected void onPostExecute(final Cursor result) {
 			super.onPostExecute(result);
 			if (result == null) {
+				NotificationUtil.showNoPhotosToast(getApplicationContext());
+				emptyView.setVisibility(View.GONE);
 				return;
 			}
 			cursorAdapter = new PhotoSelectCursorAdapter(GridActivity.this,
