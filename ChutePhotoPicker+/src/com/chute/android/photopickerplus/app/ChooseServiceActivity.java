@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -45,9 +46,10 @@ import com.chute.sdk.model.GCAccountStore;
 import com.chute.sdk.model.GCHttpRequestParameters;
 import com.chute.sdk.utils.GCPreferenceUtil;
 import com.darko.imagedownloader.ImageLoader;
+import com.darko.imagedownloader.ImageLoaderListener;
 
-
-public class ChooseServiceActivity extends Activity {
+public class ChooseServiceActivity extends Activity implements
+		ImageLoaderListener {
 
 	public static final String TAG = ChooseServiceActivity.class
 			.getSimpleName();
@@ -125,13 +127,13 @@ public class ChooseServiceActivity extends Activity {
 
 		loader.displayImage(
 				MediaDAO.getLastPhotoFromAllPhotos(getApplicationContext())
-						.toString(), img_all_photos);
+						.toString(), img_all_photos, this);
 
 		Uri uri = MediaDAO
 				.getLastPhotoFromCameraPhotos(getApplicationContext());
 		if (uri != null) {
-			loader.displayImage(uri.toString(), img_camera_photos);
-			loader.displayImage(uri.toString(), img_last_photo);
+			loader.displayImage(uri.toString(), img_camera_photos, this);
+			loader.displayImage(uri.toString(), img_last_photo, this);
 		}
 		take_photos = (LinearLayout) findViewById(R.id.album3_linear);
 		take_photos.setOnClickListener(new OnCameraClickListener());
@@ -362,5 +364,17 @@ public class ChooseServiceActivity extends Activity {
 						AccountType.INSTAGRAM));
 			}
 		}
+	}
+
+	@Override
+	public void onImageLoadingComplete(String url, Bitmap bitmap) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onImageLoadingError() {
+		// TODO Auto-generated method stub
+
 	}
 }
