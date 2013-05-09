@@ -11,6 +11,7 @@ package com.chute.photopickerplustutorial.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +25,9 @@ import com.chute.photopickerplustutorial.R;
 import com.chute.sdk.collections.GCAccountMediaCollection;
 import com.chute.sdk.model.GCAccountMediaModel;
 import com.darko.imagedownloader.ImageLoader;
+import com.darko.imagedownloader.ImageLoaderListener;
 
-public class GridAdapter extends BaseAdapter {
+public class GridAdapter extends BaseAdapter implements ImageLoaderListener {
 
 	public static final String TAG = GridAdapter.class.getSimpleName();
 	private static LayoutInflater inflater;
@@ -81,12 +83,24 @@ public class GridAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-		loader.displayImage(getItem(position).getThumbUrl(), holder.image);
+		loader.displayImage(getItem(position).getThumbUrl(), holder.image, this);
 		return vi;
 	}
 
 	public void changeData(GCAccountMediaCollection collection) {
 		this.collection = collection;
 		notifyDataSetChanged();
+	}
+
+	@Override
+	public void onImageLoadingComplete(String url, Bitmap bitmap) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onImageLoadingError() {
+		// TODO Auto-generated method stub
+
 	}
 }

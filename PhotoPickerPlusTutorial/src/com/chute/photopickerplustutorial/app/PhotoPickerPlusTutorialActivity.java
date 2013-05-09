@@ -68,6 +68,8 @@ public class PhotoPickerPlusTutorialActivity extends Activity {
 				data);
 		grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this,
 				wrapper.getMediaCollection()));
+		Log.d("debug", "ulr = " + wrapper.getMediaCollection().get(0).getUrl());
+		Log.d("debug", "large ulr = " + wrapper.getMediaCollection().get(0).getLargeUrl());
 		// Log.d(TAG, wrapper.toString());
 
 		// String path;
