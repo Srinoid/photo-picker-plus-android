@@ -27,7 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.api.GCAccounts;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.model.AccountMediaModel;
+import com.chute.android.photopickerplus.model.AccountModel;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -35,22 +38,18 @@ import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
-import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.account.GCAccounts;
-import com.chute.sdk.collections.GCAccountsCollection;
-import com.chute.sdk.model.GCAccountMediaModel;
-import com.chute.sdk.model.GCAccountModel;
-import com.chute.sdk.model.GCAccountStore;
-import com.chute.sdk.model.GCHttpRequestParameters;
-import com.chute.sdk.api.authentication.GCAuthenticationFactory.AccountType;
-import com.chute.sdk.utils.GCPreferenceUtil;
+import com.chute.sdk.v2.api.authentication.AuthenticationFactory.AccountType;
+import com.chute.sdk.v2.model.AccountStore;
+import com.chute.sdk.v2.model.response.ListResponseModel;
+import com.chute.sdk.v2.utils.PreferenceUtil;
+import com.dg.libs.rest.callbacks.HttpCallback;
+import com.dg.libs.rest.domain.ResponseStatus;
 
 import darko.imagedownloader.ImageLoader;
 
 public class ChooseServiceActivity extends Activity {
 
-	public static final String TAG = ChooseServiceActivity.class
-			.getSimpleName();
+	public static final String TAG = ChooseServiceActivity.class.getSimpleName();
 
 	private TextView txtFacebook;
 	private TextView txtPicasa;
@@ -86,8 +85,7 @@ public class ChooseServiceActivity extends Activity {
 
 		linearLayoutServices = (LinearLayout) findViewById(R.id.services_linear);
 		textViewLabelUser = (TextView) findViewById(R.id.txt_user);
-		PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(
-				getIntent());
+		PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 		if (photoPickerPlusIntentWrapper.areServicesHidden()) {
 			linearLayoutServices.setVisibility(View.GONE);
 			textViewLabelUser.setVisibility(View.GONE);
@@ -123,15 +121,13 @@ public class ChooseServiceActivity extends Activity {
 		img_camera_photos = (ImageView) findViewById(R.id.camera_shots_icon);
 		img_last_photo = (ImageView) findViewById(R.id.last_photo_icon);
 
-		loader.displayImage(
-				MediaDAO.getLastPhotoFromAllPhotos(getApplicationContext())
-						.toString(), img_all_photos);
+		loader.displayImage(MediaDAO.getLastPhotoFromAllPhotos(getApplicationContext()).toString(), img_all_photos,
+				null);
 
-		Uri uri = MediaDAO
-				.getLastPhotoFromCameraPhotos(getApplicationContext());
+		Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
 		if (uri != null) {
-			loader.displayImage(uri.toString(), img_camera_photos);
-			loader.displayImage(uri.toString(), img_last_photo);
+			loader.displayImage(uri.toString(), img_camera_photos, null);
+			loader.displayImage(uri.toString(), img_last_photo, null);
 		}
 		take_photos = (LinearLayout) findViewById(R.id.album3_linear);
 		take_photos.setOnClickListener(new OnCameraClickListener());
@@ -147,59 +143,42 @@ public class ChooseServiceActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			accountType = (AccountType) v.getTag();
-			if (GCPreferenceUtil.get().hasAccountId(accountType)) {
-				accountClicked(
-						GCPreferenceUtil.get().getAccountId(accountType),
-						accountType.getName());
+			if (PreferenceUtil.get().hasAccountId(accountType)) {
+				accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
 			} else {
-				GCAccountStore.getInstance(getApplicationContext())
-						.startAuthenticationActivity(
-								ChooseServiceActivity.this, accountType,
-								Constants.PERMISSIONS_SCOPE,
-								Constants.CALLBACK_URL, Constants.CLIENT_ID,
-								Constants.CLIENT_SECRET);
+				AccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(
+						ChooseServiceActivity.this, accountType, Constants.PERMISSIONS_SCOPE, Constants.CALLBACK_URL,
+						Constants.CLIENT_ID, Constants.CLIENT_SECRET);
 			}
 		}
 	}
 
-	private final class AccountsCallback implements
-			GCHttpCallback<GCAccountsCollection> {
+	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
 
 		@Override
-		public void onSuccess(GCAccountsCollection responseData) {
+		public void onSuccess(ListResponseModel<AccountModel> responseData) {
 			if (accountType == null) {
 				return;
 			}
-			for (GCAccountModel accountModel : responseData) {
-				if (accountModel.getType().equalsIgnoreCase(
-						accountType.getName())) {
-					GCPreferenceUtil.get().setNameForAccount(accountType,
-							accountModel.getUser().getName());
-					GCPreferenceUtil.get().setIdForAccount(accountType,
-							accountModel.getId());
+			for (AccountModel accountModel : responseData.getData()) {
+				if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
+					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getUser().getName());
+					PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
 					accountClicked(accountModel.getId(), accountType.getName());
 				}
 			}
 		}
 
 		@Override
-		public void onHttpException(GCHttpRequestParameters params,
-				Throwable exception) {
-		}
+		public void onHttpError(ResponseStatus responseStatus) {
+			// TODO Auto-generated method stub
 
-		@Override
-		public void onHttpError(int responseCode, String statusMessage) {
-		}
-
-		@Override
-		public void onParserException(int responseCode, Throwable exception) {
 		}
 
 	}
 
 	public void accountClicked(String accountId, String accountName) {
-		AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(
-				ChooseServiceActivity.this);
+		AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ChooseServiceActivity.this);
 		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 		wrapper.setAccountId(accountId);
 		wrapper.setAccountName(accountName);
@@ -210,9 +189,8 @@ public class ChooseServiceActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == GCAccountStore.AUTHENTICATION_REQUEST_CODE) {
-				GCAccounts.all(getApplicationContext(), new AccountsCallback())
-						.executeAsync();
+			if (requestCode == AccountStore.AUTHENTICATION_REQUEST_CODE) {
+				GCAccounts.all(getApplicationContext(), new AccountsCallback()).executeAsync();
 			}
 			if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
 				finish();
@@ -221,32 +199,26 @@ public class ChooseServiceActivity extends Activity {
 
 				String path = "";
 				File tempFile = AppUtil.getTempFile(getApplicationContext());
-				if (AppUtil.hasImageCaptureBug() == false
-						&& tempFile.length() > 0) {
+				if (AppUtil.hasImageCaptureBug() == false && tempFile.length() > 0) {
 					try {
-						android.provider.MediaStore.Images.Media.insertImage(
-								getContentResolver(),
+						android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
 								tempFile.getAbsolutePath(), null, null);
 						tempFile.delete();
-						path = MediaDAO.getLastPhotoFromCameraPhotos(
-								getApplicationContext()).toString();
+						path = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext()).toString();
 					} catch (FileNotFoundException e) {
 						Log.d(TAG, "", e);
 					}
 				} else {
 					Log.e(TAG, "Bug " + data.getData().getPath());
-					path = Uri.fromFile(
-							new File(AppUtil.getPath(getApplicationContext(),
-									data.getData()))).toString();
+					path = Uri.fromFile(new File(AppUtil.getPath(getApplicationContext(), data.getData()))).toString();
 				}
 				Log.d(TAG, path);
-				final GCAccountMediaModel model = new GCAccountMediaModel();
+				final AccountMediaModel model = new AccountMediaModel();
 				model.setLargeUrl(path);
 				model.setThumbUrl(path);
 				model.setUrl(path);
 
-				IntentUtil.deliverDataToInitialActivity(this, model,
-						ppWrapper.getChuteId());
+				IntentUtil.deliverDataToInitialActivity(this, model, ppWrapper.getChuteId());
 			}
 		}
 	}
@@ -255,19 +227,15 @@ public class ChooseServiceActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			if (!getPackageManager().hasSystemFeature(
-					PackageManager.FEATURE_CAMERA)) {
-				NotificationUtil.makeToast(getApplicationContext(),
-						R.string.toast_feature_camera);
+			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+				NotificationUtil.makeToast(getApplicationContext(), R.string.toast_feature_camera);
 				return;
 			}
 			final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			if (AppUtil.hasImageCaptureBug() == false) {
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AppUtil
-						.getTempFile(ChooseServiceActivity.this)));
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AppUtil.getTempFile(ChooseServiceActivity.this)));
 			} else {
-				intent.putExtra(
-						android.provider.MediaStore.EXTRA_OUTPUT,
+				intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 			}
 			startActivityForResult(intent, Constants.CAMERA_PIC_REQUEST);
@@ -278,8 +246,7 @@ public class ChooseServiceActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(
-					ChooseServiceActivity.this);
+			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setFilterType(PhotosIntentWrapper.TYPE_ALL_PHOTOS);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setChuteId(ppWrapper.getChuteId());
@@ -292,8 +259,7 @@ public class ChooseServiceActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(
-					ChooseServiceActivity.this);
+			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setFilterType(PhotosIntentWrapper.TYPE_CAMERA_ROLL);
 			wrapper.setChuteId(ppWrapper.getChuteId());
@@ -307,20 +273,17 @@ public class ChooseServiceActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			Uri uri = MediaDAO
-					.getLastPhotoFromCameraPhotos(getApplicationContext());
+			Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
 			if (uri.toString().equals("")) {
-				NotificationUtil.makeToast(getApplicationContext(),
-						getResources().getString(R.string.no_camera_photos));
+				NotificationUtil
+						.makeToast(getApplicationContext(), getResources().getString(R.string.no_camera_photos));
 			} else {
-				final GCAccountMediaModel model = new GCAccountMediaModel();
+				final AccountMediaModel model = new AccountMediaModel();
 				model.setLargeUrl(uri.toString());
 				model.setThumbUrl(uri.toString());
 				model.setUrl(uri.toString());
 
-				IntentUtil.deliverDataToInitialActivity(
-						ChooseServiceActivity.this, model,
-						ppWrapper.getChuteId());
+				IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, model, ppWrapper.getChuteId());
 			}
 		}
 
@@ -329,37 +292,32 @@ public class ChooseServiceActivity extends Activity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		setResult(Activity.RESULT_OK,
-				new Intent().putExtras(intent.getExtras()));
+		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
 		finish();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (GCPreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
-			if (GCPreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-				txtPicasa.setText(GCPreferenceUtil.get().getAccountName(
-						AccountType.PICASA));
+		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+				txtPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
 
 			}
 		}
-		if (GCPreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
-			if (GCPreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-				txtFacebook.setText(GCPreferenceUtil.get().getAccountName(
-						AccountType.FACEBOOK));
+		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+				txtFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
 			}
 		}
-		if (GCPreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
-			if (GCPreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-				txtFlickr.setText(GCPreferenceUtil.get().getAccountName(
-						AccountType.FLICKR));
+		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+				txtFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
 			}
 		}
-		if (GCPreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
-			if (GCPreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-				txtInstagram.setText(GCPreferenceUtil.get().getAccountName(
-						AccountType.INSTAGRAM));
+		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+				txtInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
 			}
 		}
 	}

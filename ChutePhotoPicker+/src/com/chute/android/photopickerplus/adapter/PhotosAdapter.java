@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.adapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -24,8 +25,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.sdk.collections.GCAccountMediaCollection;
-import com.chute.sdk.model.GCAccountMediaModel;
+import com.chute.android.photopickerplus.model.AccountMediaModel;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -35,24 +35,22 @@ public class PhotosAdapter extends BaseAdapter {
 	private static final String TAG = PhotosAdapter.class.getSimpleName();
 	private static LayoutInflater inflater;
 	public ImageLoader loader;
-	private GCAccountMediaCollection collection;
-	public HashMap<Integer, GCAccountMediaModel> tick;
+	private ArrayList<AccountMediaModel> collection;
+	public HashMap<Integer, AccountMediaModel> tick;
 	private final DisplayMetrics displayMetrics;
 	private final Activity context;
 
-	public PhotosAdapter(final Activity context,
-			final GCAccountMediaCollection collection) {
+	public PhotosAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
 		if (collection == null) {
-			this.collection = new GCAccountMediaCollection();
+			this.collection = new ArrayList<AccountMediaModel>();
 		} else {
 			this.collection = collection;
 		}
 		this.context = context;
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		loader = ImageLoader.getLoader(context);
 		displayMetrics = context.getResources().getDisplayMetrics();
-		tick = new HashMap<Integer, GCAccountMediaModel>();
+		tick = new HashMap<Integer, AccountMediaModel>();
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class PhotosAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public GCAccountMediaModel getItem(final int position) {
+	public AccountMediaModel getItem(final int position) {
 		return collection.get(position);
 	}
 
@@ -76,22 +74,20 @@ public class PhotosAdapter extends BaseAdapter {
 		public ImageView tick;
 	}
 
-	public void changeData(final GCAccountMediaCollection collection) {
+	public void changeData(final ArrayList<AccountMediaModel> collection) {
 		this.collection = collection;
 		notifyDataSetChanged();
 	}
 
 	@Override
-	public View getView(final int position, final View convertView,
-			final ViewGroup parent) {
+	public View getView(final int position, final View convertView, final ViewGroup parent) {
 		View vi = convertView;
 		ViewHolder holder;
 		if (convertView == null) {
 			vi = inflater.inflate(R.layout.photos_select_adapter, null);
 			holder = new ViewHolder();
 			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(
-					displayMetrics.widthPixels / 3,
+			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
 			holder.image.setScaleType(ScaleType.CENTER_CROP);
 			holder.tick = (ImageView) vi.findViewById(R.id.imageTick);
@@ -103,20 +99,18 @@ public class PhotosAdapter extends BaseAdapter {
 
 		if (tick.containsKey(position)) {
 			holder.tick.setVisibility(View.VISIBLE);
-			vi.setBackgroundColor(context.getResources().getColor(
-					R.color.orange));
+			vi.setBackgroundColor(context.getResources().getColor(R.color.orange));
 		} else {
 			holder.tick.setVisibility(View.GONE);
-			vi.setBackgroundColor(context.getResources().getColor(
-					R.color.transparent));
+			vi.setBackgroundColor(context.getResources().getColor(R.color.transparent));
 		}
-		loader.displayImage(getItem(position).getThumbUrl(), holder.image);
+		loader.displayImage(getItem(position).getThumbUrl(), holder.image, null);
 		return vi;
 	}
 
-	public GCAccountMediaCollection getPhotoCollection() {
-		final GCAccountMediaCollection photos = new GCAccountMediaCollection();
-		final Iterator<GCAccountMediaModel> iterator = tick.values().iterator();
+	public ArrayList<AccountMediaModel> getPhotoCollection() {
+		final ArrayList<AccountMediaModel> photos = new ArrayList<AccountMediaModel>();
+		final Iterator<AccountMediaModel> iterator = tick.values().iterator();
 		while (iterator.hasNext()) {
 			photos.add(iterator.next());
 		}

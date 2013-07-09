@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.photopickerplustutorial.adapter;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -20,9 +22,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ImageView.ScaleType;
 
+import com.chute.android.photopickerplus.model.AccountMediaModel;
 import com.chute.photopickerplustutorial.R;
-import com.chute.sdk.collections.GCAccountMediaCollection;
-import com.chute.sdk.model.GCAccountMediaModel;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -31,19 +32,17 @@ public class GridAdapter extends BaseAdapter {
 	public static final String TAG = GridAdapter.class.getSimpleName();
 	private static LayoutInflater inflater;
 	public ImageLoader loader;
-	private GCAccountMediaCollection collection;
+	private ArrayList<AccountMediaModel> collection;
 	private final DisplayMetrics displayMetrics;
 
-	public GridAdapter(final Activity context,
-			final GCAccountMediaCollection collection) {
+	public GridAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
 		if (collection == null) {
-			this.collection = new GCAccountMediaCollection();
+			this.collection = new ArrayList<AccountMediaModel>();
 		} else {
 			this.collection = collection;
 		}
 		loader = ImageLoader.getLoader(context);
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		displayMetrics = context.getResources().getDisplayMetrics();
 	}
 
@@ -53,7 +52,7 @@ public class GridAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public GCAccountMediaModel getItem(int position) {
+	public AccountMediaModel getItem(int position) {
 		return collection.get(position);
 	}
 
@@ -74,19 +73,18 @@ public class GridAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.grid_adapter_item, null);
 			holder = new ViewHolder();
 			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(
-					displayMetrics.widthPixels / 3,
+			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
 			holder.image.setScaleType(ScaleType.CENTER_CROP);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-		loader.displayImage(getItem(position).getThumbUrl(), holder.image);
+		loader.displayImage(getItem(position).getThumbUrl(), holder.image, null);
 		return vi;
 	}
 
-	public void changeData(GCAccountMediaCollection collection) {
+	public void changeData(ArrayList<AccountMediaModel> collection) {
 		this.collection = collection;
 		notifyDataSetChanged();
 	}

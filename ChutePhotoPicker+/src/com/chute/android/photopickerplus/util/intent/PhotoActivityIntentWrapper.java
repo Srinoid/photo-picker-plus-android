@@ -9,13 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.util.intent;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 
 import com.chute.android.photopickerplus.app.GridActivity;
-import com.chute.sdk.collections.GCAccountMediaCollection;
+import com.chute.android.photopickerplus.model.AccountMediaModel;
 
 public class PhotoActivityIntentWrapper extends IntentWrapper {
 
@@ -55,11 +57,11 @@ public class PhotoActivityIntentWrapper extends IntentWrapper {
 		getIntent().putExtra(KEY_ALBUM_ID, albumId);
 	}
 
-	public GCAccountMediaCollection getMediaCollection() {
+	public ArrayList<AccountMediaModel> getMediaCollection() {
 		return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
 	}
 
-	public void setMediaCollection(GCAccountMediaCollection mediaCollection) {
+	public void setMediaCollection(ArrayList<AccountMediaModel> mediaCollection) {
 		getIntent()
 				.putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
 	}

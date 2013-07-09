@@ -9,36 +9,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.util.intent;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
 import com.chute.android.photopickerplus.app.ChooseServiceActivity;
-import com.chute.sdk.collections.GCAccountMediaCollection;
-import com.chute.sdk.model.GCAccountMediaModel;
+import com.chute.android.photopickerplus.model.AccountMediaModel;
 
 public class IntentUtil {
 
 	public static void deliverDataToInitialActivity(final Activity context,
-			final GCAccountMediaModel model, final String chuteId) {
+			final AccountMediaModel model, final String chuteId) {
 		deliverDataToInitialActivity(context, model, null, null, chuteId);
 	}
 
 	public static void deliverDataToInitialActivity(final Activity context,
-			final GCAccountMediaModel model, final String albumId,
+			final AccountMediaModel model, final String albumId,
 			final String accountId, final String chuteId) {
-		GCAccountMediaCollection mediaCollection = new GCAccountMediaCollection();
+		ArrayList<AccountMediaModel> mediaCollection = new ArrayList<AccountMediaModel>();
 		mediaCollection.add(model);
 		deliverDataToInitialActivity(context, mediaCollection, chuteId);
 	}
 
 	public static void deliverDataToInitialActivity(final Activity context,
-			final GCAccountMediaCollection collection, final String chuteId) {
+			final ArrayList<AccountMediaModel> collection, final String chuteId) {
 		deliverDataToInitialActivity(context, collection, null, null, chuteId);
 	}
 
 	public static void deliverDataToInitialActivity(final Activity context,
-			final GCAccountMediaCollection collection, final String albumId,
+			final ArrayList<AccountMediaModel> collection, final String albumId,
 			final String accountId, final String chuteId) {
 		final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(
 				new Intent(context, ChooseServiceActivity.class));

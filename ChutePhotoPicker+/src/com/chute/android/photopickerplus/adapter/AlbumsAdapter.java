@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.adapter;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,8 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.sdk.collections.GCAccountObjectCollection;
-import com.chute.sdk.model.GCAccountObjectModel;
+import com.chute.android.photopickerplus.model.AccountObjectModel;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -29,15 +30,13 @@ public class AlbumsAdapter extends BaseAdapter {
 
 	private static LayoutInflater inflater;
 	private final ImageLoader loader;
-	private final GCAccountObjectCollection collection;
+	private final ArrayList<AccountObjectModel> collection;
 	private final Activity context;
 
-	public AlbumsAdapter(final Activity context,
-			final GCAccountObjectCollection collection) {
+	public AlbumsAdapter(final Activity context, final ArrayList<AccountObjectModel> collection) {
 		this.context = context;
 		this.collection = collection;
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		loader = ImageLoader.getLoader(context);
 	}
 
@@ -47,7 +46,7 @@ public class AlbumsAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public GCAccountObjectModel getItem(final int position) {
+	public AccountObjectModel getItem(final int position) {
 		return collection.get(position);
 	}
 
@@ -61,8 +60,7 @@ public class AlbumsAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, final View convertView,
-			final ViewGroup parent) {
+	public View getView(final int position, final View convertView, final ViewGroup parent) {
 
 		View vi = convertView;
 		ViewHolder holder;

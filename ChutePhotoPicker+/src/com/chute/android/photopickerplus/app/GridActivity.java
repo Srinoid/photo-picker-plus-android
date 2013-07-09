@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.app;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -25,15 +27,16 @@ import android.widget.TextView;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.adapter.PhotoSelectCursorAdapter;
 import com.chute.android.photopickerplus.adapter.PhotosAdapter;
+import com.chute.android.photopickerplus.api.GCAccounts;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.model.AccountMediaModel;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
-import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.account.GCAccounts;
-import com.chute.sdk.collections.GCAccountMediaCollection;
-import com.chute.sdk.model.GCHttpRequestParameters;
+import com.chute.sdk.v2.model.response.ListResponseModel;
+import com.dg.libs.rest.callbacks.HttpCallback;
+import com.dg.libs.rest.domain.ResponseStatus;
 
 public class GridActivity extends Activity {
 
@@ -75,8 +78,7 @@ public class GridActivity extends Activity {
 		} else if (wrapper.getFilterType() == PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS) {
 			accountId = wrapper.getAccountId();
 			albumId = wrapper.getAlbumId();
-			GCAccounts.objectMedia(getApplicationContext(), accountId, albumId,
-					new PhotoListCallback()).executeAsync();
+			GCAccounts.objectMedia(getApplicationContext(), accountId, albumId, new PhotoListCallback()).executeAsync();
 		}
 
 	}
@@ -100,8 +102,7 @@ public class GridActivity extends Activity {
 			if (result == null) {
 				return;
 			}
-			cursorAdapter = new PhotoSelectCursorAdapter(GridActivity.this,
-					result);
+			cursorAdapter = new PhotoSelectCursorAdapter(GridActivity.this, result);
 			grid.setAdapter(cursorAdapter);
 
 			if (cursorAdapter.getCount() == 0) {
@@ -109,38 +110,30 @@ public class GridActivity extends Activity {
 			}
 
 			if (wrapper.getIsMultiPicker() == true) {
-				selectPhotos.setText(getApplicationContext().getResources()
-						.getString(R.string.select_photos));
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_photos));
 				grid.setOnItemClickListener(new OnMultiSelectGridItemClickListener());
 			} else {
-				selectPhotos.setText(getApplicationContext().getResources()
-						.getString(R.string.select_a_photo));
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_a_photo));
 				grid.setOnItemClickListener(new OnSingleSelectGridItemClickListener());
 			}
-			NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
-					cursorAdapter.getCount());
+			NotificationUtil.showPhotosAdapterToast(getApplicationContext(), cursorAdapter.getCount());
 		}
 	}
 
-	private final class OnMultiSelectGridItemClickListener implements
-			OnItemClickListener {
+	private final class OnMultiSelectGridItemClickListener implements OnItemClickListener {
 
 		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view,
-				final int position, final long id) {
+		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
 			cursorAdapter.toggleTick(position);
 		}
 	}
 
-	private final class OnSingleSelectGridItemClickListener implements
-			OnItemClickListener {
+	private final class OnSingleSelectGridItemClickListener implements OnItemClickListener {
 
 		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view,
-				final int position, final long id) {
+		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
 			IntentUtil.deliverDataToInitialActivity(GridActivity.this,
-					AppUtil.getMediaModel(cursorAdapter.getItem(position)),
-					wrapper.getChuteId());
+					AppUtil.getMediaModel(cursorAdapter.getItem(position)), wrapper.getChuteId());
 			setResult(RESULT_OK);
 			finish();
 		}
@@ -155,12 +148,11 @@ public class GridActivity extends Activity {
 
 	}
 
-	private final class PhotoListCallback implements
-			GCHttpCallback<GCAccountMediaCollection> {
+	private final class PhotoListCallback implements HttpCallback<ListResponseModel<AccountMediaModel>> {
 
 		@Override
-		public void onSuccess(GCAccountMediaCollection responseData) {
-			socialAdapter = new PhotosAdapter(GridActivity.this, responseData);
+		public void onSuccess(ListResponseModel<AccountMediaModel> responseData) {
+			socialAdapter = new PhotosAdapter(GridActivity.this, (ArrayList<AccountMediaModel>) responseData.getData());
 			grid.setAdapter(socialAdapter);
 
 			if (socialAdapter.getCount() == 0) {
@@ -168,62 +160,42 @@ public class GridActivity extends Activity {
 			}
 
 			if (wrapper.getIsMultiPicker() == true) {
-				selectPhotos.setText(getApplicationContext().getResources()
-						.getString(R.string.select_photos));
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_photos));
 				grid.setOnItemClickListener(new OnMultiGridItemClickListener());
 			} else {
-				selectPhotos.setText(getApplicationContext().getResources()
-						.getString(R.string.select_a_photo));
+				selectPhotos.setText(getApplicationContext().getResources().getString(R.string.select_a_photo));
 				grid.setOnItemClickListener(new OnSingleGridItemClickListener());
 			}
-			NotificationUtil.showPhotosAdapterToast(getApplicationContext(),
-					socialAdapter.getCount());
-		}
-
-		@Override
-		public void onHttpException(GCHttpRequestParameters params,
-				Throwable exception) {
-			NotificationUtil
-					.makeConnectionProblemToast(getApplicationContext());
-			toggleEmptyViewErrorMessage();
-		}
-
-		@Override
-		public void onHttpError(int responseCode, String statusMessage) {
-			NotificationUtil.makeServerErrorToast(getApplicationContext());
-			toggleEmptyViewErrorMessage();
-		}
-
-		@Override
-		public void onParserException(int responseCode, Throwable exception) {
-			NotificationUtil.makeParserErrorToast(getApplicationContext());
-			toggleEmptyViewErrorMessage();
+			NotificationUtil.showPhotosAdapterToast(getApplicationContext(), socialAdapter.getCount());
 		}
 
 		public void toggleEmptyViewErrorMessage() {
 			findViewById(R.id.empty_view_layout).setVisibility(View.GONE);
 		}
-	}
-
-	private final class OnSingleGridItemClickListener implements
-			OnItemClickListener {
 
 		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view,
-				final int position, final long id) {
-			IntentUtil.deliverDataToInitialActivity(GridActivity.this,
-					socialAdapter.getItem(position), wrapper.getChuteId());
+		public void onHttpError(ResponseStatus arg0) {
+			NotificationUtil.makeConnectionProblemToast(getApplicationContext());
+			toggleEmptyViewErrorMessage();
+
+		}
+	}
+
+	private final class OnSingleGridItemClickListener implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+			IntentUtil.deliverDataToInitialActivity(GridActivity.this, socialAdapter.getItem(position),
+					wrapper.getChuteId());
 			setResult(RESULT_OK);
 			finish();
 		}
 	}
 
-	private final class OnMultiGridItemClickListener implements
-			OnItemClickListener {
+	private final class OnMultiGridItemClickListener implements OnItemClickListener {
 
 		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view,
-				final int position, final long id) {
+		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
 			socialAdapter.toggleTick(position);
 		}
 	}
@@ -233,16 +205,14 @@ public class GridActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			if (wrapper.getFilterType() == PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS) {
-				IntentUtil.deliverDataToInitialActivity(GridActivity.this,
-						socialAdapter.getPhotoCollection(), null, null,
-						wrapper.getChuteId());
+				IntentUtil.deliverDataToInitialActivity(GridActivity.this, socialAdapter.getPhotoCollection(), null,
+						null, wrapper.getChuteId());
 				setResult(RESULT_OK);
 			} else if ((wrapper.getFilterType() == PhotosIntentWrapper.TYPE_ALL_PHOTOS)
 					|| (wrapper.getFilterType() == PhotosIntentWrapper.TYPE_CAMERA_ROLL)) {
 				IntentUtil.deliverDataToInitialActivity(GridActivity.this,
-						AppUtil.getPhotoCollection(cursorAdapter
-								.getSelectedFilePaths()), null, null, wrapper
-								.getChuteId());
+						AppUtil.getPhotoCollection(cursorAdapter.getSelectedFilePaths()), null, null,
+						wrapper.getChuteId());
 				setResult(RESULT_OK);
 			}
 			finish();

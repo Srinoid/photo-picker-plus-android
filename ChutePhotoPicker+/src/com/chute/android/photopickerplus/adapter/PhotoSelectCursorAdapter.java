@@ -25,11 +25,9 @@ import com.chute.android.photopickerplus.R;
 
 import darko.imagedownloader.ImageLoader;
 
-public class PhotoSelectCursorAdapter extends CursorAdapter implements
-		OnScrollListener {
+public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollListener {
 
-	public static final String TAG = PhotoSelectCursorAdapter.class
-			.getSimpleName();
+	public static final String TAG = PhotoSelectCursorAdapter.class.getSimpleName();
 
 	private static LayoutInflater inflater = null;
 	public ImageLoader loader;
@@ -38,10 +36,10 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 	private boolean shouldLoadImages = true;
 	private final DisplayMetrics displayMetrics;
 
+	@SuppressWarnings("deprecation")
 	public PhotoSelectCursorAdapter(Context context, Cursor c) {
 		super(context, c);
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		loader = ImageLoader.getLoader(context);
 		dataIndex = c.getColumnIndex(MediaStore.Images.Media.DATA);
 		displayMetrics = context.getResources().getDisplayMetrics();
@@ -60,19 +58,16 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 		holder.image.setTag(path);
 		holder.tick.setTag(cursor.getPosition());
 		if (shouldLoadImages) {
-			loader.displayImage(Uri.fromFile(new File(path)).toString(),
-					holder.image);
+			loader.displayImage(Uri.fromFile(new File(path)).toString(), holder.image, null);
 		} else {
-			loader.displayImage(null, holder.image);
+			loader.displayImage(null, holder.image, null);
 		}
-		holder.image.setLayoutParams(new RelativeLayout.LayoutParams(
-				displayMetrics.widthPixels / 3 - 2,
+		holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3 - 2,
 				displayMetrics.widthPixels / 3 - 2));
 		holder.image.setScaleType(ScaleType.CENTER_CROP);
 		if (tick.containsKey(cursor.getPosition())) {
 			holder.tick.setVisibility(View.VISIBLE);
-			view.setBackgroundColor(context.getResources().getColor(
-					R.color.orange));
+			view.setBackgroundColor(context.getResources().getColor(R.color.orange));
 		} else {
 			holder.tick.setVisibility(View.GONE);
 			view.setBackgroundColor(Color.BLACK);
@@ -98,8 +93,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 	}
 
 	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		// Do nothing
 
 	}
