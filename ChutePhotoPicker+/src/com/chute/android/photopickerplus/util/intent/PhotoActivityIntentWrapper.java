@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 
 import com.chute.android.photopickerplus.app.GridActivity;
 import com.chute.android.photopickerplus.model.AccountMediaModel;
@@ -58,12 +57,12 @@ public class PhotoActivityIntentWrapper extends IntentWrapper {
 	}
 
 	public ArrayList<AccountMediaModel> getMediaCollection() {
-		return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
+		return (ArrayList<AccountMediaModel>) getIntent().getExtras().getSerializable(KEY_PHOTO_COLLECTION);
 	}
 
 	public void setMediaCollection(ArrayList<AccountMediaModel> mediaCollection) {
 		getIntent()
-				.putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
+				.putExtra(KEY_PHOTO_COLLECTION, mediaCollection);
 	}
 
 	public boolean getIsMultiPicker() {

@@ -1,5 +1,7 @@
 package com.chute.android.photopickerplus.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,10 +18,12 @@ public class AccountObjectModel implements Parcelable {
 	/**
 	 * The unique identifier of the object.
 	 */
+	@JsonProperty("id")
 	private String id;
 	/**
 	 * Name of the object.
 	 */
+	@JsonProperty("name")
 	private String name;
 
 	/**

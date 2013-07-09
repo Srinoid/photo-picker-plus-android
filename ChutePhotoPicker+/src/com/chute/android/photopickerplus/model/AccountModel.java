@@ -1,6 +1,7 @@
 package com.chute.android.photopickerplus.model;
 
 import com.chute.sdk.v2.model.UserModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,31 +19,38 @@ public class AccountModel implements Parcelable {
 	/**
 	 * The unique identifier of the account.
 	 */
+	@JsonProperty("id")
 	private String id;
 	/**
 	 * Type of the account. It can be: Facebook, Twitter, Flickr, Instagram,
 	 * Picasa etc.
 	 */
+	@JsonProperty("type")
 	private String type;
 	/**
 	 * Account name.
 	 */
+	@JsonProperty("name")
 	private String name;
 	/**
 	 * Account user unique identifier.
 	 */
+	@JsonProperty("uid")
 	private String uid;
 	/**
 	 * Status of the account.
 	 */
+	@JsonProperty("status")
 	private int status;
 	/**
 	 * Flag indicating if account notifications are enabled or no.
 	 */
+	@JsonProperty("notifications_enabled")
 	private boolean notificationsEnabled;
 	/**
 	 * The {@link GCUserModel} which the account belongs to.
 	 */
+	@JsonProperty("user")
 	public UserModel user = new UserModel();
 
 	/**

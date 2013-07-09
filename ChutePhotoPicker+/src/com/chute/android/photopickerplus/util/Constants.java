@@ -15,8 +15,9 @@ public class Constants {
 	private static final String TAG = Constants.class.getSimpleName();
 
 	public static final int DELAY_TIME = 500;
-	public static final String CLIENT_SECRET = "0599436c911d8ee27d34d26c2dde73a1a342a8a0e0b20592ef00f90fe1ca5305";
-	public static final String CLIENT_ID = "4f15d1f138ecef6af9000004";
+	public static final String CLIENT_SECRET = "fe7371d4f804b2356de111f717e721bdb1069fb6cf5a6a008dd0fa9a4e12f931";
+	public static final String CLIENT_ID = "51dc079a8a9eb04fb500002d";
+	public static final String TOKEN = "bdd131ed1808bfd2a100cc6f9f68fb8df8b86d39f301476dd991355121db8d76";
 	public static final String CALLBACK_URL = "http://tutorials.getchute.com";
 	public static final String PERMISSIONS_SCOPE = "all_resources manage_resources profile resources";
 

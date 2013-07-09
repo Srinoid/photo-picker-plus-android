@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package com.chute.photopickerplustutorial.app;
 
 import com.chute.android.photopickerplus.app.PhotoPickerPlusApp;
+import com.chute.android.photopickerplus.util.Constants;
 import com.chute.sdk.v2.model.AccountStore;
 
 public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
@@ -18,7 +19,7 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 	public void onCreate() {
 		super.onCreate();
 		AccountStore.setAppId(getApplicationContext(),
-				"4f15d1f138ecef6af9000004");
+				Constants.CLIENT_ID);
 	}
 
 }

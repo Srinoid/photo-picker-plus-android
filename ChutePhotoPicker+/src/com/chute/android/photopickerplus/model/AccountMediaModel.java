@@ -24,20 +24,23 @@ public class AccountMediaModel implements Parcelable {
 	/**
 	 * The URL that shows the location of the thumbnail.
 	 */
-	@JsonProperty("thumbUrl")
+	@JsonProperty("thumb_url")
 	private String thumbUrl;
 	/**
 	 * The URL that shows the location of the large image.
 	 */
+	@JsonProperty("large_url")
 	private String largeUrl;
 	/**
 	 * The URl that shows the location of the media item.
 	 */
+	@JsonProperty("url")
 	private String url;
 
 	/**
 	 * Photo dimensions
 	 */
+	@JsonProperty("dimensions")
 	private String dimensions;
 
 	/**

@@ -34,6 +34,7 @@ import com.chute.android.photopickerplus.model.AccountModel;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
+import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
@@ -78,6 +79,8 @@ public class ChooseServiceActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.service_layout);
+		
+		TokenAuthentication.authenticate(getApplicationContext(), Constants.TOKEN);
 
 		loader = ImageLoader.getLoader(ChooseServiceActivity.this);
 
