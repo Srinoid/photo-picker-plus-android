@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +27,8 @@ import com.chute.android.photopickerplus.R;
 import com.chute.sdk.collections.GCAccountMediaCollection;
 import com.chute.sdk.model.GCAccountMediaModel;
 import com.darko.imagedownloader.ImageLoader;
-import com.darko.imagedownloader.ImageLoaderListener;
 
-public class PhotosAdapter extends BaseAdapter implements ImageLoaderListener {
+public class PhotosAdapter extends BaseAdapter {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = PhotosAdapter.class.getSimpleName();
@@ -111,7 +109,7 @@ public class PhotosAdapter extends BaseAdapter implements ImageLoaderListener {
 			vi.setBackgroundColor(context.getResources().getColor(
 					R.color.transparent));
 		}
-		loader.displayImage(getItem(position).getThumbUrl(), holder.image, this);
+		loader.displayImage(getItem(position).getThumbUrl(), holder.image, null);
 		return vi;
 	}
 
@@ -139,18 +137,6 @@ public class PhotosAdapter extends BaseAdapter implements ImageLoaderListener {
 			tick.put(position, getItem(position));
 		}
 		notifyDataSetChanged();
-	}
-
-	@Override
-	public void onImageLoadingComplete(String url, Bitmap bitmap) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onImageLoadingError() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -24,10 +23,9 @@ import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
 import com.darko.imagedownloader.ImageLoader;
-import com.darko.imagedownloader.ImageLoaderListener;
 
 public class PhotoSelectCursorAdapter extends CursorAdapter implements
-		OnScrollListener, ImageLoaderListener {
+		OnScrollListener {
 
 	public static final String TAG = PhotoSelectCursorAdapter.class
 			.getSimpleName();
@@ -62,9 +60,9 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 		holder.tick.setTag(cursor.getPosition());
 		if (shouldLoadImages) {
 			loader.displayImage(Uri.fromFile(new File(path)).toString(),
-					holder.image, this);
+					holder.image, null);
 		} else {
-			loader.displayImage(null, holder.image, this);
+			loader.displayImage(null, holder.image, null);
 		}
 		holder.image.setLayoutParams(new RelativeLayout.LayoutParams(
 				displayMetrics.widthPixels / 3 - 2,
@@ -145,15 +143,4 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 		notifyDataSetChanged();
 	}
 
-	@Override
-	public void onImageLoadingComplete(String url, Bitmap bitmap) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onImageLoadingError() {
-		// TODO Auto-generated method stub
-
-	}
 }
