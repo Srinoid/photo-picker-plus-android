@@ -57,30 +57,6 @@ public class AccountModel implements Parcelable {
 	 * Default non-args constructor.
 	 */
 	public AccountModel() {
-		super();
-	}
-
-	/**
-	 * Constructor using fields.
-	 * 
-	 * @param id
-	 * @param type
-	 * @param name
-	 * @param uid
-	 * @param status
-	 * @param notificationsEnabled
-	 * @param user
-	 */
-	public AccountModel(String id, String type, String name, String uid, int status, boolean notificationsEnabled,
-			UserModel user) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.name = name;
-		this.uid = uid;
-		this.status = status;
-		this.notificationsEnabled = notificationsEnabled;
-		this.user = user;
 	}
 
 	/**
@@ -191,15 +167,25 @@ public class AccountModel implements Parcelable {
 		}
 	};
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "GCAccountModel [id=" + id + ", type=" + type + ", name=" + name + ", uid=" + uid + ", status=" + status
-				+ ", notificationsEnabled=" + notificationsEnabled + ", user=" + user + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("AccountModel [id=");
+		builder.append(id);
+		builder.append(", type=");
+		builder.append(type);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", uid=");
+		builder.append(uid);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", notificationsEnabled=");
+		builder.append(notificationsEnabled);
+		builder.append(", user=");
+		builder.append(user);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

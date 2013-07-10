@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-
 public class PhotoPickerPreferenceUtil {
 
 	public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
+	public static final String KEY_TOKEN = "key_token";
 	private final Context context;
 
 	private PhotoPickerPreferenceUtil(Context context) {
@@ -45,8 +45,7 @@ public class PhotoPickerPreferenceUtil {
 		} else if (value.getClass().equals(Float.class)) {
 			edit.putFloat(key, (Float) value);
 		} else {
-			throw new UnsupportedOperationException(
-					"Need to add a primitive type to shared prefs");
+			throw new UnsupportedOperationException("Need to add a primitive type to shared prefs");
 		}
 		edit.commit();
 	}
@@ -74,8 +73,7 @@ public class PhotoPickerPreferenceUtil {
 	}
 
 	public String getAccountName(AccountType accountType) {
-		return getPreferences()
-				.getString(accountType.getName() + "_name", null);
+		return getPreferences().getString(accountType.getName() + "_name", null);
 	}
 
 	// Account UID
@@ -88,8 +86,16 @@ public class PhotoPickerPreferenceUtil {
 	}
 
 	public String getUidForAccount(AccountType accountType) {
-		return getPreferences().getString(accountType.getName() + "__name",
-				null);
+		return getPreferences().getString(accountType.getName() + "__name", null);
+	}
+
+	// Save token
+	public void setToken(String token) {
+		setPreference(KEY_TOKEN, token);
+	}
+
+	public String getToken() {
+		return getPreferences().getString(KEY_TOKEN, null);
 	}
 
 }

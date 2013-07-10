@@ -19,7 +19,7 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 	public void onCreate() {
 		super.onCreate();
 		AccountStore.setAppId(getApplicationContext(),
-				Constants.CLIENT_ID);
+				Constants.APP_ID);
 	}
 
 }

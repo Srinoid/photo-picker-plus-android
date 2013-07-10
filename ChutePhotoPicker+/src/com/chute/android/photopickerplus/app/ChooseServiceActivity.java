@@ -34,6 +34,7 @@ import com.chute.android.photopickerplus.model.AccountModel;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
@@ -74,13 +75,13 @@ public class ChooseServiceActivity extends Activity {
 
 	private TextView textViewLabelUser;
 
+	private String token;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.service_layout);
-		
-		TokenAuthentication.authenticate(getApplicationContext(), Constants.TOKEN);
 
 		loader = ImageLoader.getLoader(ChooseServiceActivity.this);
 
@@ -151,7 +152,7 @@ public class ChooseServiceActivity extends Activity {
 			} else {
 				AccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(
 						ChooseServiceActivity.this, accountType, Constants.PERMISSIONS_SCOPE, Constants.CALLBACK_URL,
-						Constants.CLIENT_ID, Constants.CLIENT_SECRET);
+						Constants.APP_ID, Constants.APP_SECRET, com.chute.sdk.v2.utils.Constants.TOKEN_ACCESS);
 			}
 		}
 	}
@@ -174,7 +175,6 @@ public class ChooseServiceActivity extends Activity {
 
 		@Override
 		public void onHttpError(ResponseStatus responseStatus) {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -193,6 +193,9 @@ public class ChooseServiceActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == AccountStore.AUTHENTICATION_REQUEST_CODE) {
+				token = AccountStore.getInstance(getApplicationContext()).getPassword();
+				PhotoPickerPreferenceUtil.get().setToken(token);
+				TokenAuthentication.authenticate(getApplicationContext(), token);
 				GCAccounts.all(getApplicationContext(), new AccountsCallback()).executeAsync();
 			}
 			if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {

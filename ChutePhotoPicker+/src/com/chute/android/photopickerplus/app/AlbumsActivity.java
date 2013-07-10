@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -27,6 +28,8 @@ import com.chute.android.photopickerplus.api.GCAccounts;
 import com.chute.android.photopickerplus.model.AccountObjectModel;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
+import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotoActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
@@ -61,6 +64,7 @@ public class AlbumsActivity extends Activity {
 		String albumName = AppUtil.asUpperCaseFirstChar(wrapper.getAccountName().concat(" Albums"));
 		title.setText(albumName);
 
+		TokenAuthentication.authenticate(getApplicationContext(), PhotoPickerPreferenceUtil.get().getToken());
 		GCAccounts.objects(getApplicationContext(), wrapper.getAccountId(), new ObjectsCallback()).executeAsync();
 
 	}
@@ -84,6 +88,7 @@ public class AlbumsActivity extends Activity {
 
 		@Override
 		public void onHttpError(ResponseStatus responseStatus) {
+			Log.d("debug", "response status = " + responseStatus.getStatusCode() + " " + responseStatus.getStatusMessage());
 			NotificationUtil.makeConnectionProblemToast(getApplicationContext());
 			toggleEmptyViewErrorMessage();
 
