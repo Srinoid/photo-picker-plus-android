@@ -42,6 +42,7 @@ import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrappe
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory.AccountType;
 import com.chute.sdk.v2.model.AccountStore;
+import com.chute.sdk.v2.model.enums.TokenType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
@@ -152,7 +153,7 @@ public class ChooseServiceActivity extends Activity {
 			} else {
 				AccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(
 						ChooseServiceActivity.this, accountType, Constants.PERMISSIONS_SCOPE, Constants.CALLBACK_URL,
-						Constants.APP_ID, Constants.APP_SECRET, com.chute.sdk.v2.utils.Constants.TOKEN_ACCESS);
+						Constants.APP_ID, Constants.APP_SECRET, TokenType.ACCESS_TOKEN);
 			}
 		}
 	}

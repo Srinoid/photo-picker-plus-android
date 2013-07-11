@@ -104,7 +104,7 @@ public class PhotosAdapter extends BaseAdapter {
 			holder.tick.setVisibility(View.GONE);
 			vi.setBackgroundColor(context.getResources().getColor(R.color.transparent));
 		}
-		loader.displayImage(getItem(position).getThumbUrl(), holder.image, null);
+		loader.displayImage(getItem(position).getUrl(), holder.image, null);
 		return vi;
 	}
 

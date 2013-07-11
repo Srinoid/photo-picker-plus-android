@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -152,6 +153,7 @@ public class GridActivity extends Activity {
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountMediaModel> responseData) {
+			Log.d("debug", "responsedata = " + responseData.getData().toString());
 			socialAdapter = new PhotosAdapter(GridActivity.this, (ArrayList<AccountMediaModel>) responseData.getData());
 			grid.setAdapter(socialAdapter);
 
