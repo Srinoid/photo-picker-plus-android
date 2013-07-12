@@ -31,7 +31,7 @@ public class PhotoPickerPlusTutorialActivity extends Activity {
 	 * in a grid. If you wish to enable multi-picking functionality, set
 	 * isMultipicker=true, otherwise set isMultiPicker=false.
 	 */
-	private final boolean isMultiPicker = false;
+	private final boolean isMultiPicker = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
