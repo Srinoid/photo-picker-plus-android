@@ -28,7 +28,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.chute.sdk.api.authentication.GCAuthenticationActivity"
+            android:name="com.chute.sdk.v2.api.authentication.AuthenticationActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
