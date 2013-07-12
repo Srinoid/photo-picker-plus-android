@@ -3,18 +3,19 @@ Introduction
 
 PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPicker+ component. It contains Chute SDK library as well as PhotoPicker+ library. This tutorial enables browsing albums and photos on your social services and device gallery, selecting a photo and display of the selected photo and its data.
 
-![image10](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/11.png)![image12](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/12.png)![image13](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/13.png)![image14](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/14.png)
+![image10](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/11.png)![image12](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/12.png)![image13](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/13.png)![image14](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/14.png)
 
 Setup
 ====
 
 * Add the PhotoPicker+ component to your project by either copying all the resources and source code or by adding it as an Android Library project.
 
-   ![image15](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/15.png)![image16](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/16.png)
-
 * Add Chute SDK library by selecting Properties -> Java Build Path -> Libraries -> Add JARs and choose the jar located in PhotoPicker+ component libs/ direcotry. Select Order and Export tab and put a check on the lib you just added.
 
 * Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/master/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for more info.
+
+   ![image15](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/15.png)![image16](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/16.png)
+
 
 * Register the activities, services and the application class into AndroidManifest.xml file:
 
