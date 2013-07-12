@@ -8,11 +8,15 @@ PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPic
 Setup
 ====
 
-* Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/master/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for a complete guide on how to setup the chute SDK.
-  
 * Add the PhotoPicker+ component to your project by either copying all the resources and source code or by adding it as an Android Library project.
 
-* The next thing you need to do is register the activities, services and the application class into the AndroidManifest.xml file:
+   ![image15](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/15.png)![image16](https://github.com/chute/photo-picker-plus/raw/master/Android/PhotoPickerPlusTutorial/screenshots/16.png)
+
+* Add Chute SDK library by selecting Properties -> Java Build Path -> Libraries -> Add JARs and choose the jar located in PhotoPicker+ component libs/ direcotry. Select Order and Export tab and put a check on the lib you just added.
+
+* Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/master/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for more info.
+
+* Register the activities, services and the application class into AndroidManifest.xml file:
 
     ```
         <application
@@ -21,7 +25,7 @@ Setup
         android:name=".app.PhotoPickerPlusTutorialApp"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
 		
-        <service android:name="com.chute.sdk.api.GCHttpService" />
+         <service android:name="com.dg.libs.rest.services.HTTPRequestExecutorService" />
 
         <activity
             android:label="@string/app_name"
@@ -45,7 +49,7 @@ Setup
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.chute.sdk.api.authentication.GCAuthenticationActivity"
+            android:name="com.chute.sdk.v2.api.authentication.AuthenticationActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
