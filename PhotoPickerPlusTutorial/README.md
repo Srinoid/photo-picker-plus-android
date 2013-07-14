@@ -3,7 +3,7 @@ Introduction
 
 PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPicker+ component. It contains Chute SDK library as well as PhotoPicker+ library. This tutorial enables browsing albums and photos on your social services and device gallery, selecting a photo and display of the selected photo and its data.
 
-![image10](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/11.png)![image12](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/12.png)![image13](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/13.png)![image14](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/14.png)
+![image10](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/11.png)![image12](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/12.png)![image13](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/13.png)![image14](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/14.png)
 
 Setup
 ====
@@ -14,7 +14,7 @@ Setup
 
 * Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/master/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for more info.
 
-   ![image15](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/15.png)![image16](https://raw.github.com/chute/photo-picker-plus/master/Android/PhotoPickerPlusTutorial/screenshots/16.png)
+   ![image15](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/15.png)![image16](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/16.png)
 
 
 * Register the activities, services and the application class into AndroidManifest.xml file:
@@ -100,7 +100,9 @@ public class PhotoPickerPlusTutorialApp extends Application {
     public void onCreate() {
 	super.onCreate();
 	mImageLoader = createImageLoader(this);
+	TokenAuthenticationProvider.init(getApplicationContext(), TokenType.ACCESS_TOKEN);
 	PreferenceUtil.init(getApplicationContext());
+	PhotoPickerPreferenceUtil.init(getApplicationContext());
     }
 
     @Override
@@ -147,7 +149,7 @@ After selecting photos, a result is returned to the activity that started the co
     }
 </code></pre>
 
-PhotoActivityIntentWrapper encapsulates a couple of different information available for the selected image. Keep in mind that some of that additional info might be null depending of its availability. Also the different paths inside the Media model can point to the same location if there are no additional sizes available.
+PhotoActivityIntentWrapper encapsulates different information available for the selected image. Some of that additional info might be null depending of its availability. Different paths inside Media model can point to the same location if there are no additional sizes available.
 
 
     
