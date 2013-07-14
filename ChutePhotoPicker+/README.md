@@ -7,7 +7,7 @@ PhotoPicker+ is a component made for developers to easily integrate it inside th
 Screenshots
 ====
 
-![SS_Slidechute1](https://raw.github.com/chute/photo-picker-plus/master/Android/ChutePhotoPicker+/screenshots/SS_Slidechute1.png)![SS_Slidechute2](https://raw.github.com/chute/photo-picker-plus/master/Android/ChutePhotoPicker+/screenshots/SS_Slidechute2.png)![SS_Slidechute3](https://raw.github.com/chute/photo-picker-plus/master/Android/ChutePhotoPicker+/screenshots/SS_Slidechute3.png)
+![SS_Slidechute1](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/ChutePhotoPicker+/screenshots/SS_Slidechute1.png)![SS_Slidechute2](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/ChutePhotoPicker+/screenshots/SS_Slidechute2.png)![SS_Slidechute3](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/ChutePhotoPicker+/screenshots/SS_Slidechute3.png)
 
 Setup
 ====
