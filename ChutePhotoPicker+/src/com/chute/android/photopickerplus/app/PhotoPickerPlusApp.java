@@ -40,7 +40,7 @@ public class PhotoPickerPlusApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		mImageLoader = createImageLoader(this);
-		TokenAuthenticationProvider.init(getApplicationContext(), TokenType.ACCESS_TOKEN);
+		TokenAuthenticationProvider.init(getApplicationContext(), TokenType.BEARER_TOKEN);
 		PreferenceUtil.init(getApplicationContext());
 		PhotoPickerPreferenceUtil.init(getApplicationContext());
 	}

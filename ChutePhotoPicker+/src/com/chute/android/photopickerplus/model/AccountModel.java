@@ -1,6 +1,5 @@
 package com.chute.android.photopickerplus.model;
 
-import com.chute.sdk.v2.model.UserModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import android.os.Parcel;
@@ -37,21 +36,23 @@ public class AccountModel implements Parcelable {
 	 */
 	@JsonProperty("uid")
 	private String uid;
-	/**
-	 * Status of the account.
-	 */
-	@JsonProperty("status")
-	private int status;
-	/**
-	 * Flag indicating if account notifications are enabled or no.
-	 */
-	@JsonProperty("notifications_enabled")
-	private boolean notificationsEnabled;
-	/**
-	 * The {@link GCUserModel} which the account belongs to.
-	 */
-	@JsonProperty("user")
-	public UserModel user = new UserModel();
+
+	@JsonProperty("created_at")
+	private String createdAt;
+	@JsonProperty("updated_at")
+	private String updatedAt;
+	@JsonProperty("shortcut")
+	private String shortcut;
+	@JsonProperty("username")
+	private String username;
+	@JsonProperty("avatar")
+	private String avatar;
+	@JsonProperty("access_key")
+	private String accessKey;
+	@JsonProperty("access_secret")
+	private String accessSecret;
+	@JsonProperty("email")
+	private String email;
 
 	/**
 	 * Default non-args constructor.
@@ -94,28 +95,68 @@ public class AccountModel implements Parcelable {
 		this.uid = uid;
 	}
 
-	public int getStatus() {
-		return status;
+	public String getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public boolean isNotificationsEnabled() {
-		return notificationsEnabled;
+	public String getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setNotificationsEnabled(boolean notificationsEnabled) {
-		this.notificationsEnabled = notificationsEnabled;
+	public void setUpdatedAt(String updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
-	public UserModel getUser() {
-		return user;
+	public String getShortcut() {
+		return shortcut;
 	}
 
-	public void setUser(UserModel user) {
-		this.user = user;
+	public void setShortcut(String shortcut) {
+		this.shortcut = shortcut;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getAccessKey() {
+		return accessKey;
+	}
+
+	public void setAccessKey(String accessKey) {
+		this.accessKey = accessKey;
+	}
+
+	public String getAccessSecret() {
+		return accessSecret;
+	}
+
+	public void setAccessSecret(String accessSecret) {
+		this.accessSecret = accessSecret;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public AccountModel(Parcel in) {
@@ -123,9 +164,14 @@ public class AccountModel implements Parcelable {
 		type = in.readString();
 		name = in.readString();
 		uid = in.readString();
-		status = in.readInt();
-		notificationsEnabled = in.readInt() == 1;
-		user = in.readParcelable(UserModel.class.getClassLoader());
+		createdAt = in.readString();
+		updatedAt = in.readString();
+		shortcut = in.readString();
+		username = in.readString();
+		avatar = in.readString();
+		accessKey = in.readString();
+		accessSecret = in.readString();
+		email = in.readString();
 	}
 
 	/*
@@ -149,9 +195,15 @@ public class AccountModel implements Parcelable {
 		dest.writeString(type);
 		dest.writeString(name);
 		dest.writeString(uid);
-		dest.writeInt(status);
-		dest.writeInt(notificationsEnabled ? 1 : 0);
-		dest.writeParcelable(user, flags);
+		dest.writeString(createdAt);
+		dest.writeString(updatedAt);
+		dest.writeString(shortcut);
+		dest.writeString(username);
+		dest.writeString(avatar);
+		dest.writeString(accessKey);
+		dest.writeString(accessSecret);
+		dest.writeString(email);
+
 	}
 
 	public static final Parcelable.Creator<AccountModel> CREATOR = new Parcelable.Creator<AccountModel>() {
@@ -178,12 +230,22 @@ public class AccountModel implements Parcelable {
 		builder.append(name);
 		builder.append(", uid=");
 		builder.append(uid);
-		builder.append(", status=");
-		builder.append(status);
-		builder.append(", notificationsEnabled=");
-		builder.append(notificationsEnabled);
-		builder.append(", user=");
-		builder.append(user);
+		builder.append(", createdAt=");
+		builder.append(createdAt);
+		builder.append(", updatedAt=");
+		builder.append(updatedAt);
+		builder.append(", shortcut=");
+		builder.append(shortcut);
+		builder.append(", username=");
+		builder.append(username);
+		builder.append(", avatar=");
+		builder.append(avatar);
+		builder.append(", accessKey=");
+		builder.append(accessKey);
+		builder.append(", accessSecret=");
+		builder.append(accessSecret);
+		builder.append(", email=");
+		builder.append(email);
 		builder.append("]");
 		return builder.toString();
 	}

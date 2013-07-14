@@ -28,7 +28,7 @@ public class Constants {
 	public static final String BASE_AUTH_URL = "https://getchute.com";
 	public static final String BASE_URL = "https://api.getchute.com";
 	public static final String BASE_ACCOUNT_URL = "http://accounts.getchute.com";
-	public static final String URL_ACCOUNTS = BASE_URL + "/v1/accounts";
+	
 	public static final String URL_ACCOUNTS_UNMUTE = BASE_URL + "/v1/accounts/%s/unmute";
 	public static final String URL_ACCOUNTS_MUTE = BASE_URL + "/v1/accounts/%s/mute";
 	public static final String URL_ACCOUNTS_AUTH = BASE_URL + "/v1/auth";
@@ -43,6 +43,8 @@ public class Constants {
 	public static final String URL_AUTHENTICATION_PICASA = BASE_AUTH_URL + "/oauth/google";
 	public static final String URL_AUTHENTICATION_TOKEN = BASE_AUTH_URL + "/oauth/access_token";
 
+//	public static final String URL_ACCOUNTS = BASE_URL + "/v1/accounts";
+	public static final String URL_ACCOUNTS = BASE_URL + "/v2/me/accounts";
 	public static final String URL_ACCOUNT_OBJECT = BASE_ACCOUNT_URL + "/v1/accounts/%s/objects";
 	public static final String URL_ACCOUNT_OBJECT_MEDIA = BASE_ACCOUNT_URL + "/v1/accounts/%s/objects/%s/media";
 

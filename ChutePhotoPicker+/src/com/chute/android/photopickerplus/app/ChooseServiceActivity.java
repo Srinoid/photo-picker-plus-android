@@ -153,7 +153,7 @@ public class ChooseServiceActivity extends Activity {
 			} else {
 				AccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(
 						ChooseServiceActivity.this, accountType, Constants.PERMISSIONS_SCOPE, Constants.CALLBACK_URL,
-						Constants.APP_ID, Constants.APP_SECRET, TokenType.ACCESS_TOKEN);
+						Constants.APP_ID, Constants.APP_SECRET, TokenType.BEARER_TOKEN);
 			}
 		}
 	}
@@ -165,12 +165,11 @@ public class ChooseServiceActivity extends Activity {
 			if (accountType == null) {
 				return;
 			}
-			for (AccountModel accountModel : responseData.getData()) {
-				if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
-					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getUser().getName());
-					PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
-					accountClicked(accountModel.getId(), accountType.getName());
-				}
+			AccountModel accountModel = responseData.getData().get(0);
+			if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
+				PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
+				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
+				accountClicked(accountModel.getId(), accountType.getName());
 			}
 		}
 
@@ -197,6 +196,7 @@ public class ChooseServiceActivity extends Activity {
 				token = AccountStore.getInstance(getApplicationContext()).getPassword();
 				PhotoPickerPreferenceUtil.get().setToken(token);
 				TokenAuthentication.authenticate(getApplicationContext(), token);
+				Log.d("debug", "token = " + token);
 				GCAccounts.all(getApplicationContext(), new AccountsCallback()).executeAsync();
 			}
 			if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
