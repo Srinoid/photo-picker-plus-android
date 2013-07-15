@@ -25,22 +25,22 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.api.GCAccounts;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.android.photopickerplus.model.AccountMediaModel;
-import com.chute.android.photopickerplus.model.AccountModel;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
-import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
+import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory.AccountType;
+import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.AccountStore;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
@@ -164,6 +164,10 @@ public class ChooseServiceActivity extends Activity {
 			if (accountType == null) {
 				return;
 			}
+			if (responseData.getData().size() == 0) {
+				Toast.makeText(getApplicationContext(), "No albums found", Toast.LENGTH_SHORT).show();
+				return;
+			}
 			AccountModel accountModel = responseData.getData().get(0);
 			if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
 				PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
@@ -193,7 +197,7 @@ public class ChooseServiceActivity extends Activity {
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == AccountStore.AUTHENTICATION_REQUEST_CODE) {
 				token = AccountStore.getInstance(getApplicationContext()).getPassword();
-				PhotoPickerPreferenceUtil.get().setToken(token);
+				PreferenceUtil.get().setAccountToken(token);
 				TokenAuthentication.authenticate(getApplicationContext(), token);
 				Log.d("debug", "token = " + token);
 				GCAccounts.all(getApplicationContext(), new AccountsCallback()).executeAsync();

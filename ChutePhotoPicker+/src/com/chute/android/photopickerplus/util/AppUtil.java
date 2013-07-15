@@ -21,7 +21,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 
-import com.chute.android.photopickerplus.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.utils.Utils;
 
 public class AppUtil {

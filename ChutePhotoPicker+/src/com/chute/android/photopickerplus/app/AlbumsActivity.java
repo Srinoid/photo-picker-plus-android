@@ -24,16 +24,16 @@ import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.adapter.AlbumsAdapter;
-import com.chute.android.photopickerplus.api.GCAccounts;
-import com.chute.android.photopickerplus.model.AccountObjectModel;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
-import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotoActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
+import com.chute.sdk.v2.api.accounts.GCAccounts;
+import com.chute.sdk.v2.model.AccountObjectModel;
 import com.chute.sdk.v2.model.response.ListResponseModel;
+import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
@@ -64,7 +64,7 @@ public class AlbumsActivity extends Activity {
 		String albumName = AppUtil.asUpperCaseFirstChar(wrapper.getAccountName().concat(" Albums"));
 		title.setText(albumName);
 
-		TokenAuthentication.authenticate(getApplicationContext(), PhotoPickerPreferenceUtil.get().getToken());
+		TokenAuthentication.authenticate(getApplicationContext(), PreferenceUtil.get().getAccountToken());
 		GCAccounts.objects(getApplicationContext(), wrapper.getAccountId(), new ObjectsCallback()).executeAsync();
 
 	}

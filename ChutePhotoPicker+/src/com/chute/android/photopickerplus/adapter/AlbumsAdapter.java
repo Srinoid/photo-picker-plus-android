@@ -20,7 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.model.AccountObjectModel;
+import com.chute.sdk.v2.model.AccountObjectModel;
 
 import darko.imagedownloader.ImageLoader;
 

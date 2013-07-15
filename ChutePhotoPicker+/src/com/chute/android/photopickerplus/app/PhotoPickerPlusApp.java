@@ -14,7 +14,6 @@ import android.content.Context;
 import android.util.TypedValue;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.api.authentication.TokenAuthenticationProvider;
 import com.chute.sdk.v2.utils.PreferenceUtil;
 
@@ -41,7 +40,6 @@ public class PhotoPickerPlusApp extends Application {
 		mImageLoader = createImageLoader(this);
 		TokenAuthenticationProvider.init(getApplicationContext());
 		PreferenceUtil.init(getApplicationContext());
-		PhotoPickerPreferenceUtil.init(getApplicationContext());
 	}
 
 	@Override

@@ -25,7 +25,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AccountMediaModel;
 
 import darko.imagedownloader.ImageLoader;
 
