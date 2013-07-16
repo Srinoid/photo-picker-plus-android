@@ -1,4 +1,4 @@
-package com.chute.android.photopickerplus.adapter;
+package com.chute.android.photopickerplus.ui.adapter;
 
 import java.io.File;
 import java.util.ArrayList;

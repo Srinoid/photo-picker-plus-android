@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 
-import com.chute.android.photopickerplus.app.GridActivity;
+import com.chute.android.photopickerplus.ui.activity.GridActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class PhotosIntentWrapper extends IntentWrapper {

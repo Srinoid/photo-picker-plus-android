@@ -9,7 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.photopickerplustutorial.intent;
 
-import com.chute.android.photopickerplus.app.ChooseServiceActivity;
+
+import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
 
 import android.app.Activity;
 import android.content.Context;

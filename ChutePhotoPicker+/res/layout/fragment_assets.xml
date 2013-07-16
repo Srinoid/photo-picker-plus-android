@@ -22,7 +22,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/txt_linear"
+        android:id="@+id/linearLayoutTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -31,13 +31,13 @@
         android:paddingTop="5dip" >
 
         <TextView
-            android:id="@+id/txt_select_photos"
+            android:id="@+id/textViewSelectPhotos"
             style="@style/defaultText"
             android:textSize="20sp" />
     </LinearLayout>
 
     <GridView
-        android:id="@+id/gridView"
+        android:id="@+id/gridViewAssets"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttons"
@@ -59,7 +59,7 @@
     
 
     <LinearLayout
-        android:id="@+id/buttons"
+        android:id="@+id/linearLayoutButtons"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -67,14 +67,14 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/btnOk"
+            android:id="@+id/buttonOk"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/ok" />
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/buttonCancel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

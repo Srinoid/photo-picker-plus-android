@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.chute.android.photopickerplus.app;
+package com.chute.android.photopickerplus.ui.activity;
 
 import java.util.ArrayList;
 
@@ -26,9 +26,9 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.adapter.PhotoSelectCursorAdapter;
-import com.chute.android.photopickerplus.adapter.PhotosAdapter;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.ui.adapter.PhotoSelectCursorAdapter;
+import com.chute.android.photopickerplus.ui.adapter.PhotosAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
@@ -59,18 +59,18 @@ public class GridActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.photos_select);
+		setContentView(R.layout.fragment_assets);
 
-		selectPhotos = (TextView) findViewById(R.id.txt_select_photos);
-		grid = (GridView) findViewById(R.id.gridView);
+		selectPhotos = (TextView) findViewById(R.id.textViewSelectPhotos);
+		grid = (GridView) findViewById(R.id.gridViewAssets);
 		emptyView = findViewById(R.id.empty_view_layout);
 		grid.setEmptyView(emptyView);
 
 		wrapper = new PhotosIntentWrapper(getIntent());
 
-		Button ok = (Button) findViewById(R.id.btnOk);
+		Button ok = (Button) findViewById(R.id.buttonOk);
 		ok.setOnClickListener(new OkClickListener());
-		Button cancel = (Button) findViewById(R.id.btnCancel);
+		Button cancel = (Button) findViewById(R.id.buttonCancel);
 		cancel.setOnClickListener(new CancelClickListener());
 
 		if ((wrapper.getFilterType() == PhotosIntentWrapper.TYPE_ALL_PHOTOS)

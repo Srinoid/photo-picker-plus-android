@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.chute.android.photopickerplus.app;
+package com.chute.android.photopickerplus.ui.activity;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.adapter.AlbumsAdapter;
+import com.chute.android.photopickerplus.ui.adapter.AlbumsAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.TokenAuthentication;
@@ -53,14 +53,14 @@ public class AlbumsActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.albums_activity);
+		setContentView(R.layout.fragment_albums);
 
-		albums = (ListView) findViewById(R.id.albumList);
+		albums = (ListView) findViewById(R.id.listViewAlbums);
 		emptyView = findViewById(R.id.empty_view_layout);
 		albums.setEmptyView(emptyView);
 		wrapper = new AlbumsActivityIntentWrapper(getIntent());
 
-		TextView title = (TextView) findViewById(R.id.title);
+		TextView title = (TextView) findViewById(R.id.textViewAlbumTitle);
 		String albumName = AppUtil.asUpperCaseFirstChar(wrapper.getAccountName().concat(" Albums"));
 		title.setText(albumName);
 

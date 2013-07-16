@@ -13,7 +13,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.chute.android.photopickerplus.app.AlbumsActivity;
+import com.chute.android.photopickerplus.ui.activity.AlbumsActivity;
 
 public class AlbumsActivityIntentWrapper {
 

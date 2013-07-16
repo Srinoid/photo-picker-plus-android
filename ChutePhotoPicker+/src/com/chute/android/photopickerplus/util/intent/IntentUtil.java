@@ -15,7 +15,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.chute.android.photopickerplus.app.ChooseServiceActivity;
+import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class IntentUtil {

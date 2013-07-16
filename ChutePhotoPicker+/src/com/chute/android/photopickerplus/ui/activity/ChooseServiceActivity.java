@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.chute.android.photopickerplus.app;
+package com.chute.android.photopickerplus.ui.activity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,27 +53,26 @@ public class ChooseServiceActivity extends Activity {
 
 	public static final String TAG = ChooseServiceActivity.class.getSimpleName();
 
-	private TextView txtFacebook;
-	private TextView txtPicasa;
-	private TextView txtFlickr;
-	private TextView txtInstagram;
+	private TextView textViewFacebook;
+	private TextView textViewPicasa;
+	private TextView textViewFlickr;
+	private TextView textViewInstagram;
+	private TextView textViewUserTitle;
 	private LinearLayout linearLayoutServices;
-	private LinearLayout take_photos;
-	private LinearLayout facebook;
-	private LinearLayout picasa;
-	private LinearLayout instagram;
-	private LinearLayout flickr;
-	private LinearLayout allPhotos;
-	private LinearLayout cameraPhotos;
-	private LinearLayout lastPhoto;
-	private ImageView img_all_photos;
-	private ImageView img_camera_photos;
-	private ImageView img_last_photo;
+	private LinearLayout linearLayoutTakePhoto;
+	private LinearLayout linearLayoutFacebook;
+	private LinearLayout linearLayoutPicasa;
+	private LinearLayout linearLayoutInstagram;
+	private LinearLayout linearLayoutFlickr;
+	private LinearLayout linearLayoutAllPhotos;
+	private LinearLayout linearLayoutCameraPhotos;
+	private LinearLayout linearLayoutLastPhoto;
+	private ImageView imageViewAllPhotos;
+	private ImageView imageViewCameraPhotos;
+	private ImageView imageViewLastPhoto;
 	private AccountType accountType;
 	private ImageLoader loader;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
-
-	private TextView textViewLabelUser;
 
 	private String token;
 
@@ -81,65 +80,69 @@ public class ChooseServiceActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.service_layout);
+		setContentView(R.layout.fragment_services);
 
 		loader = ImageLoader.getLoader(ChooseServiceActivity.this);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 
-		linearLayoutServices = (LinearLayout) findViewById(R.id.services_linear);
-		textViewLabelUser = (TextView) findViewById(R.id.txt_user);
+		initViews();
 		PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 		if (photoPickerPlusIntentWrapper.areServicesHidden()) {
 			linearLayoutServices.setVisibility(View.GONE);
-			textViewLabelUser.setVisibility(View.GONE);
+			textViewUserTitle.setVisibility(View.GONE);
 		}
-		txtFacebook = (TextView) findViewById(R.id.txt_facebook);
-		txtFacebook.setTag(AccountType.FACEBOOK);
-		txtPicasa = (TextView) findViewById(R.id.txt_picasa);
-		txtPicasa.setTag(AccountType.PICASA);
-		txtFlickr = (TextView) findViewById(R.id.txt_flickr);
-		txtFlickr.setTag(AccountType.FLICKR);
-		txtInstagram = (TextView) findViewById(R.id.txt_instagram);
-		txtInstagram.setTag(AccountType.INSTAGRAM);
 
-		facebook = (LinearLayout) findViewById(R.id.linear_fb);
-		facebook.setTag(AccountType.FACEBOOK);
-		flickr = (LinearLayout) findViewById(R.id.linear_flickr);
-		flickr.setTag(AccountType.FLICKR);
-		picasa = (LinearLayout) findViewById(R.id.linear_picasa);
-		picasa.setTag(AccountType.PICASA);
-		instagram = (LinearLayout) findViewById(R.id.linear_instagram);
-		instagram.setTag(AccountType.INSTAGRAM);
+		linearLayoutFacebook.setOnClickListener(new OnLoginClickListener());
+		linearLayoutPicasa.setOnClickListener(new OnLoginClickListener());
+		linearLayoutFlickr.setOnClickListener(new OnLoginClickListener());
+		linearLayoutInstagram.setOnClickListener(new OnLoginClickListener());
+		linearLayoutAllPhotos.setOnClickListener(new OnPhotoStreamListener());
+		linearLayoutCameraPhotos.setOnClickListener(new OnCameraRollListener());
+		linearLayoutLastPhoto.setOnClickListener(new OnLastPhotoClickListener());
+		linearLayoutTakePhoto.setOnClickListener(new OnCameraClickListener());
 
-		allPhotos = (LinearLayout) findViewById(R.id.all_photos_linear);
-		allPhotos.setOnClickListener(new OnPhotoStreamListener());
-
-		cameraPhotos = (LinearLayout) findViewById(R.id.camera_shots_linear);
-		cameraPhotos.setOnClickListener(new OnCameraRollListener());
-
-		lastPhoto = (LinearLayout) findViewById(R.id.last_photo_linear);
-		lastPhoto.setOnClickListener(new OnLastPhotoClickListener());
-
-		img_all_photos = (ImageView) findViewById(R.id.all_photos_icon);
-		img_camera_photos = (ImageView) findViewById(R.id.camera_shots_icon);
-		img_last_photo = (ImageView) findViewById(R.id.last_photo_icon);
-
-		loader.displayImage(MediaDAO.getLastPhotoFromAllPhotos(getApplicationContext()).toString(), img_all_photos,
+		loader.displayImage(MediaDAO.getLastPhotoFromAllPhotos(getApplicationContext()).toString(), imageViewAllPhotos,
 				null);
 
 		Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
 		if (uri != null) {
-			loader.displayImage(uri.toString(), img_camera_photos, null);
-			loader.displayImage(uri.toString(), img_last_photo, null);
+			loader.displayImage(uri.toString(), imageViewCameraPhotos, null);
+			loader.displayImage(uri.toString(), imageViewLastPhoto, null);
 		}
-		take_photos = (LinearLayout) findViewById(R.id.album3_linear);
-		take_photos.setOnClickListener(new OnCameraClickListener());
 
-		facebook.setOnClickListener(new OnLoginClickListener());
-		picasa.setOnClickListener(new OnLoginClickListener());
-		flickr.setOnClickListener(new OnLoginClickListener());
-		instagram.setOnClickListener(new OnLoginClickListener());
+	}
+
+	public void initViews() {
+		textViewFacebook = (TextView) findViewById(R.id.textViewFacebook);
+		textViewFacebook.setTag(AccountType.FACEBOOK);
+		textViewPicasa = (TextView) findViewById(R.id.textViewPicasa);
+		textViewPicasa.setTag(AccountType.PICASA);
+		textViewFlickr = (TextView) findViewById(R.id.textViewFlickr);
+		textViewFlickr.setTag(AccountType.FLICKR);
+		textViewInstagram = (TextView) findViewById(R.id.textViewInstagram);
+		textViewInstagram.setTag(AccountType.INSTAGRAM);
+		textViewUserTitle = (TextView) findViewById(R.id.textViewUserTitle);
+
+		linearLayoutServices = (LinearLayout) findViewById(R.id.linearLayoutSocialServicesContent);
+		linearLayoutAllPhotos = (LinearLayout) findViewById(R.id.linearLayoutAllPhotos);
+		linearLayoutCameraPhotos = (LinearLayout) findViewById(R.id.linearLayoutCameraShots);
+		linearLayoutLastPhoto = (LinearLayout) findViewById(R.id.linearLayoutLastPhotoTaken);
+		linearLayoutTakePhoto = (LinearLayout) findViewById(R.id.linearLayoutTakePhoto);
+
+		linearLayoutFacebook = (LinearLayout) findViewById(R.id.linearLayoutFacebook);
+		linearLayoutFacebook.setTag(AccountType.FACEBOOK);
+		linearLayoutFlickr = (LinearLayout) findViewById(R.id.linearLayoutFlickr);
+		linearLayoutFlickr.setTag(AccountType.FLICKR);
+		linearLayoutPicasa = (LinearLayout) findViewById(R.id.linearLayoutPicasa);
+		linearLayoutPicasa.setTag(AccountType.PICASA);
+		linearLayoutInstagram = (LinearLayout) findViewById(R.id.linearLayoutInstagram);
+		linearLayoutInstagram.setTag(AccountType.INSTAGRAM);
+
+		imageViewAllPhotos = (ImageView) findViewById(R.id.imageViewAllPhotos);
+		imageViewCameraPhotos = (ImageView) findViewById(R.id.imageViewCameraShots);
+		imageViewLastPhoto = (ImageView) findViewById(R.id.imageViewLastPhotoTaken);
+
 	}
 
 	private final class OnLoginClickListener implements OnClickListener {
@@ -311,23 +314,23 @@ public class ChooseServiceActivity extends Activity {
 		super.onResume();
 		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
 			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-				txtPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
+				textViewPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
 
 			}
 		}
 		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
 			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-				txtFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
+				textViewFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
 			}
 		}
 		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
 			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-				txtFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
+				textViewFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
 			}
 		}
 		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
 			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-				txtInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
+				textViewInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
 			}
 		}
 	}
