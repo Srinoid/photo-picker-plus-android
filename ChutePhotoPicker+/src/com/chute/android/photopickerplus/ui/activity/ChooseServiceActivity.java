@@ -18,19 +18,23 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.CameraRollListener;
+import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LastPhotoListener;
+import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LoginListener;
+import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.PhotoStreamListener;
+import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.TakePhotoListener;
+import com.chute.android.photopickerplus.ui.fragment.ContentFragment;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
+import com.chute.android.photopickerplus.util.ContentType;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
@@ -47,9 +51,8 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-import darko.imagedownloader.ImageLoader;
-
-public class ChooseServiceActivity extends Activity {
+public class ChooseServiceActivity extends FragmentActivity implements LoginListener, CameraRollListener,
+		LastPhotoListener, PhotoStreamListener, TakePhotoListener {
 
 	public static final String TAG = ChooseServiceActivity.class.getSimpleName();
 
@@ -57,107 +60,25 @@ public class ChooseServiceActivity extends Activity {
 	private TextView textViewPicasa;
 	private TextView textViewFlickr;
 	private TextView textViewInstagram;
-	private TextView textViewUserTitle;
-	private LinearLayout linearLayoutServices;
-	private LinearLayout linearLayoutTakePhoto;
-	private LinearLayout linearLayoutFacebook;
-	private LinearLayout linearLayoutPicasa;
-	private LinearLayout linearLayoutInstagram;
-	private LinearLayout linearLayoutFlickr;
-	private LinearLayout linearLayoutAllPhotos;
-	private LinearLayout linearLayoutCameraPhotos;
-	private LinearLayout linearLayoutLastPhoto;
-	private ImageView imageViewAllPhotos;
-	private ImageView imageViewCameraPhotos;
-	private ImageView imageViewLastPhoto;
 	private AccountType accountType;
-	private ImageLoader loader;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
 
 	private String token;
+
+	private boolean dualFragments = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.fragment_services);
-
-		loader = ImageLoader.getLoader(ChooseServiceActivity.this);
+		setContentView(R.layout.main);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
+		ContentFragment contentFragment = (ContentFragment) this.getSupportFragmentManager().findFragmentById(
+				R.id.fragmentContent);
+		if (contentFragment != null)
+			dualFragments = true;
 
-		initViews();
-		PhotoPickerPlusIntentWrapper photoPickerPlusIntentWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		if (photoPickerPlusIntentWrapper.areServicesHidden()) {
-			linearLayoutServices.setVisibility(View.GONE);
-			textViewUserTitle.setVisibility(View.GONE);
-		}
-
-		linearLayoutFacebook.setOnClickListener(new OnLoginClickListener());
-		linearLayoutPicasa.setOnClickListener(new OnLoginClickListener());
-		linearLayoutFlickr.setOnClickListener(new OnLoginClickListener());
-		linearLayoutInstagram.setOnClickListener(new OnLoginClickListener());
-		linearLayoutAllPhotos.setOnClickListener(new OnPhotoStreamListener());
-		linearLayoutCameraPhotos.setOnClickListener(new OnCameraRollListener());
-		linearLayoutLastPhoto.setOnClickListener(new OnLastPhotoClickListener());
-		linearLayoutTakePhoto.setOnClickListener(new OnCameraClickListener());
-
-		loader.displayImage(MediaDAO.getLastPhotoFromAllPhotos(getApplicationContext()).toString(), imageViewAllPhotos,
-				null);
-
-		Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
-		if (uri != null) {
-			loader.displayImage(uri.toString(), imageViewCameraPhotos, null);
-			loader.displayImage(uri.toString(), imageViewLastPhoto, null);
-		}
-
-	}
-
-	public void initViews() {
-		textViewFacebook = (TextView) findViewById(R.id.textViewFacebook);
-		textViewFacebook.setTag(AccountType.FACEBOOK);
-		textViewPicasa = (TextView) findViewById(R.id.textViewPicasa);
-		textViewPicasa.setTag(AccountType.PICASA);
-		textViewFlickr = (TextView) findViewById(R.id.textViewFlickr);
-		textViewFlickr.setTag(AccountType.FLICKR);
-		textViewInstagram = (TextView) findViewById(R.id.textViewInstagram);
-		textViewInstagram.setTag(AccountType.INSTAGRAM);
-		textViewUserTitle = (TextView) findViewById(R.id.textViewUserTitle);
-
-		linearLayoutServices = (LinearLayout) findViewById(R.id.linearLayoutSocialServicesContent);
-		linearLayoutAllPhotos = (LinearLayout) findViewById(R.id.linearLayoutAllPhotos);
-		linearLayoutCameraPhotos = (LinearLayout) findViewById(R.id.linearLayoutCameraShots);
-		linearLayoutLastPhoto = (LinearLayout) findViewById(R.id.linearLayoutLastPhotoTaken);
-		linearLayoutTakePhoto = (LinearLayout) findViewById(R.id.linearLayoutTakePhoto);
-
-		linearLayoutFacebook = (LinearLayout) findViewById(R.id.linearLayoutFacebook);
-		linearLayoutFacebook.setTag(AccountType.FACEBOOK);
-		linearLayoutFlickr = (LinearLayout) findViewById(R.id.linearLayoutFlickr);
-		linearLayoutFlickr.setTag(AccountType.FLICKR);
-		linearLayoutPicasa = (LinearLayout) findViewById(R.id.linearLayoutPicasa);
-		linearLayoutPicasa.setTag(AccountType.PICASA);
-		linearLayoutInstagram = (LinearLayout) findViewById(R.id.linearLayoutInstagram);
-		linearLayoutInstagram.setTag(AccountType.INSTAGRAM);
-
-		imageViewAllPhotos = (ImageView) findViewById(R.id.imageViewAllPhotos);
-		imageViewCameraPhotos = (ImageView) findViewById(R.id.imageViewCameraShots);
-		imageViewLastPhoto = (ImageView) findViewById(R.id.imageViewLastPhotoTaken);
-
-	}
-
-	private final class OnLoginClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			accountType = (AccountType) v.getTag();
-			if (PreferenceUtil.get().hasAccountId(accountType)) {
-				accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
-			} else {
-				AccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(
-						ChooseServiceActivity.this, accountType, Constants.PERMISSIONS_SCOPE, Constants.CALLBACK_URL,
-						Constants.APP_ID, Constants.APP_SECRET);
-			}
-		}
 	}
 
 	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
@@ -187,11 +108,19 @@ public class ChooseServiceActivity extends Activity {
 	}
 
 	public void accountClicked(String accountId, String accountName) {
-		AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ChooseServiceActivity.this);
-		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-		wrapper.setAccountId(accountId);
-		wrapper.setAccountName(accountName);
-		wrapper.startActivity(ChooseServiceActivity.this);
+		if (dualFragments) {
+			Log.d("debug", "dualfragments");
+			ContentFragment frag = (ContentFragment) this.getSupportFragmentManager().findFragmentById(
+					R.id.fragmentContent);
+			frag.updateContent(ContentType.ALBUMS, null, accountName, accountId, ppWrapper.getChuteId(),
+					ppWrapper.getIsMultiPicker());
+		} else {
+			AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ChooseServiceActivity.this);
+			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+			wrapper.setAccountId(accountId);
+			wrapper.setAccountName(accountName);
+			wrapper.startActivity(ChooseServiceActivity.this);
+		}
 	}
 
 	@Override
@@ -236,29 +165,61 @@ public class ChooseServiceActivity extends Activity {
 		}
 	}
 
-	private class OnCameraClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-				NotificationUtil.makeToast(getApplicationContext(), R.string.toast_feature_camera);
-				return;
-			}
-			final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			if (AppUtil.hasImageCaptureBug() == false) {
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AppUtil.getTempFile(ChooseServiceActivity.this)));
-			} else {
-				intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
-						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-			}
-			startActivityForResult(intent, Constants.CAMERA_PIC_REQUEST);
-		}
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
+		finish();
 	}
 
-	private final class OnPhotoStreamListener implements OnClickListener {
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
+//			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+//				textViewPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
+//
+//			}
+//		}
+//		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
+//			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+//				textViewFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
+//			}
+//		}
+//		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
+//			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+//				textViewFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
+//			}
+//		}
+//		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
+//			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+//				textViewInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
+//			}
+//		}
+//	}
 
-		@Override
-		public void onClick(View v) {
+	@Override
+	public void takePhoto() {
+		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+			NotificationUtil.makeToast(getApplicationContext(), R.string.toast_feature_camera);
+			return;
+		}
+		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (AppUtil.hasImageCaptureBug() == false) {
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AppUtil.getTempFile(ChooseServiceActivity.this)));
+		} else {
+			intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
+					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		}
+		startActivityForResult(intent, Constants.CAMERA_PIC_REQUEST);
+
+	}
+
+	@Override
+	public void photoStream() {
+		if (dualFragments) {
+
+		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setFilterType(PhotosIntentWrapper.TYPE_ALL_PHOTOS);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
@@ -266,12 +227,30 @@ public class ChooseServiceActivity extends Activity {
 			wrapper.startActivityForResult(ChooseServiceActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 		}
+
 	}
 
-	private final class OnCameraRollListener implements OnClickListener {
+	@Override
+	public void lastPhoto() {
+		Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
+		if (uri.toString().equals("")) {
+			NotificationUtil.makeToast(getApplicationContext(), getResources().getString(R.string.no_camera_photos));
+		} else {
+			final AccountMediaModel model = new AccountMediaModel();
+			model.setLargeUrl(uri.toString());
+			model.setThumbUrl(uri.toString());
+			model.setUrl(uri.toString());
 
-		@Override
-		public void onClick(View v) {
+			IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, model, ppWrapper.getChuteId());
+		}
+
+	}
+
+	@Override
+	public void cameraRoll() {
+		if (dualFragments) {
+
+		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setFilterType(PhotosIntentWrapper.TYPE_CAMERA_ROLL);
@@ -282,56 +261,16 @@ public class ChooseServiceActivity extends Activity {
 
 	}
 
-	private final class OnLastPhotoClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
-			if (uri.toString().equals("")) {
-				NotificationUtil
-						.makeToast(getApplicationContext(), getResources().getString(R.string.no_camera_photos));
-			} else {
-				final AccountMediaModel model = new AccountMediaModel();
-				model.setLargeUrl(uri.toString());
-				model.setThumbUrl(uri.toString());
-				model.setUrl(uri.toString());
-
-				IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, model, ppWrapper.getChuteId());
-			}
-		}
-
-	}
-
 	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
-		finish();
-	}
+	public void accountLogin(AccountType type) {
+		accountType = type;
+		if (PreferenceUtil.get().hasAccountId(accountType)) {
+			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
+		} else {
+			AccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(ChooseServiceActivity.this,
+					accountType, Constants.PERMISSIONS_SCOPE, Constants.CALLBACK_URL, Constants.APP_ID,
+					Constants.APP_SECRET);
+		}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-				textViewPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
-
-			}
-		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-				textViewFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
-			}
-		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-				textViewFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
-			}
-		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-				textViewInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
-			}
-		}
 	}
 }

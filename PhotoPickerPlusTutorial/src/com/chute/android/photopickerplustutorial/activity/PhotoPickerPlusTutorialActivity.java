@@ -7,21 +7,22 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.chute.photopickerplustutorial.app;
+package com.chute.android.photopickerplustutorial.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
 
 import com.chute.android.photopickerplus.util.intent.PhotoActivityIntentWrapper;
-import com.chute.photopickerplustutorial.R;
-import com.chute.photopickerplustutorial.adapter.GridAdapter;
-import com.chute.photopickerplustutorial.intent.PhotoPickerPlusIntentWrapper;
+import com.chute.android.photopickerplustutorial.R;
+import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
+import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusIntentWrapper;
 
-public class PhotoPickerPlusTutorialActivity extends Activity {
+public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
 	public static final String TAG = PhotoPickerPlusTutorialActivity.class
 			.getSimpleName();
@@ -36,7 +37,7 @@ public class PhotoPickerPlusTutorialActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.photo_picker_plus_activity);
+		setContentView(R.layout.activity_photo_picker_plus);
 
 		findViewById(R.id.btnPhotoPicker).setOnClickListener(
 				new OnPhotoPickerClickListener());
@@ -54,6 +55,7 @@ public class PhotoPickerPlusTutorialActivity extends Activity {
 			wrapper.startActivityForResult(
 					PhotoPickerPlusTutorialActivity.this,
 					PhotoPickerPlusIntentWrapper.REQUEST_CODE);
+			
 		}
 	}
 

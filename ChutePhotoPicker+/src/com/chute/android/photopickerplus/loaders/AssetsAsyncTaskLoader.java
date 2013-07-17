@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
+import com.chute.android.photopickerplus.util.PhotoFilterType;
 
 
 public class AssetsAsyncTaskLoader extends
@@ -12,18 +12,18 @@ public class AssetsAsyncTaskLoader extends
 
 	public static final String TAG = AssetsAsyncTaskLoader.class
 			.getSimpleName();
-	private final int filterType;
+	private final PhotoFilterType filterType;
 
-	public AssetsAsyncTaskLoader(Context context, int filterType) {
+	public AssetsAsyncTaskLoader(Context context, PhotoFilterType filterType) {
 		super(context);
 		this.filterType = filterType;
 	}
 
 	@Override
 	public Cursor loadInBackground() {
-		if (filterType == PhotosIntentWrapper.TYPE_ALL_PHOTOS) {
+		if (filterType == PhotoFilterType.ALL_PHOTOS) {
 			return MediaDAO.getAllMediaPhotos(getContext());
-		} else if (filterType == PhotosIntentWrapper.TYPE_CAMERA_ROLL) {
+		} else if (filterType == PhotoFilterType.CAMERA_ROLL) {
 			return MediaDAO.getCameraPhotos(getContext());
 		} else {
 			return null;

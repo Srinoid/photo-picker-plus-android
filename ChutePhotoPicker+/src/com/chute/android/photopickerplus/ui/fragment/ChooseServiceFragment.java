@@ -94,7 +94,7 @@ public class ChooseServiceFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_services, container, false);
 		imageLoader = ImageLoader.getLoader(getActivity());
 		
-		areServicesHidden = getArguments().getBoolean(ARG_HIDDEN_SERVICES);
+//		areServicesHidden = getArguments().getBoolean(ARG_HIDDEN_SERVICES);
 
 		initViews(view);
 
@@ -115,10 +115,10 @@ public class ChooseServiceFragment extends Fragment {
 		linearLayoutLastPhoto.setOnClickListener(new OnLastPhotoClickListener());
 		linearLayoutTakePhoto.setOnClickListener(new OnTakePhotoClickListener());
 		
-		if (areServicesHidden) {
-			linearLayoutServices.setVisibility(View.GONE);
-			textViewUserTitle.setVisibility(View.GONE);
-		}
+//		if (areServicesHidden) {
+//			linearLayoutServices.setVisibility(View.GONE);
+//			textViewUserTitle.setVisibility(View.GONE);
+//		}
 		return view;
 	}
 

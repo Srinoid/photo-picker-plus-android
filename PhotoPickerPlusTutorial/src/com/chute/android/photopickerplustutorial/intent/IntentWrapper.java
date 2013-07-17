@@ -7,13 +7,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.chute.photopickerplustutorial.intent;
+package com.chute.android.photopickerplustutorial.intent;
 
 import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 
 public class IntentWrapper {
 
@@ -63,7 +64,7 @@ public class IntentWrapper {
         return builder.toString();
     }
 
-    public void startActivity(Activity context) {
+    public void startActivity(FragmentActivity context) {
         context.startActivity(intent);
     }
 }

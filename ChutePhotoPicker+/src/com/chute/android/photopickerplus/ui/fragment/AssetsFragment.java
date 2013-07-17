@@ -25,6 +25,7 @@ import com.chute.android.photopickerplus.ui.adapter.PhotoSelectCursorAdapter;
 import com.chute.android.photopickerplus.ui.adapter.PhotosAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
+import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -101,7 +102,7 @@ public class AssetsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_assets, container, false);
 
-		filterType = getArguments().getInt(ARG_FILTER_TYPE);
+//		filterType = getArguments().getInt(ARG_FILTER_TYPE);
 		String accountId = getArguments().getString(ARG_ACCOUNT_ID);
 		albumId = getArguments().getString(ARG_ALBUM_ID);
 		isMultipicker = getArguments().getBoolean(ARG_MULTIPICKER);
@@ -116,21 +117,21 @@ public class AssetsFragment extends Fragment {
 		Button cancel = (Button) view.findViewById(R.id.buttonCancel);
 		cancel.setOnClickListener(new CancelClickListener());
 
-		if ((filterType == PhotosIntentWrapper.TYPE_ALL_PHOTOS) || (filterType == PhotosIntentWrapper.TYPE_CAMERA_ROLL)) {
-			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback(filterType));
-		} else if (filterType == PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS) {
-			GCAccounts.objectMedia(getActivity().getApplicationContext(), accountId, albumId, new PhotoListCallback())
-					.executeAsync();
-		}
+//		if ((filterType == PhotosIntentWrapper.TYPE_ALL_PHOTOS) || (filterType == PhotosIntentWrapper.TYPE_CAMERA_ROLL)) {
+//			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback(filterType));
+//		} else if (filterType == PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS) {
+//			GCAccounts.objectMedia(getActivity().getApplicationContext(), accountId, albumId, new PhotoListCallback())
+//					.executeAsync();
+//		}
 
 		return view;
 	}
 
 	private final class AssetsLoaderCallback implements LoaderCallbacks<Cursor> {
 
-		private int filterType;
+		private PhotoFilterType filterType;
 
-		private AssetsLoaderCallback(int filterType) {
+		private AssetsLoaderCallback(PhotoFilterType filterType) {
 			this.filterType = filterType;
 		}
 

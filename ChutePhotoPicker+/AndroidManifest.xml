@@ -15,16 +15,13 @@
         android:name="com.chute.android.photopickerplus.PhotoPickerPlusApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
-        <service android:name="com.chute.sdk.api.GCHttpService" />
 
         <activity
             android:name="com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="com.chute.android.photopickerplus.ui.activity.AlbumsActivity"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
@@ -32,13 +29,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name=".app.PhotoStreamActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
-        <activity
-            android:name=".app.PhotosActivity"
-            android:screenOrientation="portrait"
+            android:name="com.chute.android.photopickerplus.ui.activity.GridActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
     </application>
