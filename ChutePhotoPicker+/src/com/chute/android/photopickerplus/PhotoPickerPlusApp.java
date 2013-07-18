@@ -14,7 +14,9 @@ import android.content.Context;
 import android.util.TypedValue;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.sdk.v2.api.authentication.TokenAuthenticationProvider;
+import com.chute.android.photopickerplus.util.Constants;
+import com.chute.sdk.v2.api.Chute;
+import com.chute.sdk.v2.api.authentication.AuthConstants;
 import com.chute.sdk.v2.utils.PreferenceUtil;
 
 import darko.imagedownloader.ImageLoader;
@@ -38,7 +40,7 @@ public class PhotoPickerPlusApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		mImageLoader = createImageLoader(this);
-		TokenAuthenticationProvider.init(getApplicationContext());
+		Chute.init(this, new AuthConstants(Constants.APP_ID, Constants.APP_SECRET));
 		PreferenceUtil.init(getApplicationContext());
 	}
 

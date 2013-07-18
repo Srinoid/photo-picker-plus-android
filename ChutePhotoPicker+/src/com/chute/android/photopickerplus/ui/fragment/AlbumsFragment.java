@@ -18,7 +18,6 @@ import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.adapter.AlbumsAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
-import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountObjectModel;
 import com.chute.sdk.v2.model.response.ListResponseModel;
@@ -69,8 +68,7 @@ public class AlbumsFragment extends Fragment {
 		String albumName = AppUtil.asUpperCaseFirstChar(albumTitle.concat(" Albums"));
 		textViewAlbumTitle.setText(albumName);
 
-		TokenAuthentication.authenticate(getActivity().getApplicationContext(), PreferenceUtil.get().getAccountToken());
-		GCAccounts.objects(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
+		GCAccounts.albums(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
 		return view;
 	}
 	

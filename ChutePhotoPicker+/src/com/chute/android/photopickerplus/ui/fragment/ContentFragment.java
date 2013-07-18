@@ -17,7 +17,6 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.ContentType;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
-import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -138,9 +137,7 @@ public class ContentFragment extends Fragment {
 
 			initAlbumsListView();
 
-			TokenAuthentication.authenticate(getActivity().getApplicationContext(), PreferenceUtil.get()
-					.getAccountToken());
-			GCAccounts.objects(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
+			GCAccounts.albums(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
 		} else {
 			// assets
 			linearLayoutButtons.setVisibility(View.VISIBLE);
@@ -149,7 +146,7 @@ public class ContentFragment extends Fragment {
 			if ((photoType == PhotoFilterType.ALL_PHOTOS) || (photoType == PhotoFilterType.CAMERA_ROLL)) {
 				getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback());
 			} else if (photoType == PhotoFilterType.SOCIAL_PHOTOS) {
-				GCAccounts.objectMedia(getActivity().getApplicationContext(), accountId, albumId,
+				GCAccounts.albumMedia(getActivity().getApplicationContext(), accountId, albumId,
 						new PhotoListCallback()).executeAsync();
 			}
 
@@ -210,6 +207,7 @@ public class ContentFragment extends Fragment {
 			emptyView.setVisibility(View.GONE);
 		}
 
+
 		@Override
 		public void onHttpError(ResponseStatus responseStatus) {
 			Log.d("debug",
@@ -217,6 +215,7 @@ public class ContentFragment extends Fragment {
 			NotificationUtil.makeConnectionProblemToast(getActivity().getApplicationContext());
 			toggleEmptyViewErrorMessage();
 
+			
 		}
 	}
 

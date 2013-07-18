@@ -37,16 +37,15 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.ContentType;
 import com.chute.android.photopickerplus.util.NotificationUtil;
-import com.chute.android.photopickerplus.util.TokenAuthentication;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
-import com.chute.sdk.v2.api.authentication.AuthenticationFactory.AccountType;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.AccountStore;
+import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
@@ -75,7 +74,8 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		ChooseServiceFragment chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentChooseService);
+		ChooseServiceFragment chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.fragmentChooseService);
 		ContentFragment contentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragmentContent);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
@@ -131,9 +131,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 			if (requestCode == AccountStore.AUTHENTICATION_REQUEST_CODE) {
 				token = AccountStore.getInstance(getApplicationContext()).getPassword();
 				PreferenceUtil.get().setAccountToken(token);
-				TokenAuthentication.authenticate(getApplicationContext(), token);
-				Log.d("debug", "token = " + token);
-				GCAccounts.all(getApplicationContext(), new AccountsCallback()).executeAsync();
+				GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback()).executeAsync();
 			}
 			if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
 				finish();
@@ -173,31 +171,31 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		finish();
 	}
 
-//	@Override
-//	protected void onResume() {
-//		super.onResume();
-//		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
-//			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-//				textViewPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
-//
-//			}
-//		}
-//		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
-//			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-//				textViewFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
-//			}
-//		}
-//		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
-//			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-//				textViewFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
-//			}
-//		}
-//		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
-//			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-//				textViewInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
-//			}
-//		}
-//	}
+	// @Override
+	// protected void onResume() {
+	// super.onResume();
+	// if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
+	// if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+	// textViewPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
+	//
+	// }
+	// }
+	// if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
+	// if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+	// textViewFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
+	// }
+	// }
+	// if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
+	// if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+	// textViewFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
+	// }
+	// }
+	// if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
+	// if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+	// textViewInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
+	// }
+	// }
+	// }
 
 	@Override
 	public void takePhoto() {
@@ -274,4 +272,5 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		}
 
 	}
+
 }

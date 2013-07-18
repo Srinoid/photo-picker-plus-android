@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.sdk.v2.api.authentication.AuthenticationFactory.AccountType;
+import com.chute.sdk.v2.model.enums.AccountType;
 
 import darko.imagedownloader.ImageLoader;
 
