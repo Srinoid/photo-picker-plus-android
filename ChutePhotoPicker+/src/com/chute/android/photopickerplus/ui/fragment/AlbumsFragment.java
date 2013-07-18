@@ -33,9 +33,20 @@ public class AlbumsFragment extends Fragment {
 	private View emptyView;
 	private SelectAlbumListener albumListener;
 	private TextView textViewAlbumTitle;
+	
+	private String accountId;
 
 	public interface SelectAlbumListener {
-		public void onAlbumSelected(AccountObjectModel model);
+		public void onAlbumSelected(AccountObjectModel model, String accountId);
+	}
+
+	public static AlbumsFragment newInstance(String albumTitle, String accountId) {
+		AlbumsFragment frag = new AlbumsFragment();
+		Bundle args = new Bundle();
+		args.putString(ARG_ALBUM_TITLE, albumTitle);
+		args.putString(ARG_ACCOUNT_ID, accountId);
+		frag.setArguments(args);
+		return frag;
 	}
 
 	@Override
@@ -54,10 +65,16 @@ public class AlbumsFragment extends Fragment {
 
 		textViewAlbumTitle = (TextView) view.findViewById(R.id.textViewAlbumTitle);
 
+		if (getArguments() != null) {
+			accountId = getArguments().getString(ARG_ACCOUNT_ID);
+			updateFragment(getArguments().getString(ARG_ALBUM_TITLE), accountId);
+		}
+
 		return view;
 	}
 
 	public void updateFragment(String accountTitle, String accountId) {
+		this.accountId = accountId;
 		String albumName = AppUtil.asUpperCaseFirstChar(accountTitle.concat(" Albums"));
 		textViewAlbumTitle.setText(albumName);
 
@@ -96,7 +113,7 @@ public class AlbumsFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			AccountObjectModel accountObjectModel = adapter.getItem(position);
-			albumListener.onAlbumSelected(accountObjectModel);
+			albumListener.onAlbumSelected(accountObjectModel, accountId);
 		}
 
 	}

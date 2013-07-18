@@ -34,6 +34,11 @@ import com.dg.libs.rest.domain.ResponseStatus;
 
 public class AssetsFragment extends Fragment {
 
+	private static final String ARG_FILTER_TYPE = "argFilterType";
+	private static final String ARG_ACCOUNT_ID = "argAccountId";
+	private static final String ARG_ALBUM_ID = "argAlbumId";
+	private static final String ARG_MULTIPICKER = "argMultiPicker";
+
 	private GridView gridViewAssets;
 	private PhotoSelectCursorAdapter cursorAdapter;
 	private PhotosAdapter socialAdapter;
@@ -66,6 +71,17 @@ public class AssetsFragment extends Fragment {
 		public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId);
 	}
 
+	public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId, String albumId, boolean isMultiPicker) {
+		AssetsFragment frag = new AssetsFragment();
+		Bundle args = new Bundle();
+		args.putSerializable(ARG_FILTER_TYPE, filterType);
+		args.putString(ARG_ALBUM_ID, albumId);
+		args.putString(ARG_ACCOUNT_ID, accountId);
+		args.putBoolean(ARG_MULTIPICKER, isMultiPicker);
+		frag.setArguments(args);
+		return frag;
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -90,6 +106,11 @@ public class AssetsFragment extends Fragment {
 
 		ok.setOnClickListener(new OkClickListener());
 		cancel.setOnClickListener(new CancelClickListener());
+
+		if (getArguments() != null) {
+			updateFragment(getArguments().getString(ARG_ALBUM_ID), getArguments().getString(ARG_ACCOUNT_ID),
+					(PhotoFilterType) getArguments().get(ARG_FILTER_TYPE), getArguments().getBoolean(ARG_MULTIPICKER));
+		}
 
 		return view;
 	}

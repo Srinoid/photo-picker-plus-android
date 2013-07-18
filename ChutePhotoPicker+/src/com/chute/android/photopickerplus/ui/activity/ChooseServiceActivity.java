@@ -11,6 +11,7 @@ package com.chute.android.photopickerplus.ui.activity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
@@ -26,6 +28,13 @@ import android.widget.Toast;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment;
+import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment.SelectAlbumListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmCursorAssetsListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmSocialAssetsListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSingleSelectListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridSocialSingleSelectListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.CameraRollListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LastPhotoListener;
@@ -35,7 +44,6 @@ import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.TakeP
 import com.chute.android.photopickerplus.ui.fragment.ContentFragment;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
-import com.chute.android.photopickerplus.util.ContentType;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
@@ -46,6 +54,7 @@ import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
+import com.chute.sdk.v2.model.AccountObjectModel;
 import com.chute.sdk.v2.model.AccountStore;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
@@ -54,7 +63,7 @@ import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
 public class ChooseServiceActivity extends FragmentActivity implements LoginListener, CameraRollListener,
-		LastPhotoListener, PhotoStreamListener, TakePhotoListener {
+		LastPhotoListener, PhotoStreamListener, TakePhotoListener, SelectAlbumListener, GridCursorSingleSelectListener, GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener, ButtonConfirmSocialAssetsListener {
 
 	public static final String TAG = ChooseServiceActivity.class.getSimpleName();
 
@@ -64,10 +73,15 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	private TextView textViewInstagram;
 	private AccountType accountType;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
+	
+	private ContentFragment contentFragment;
+	private ChooseServiceFragment chooseServiceFragment;
 
 	private String token;
 
 	private boolean dualFragments = false;
+	
+	private FragmentTransaction fragmentTransaction;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +90,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		ChooseServiceFragment chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager()
+		chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.fragmentChooseService);
-		ContentFragment contentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(
+		contentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragmentContent);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
@@ -113,10 +127,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	public void accountClicked(String accountId, String accountName) {
 		if (dualFragments) {
 			Log.d("debug", "dualfragments");
-			ContentFragment frag = (ContentFragment) this.getSupportFragmentManager().findFragmentById(
-					R.id.fragmentContent);
-			frag.updateContent(ContentType.ALBUMS, null, accountName, accountId, ppWrapper.getChuteId(),
-					ppWrapper.getIsMultiPicker());
+			fragmentTransaction = getSupportFragmentManager().beginTransaction();
+			fragmentTransaction.replace(R.id.fragmentContent, AlbumsFragment.newInstance(accountName, accountId));
+			fragmentTransaction.commit();
 		} else {
 			AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
@@ -217,7 +230,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	public void photoStream() {
 		if (dualFragments) {
-
+           fragmentTransaction = getSupportFragmentManager().beginTransaction();
+           fragmentTransaction.replace(R.id.fragmentContent, AssetsFragment.newInstance(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getChuteId(), ppWrapper.getIsMultiPicker()));
+		   fragmentTransaction.commit();
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
@@ -248,7 +263,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	public void cameraRoll() {
 		if (dualFragments) {
-
+			fragmentTransaction = getSupportFragmentManager().beginTransaction();
+	           fragmentTransaction.replace(R.id.fragmentContent, AssetsFragment.newInstance(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getChuteId(), ppWrapper.getIsMultiPicker()));
+			   fragmentTransaction.commit();
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
@@ -269,6 +286,38 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 			AuthenticationFactory.getInstance().startAuthenticationActivity(ChooseServiceActivity.this, accountType);
 		}
 
+	}
+
+	@Override
+	public void onAlbumSelected(AccountObjectModel model, String accountId) {
+		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContent, AssetsFragment.newInstance(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(), ppWrapper.getIsMultiPicker()));
+		fragmentTransaction.commit();
+		
+	}
+
+	@Override
+	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

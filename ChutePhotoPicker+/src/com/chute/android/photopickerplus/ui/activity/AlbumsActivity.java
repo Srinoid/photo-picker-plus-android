@@ -46,7 +46,7 @@ public class AlbumsActivity extends FragmentActivity implements SelectAlbumListe
 	}
 
 	@Override
-	public void onAlbumSelected(AccountObjectModel model) {
+	public void onAlbumSelected(AccountObjectModel model, String accountId) {
 		final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(AlbumsActivity.this);
 		photosWrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
 		photosWrapper.setMultiPicker(isMultiPicker);

@@ -5,42 +5,5 @@
     android:layout_height="fill_parent"
     android:background="@color/grid_background"
     android:orientation="vertical" >
-     <TextView
-        android:id="@+id/textViewContentTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/selectTitle" />
-     
-     <!-- Empty View -->
-      <include
-        android:id="@+id/empty_view_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        layout="@layout/empty_view_albums_layout" />
-      
-      <LinearLayout
-        android:id="@+id/linearLayoutButtons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal" 
-        android:visibility="gone">
 
-        <Button
-            android:id="@+id/buttonOk"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/ok" />
-
-        <Button
-            android:id="@+id/buttonCancel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel" />
-    </LinearLayout>
-   
 </RelativeLayout>
