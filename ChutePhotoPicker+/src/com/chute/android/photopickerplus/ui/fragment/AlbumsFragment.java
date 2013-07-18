@@ -21,57 +21,49 @@ import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountObjectModel;
 import com.chute.sdk.v2.model.response.ListResponseModel;
-import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
 public class AlbumsFragment extends Fragment {
-	
+
 	private static final String ARG_ALBUM_TITLE = "argAlbumTitle";
 	private static final String ARG_ACCOUNT_ID = "argAccountId";
 	private ListView listViewAlbums;
 	private AlbumsAdapter adapter;
 	private View emptyView;
 	private SelectAlbumListener albumListener;
-	
+	private TextView textViewAlbumTitle;
+
 	public interface SelectAlbumListener {
-		public void onAlbumSelected(int position);
+		public void onAlbumSelected(AccountObjectModel model);
 	}
-	
-	public static AlbumsFragment newInstance(String albumTitle, String accountId) {
-		AlbumsFragment frag = new AlbumsFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_ALBUM_TITLE, albumTitle);
-		args.putString(ARG_ACCOUNT_ID, accountId);
-		frag.setArguments(args);
-		return frag;
-	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		albumListener = (SelectAlbumListener) activity;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_albums, container, false);
-		
-		String albumTitle = getArguments().getString(ARG_ALBUM_TITLE);
-		String accountId = getArguments().getString(ARG_ACCOUNT_ID);
-		
+
 		listViewAlbums = (ListView) view.findViewById(R.id.listViewAlbums);
 		emptyView = view.findViewById(R.id.empty_view_layout);
 		listViewAlbums.setEmptyView(emptyView);
 
-		TextView textViewAlbumTitle = (TextView) view.findViewById(R.id.textViewAlbumTitle);
-		String albumName = AppUtil.asUpperCaseFirstChar(albumTitle.concat(" Albums"));
+		textViewAlbumTitle = (TextView) view.findViewById(R.id.textViewAlbumTitle);
+
+		return view;
+	}
+
+	public void updateFragment(String accountTitle, String accountId) {
+		String albumName = AppUtil.asUpperCaseFirstChar(accountTitle.concat(" Albums"));
 		textViewAlbumTitle.setText(albumName);
 
 		GCAccounts.albums(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
-		return view;
 	}
-	
+
 	private final class ObjectsCallback implements HttpCallback<ListResponseModel<AccountObjectModel>> {
 
 		@Override
@@ -91,19 +83,20 @@ public class AlbumsFragment extends Fragment {
 
 		@Override
 		public void onHttpError(ResponseStatus responseStatus) {
-			Log.d("debug", "response status = " + responseStatus.getStatusCode() + " " + responseStatus.getStatusMessage());
+			Log.d("debug",
+					"response status = " + responseStatus.getStatusCode() + " " + responseStatus.getStatusMessage());
 			NotificationUtil.makeConnectionProblemToast(getActivity().getApplicationContext());
 			toggleEmptyViewErrorMessage();
 
 		}
 	}
-	
-	
+
 	private final class OnAlbumsClickListener implements OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			albumListener.onAlbumSelected(position);
+			AccountObjectModel accountObjectModel = adapter.getItem(position);
+			albumListener.onAlbumSelected(accountObjectModel);
 		}
 
 	}

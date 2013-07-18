@@ -9,15 +9,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.ui.activity;
 
-import android.app.Activity;
+import java.util.ArrayList;
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmCursorAssetsListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmSocialAssetsListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSingleSelectListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridSocialSingleSelectListener;
+import com.chute.android.photopickerplus.util.AppUtil;
+import com.chute.android.photopickerplus.util.PhotoFilterType;
+import com.chute.android.photopickerplus.util.intent.IntentUtil;
+import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
+import com.chute.sdk.v2.model.AccountMediaModel;
 
-public class GridActivity extends Activity {
+public class GridActivity extends FragmentActivity implements GridCursorSingleSelectListener,
+		GridSocialSingleSelectListener, ButtonConfirmSocialAssetsListener, ButtonConfirmCursorAssetsListener {
 
 	public static final String TAG = GridActivity.class.getSimpleName();
+	private String albumID;
+	private String accountID;
+	private boolean isMultiPicker;
+	private PhotoFilterType filterType;
+	private PhotosIntentWrapper wrapper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,5 +45,48 @@ public class GridActivity extends Activity {
 
 		setContentView(R.layout.activity_assets);
 
+		wrapper = new PhotosIntentWrapper(getIntent());
+		albumID = wrapper.getAlbumId();
+		accountID = wrapper.getAccountId();
+		isMultiPicker = wrapper.getIsMultiPicker();
+		filterType = wrapper.getFilterType();
+
+		AssetsFragment fragment = (AssetsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentAssets);
+		fragment.updateFragment(albumID, accountID, filterType, isMultiPicker);
+
 	}
+
+	@Override
+	public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel, albumId);
+		setResult(RESULT_OK);
+		finish();
+
+	}
+
+	@Override
+	public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel, albumId);
+		setResult(RESULT_OK);
+		finish();
+
+	}
+
+	@Override
+	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, AppUtil.getPhotoCollection(assetPathList), null,
+				null, albumId);
+		setResult(RESULT_OK);
+		finish();
+
+	}
+
+	@Override
+	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModelList, null, null, albumId);
+		setResult(RESULT_OK);
+		finish();
+
+	}
+
 }

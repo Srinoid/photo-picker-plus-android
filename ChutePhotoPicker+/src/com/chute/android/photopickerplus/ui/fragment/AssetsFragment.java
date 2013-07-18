@@ -26,7 +26,6 @@ import com.chute.android.photopickerplus.ui.adapter.PhotosAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
-import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.response.ListResponseModel;
@@ -34,11 +33,6 @@ import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
 public class AssetsFragment extends Fragment {
-
-	private static final String ARG_FILTER_TYPE = "argFilterType";
-	private static final String ARG_ACCOUNT_ID = "argAccountId";
-	private static final String ARG_ALBUM_ID = "argAlbumId";
-	private static final String ARG_MULTIPICKER = "argMultiPicker";
 
 	private GridView gridViewAssets;
 	private PhotoSelectCursorAdapter cursorAdapter;
@@ -48,11 +42,11 @@ public class AssetsFragment extends Fragment {
 
 	private boolean isMultipicker;
 	private String albumId;
-	private int filterType;
+	private PhotoFilterType filterType;
+	private String accountId;
 
 	private GridCursorSingleSelectListener gridCursorSelectItemListener;
 	private GridSocialSingleSelectListener gridSocialSelectItemListener;
-	private ButtonCancelListener cancelListener;
 	private ButtonConfirmCursorAssetsListener confirmCursorAssetsListener;
 	private ButtonConfirmSocialAssetsListener confirmSocialAssetsListener;
 
@@ -64,27 +58,12 @@ public class AssetsFragment extends Fragment {
 		public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId);
 	}
 
-	public interface ButtonCancelListener {
-		public void onCanceled();
-	}
-
 	public interface ButtonConfirmSocialAssetsListener {
-		public void onOkClicked(ArrayList<AccountMediaModel> accountMediaModelList, String albumId);
+		public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId);
 	}
 
 	public interface ButtonConfirmCursorAssetsListener {
-		public void onOkClicked(ArrayList<String> assetPathList, String albumId);
-	}
-
-	public static AssetsFragment newInstance(int filterType, String accountId, String albumId, boolean isMultiPicker) {
-		AssetsFragment frag = new AssetsFragment();
-		Bundle args = new Bundle();
-		args.putInt(ARG_FILTER_TYPE, filterType);
-		args.putString(ARG_ALBUM_ID, albumId);
-		args.putString(ARG_ACCOUNT_ID, accountId);
-		args.putBoolean(ARG_MULTIPICKER, isMultiPicker);
-		frag.setArguments(args);
-		return frag;
+		public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId);
 	}
 
 	@Override
@@ -92,7 +71,6 @@ public class AssetsFragment extends Fragment {
 		super.onAttach(activity);
 		gridCursorSelectItemListener = (GridCursorSingleSelectListener) activity;
 		gridSocialSelectItemListener = (GridSocialSingleSelectListener) activity;
-		cancelListener = (ButtonCancelListener) activity;
 		confirmCursorAssetsListener = (ButtonConfirmCursorAssetsListener) activity;
 		confirmSocialAssetsListener = (ButtonConfirmSocialAssetsListener) activity;
 
@@ -102,38 +80,35 @@ public class AssetsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_assets, container, false);
 
-//		filterType = getArguments().getInt(ARG_FILTER_TYPE);
-		String accountId = getArguments().getString(ARG_ACCOUNT_ID);
-		albumId = getArguments().getString(ARG_ALBUM_ID);
-		isMultipicker = getArguments().getBoolean(ARG_MULTIPICKER);
-
 		textViewSelectPhotos = (TextView) view.findViewById(R.id.textViewSelectPhotos);
 		gridViewAssets = (GridView) view.findViewById(R.id.gridViewAssets);
 		emptyView = view.findViewById(R.id.empty_view_layout);
 		gridViewAssets.setEmptyView(emptyView);
 
 		Button ok = (Button) view.findViewById(R.id.buttonOk);
-		ok.setOnClickListener(new OkClickListener());
 		Button cancel = (Button) view.findViewById(R.id.buttonCancel);
-		cancel.setOnClickListener(new CancelClickListener());
 
-//		if ((filterType == PhotosIntentWrapper.TYPE_ALL_PHOTOS) || (filterType == PhotosIntentWrapper.TYPE_CAMERA_ROLL)) {
-//			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback(filterType));
-//		} else if (filterType == PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS) {
-//			GCAccounts.objectMedia(getActivity().getApplicationContext(), accountId, albumId, new PhotoListCallback())
-//					.executeAsync();
-//		}
+		ok.setOnClickListener(new OkClickListener());
+		cancel.setOnClickListener(new CancelClickListener());
 
 		return view;
 	}
 
-	private final class AssetsLoaderCallback implements LoaderCallbacks<Cursor> {
+	public void updateFragment(String albumId, String accountId, PhotoFilterType filterType, boolean isMultipicker) {
+		this.albumId = albumId;
+		this.filterType = filterType;
+		this.isMultipicker = isMultipicker;
+		this.accountId = accountId;
 
-		private PhotoFilterType filterType;
-
-		private AssetsLoaderCallback(PhotoFilterType filterType) {
-			this.filterType = filterType;
+		if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
+			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback());
+		} else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
+			GCAccounts.albumMedia(getActivity().getApplicationContext(), accountId, albumId, new PhotoListCallback())
+					.executeAsync();
 		}
+	}
+
+	private final class AssetsLoaderCallback implements LoaderCallbacks<Cursor> {
 
 		@Override
 		public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
@@ -194,7 +169,7 @@ public class AssetsFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			cancelListener.onCanceled();
+			getActivity().finish();
 		}
 
 	}
@@ -255,11 +230,10 @@ public class AssetsFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			if (filterType == PhotosIntentWrapper.TYPE_SOCIAL_PHOTOS) {
-				confirmSocialAssetsListener.onOkClicked(socialAdapter.getPhotoCollection(), albumId);
-			} else if ((filterType == PhotosIntentWrapper.TYPE_ALL_PHOTOS)
-					|| (filterType == PhotosIntentWrapper.TYPE_CAMERA_ROLL)) {
-				confirmCursorAssetsListener.onOkClicked(cursorAdapter.getSelectedFilePaths(), albumId);
+			if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
+				confirmSocialAssetsListener.onConfirmedSocialAssets(socialAdapter.getPhotoCollection(), albumId);
+			} else if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
+				confirmCursorAssetsListener.onConfirmedCursorAssets(cursorAdapter.getSelectedFilePaths(), albumId);
 			}
 		}
 	}

@@ -37,11 +37,13 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.ContentType;
 import com.chute.android.photopickerplus.util.NotificationUtil;
+import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
+import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.AccountStore;
@@ -128,11 +130,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == AccountStore.AUTHENTICATION_REQUEST_CODE) {
-				token = AccountStore.getInstance(getApplicationContext()).getPassword();
-				PreferenceUtil.get().setAccountToken(token);
-				GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback()).executeAsync();
-			}
+			token = AccountStore.getInstance(getApplicationContext()).getPassword();
+			PreferenceUtil.get().setAccountToken(token);
+			GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback()).executeAsync();
 			if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
 				finish();
 			} else if (requestCode == Constants.CAMERA_PIC_REQUEST) {
@@ -220,7 +220,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
-			wrapper.setFilterType(PhotosIntentWrapper.TYPE_ALL_PHOTOS);
+			wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setChuteId(ppWrapper.getChuteId());
 			wrapper.startActivityForResult(ChooseServiceActivity.this,
@@ -252,7 +252,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-			wrapper.setFilterType(PhotosIntentWrapper.TYPE_CAMERA_ROLL);
+			wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
 			wrapper.setChuteId(ppWrapper.getChuteId());
 			wrapper.startActivityForResult(ChooseServiceActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
@@ -266,9 +266,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		if (PreferenceUtil.get().hasAccountId(accountType)) {
 			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
 		} else {
-			AccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(ChooseServiceActivity.this,
-					accountType, Constants.PERMISSIONS_SCOPE, Constants.CALLBACK_URL, Constants.APP_ID,
-					Constants.APP_SECRET);
+			AuthenticationFactory.getInstance().startAuthenticationActivity(ChooseServiceActivity.this, accountType);
 		}
 
 	}

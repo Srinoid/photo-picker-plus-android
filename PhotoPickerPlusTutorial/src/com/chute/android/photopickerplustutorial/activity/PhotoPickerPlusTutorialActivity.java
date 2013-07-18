@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
 
-import com.chute.android.photopickerplus.util.intent.PhotoActivityIntentWrapper;
+import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
 import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusIntentWrapper;
@@ -65,7 +65,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 		if (resultCode != Activity.RESULT_OK) {
 			return;
 		}
-		final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(
+		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(
 				data);
 		grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this,
 				wrapper.getMediaCollection()));

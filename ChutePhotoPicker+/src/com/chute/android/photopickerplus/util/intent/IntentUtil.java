@@ -11,8 +11,8 @@ package com.chute.android.photopickerplus.util.intent;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
 import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
@@ -20,29 +20,28 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class IntentUtil {
 
-	public static void deliverDataToInitialActivity(final Activity context,
-			final AccountMediaModel model, final String chuteId) {
+	public static void deliverDataToInitialActivity(final FragmentActivity context, final AccountMediaModel model,
+			final String chuteId) {
 		deliverDataToInitialActivity(context, model, null, null, chuteId);
 	}
 
-	public static void deliverDataToInitialActivity(final Activity context,
-			final AccountMediaModel model, final String albumId,
-			final String accountId, final String chuteId) {
+	public static void deliverDataToInitialActivity(final FragmentActivity context, final AccountMediaModel model,
+			final String albumId, final String accountId, final String chuteId) {
 		ArrayList<AccountMediaModel> mediaCollection = new ArrayList<AccountMediaModel>();
 		mediaCollection.add(model);
 		deliverDataToInitialActivity(context, mediaCollection, chuteId);
 	}
 
-	public static void deliverDataToInitialActivity(final Activity context,
+	public static void deliverDataToInitialActivity(final FragmentActivity context,
 			final ArrayList<AccountMediaModel> collection, final String chuteId) {
 		deliverDataToInitialActivity(context, collection, null, null, chuteId);
 	}
 
-	public static void deliverDataToInitialActivity(final Activity context,
-			final ArrayList<AccountMediaModel> collection, final String albumId,
-			final String accountId, final String chuteId) {
-		final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(
-				new Intent(context, ChooseServiceActivity.class));
+	public static void deliverDataToInitialActivity(final FragmentActivity context,
+			final ArrayList<AccountMediaModel> collection, final String albumId, final String accountId,
+			final String chuteId) {
+		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(new Intent(context,
+				ChooseServiceActivity.class));
 		if (!TextUtils.isEmpty(accountId)) {
 			wrapper.setAccountId(accountId);
 		}
@@ -51,9 +50,7 @@ public class IntentUtil {
 		}
 		wrapper.setChuteId(chuteId);
 		wrapper.setMediaCollection(collection);
-		wrapper.getIntent().addFlags(
-				Intent.FLAG_ACTIVITY_CLEAR_TOP
-						| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		wrapper.getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		wrapper.startActivity(context);
 	}
 }

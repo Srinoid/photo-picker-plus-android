@@ -18,10 +18,10 @@ import android.content.Intent;
 import com.chute.android.photopickerplus.ui.activity.GridActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
-public class PhotoActivityIntentWrapper extends IntentWrapper {
+public class GridActivityIntentWrapper extends IntentWrapper {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = PhotoActivityIntentWrapper.class
+	private static final String TAG = GridActivityIntentWrapper.class
 			.getSimpleName();
 
 	public static final int ACTIVITY_FOR_RESULT_PHOTO_KEY = 115;
@@ -32,11 +32,11 @@ public class PhotoActivityIntentWrapper extends IntentWrapper {
 	private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
 	private static final String KEY_CHUTE_ID = "key_chuteId";
 
-	public PhotoActivityIntentWrapper(Context context) {
+	public GridActivityIntentWrapper(Context context) {
 		super(context, GridActivity.class);
 	}
 
-	public PhotoActivityIntentWrapper(Intent intent) {
+	public GridActivityIntentWrapper(Intent intent) {
 		super(intent);
 	}
 

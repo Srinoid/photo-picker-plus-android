@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Parcelable;
 
 import com.chute.android.photopickerplus.ui.activity.GridActivity;
+import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class PhotosIntentWrapper extends IntentWrapper {
@@ -92,11 +93,11 @@ public class PhotosIntentWrapper extends IntentWrapper {
 	return getIntent().getExtras().getString(EXTRA_KEY_PATH);
     }
 
-    public int getFilterType() {
-	return getIntent().getExtras().getInt(EXTRA_KEY_CURSOR_PHOTOS);
+    public PhotoFilterType getFilterType() {
+	return (PhotoFilterType) getIntent().getExtras().get(EXTRA_KEY_CURSOR_PHOTOS);
     }
 
-    public void setFilterType(int type) {
+    public void setFilterType(PhotoFilterType type) {
 	getIntent().putExtra(EXTRA_KEY_CURSOR_PHOTOS, type);
     }
 
