@@ -11,7 +11,7 @@ public class ContentActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.content_activity);
+		setContentView(R.layout.activity_content);
 		//get extras and update fragment
 	}
 

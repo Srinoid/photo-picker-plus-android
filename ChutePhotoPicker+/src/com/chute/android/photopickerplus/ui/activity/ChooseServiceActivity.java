@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.CameraRollListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LastPhotoListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LoginListener;
@@ -71,13 +72,13 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main);
+		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		ContentFragment contentFragment = (ContentFragment) this.getSupportFragmentManager().findFragmentById(
+		ChooseServiceFragment chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentChooseService);
+		ContentFragment contentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragmentContent);
-		if (contentFragment != null)
-			dualFragments = true;
+		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
 	}
 
