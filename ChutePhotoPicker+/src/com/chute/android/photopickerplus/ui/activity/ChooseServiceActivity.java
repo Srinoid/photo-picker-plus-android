@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +24,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +66,8 @@ import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
 public class ChooseServiceActivity extends FragmentActivity implements LoginListener, CameraRollListener,
-		LastPhotoListener, PhotoStreamListener, TakePhotoListener, SelectAlbumListener, GridCursorSingleSelectListener, GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener, ButtonConfirmSocialAssetsListener {
+		LastPhotoListener, PhotoStreamListener, TakePhotoListener, SelectAlbumListener, GridCursorSingleSelectListener,
+		GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener, ButtonConfirmSocialAssetsListener {
 
 	public static final String TAG = ChooseServiceActivity.class.getSimpleName();
 
@@ -73,15 +77,17 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	private TextView textViewInstagram;
 	private AccountType accountType;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
-	
+
 	private ContentFragment contentFragment;
 	private ChooseServiceFragment chooseServiceFragment;
 
 	private String token;
 
 	private boolean dualFragments = false;
-	
+
 	private FragmentTransaction fragmentTransaction;
+	
+	private LinearLayout linearLayoutFragmentHolder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +96,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.fragmentChooseService);
-		contentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(
-				R.id.fragmentContent);
+		chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager().findFragmentById(
+				R.id.fragmentChooseService);
+		linearLayoutFragmentHolder = (LinearLayout) findViewById(R.id.fragments);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
 	}
@@ -126,9 +131,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	public void accountClicked(String accountId, String accountName) {
 		if (dualFragments) {
-			fragmentTransaction = getSupportFragmentManager().beginTransaction();
-			fragmentTransaction.replace(R.id.fragmentContent, AlbumsFragment.newInstance(accountName, accountId));
-			fragmentTransaction.commit();
+			replaceContentWithAlbumFragment(accountName, accountId);
 		} else {
 			AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
@@ -229,9 +232,8 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	public void photoStream() {
 		if (dualFragments) {
-           fragmentTransaction = getSupportFragmentManager().beginTransaction();
-           fragmentTransaction.replace(R.id.fragmentContent, AssetsFragment.newInstance(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getChuteId(), ppWrapper.getIsMultiPicker()));
-		   fragmentTransaction.commit();
+			replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getChuteId(),
+					ppWrapper.getIsMultiPicker());
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
@@ -262,9 +264,8 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	public void cameraRoll() {
 		if (dualFragments) {
-			fragmentTransaction = getSupportFragmentManager().beginTransaction();
-	           fragmentTransaction.replace(R.id.fragmentContent, AssetsFragment.newInstance(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getChuteId(), ppWrapper.getIsMultiPicker()));
-			   fragmentTransaction.commit();
+			replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getChuteId(),
+					ppWrapper.getIsMultiPicker());
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
@@ -289,23 +290,22 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	@Override
 	public void onAlbumSelected(AccountObjectModel model, String accountId) {
-		fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContent, AssetsFragment.newInstance(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(), ppWrapper.getIsMultiPicker()));
-		fragmentTransaction.commit();
-		
+		replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(),
+				ppWrapper.getIsMultiPicker());
+
 	}
 
 	@Override
 	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
 		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, accountMediaModelList, null, null, albumId);
-		
+
 	}
 
 	@Override
 	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, AppUtil.getPhotoCollection(assetPathList), null,
-				null, albumId);
-		
+		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, AppUtil.getPhotoCollection(assetPathList),
+				null, null, albumId);
+
 	}
 
 	@Override
@@ -316,6 +316,21 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId) {
 		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, accountMediaModel, albumId);
+	}
+
+	public void replaceContentWithAssetFragment(PhotoFilterType filterType, String accountID, String accountModelID,
+			boolean isMultiPicker) {
+		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction.replace(R.id.fragments,
+				AssetsFragment.newInstance(filterType, accountID, accountModelID, isMultiPicker));
+		fragmentTransaction.commit();
+		
+	}
+
+	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
+		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID));
+		fragmentTransaction.commit();
 	}
 
 }
