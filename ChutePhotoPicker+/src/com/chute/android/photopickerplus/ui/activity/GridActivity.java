@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
@@ -75,7 +74,6 @@ public class GridActivity extends FragmentActivity implements GridCursorSingleSe
 
 	@Override
 	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
-		Log.d("debug", "confirmed cursor assets");
 		IntentUtil.deliverDataToInitialActivity(GridActivity.this, AppUtil.getPhotoCollection(assetPathList), null,
 				null, albumId);
 		setResult(RESULT_OK);

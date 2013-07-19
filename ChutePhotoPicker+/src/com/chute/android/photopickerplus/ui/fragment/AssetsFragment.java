@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -199,7 +198,6 @@ public class AssetsFragment extends Fragment {
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountMediaModel> responseData) {
-			Log.d("debug", "responsedata = " + responseData.getData().toString());
 			socialAdapter = new PhotosAdapter(getActivity(), (ArrayList<AccountMediaModel>) responseData.getData());
 			gridViewAssets.setAdapter(socialAdapter);
 

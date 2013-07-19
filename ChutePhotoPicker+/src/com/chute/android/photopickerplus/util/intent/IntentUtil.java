@@ -49,8 +49,6 @@ public class IntentUtil {
 		if (!TextUtils.isEmpty(albumId)) {
 			wrapper.setAlbumId(albumId);
 		}
-		Log.d("debug", "intent chute id = " + chuteId);
-		Log.d("debug", "intent media collectiion  = " + collection.toString());
 		wrapper.setChuteId(chuteId);
 		wrapper.setMediaCollection(collection);
 		wrapper.getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

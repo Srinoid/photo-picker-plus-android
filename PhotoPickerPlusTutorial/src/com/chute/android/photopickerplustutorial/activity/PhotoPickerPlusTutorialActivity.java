@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
@@ -25,8 +24,7 @@ import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusIntentWra
 
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
-	public static final String TAG = PhotoPickerPlusTutorialActivity.class
-			.getSimpleName();
+	public static final String TAG = PhotoPickerPlusTutorialActivity.class.getSimpleName();
 	private GridView grid;
 	/**
 	 * PhotoPicker+ component enables choosing multiple photos or a single photo
@@ -40,8 +38,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo_picker_plus);
 
-		findViewById(R.id.btnPhotoPicker).setOnClickListener(
-				new OnPhotoPickerClickListener());
+		findViewById(R.id.btnPhotoPicker).setOnClickListener(new OnPhotoPickerClickListener());
 		grid = (GridView) findViewById(R.id.grid);
 
 	}
@@ -53,10 +50,9 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 			PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(
 					PhotoPickerPlusTutorialActivity.this);
 			wrapper.setMultiPicker(isMultiPicker);
-			wrapper.startActivityForResult(
-					PhotoPickerPlusTutorialActivity.this,
+			wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this,
 					PhotoPickerPlusIntentWrapper.REQUEST_CODE);
-			
+
 		}
 	}
 
@@ -64,14 +60,10 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode != Activity.RESULT_OK) {
-			Log.d("debug", "tutorial result not ok");
 			return;
 		}
-		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(
-				data);
-		Log.d("debug", "tutorail result  = " + wrapper.getMediaCollection().toString());
-		grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this,
-				wrapper.getMediaCollection()));
+		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(data);
+		grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this, wrapper.getMediaCollection()));
 		// Log.d(TAG, wrapper.toString());
 
 		// String path;

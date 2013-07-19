@@ -126,7 +126,6 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	public void accountClicked(String accountId, String accountName) {
 		if (dualFragments) {
-			Log.d("debug", "dualfragments");
 			fragmentTransaction = getSupportFragmentManager().beginTransaction();
 			fragmentTransaction.replace(R.id.fragmentContent, AlbumsFragment.newInstance(accountName, accountId));
 			fragmentTransaction.commit();
@@ -179,7 +178,6 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		Log.d("debug", "new intent");
 		super.onNewIntent(intent);
 		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
 		finish();
@@ -299,26 +297,25 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	@Override
 	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
-		// TODO Auto-generated method stub
+		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, accountMediaModelList, null, null, albumId);
 		
 	}
 
 	@Override
 	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
-		// TODO Auto-generated method stub
+		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, AppUtil.getPhotoCollection(assetPathList), null,
+				null, albumId);
 		
 	}
 
 	@Override
 	public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId) {
-		// TODO Auto-generated method stub
-		
+		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, accountMediaModel, albumId);
 	}
 
 	@Override
 	public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId) {
-		// TODO Auto-generated method stub
-		
+		IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, accountMediaModel, albumId);
 	}
 
 }
