@@ -20,8 +20,6 @@ import darko.imagedownloader.ImageLoader;
 
 public class ChooseServiceFragment extends Fragment {
 
-	private static final String ARG_HIDDEN_SERVICES = "argHiddenServices";
-	
 	private TextView textViewFacebook;
 	private TextView textViewPicasa;
 	private TextView textViewFlickr;
@@ -42,9 +40,6 @@ public class ChooseServiceFragment extends Fragment {
 	private AccountType accountType;
 	private ImageLoader imageLoader;
 
-	// private String token;
-	private boolean areServicesHidden;
-
 	private LoginListener loginListener;
 	private PhotoStreamListener photoStreamListener;
 	private CameraRollListener cameraRollListener;
@@ -54,28 +49,25 @@ public class ChooseServiceFragment extends Fragment {
 	public interface LoginListener {
 		public void accountLogin(AccountType accountType);
 	}
-	
+
 	public interface PhotoStreamListener {
 		public void photoStream();
 	}
-	
+
 	public interface CameraRollListener {
 		public void cameraRoll();
 	}
-	
+
 	public interface LastPhotoListener {
 		public void lastPhoto();
 	}
-	
+
 	public interface TakePhotoListener {
 		public void takePhoto();
 	}
 
-	public static ChooseServiceFragment newInstance(boolean areServicesHidden) {
+	public static ChooseServiceFragment newInstance() {
 		ChooseServiceFragment frag = new ChooseServiceFragment();
-		Bundle args = new Bundle();
-		args.putBoolean(ARG_HIDDEN_SERVICES, areServicesHidden);
-		frag.setArguments(args);
 		return frag;
 	}
 
@@ -93,8 +85,6 @@ public class ChooseServiceFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_services, container, false);
 		imageLoader = ImageLoader.getLoader(getActivity());
-		
-//		areServicesHidden = getArguments().getBoolean(ARG_HIDDEN_SERVICES);
 
 		initViews(view);
 
@@ -114,11 +104,7 @@ public class ChooseServiceFragment extends Fragment {
 		linearLayoutCameraPhotos.setOnClickListener(new OnCameraRollListener());
 		linearLayoutLastPhoto.setOnClickListener(new OnLastPhotoClickListener());
 		linearLayoutTakePhoto.setOnClickListener(new OnTakePhotoClickListener());
-		
-//		if (areServicesHidden) {
-//			linearLayoutServices.setVisibility(View.GONE);
-//			textViewUserTitle.setVisibility(View.GONE);
-//		}
+
 		return view;
 	}
 
@@ -180,7 +166,7 @@ public class ChooseServiceFragment extends Fragment {
 		}
 
 	}
-	
+
 	private final class OnLastPhotoClickListener implements OnClickListener {
 
 		@Override
@@ -189,7 +175,7 @@ public class ChooseServiceFragment extends Fragment {
 		}
 
 	}
-	
+
 	private final class OnTakePhotoClickListener implements OnClickListener {
 
 		@Override
@@ -197,5 +183,25 @@ public class ChooseServiceFragment extends Fragment {
 			takePhotoListener.takePhoto();
 		}
 
+	}
+
+	public void setUserName(AccountType accountType, String username) {
+		if (accountType == AccountType.FACEBOOK) {
+			textViewFacebook.setText(username);
+		}
+		if (accountType == AccountType.PICASA) {
+			textViewPicasa.setText(username);
+		}
+		if (accountType == AccountType.FLICKR) {
+			textViewFlickr.setText(username);
+		}
+		if (accountType == AccountType.INSTAGRAM) {
+			textViewInstagram.setText(username);
+		}
+	}
+
+	public void setServicesHidden() {
+		linearLayoutServices.setVisibility(View.GONE);
+		textViewUserTitle.setVisibility(View.GONE);
 	}
 }

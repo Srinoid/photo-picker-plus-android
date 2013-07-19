@@ -32,7 +32,7 @@ public class AlbumsFragment extends Fragment {
 	private View emptyView;
 	private SelectAlbumListener albumListener;
 	private TextView textViewAlbumTitle;
-	
+
 	private String accountId;
 
 	public interface SelectAlbumListener {

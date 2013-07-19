@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,27 +23,23 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Window;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment.SelectAlbumListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmCursorAssetsListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmSocialAssetsListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSingleSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridSocialSingleSelectListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.CameraRollListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LastPhotoListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LoginListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.PhotoStreamListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.TakePhotoListener;
-import com.chute.android.photopickerplus.ui.fragment.ContentFragment;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -71,14 +66,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	public static final String TAG = ChooseServiceActivity.class.getSimpleName();
 
-	private TextView textViewFacebook;
-	private TextView textViewPicasa;
-	private TextView textViewFlickr;
-	private TextView textViewInstagram;
 	private AccountType accountType;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
 
-	private ContentFragment contentFragment;
 	private ChooseServiceFragment chooseServiceFragment;
 
 	private String token;
@@ -86,8 +76,6 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	private boolean dualFragments = false;
 
 	private FragmentTransaction fragmentTransaction;
-	
-	private LinearLayout linearLayoutFragmentHolder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +86,11 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 		chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragmentChooseService);
-		linearLayoutFragmentHolder = (LinearLayout) findViewById(R.id.fragments);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
+
+		if (ppWrapper.areServicesHidden()) {
+			chooseServiceFragment.setServicesHidden();
+		}
 
 	}
 
@@ -186,31 +177,34 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		finish();
 	}
 
-	// @Override
-	// protected void onResume() {
-	// super.onResume();
-	// if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
-	// if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-	// textViewPicasa.setText(PreferenceUtil.get().getAccountName(AccountType.PICASA));
-	//
-	// }
-	// }
-	// if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
-	// if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-	// textViewFacebook.setText(PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
-	// }
-	// }
-	// if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
-	// if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-	// textViewFlickr.setText(PreferenceUtil.get().getAccountName(AccountType.FLICKR));
-	// }
-	// }
-	// if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
-	// if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-	// textViewInstagram.setText(PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
-	// }
-	// }
-	// }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+				chooseServiceFragment.setUserName(AccountType.PICASA,
+						PreferenceUtil.get().getAccountName(AccountType.PICASA));
+			}
+		}
+		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+				chooseServiceFragment.setUserName(AccountType.FACEBOOK,
+						PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
+			}
+		}
+		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+				chooseServiceFragment.setUserName(AccountType.FLICKR,
+						PreferenceUtil.get().getAccountName(AccountType.FLICKR));
+			}
+		}
+		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+				chooseServiceFragment.setUserName(AccountType.INSTAGRAM,
+						PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
+			}
+		}
+	}
 
 	@Override
 	public void takePhoto() {
@@ -324,12 +318,12 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		fragmentTransaction.replace(R.id.fragments,
 				AssetsFragment.newInstance(filterType, accountID, accountModelID, isMultiPicker));
 		fragmentTransaction.commit();
-		
+
 	}
 
 	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
 		fragmentTransaction = getSupportFragmentManager().beginTransaction();
-		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID));
+		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID), "AlbumFrag");
 		fragmentTransaction.commit();
 	}
 

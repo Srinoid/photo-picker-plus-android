@@ -47,7 +47,6 @@ public class AssetsFragment extends Fragment {
 	private boolean isMultipicker;
 	private String albumId;
 	private PhotoFilterType filterType;
-	private String accountId;
 
 	private GridCursorSingleSelectListener gridCursorSelectItemListener;
 	private GridSocialSingleSelectListener gridSocialSelectItemListener;
@@ -70,7 +69,8 @@ public class AssetsFragment extends Fragment {
 		public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId);
 	}
 
-	public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId, String albumId, boolean isMultiPicker) {
+	public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId, String albumId,
+			boolean isMultiPicker) {
 		AssetsFragment frag = new AssetsFragment();
 		Bundle args = new Bundle();
 		args.putSerializable(ARG_FILTER_TYPE, filterType);
@@ -118,7 +118,6 @@ public class AssetsFragment extends Fragment {
 		this.albumId = albumId;
 		this.filterType = filterType;
 		this.isMultipicker = isMultipicker;
-		this.accountId = accountId;
 
 		if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
 			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback());
