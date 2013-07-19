@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
@@ -63,10 +64,12 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode != Activity.RESULT_OK) {
+			Log.d("debug", "tutorial result not ok");
 			return;
 		}
 		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(
 				data);
+		Log.d("debug", "tutorail result  = " + wrapper.getMediaCollection().toString());
 		grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this,
 				wrapper.getMediaCollection()));
 		// Log.d(TAG, wrapper.toString());

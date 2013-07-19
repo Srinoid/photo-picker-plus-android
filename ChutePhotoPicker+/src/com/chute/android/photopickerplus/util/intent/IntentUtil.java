@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -48,6 +49,8 @@ public class IntentUtil {
 		if (!TextUtils.isEmpty(albumId)) {
 			wrapper.setAlbumId(albumId);
 		}
+		Log.d("debug", "intent chute id = " + chuteId);
+		Log.d("debug", "intent media collectiion  = " + collection.toString());
 		wrapper.setChuteId(chuteId);
 		wrapper.setMediaCollection(collection);
 		wrapper.getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

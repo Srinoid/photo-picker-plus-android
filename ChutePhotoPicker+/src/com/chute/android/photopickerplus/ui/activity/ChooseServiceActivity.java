@@ -179,6 +179,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	@Override
 	protected void onNewIntent(Intent intent) {
+		Log.d("debug", "new intent");
 		super.onNewIntent(intent);
 		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
 		finish();
