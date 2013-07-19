@@ -3,12 +3,12 @@
     android:id="@+id/fragments"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
     <fragment
         android:id="@+id/fragmentChooseService"
-        android:layout_width="400dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         class="com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment" />
 
     <fragment
