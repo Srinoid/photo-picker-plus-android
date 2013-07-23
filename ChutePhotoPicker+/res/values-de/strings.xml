@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Account type -->
+    <string name="take_photos">Nehmen Sie ein Foto</string>
+    <string name="last_photo">Neue Foto aufgenommen</string>
+    <string name="all_photos">Alle Fotos</string>
+    <string name="camera_shots">Kameraaufnahmen</string>
+
+    <!-- Exceptions -->
+    <string name="parsing_exception">Schlechte Antwort-Format</string>
+    <string name="http_exception">Überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut</string>
+    <string name="http_error">Server-Problem, es erneut zu versuchen</string>
+
+    <!-- UI -->
+    <string name="cancel">Stornieren</string>
+    <string name="ok">OK</string>
+    <string name="albums">Alben</string>
+    <string name="loading_albums">Lädt Alben...</string>
+    <string name="loading_photos">Fotos werden geladen...</string>
+    <string name="loaded_photos">Geladenen %s Bilder in diesem Album</string>
+    <string name="loaded_albums">%s alben geladen</string>
+    <string name="select_a_photo">Wählen Sie ein Foto</string>
+    <string name="select_photos">Wählen Sie Fotos</string>
+    <string name="select_an_album">Wählen Sie ein Album</string>
+    <string name="title_default">Standard</string>
+    <string name="title_user">Benutzer</string>
+
+    <!-- Toast -->
+    <string name="toast_choose_photos">Bitte wählen Sie Fotos</string>
+    <string name="toast_feature_camera">Ihr Gerät verfügt nicht über eine Kamera</string>
+    <string name="no_camera_photos">Keine Kamera Fotos gefunden</string>
+    <string name="no_albums_found">Keine Alben gefunden</string>
+
+</resources>

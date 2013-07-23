@@ -68,12 +68,12 @@ public class NotificationUtil {
     }
 
     public static void showPhotosAdapterToast(Context context, int count) {
-	String text = String.format("Loaded %s photos in this album", count);
+	String text = String.format(context.getResources().getString(R.string.loaded_photos), count);
 	showAdapterToast(context, text);
     }
 
     public static void showAlbumsAdapterToast(Context context, int count) {
-	String text = String.format("Loaded %s albums", count);
+	String text = String.format(context.getResources().getString(R.string.loaded_albums), count);
 	showAdapterToast(context, text);
     }
 

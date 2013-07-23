@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Account type -->
+    <string name="take_photos">写真を撮る</string>
+    <string name="last_photo">最後に撮影した写真</string>
+    <string name="all_photos">すべての写真</string>
+    <string name="camera_shots">カメラショット</string>
+
+    <!-- Exceptions -->
+    <string name="parsing_exception">悪い応答形式</string>
+    <string name="http_exception">あなたのインターネット接続を確認し、再試行してください</string>
+    <string name="http_error">サーバーの問題はもう一度やり直し</string>
+
+    <!-- UI -->
+    <string name="cancel">キャンセル</string>
+    <string name="ok">OK</string>
+    <string name="albums">アルバム</string>
+    <string name="loading_albums">ロードアルバム</string>
+    <string name="loading_photos">ロードの写真</string>
+    <string name="loaded_photos">%s このアルバムにロードされた写真</string>
+    <string name="loaded_albums">%s ロードされたアルバム</string>
+    <string name="select_a_photo">写真を選択</string>
+    <string name="select_photos">写真を選択</string>
+    <string name="select_an_album">アルバムを選択</string>
+    <string name="title_default">デフォルト</string>
+    <string name="title_user">ユーザー</string>
+
+    <!-- Toast -->
+    <string name="toast_choose_photos">写真を選択してください</string>
+    <string name="toast_feature_camera">お使いのデバイスは、カメラを持っていない</string>
+    <string name="no_camera_photos">カメラロールで写真無し</string>
+    <string name="no_albums_found">いいえアルバムが見つかりませんでした</string>
+
+</resources>

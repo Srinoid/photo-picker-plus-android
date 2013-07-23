@@ -14,7 +14,7 @@
         android:gravity="center"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:text="Select an Album"
+        android:text="@string/select_an_album"
         android:textColor="@color/white"
         android:textSize="20dp" >
     </TextView>
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="Default"
+            android:text="@string/title_default"
             android:textColor="@color/white"
             android:textSize="18sp" />
         
@@ -59,7 +59,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Camera Shots"
+                android:text="@string/camera_shots"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -88,7 +88,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="All Photos"
+                android:text="@string/all_photos"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -118,7 +118,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Last photo taken"
+                android:text="@string/last_photo"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -147,7 +147,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Take a photo"
+                android:text="@string/take_photos"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="User"
+            android:text="@string/title_user"
             android:textColor="@color/white"
             android:textSize="18sp" />
     
@@ -198,7 +198,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Facebook"
+                android:text="@string/facebook"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -227,7 +227,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Flickr"
+                android:text="@string/flickr"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -257,7 +257,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Instagram"
+                android:text="@string/instagram"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -286,7 +286,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Picasa"
+                android:text="@string/picasa"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>

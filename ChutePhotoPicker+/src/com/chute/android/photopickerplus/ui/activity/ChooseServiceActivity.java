@@ -102,7 +102,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 				return;
 			}
 			if (responseData.getData().size() == 0) {
-				Toast.makeText(getApplicationContext(), "No albums found", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_albums_found), Toast.LENGTH_SHORT).show();
 				return;
 			}
 			AccountModel accountModel = responseData.getData().get(0);
