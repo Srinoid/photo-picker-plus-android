@@ -57,8 +57,8 @@ public class NotificationUtil {
 	}
 
 	public static void showAdapterToast(Context context, String message) {
-		View layout = LayoutInflater.from(context).inflate(R.layout.dialog_loaded_photos, null);
-		TextView toastText = (TextView) layout.findViewById(R.id.txt_dialog_loaded_photos);
+		View layout = LayoutInflater.from(context).inflate(R.layout.toast_loaded_photos, null);
+		TextView toastText = (TextView) layout.findViewById(R.id.textViewToastLoadedPhotos);
 		toastText.setText(message);
 		Toast toast = new Toast(context);
 		toast.setGravity(Gravity.CENTER, 0, 0);

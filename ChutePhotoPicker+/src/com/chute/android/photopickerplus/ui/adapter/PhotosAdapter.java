@@ -70,8 +70,8 @@ public class PhotosAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
 
-		public ImageView image;
-		public ImageView tick;
+		public ImageView imageViewThumb;
+		public ImageView imageViewTick;
 	}
 
 	public void changeData(final ArrayList<AccountMediaModel> collection) {
@@ -84,27 +84,27 @@ public class PhotosAdapter extends BaseAdapter {
 		View vi = convertView;
 		ViewHolder holder;
 		if (convertView == null) {
-			vi = inflater.inflate(R.layout.photos_select_adapter, null);
+			vi = inflater.inflate(R.layout.adapter_photos, null);
 			holder = new ViewHolder();
-			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+			holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
+			holder.imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
-			holder.image.setScaleType(ScaleType.CENTER_CROP);
-			holder.tick = (ImageView) vi.findViewById(R.id.imageTick);
-			holder.tick.setTag(position);
+			holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
+			holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
+			holder.imageViewTick.setTag(position);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
 
 		if (tick.containsKey(position)) {
-			holder.tick.setVisibility(View.VISIBLE);
+			holder.imageViewTick.setVisibility(View.VISIBLE);
 			vi.setBackgroundColor(context.getResources().getColor(R.color.orange));
 		} else {
-			holder.tick.setVisibility(View.GONE);
+			holder.imageViewTick.setVisibility(View.GONE);
 			vi.setBackgroundColor(context.getResources().getColor(R.color.transparent));
 		}
-		loader.displayImage(getItem(position).getUrl(), holder.image, null);
+		loader.displayImage(getItem(position).getUrl(), holder.imageViewThumb, null);
 		return vi;
 	}
 

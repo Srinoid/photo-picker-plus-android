@@ -47,29 +47,29 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 	}
 
 	public static class ViewHolder {
-		public ImageView image;
-		public ImageView tick;
+		public ImageView imageViewThumb;
+		public ImageView imageViewTick;
 	}
 
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 		String path = cursor.getString(dataIndex);
-		holder.image.setTag(path);
-		holder.tick.setTag(cursor.getPosition());
+		holder.imageViewThumb.setTag(path);
+		holder.imageViewTick.setTag(cursor.getPosition());
 		if (shouldLoadImages) {
-			loader.displayImage(Uri.fromFile(new File(path)).toString(), holder.image, null);
+			loader.displayImage(Uri.fromFile(new File(path)).toString(), holder.imageViewThumb, null);
 		} else {
-			loader.displayImage(null, holder.image, null);
+			loader.displayImage(null, holder.imageViewThumb, null);
 		}
-		holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3 - 2,
+		holder.imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3 - 2,
 				displayMetrics.widthPixels / 3 - 2));
-		holder.image.setScaleType(ScaleType.CENTER_CROP);
+		holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
 		if (tick.containsKey(cursor.getPosition())) {
-			holder.tick.setVisibility(View.VISIBLE);
+			holder.imageViewTick.setVisibility(View.VISIBLE);
 			view.setBackgroundColor(context.getResources().getColor(R.color.orange));
 		} else {
-			holder.tick.setVisibility(View.GONE);
+			holder.imageViewTick.setVisibility(View.GONE);
 			view.setBackgroundColor(Color.BLACK);
 		}
 	}
@@ -77,10 +77,10 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		ViewHolder holder;
-		View vi = inflater.inflate(R.layout.photos_select_adapter, null);
+		View vi = inflater.inflate(R.layout.adapter_photos, null);
 		holder = new ViewHolder();
-		holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
-		holder.tick = (ImageView) vi.findViewById(R.id.imageTick);
+		holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
+		holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
 		vi.setTag(holder);
 		return vi;
 	}

@@ -56,7 +56,7 @@ public class AlbumsAdapter extends BaseAdapter {
 	}
 
 	public class ViewHolder {
-		TextView name;
+		TextView textViewAlbumName;
 	}
 
 	@Override
@@ -65,14 +65,14 @@ public class AlbumsAdapter extends BaseAdapter {
 		View vi = convertView;
 		ViewHolder holder;
 		if (convertView == null) {
-			vi = inflater.inflate(R.layout.album_list_item, null);
+			vi = inflater.inflate(R.layout.adapter_albums, null);
 			holder = new ViewHolder();
-			holder.name = (TextView) vi.findViewById(R.id.txt_album_name);
+			holder.textViewAlbumName = (TextView) vi.findViewById(R.id.textViewAlbumName);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-		holder.name.setText(getItem(position).getName());
+		holder.textViewAlbumName.setText(getItem(position).getName());
 		return vi;
 
 	}

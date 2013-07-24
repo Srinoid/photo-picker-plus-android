@@ -15,7 +15,7 @@
 	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 	THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/empty_view_layout"
+        android:id="@+id/linearLayoutEmptyViewAlbums"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/progress_bar_window"
@@ -24,16 +24,18 @@
         android:visibility="gone" >
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/progressBarLoadingAlbums"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminateDrawable="@drawable/progress_bar_rotation" />
 
         <TextView
-            android:id="@+id/progressbar_loaded_photos"
+            android:id="@+id/textViewLoadingAlbums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dip"
             android:text="@string/loading_albums"
-            style="@style/textSmallCenter" />
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse" />
     </LinearLayout>
