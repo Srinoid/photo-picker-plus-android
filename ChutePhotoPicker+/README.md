@@ -19,17 +19,17 @@ Implementation
 
 Follow the PhotoPicker+ tutorial on how to setup and use the component.
 
-Component localization
+Localization
 ====
 
 PhotoPicker+ provides alternative text for different languages. 
 To add support for more languages, create additional values directories inside res/ that include a hyphen and the ISO country code at the end of the directory name. For example, values-fr/ is the directory containing simple resourcess for the Locales with the language code "fr". Android loads the appropriate resources according to the locale settings of the device at run time.
-Once you’ve decided on the languages you will support, create the resource subdirectories and string resource files. For example:
-res/values/strings.xml
-Contains English text for all the strings that the application uses, including text for a string named title.
-res/values-fr/strings.xml
-Contain French text for all the strings, including title.
-res/values-ja/strings.xml
+Once you’ve decided on the languages you will support, create the resource subdirectories and string resource files. For example:  
+res/values/strings.xml  
+Contains English text for all the strings that the application uses, including text for a string named title.  
+res/values-fr/strings.xml  
+Contain French text for all the strings, including title.  
+res/values-ja/strings.xml  
 Contain Japanese text for all the strings except title.
 
 Some of PhotoPicker+ supported languages might not be correctly translated. Any feedback is welcomed.
@@ -39,7 +39,6 @@ Modifying the component
 ====
 
 Since the component is opensource you can easily modify the resources to your own needs. Just replace the drawables and modify the color values. Additionally you can even adjust the layouts.
-
 
 
 
