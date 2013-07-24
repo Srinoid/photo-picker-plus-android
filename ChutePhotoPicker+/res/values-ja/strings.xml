@@ -18,8 +18,6 @@
     <string name="albums">アルバム</string>
     <string name="loading_albums">ロードアルバム</string>
     <string name="loading_photos">ロードの写真</string>
-    <string name="loaded_photos">%s このアルバムにロードされた写真</string>
-    <string name="loaded_albums">%s ロードされたアルバム</string>
     <string name="select_a_photo">写真を選択</string>
     <string name="select_photos">写真を選択</string>
     <string name="select_an_album">アルバムを選択</string>

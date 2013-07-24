@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="numberOfLoadedPhotos">
+        <item quantity="one">इस एल्बम में भरा हुआ 1 फोटो</item>
+        <item quantity="other">%d इस एल्बम में भरा तस्वीरें</item>
+    </plurals>
+    <plurals name="numberOfLoadedAlbums">
+        <item quantity="one">1 एल्बम भरा हुआ</item>
+        <item quantity="other">%d एल्बम भरा हुआ</item>
+    </plurals>
+
+</resources>

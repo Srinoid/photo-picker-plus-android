@@ -18,8 +18,6 @@
     <string name="albums">相册</string>
     <string name="loading_albums">加载专辑</string>
     <string name="loading_photos">加载照片</string>
-    <string name="loaded_photos">%s 在这张专辑中的加载的照片</string>
-    <string name="loaded_albums">%s 加载的相册</string>
     <string name="select_a_photo">选择一个照片</string>
     <string name="select_photos">选择照片</string>
     <string name="select_an_album">选择一个相册</string>

@@ -18,8 +18,6 @@
     <string name="albums">Alben</string>
     <string name="loading_albums">Lädt Alben...</string>
     <string name="loading_photos">Fotos werden geladen...</string>
-    <string name="loaded_photos">Geladenen %s Bilder in diesem Album</string>
-    <string name="loaded_albums">%s alben geladen</string>
     <string name="select_a_photo">Wählen Sie ein Foto</string>
     <string name="select_photos">Wählen Sie Fotos</string>
     <string name="select_an_album">Wählen Sie ein Album</string>

@@ -102,12 +102,17 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 				return;
 			}
 			if (responseData.getData().size() == 0) {
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_albums_found), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_albums_found),
+						Toast.LENGTH_SHORT).show();
 				return;
 			}
 			AccountModel accountModel = responseData.getData().get(0);
 			if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
-				PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
+				if (accountModel.getName().equals("")) {
+					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getUsername());
+				} else {
+					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
+				}
 				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
 				accountClicked(accountModel.getId(), accountType.getName());
 			}
@@ -115,7 +120,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 		@Override
 		public void onHttpError(ResponseStatus responseStatus) {
-
+			Log.d("debug", "error = " + responseStatus.getStatusCode() + " " + responseStatus.getStatusMessage());
 		}
 
 	}

@@ -24,8 +24,6 @@
     <string name="albums">Albums</string>
     <string name="loading_albums">Loading albums...</string>
     <string name="loading_photos">Loading photos...</string>
-    <string name="loaded_photos">Loaded %s photos in this album</string>
-    <string name="loaded_albums">Loaded %s albums</string>
     <string name="select_a_photo">Select a Photo</string>
     <string name="select_photos">Select Photos</string>
     <string name="select_an_album">Select an Album</string>

@@ -19,8 +19,6 @@
     <string name="loading_albums">Albums de chargement...</string>
     <string name="loading_photos">Chargement des photos...</string>
     <string name="select_a_photo">Sélectionnez une photo</string>
-    <string name="loaded_photos">%s photos chargées dans cet album</string>
-    <string name="loaded_albums">%s albums chargés</string>
     <string name="select_photos">Sélectionner les photos</string>
     <string name="select_an_album">Sélectionner un album</string>
     <string name="title_default">Défaut</string>

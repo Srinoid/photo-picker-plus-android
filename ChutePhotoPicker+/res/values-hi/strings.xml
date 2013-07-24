@@ -18,8 +18,6 @@
     <string name="albums">एलबम</string>
     <string name="loading_albums">लोड हो रहा है एल्बमों</string>
     <string name="loading_photos">लोड हो तस्वीरें</string>
-     <string name="loaded_photos">%s इस एल्बम में भरा तस्वीरें</string>
-    <string name="loaded_albums">%s लोडेड एल्बम</string>
     <string name="select_a_photo">एक तस्वीर का चयन करें</string>
     <string name="select_photos">फ़ोटो का चयन करें</string>
     <string name="select_an_album">एक एल्बम का चयन करें</string>
