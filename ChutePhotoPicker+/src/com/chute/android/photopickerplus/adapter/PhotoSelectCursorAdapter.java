@@ -60,9 +60,9 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements
 		holder.tick.setTag(cursor.getPosition());
 		if (shouldLoadImages) {
 			loader.displayImage(Uri.fromFile(new File(path)).toString(),
-					holder.image, null);
+					holder.image);
 		} else {
-			loader.displayImage(null, holder.image, null);
+			loader.displayImage(null, holder.image);
 		}
 		holder.image.setLayoutParams(new RelativeLayout.LayoutParams(
 				displayMetrics.widthPixels / 3 - 2,

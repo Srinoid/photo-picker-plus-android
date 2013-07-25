@@ -109,7 +109,7 @@ public class PhotosAdapter extends BaseAdapter {
 			vi.setBackgroundColor(context.getResources().getColor(
 					R.color.transparent));
 		}
-		loader.displayImage(getItem(position).getThumbUrl(), holder.image, null);
+		loader.displayImage(getItem(position).getThumbUrl(), holder.image);
 		return vi;
 	}
 

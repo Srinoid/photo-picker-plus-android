@@ -27,7 +27,7 @@ import com.chute.sdk.model.GCAccountMediaModel;
 import com.darko.imagedownloader.ImageLoader;
 import com.darko.imagedownloader.ImageLoaderListener;
 
-public class GridAdapter extends BaseAdapter implements ImageLoaderListener {
+public class GridAdapter extends BaseAdapter {
 
 	public static final String TAG = GridAdapter.class.getSimpleName();
 	private static LayoutInflater inflater;
@@ -35,16 +35,14 @@ public class GridAdapter extends BaseAdapter implements ImageLoaderListener {
 	private GCAccountMediaCollection collection;
 	private final DisplayMetrics displayMetrics;
 
-	public GridAdapter(final Activity context,
-			final GCAccountMediaCollection collection) {
+	public GridAdapter(final Activity context, final GCAccountMediaCollection collection) {
 		if (collection == null) {
 			this.collection = new GCAccountMediaCollection();
 		} else {
 			this.collection = collection;
 		}
 		loader = ImageLoader.getLoader(context);
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		displayMetrics = context.getResources().getDisplayMetrics();
 	}
 
@@ -75,15 +73,14 @@ public class GridAdapter extends BaseAdapter implements ImageLoaderListener {
 			vi = inflater.inflate(R.layout.grid_adapter_item, null);
 			holder = new ViewHolder();
 			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(
-					displayMetrics.widthPixels / 3,
+			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
 			holder.image.setScaleType(ScaleType.CENTER_CROP);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-		loader.displayImage(getItem(position).getThumbUrl(), holder.image, this);
+		loader.displayImage(getItem(position).getThumbUrl(), holder.image);
 		return vi;
 	}
 
@@ -92,15 +89,4 @@ public class GridAdapter extends BaseAdapter implements ImageLoaderListener {
 		notifyDataSetChanged();
 	}
 
-	@Override
-	public void onImageLoadingComplete(String url, Bitmap bitmap) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onImageLoadingError() {
-		// TODO Auto-generated method stub
-
-	}
 }
