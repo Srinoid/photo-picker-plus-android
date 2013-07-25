@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chute.android.photopickerplus.R;
@@ -91,6 +92,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		if (ppWrapper.areServicesHidden()) {
 			chooseServiceFragment.setServicesHidden();
 		}
+		
 
 	}
 

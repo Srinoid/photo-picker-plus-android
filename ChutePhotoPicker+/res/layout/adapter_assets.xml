@@ -33,12 +33,12 @@
 
     <ImageView
         android:id="@+id/imageViewTick"
+        style="@style/imageViewTick"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignBaseline="@+id/imageViewThumb"
         android:layout_alignBottom="@+id/imageViewThumb"
-        android:layout_alignRight="@+id/imageViewThumb"
-        android:background="@drawable/tick" >
+        android:layout_alignRight="@+id/imageViewThumb" >
     </ImageView>
 
 </RelativeLayout>

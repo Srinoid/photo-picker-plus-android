@@ -2,42 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grid_background"
     android:orientation="vertical" >
 
     <!-- SELECT AN ALBUM -->
+
     <TextView
         android:id="@+id/textViewSelectAlbumTitle"
+        style="@style/textViewTtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/select_an_album_bckg"
-        android:gravity="center"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:text="@string/select_an_album"
-        android:textAppearance="@android:style/TextAppearance.Medium.Inverse" >
+        android:text="@string/select_an_album" >
     </TextView>
 
     <!-- DEFAULT -->
+
     <TextView
         android:id="@+id/textViewDefaultTitle"
+        style="@style/textViewSecondaryTtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/title_default"
-        android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
+        android:text="@string/title_default" />
 
     <!-- DEFAULT SERVICES CONTENT -->
+
     <LinearLayout
         android:id="@+id/linearLayoutServicesContent"
+        style="@style/linearLayoutServices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/services_shape"
         android:orientation="vertical" >
 
         <!-- CAMERA SHOTS -->
+
         <LinearLayout
             android:id="@+id/linearLayoutCameraShots"
             android:layout_width="match_parent"
@@ -46,28 +42,19 @@
 
             <ImageView
                 android:id="@+id/imageViewCameraShots"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/default_thumb"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewServices" />
 
             <TextView
                 android:id="@+id/textViewCameraShots"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/camera_shots"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/camera_shots" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerCameraShots"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
 
         <!-- ALL PHOTOS -->
 
@@ -79,28 +66,19 @@
 
             <ImageView
                 android:id="@+id/imageViewAllPhotos"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/default_thumb"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewServices" />
 
             <TextView
                 android:id="@+id/textViewAllPhotos"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/all_photos"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/all_photos" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerAllPhotos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
 
         <!-- LAST PHOTO TAKEN -->
 
@@ -112,28 +90,19 @@
 
             <ImageView
                 android:id="@+id/imageViewLastPhotoTaken"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/default_thumb"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewServices" />
 
             <TextView
                 android:id="@+id/textViewLastPhotoTaken"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/last_photo"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/last_photo" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerLastPhotoTaken"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
 
         <!-- TAKE A PHOTO -->
 
@@ -145,49 +114,37 @@
 
             <ImageView
                 android:id="@+id/imageViewTakePhoto"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/icon_camera"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewTakePhoto" />
 
             <TextView
                 android:id="@+id/textViewTakePhoto"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/take_photos"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/take_photos" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerTakePhoto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
     </LinearLayout>
 
     <!-- USER -->
 
     <TextView
         android:id="@+id/textViewUserTitle"
+        style="@style/textViewSecondaryTtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/title_user"
-        android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
+        android:text="@string/title_user" />
 
     <!-- SOCIAL SERVICES CONTENT -->
 
     <LinearLayout
         android:id="@+id/linearLayoutSocialServicesContent"
+        style="@style/linearLayoutServices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/services_shape"
         android:orientation="vertical" >
 
         <!-- FACEBOOK -->
@@ -200,28 +157,19 @@
 
             <ImageView
                 android:id="@+id/imageViewFacebook"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/icon_facebook"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewFacebook" />
 
             <TextView
                 android:id="@+id/textViewFacebook"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/facebook"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/facebook" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
 
         <!-- FLICKR -->
 
@@ -233,28 +181,19 @@
 
             <ImageView
                 android:id="@+id/imageViewFlickr"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/icon_flickr"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewFlickr" />
 
             <TextView
                 android:id="@+id/textViewFlickr"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/flickr"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/flickr" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerFlickr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
 
         <!-- INSTAGRAM -->
 
@@ -266,28 +205,19 @@
 
             <ImageView
                 android:id="@+id/imageViewInstagram"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/icon_instagram"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewInstagram" />
 
             <TextView
                 android:id="@+id/textViewInstagram"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/instagram"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/instagram" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerInstagram"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
 
         <!-- PICASA -->
 
@@ -299,28 +229,19 @@
 
             <ImageView
                 android:id="@+id/imageViewPicasa"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/icon_picasa"
-                android:scaleType="centerCrop" />
+                style="@style/imageViewPicasa" />
 
             <TextView
                 android:id="@+id/textViewPicasa"
+                style="@style/textViewServiceNames"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="@string/picasa"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/black" />
+                android:text="@string/picasa" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/dividerPicasa"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider_album_list" />
+            style="@style/dividerLine" />
     </LinearLayout>
 
 </LinearLayout>

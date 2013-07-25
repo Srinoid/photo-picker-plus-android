@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- PhotoPicker+ Theme -->
+    <style name="PhotoPickerTheme" parent="android:Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@color/background_activity</item>
+    </style>
+
+    <!-- TextView Fragment Title -->
+    <style name="textViewTtitle" parent="android:Widget.TextView">
+        <item name="android:background">@color/background_title</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+    </style>
+
+    <!-- TextView Service Fragment Secondary Titles -->
+    <style name="textViewSecondaryTtitle" parent="android:Widget.TextView">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+    </style>
+
+    <!-- TextView Service&Album Names -->
+    <style name="textViewServiceNames" parent="android:Widget.TextView">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+    </style>
+    
+    <!-- TextView Default Small -->
+    <style name="textViewDefaultSmall" parent="android:Widget.TextView">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+    </style>
+
+    <!-- TextView Progress Dialog -->
+    <style name="textViewProgressDialog" parent="textViewDefaultSmall">
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <!-- TextView Notification Dialog -->
+    <style name="textViewNotificationDialog" parent="textViewDefaultSmall">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- ListView Albums -->
+    <style name="listViewAlbums" parent="android:Widget.ListView">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/services_shape</item>
+        <item name="android:divider">@drawable/divider_album_list</item>
+    </style>
+
+    <!-- LinearLayout Services -->
+    <style name="linearLayoutServices">
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@drawable/services_shape</item>
+    </style>
+
+    <!-- LinearLayout Progress Dialog -->
+    <style name="linearLayoutProgressDialog">
+        <item name="android:padding">20dp</item>
+        <item name="android:background">@drawable/progress_bar_window</item>
+    </style>
+
+    <!-- LinearLayout Notification Dialog -->
+    <style name="linearLayoutNotificationDialog" parent="linearLayoutProgressDialog">
+        <item name="android:background">@drawable/notification_window</item>
+    </style>
+
+    <!-- Divider Line -->
+    <style name="dividerLine">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/divider_album_list</item>
+    </style>
+
+
+    <!-- ImageView Arrow -->
+    <style name="imageViewArrow">
+        <item name="android:background">@drawable/arrow_album_list</item>
+    </style>
+
+    <!-- ImageView Tick -->
+    <style name="imageViewTick">
+        <item name="android:background">@drawable/tick</item>
+    </style>
+    
+     <!-- ImageView Default -->
+    <style name="imageViewDefault">
+        <item name="android:background">@drawable/default_thumb</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+    
+     <!-- ImageView Album Cover -->
+    <style name="imageViewAlbumCover" parent="imageViewDefault">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    
+     <!-- ImageView Services -->
+    <style name="imageViewServices" parent="imageViewDefault">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">42dp</item>
+    </style>
+
+    <!-- ImageView Facebook -->
+    <style name="imageViewFacebook" parent="imageViewServices">
+        <item name="android:background">@drawable/icon_facebook</item>
+    </style>
+
+    <!-- ImageView Flickr -->
+    <style name="imageViewFlickr" parent="imageViewServices">
+        <item name="android:background">@drawable/icon_flickr</item>
+    </style>
+
+    <!-- ImageView Instagram -->
+    <style name="imageViewInstagram" parent="imageViewServices">
+        <item name="android:background">@drawable/icon_instagram</item>
+    </style>
+
+    <!-- ImageView Picasa -->
+    <style name="imageViewPicasa" parent="imageViewServices">
+        <item name="android:background">@drawable/icon_picasa</item>
+    </style>
+
+    <!-- ImageView Take Photo -->
+    <style name="imageViewTakePhoto" parent="imageViewServices">
+        <item name="android:background">@drawable/icon_camera</item>
+    </style>
+
+</resources>

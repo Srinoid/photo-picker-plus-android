@@ -18,16 +18,13 @@
     android:id="@+id/LinearLayoutToastLoadedPhotos"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/notification_window"
-    android:padding="20dip"
+    style="@style/linearLayoutNotificationDialog"
     android:orientation="vertical" >
 
     <TextView android:id="@+id/textViewToastLoadedPhotos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="false"
-        android:layout_gravity="center"
-        android:textAppearance="@android:style/TextAppearance.Small.Inverse"
-        android:textColor="@color/white" />
+        style="@style/textViewNotificationDialog" />
 
 </LinearLayout>

@@ -84,7 +84,7 @@ public class PhotosAdapter extends BaseAdapter {
 		View vi = convertView;
 		ViewHolder holder;
 		if (convertView == null) {
-			vi = inflater.inflate(R.layout.adapter_photos, null);
+			vi = inflater.inflate(R.layout.adapter_assets, null);
 			holder = new ViewHolder();
 			holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
 			holder.imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,

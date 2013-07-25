@@ -5,15 +5,13 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <!-- Select Photos Title -->
     <TextView
         android:id="@+id/textViewSelectPhotos"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/select_an_album_bckg"
-        android:gravity="center_horizontal"
-        android:padding="5dp"
-        android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
+        style="@style/textViewTtitle"
+        android:layout_alignParentTop="true" />
 
     <GridView
         android:id="@+id/gridViewAssets"

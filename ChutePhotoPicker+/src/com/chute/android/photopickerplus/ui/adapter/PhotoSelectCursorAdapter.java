@@ -77,7 +77,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		ViewHolder holder;
-		View vi = inflater.inflate(R.layout.adapter_photos, null);
+		View vi = inflater.inflate(R.layout.adapter_assets, null);
 		holder = new ViewHolder();
 		holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
 		holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);

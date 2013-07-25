@@ -18,11 +18,10 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayoutEmptyViewPhotos"
+    style="@style/linearLayoutProgressDialog"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/progress_bar_window"
     android:orientation="vertical"
-    android:padding="20dip"
     android:visibility="gone" >
 
     <ProgressBar
@@ -34,11 +33,9 @@
 
     <TextView
         android:id="@+id/textViewLoadingPhotos"
+        style="@style/textViewProgressDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dip"
-        android:text="@string/loading_photos"
-        android:textAppearance="@android:style/TextAppearance.Small.Inverse" />
+        android:text="@string/loading_photos" />
 
 </LinearLayout>
