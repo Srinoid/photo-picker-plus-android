@@ -34,6 +34,11 @@ Contain Japanese text for all the strings except title.
 
 Some of PhotoPicker+ supported languages might not be correctly translated. Any feedback is welcomed.
 
+Styles setup
+====
+
+In order to achieve the desired look for your application, you need to override the existing styles or modify the defined resources. PhotoPickerStyleGuide.md will show you how to change views appearance or application theme and guide you throughout the way.
+
 
 Modifying the component
 ====
