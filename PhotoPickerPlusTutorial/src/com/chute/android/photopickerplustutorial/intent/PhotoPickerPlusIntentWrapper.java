@@ -1,5 +1,8 @@
 package com.chute.android.photopickerplustutorial.intent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
 
 import android.app.Activity;
@@ -11,6 +14,7 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 	public static final int REQUEST_CODE = 1;
 	public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
 	public static final String FLAG_MULTI_PP = "flagMultiPp";
+	public static final String FLAG_SERVICE_LIST = "flagServiceList";
 
 	public PhotoPickerPlusIntentWrapper(Intent intent) {
 		super(intent);
@@ -26,6 +30,14 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
 	public boolean getIsMultiPicker() {
 		return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
+	}
+
+	public void setServiceList(ArrayList<String> services) {
+		getIntent().putStringArrayListExtra(FLAG_SERVICE_LIST, services);
+	}
+
+	public ArrayList<String> getServiceList() {
+		return getIntent().getExtras().getStringArrayList(FLAG_SERVICE_LIST);
 	}
 
 	public void setMultiPicker(boolean flag) {
