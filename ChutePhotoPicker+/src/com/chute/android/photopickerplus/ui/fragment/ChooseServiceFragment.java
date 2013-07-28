@@ -1,11 +1,13 @@
 package com.chute.android.photopickerplus.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -207,7 +209,8 @@ public class ChooseServiceFragment extends Fragment {
 		textViewUserTitle.setVisibility(View.GONE);
 	}
 
-	public void configureServices(ArrayList<String> services) {
+	public void configureServices(List<String> services) {
+		Log.d("debug", "services = " + services.toString());
 		// set services visibility gone
 		for (String service : services) {
 			if (service.equals("facebook")) {

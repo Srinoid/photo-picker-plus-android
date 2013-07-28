@@ -1,4 +1,4 @@
-package com.chute.android.photopickerplustutorial.config;
+package com.chute.android.photopickerplus.config;
 
 import android.content.Context;
 

@@ -9,12 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus;
 
+import java.util.ArrayList;
+
 import android.app.Application;
 import android.content.Context;
 import android.util.TypedValue;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.config.ConfigServicesFactory;
 import com.chute.android.photopickerplus.util.Constants;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.api.Chute;
 import com.chute.sdk.v2.api.authentication.AuthConstants;
 import com.chute.sdk.v2.utils.PreferenceUtil;
@@ -26,15 +30,14 @@ public class PhotoPickerPlusApp extends Application {
 	public static final String TAG = PhotoPickerPlusApp.class.getSimpleName();
 
 	private static ImageLoader createImageLoader(Context context) {
-		ImageLoader imageLoader = new ImageLoader(context,
-				R.drawable.placeholder);
-		imageLoader.setDefaultBitmapSize((int) TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_DIP, 75, context.getResources()
-						.getDisplayMetrics()));
+		ImageLoader imageLoader = new ImageLoader(context, R.drawable.placeholder);
+		imageLoader.setDefaultBitmapSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75, context
+				.getResources().getDisplayMetrics()));
 		return imageLoader;
 	}
 
 	private ImageLoader mImageLoader;
+	private ArrayList<String> services = new ArrayList<String>();
 
 	@Override
 	public void onCreate() {
@@ -42,6 +45,13 @@ public class PhotoPickerPlusApp extends Application {
 		mImageLoader = createImageLoader(this);
 		Chute.init(this, new AuthConstants(Constants.APP_ID, Constants.APP_SECRET));
 		PreferenceUtil.init(getApplicationContext());
+		PhotoPickerPreferenceUtil.init(getApplicationContext());
+		services.add("Facebook");
+		services.add("Picasa");
+		ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
+				ConfigServicesFactory.CONFIG_LOCAL, services);
+		// ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(ConfigServicesFactory.CONFIG_SERVER,
+		// null);
 	}
 
 	@Override

@@ -25,8 +25,6 @@ import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
-import com.chute.android.photopickerplustutorial.config.GCConfig;
-import com.chute.android.photopickerplustutorial.config.ServiceResponseModel;
 import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusIntentWrapper;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -51,26 +49,9 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 		findViewById(R.id.btnPhotoPicker).setOnClickListener(new OnPhotoPickerClickListener());
 		grid = (GridView) findViewById(R.id.grid);
 
-		GCConfig.getConfigurableServices(getApplicationContext(), new ConfigServicesCallback()).executeAsync();
 
 	}
 
-	private final class ConfigServicesCallback implements HttpCallback<ServiceResponseModel<String>> {
-
-		@Override
-		public void onHttpError(ResponseStatus status) {
-			ALog.d("Http Error = " + status.getStatusMessage() + " " + status.getStatusCode());
-
-		}
-
-		@Override
-		public void onSuccess(ServiceResponseModel<String> data) {
-			ALog.d("Response = " + data.toString());
-			serviceList = data.getServices();
-
-		}
-
-	}
 
 	private class OnPhotoPickerClickListener implements OnClickListener {
 
@@ -79,7 +60,6 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 			PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(
 					PhotoPickerPlusTutorialActivity.this);
 			wrapper.setMultiPicker(isMultiPicker);
-			wrapper.setServiceList((ArrayList<String>) serviceList);
 			wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this,
 					PhotoPickerPlusIntentWrapper.REQUEST_CODE);
 

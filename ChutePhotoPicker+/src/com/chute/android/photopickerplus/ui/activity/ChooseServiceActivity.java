@@ -12,6 +12,8 @@ package com.chute.android.photopickerplus.ui.activity;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
@@ -44,6 +47,7 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
@@ -92,7 +96,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 			chooseServiceFragment.setSocialServicesHidden();
 		}
 
-		chooseServiceFragment.configureServices(ppWrapper.getServiceList());
+		String serialized = PhotoPickerPreferenceUtil.get().getServiceList();
+		List<String> serviceList = Arrays.asList(TextUtils.split(serialized, ","));
+		chooseServiceFragment.configureServices(serviceList);
 
 	}
 

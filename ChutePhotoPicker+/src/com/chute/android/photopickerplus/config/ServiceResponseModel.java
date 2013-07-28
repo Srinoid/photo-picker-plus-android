@@ -1,5 +1,5 @@
 // Copyright (c) 2011, Chute Corporation. All rights reserved.
-package com.chute.android.photopickerplustutorial.config;
+package com.chute.android.photopickerplus.config;
 
 import java.util.List;
 
