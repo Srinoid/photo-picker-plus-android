@@ -212,12 +212,12 @@ public class ChooseServiceFragment extends Fragment {
 	public void configureServices(List<String> services) {
 		Log.d("debug", "services = " + services.toString());
 		// set services visibility gone
-		for (String service : services) {
-			if (service.equals("facebook")) {
-				linearLayoutFacebook.setVisibility(View.VISIBLE);
-			}
-			// TODO the rest
-		}
+		// for (String service : services) {
+		// if (service.equals("facebook")) {
+		// linearLayoutFacebook.setVisibility(View.VISIBLE);
+		// }
+		// TODO the rest
+		// }
 
 	}
 }
