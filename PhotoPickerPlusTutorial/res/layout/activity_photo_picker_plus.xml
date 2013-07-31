@@ -30,7 +30,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="Start PhotoPicker+"
-        android:textColor="@color/grey"
+        android:textColor="@color/white"
         android:textSize="15sp" />
 
 </RelativeLayout>
