@@ -72,8 +72,8 @@ To define custom themes, place the theme XML files in the /res/values folder. No
 </style>  
    ```
    ```  
-/res/values-v14/styles.xml  
-<!-- For API level 14 and above, use the Holo theme -->  
+/res/values-v11/styles.xml  
+<!-- For API level 11 and above, use the Holo theme -->  
 <style name="PhotoPickerTheme" parent="android:Holo">  
     <item name="android:windowBackground">@drawable/background_activity</item>  
 </style>
