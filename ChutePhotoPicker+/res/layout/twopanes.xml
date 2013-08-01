@@ -11,4 +11,8 @@
         android:layout_height="500dp"
         class="com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment" />
 
+    <ImageView
+        android:id="@+id/dividerFragments"
+        style="@style/dividerLine" />
+
 </LinearLayout>

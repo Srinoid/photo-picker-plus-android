@@ -84,8 +84,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/divider_album_list</item>
     </style>
-
-
+    
+    <style name="dividerLineVertical">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@drawable/divider_album_list</item>
+    </style>
+    
     <!-- ImageView Arrow -->
     <style name="imageViewArrow">
         <item name="android:background">@drawable/arrow_album_list</item>
