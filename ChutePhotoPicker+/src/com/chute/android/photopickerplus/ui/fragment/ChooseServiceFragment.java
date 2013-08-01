@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.config.ConfigurableServices;
 import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.sdk.v2.model.enums.AccountType;
 
@@ -223,23 +224,23 @@ public class ChooseServiceFragment extends Fragment {
 	public void configureServices(List<String> services) {
 		Log.d("debug", "services = " + services.toString());
 		for (String service : services) {
-			if (service.equals("Facebook") || service.equals("Instagram") || service.equals("Picasa")
-					|| service.equals("Flickr")) {
+			if (service.equals(ConfigurableServices.Facebook.name()) || service.equals(ConfigurableServices.Instagram.name())
+					|| service.equals(ConfigurableServices.Picasa.name()) || service.equals(ConfigurableServices.Flickr.name())) {
 				textViewUserTitle.setVisibility(View.VISIBLE);
 			}
-			if (service.equals("Facebook")) {
+			if (service.equals(ConfigurableServices.Facebook.name())) {
 				linearLayoutFacebook.setVisibility(View.VISIBLE);
 				dividerFacebook.setVisibility(View.VISIBLE);
 			}
-			if (service.equals("Instagram")) {
+			if (service.equals(ConfigurableServices.Instagram.name())) {
 				linearLayoutInstagram.setVisibility(View.VISIBLE);
 				dividerInstagram.setVisibility(View.VISIBLE);
 			}
-			if (service.equals("Picasa")) {
+			if (service.equals(ConfigurableServices.Picasa.name())) {
 				linearLayoutPicasa.setVisibility(View.VISIBLE);
 				dividerPicasa.setVisibility(View.VISIBLE);
 			}
-			if (service.equals("Flickr")) {
+			if (service.equals(ConfigurableServices.Flickr.name())) {
 				linearLayoutFlickr.setVisibility(View.VISIBLE);
 				dividerFlicker.setVisibility(View.VISIBLE);
 			}
