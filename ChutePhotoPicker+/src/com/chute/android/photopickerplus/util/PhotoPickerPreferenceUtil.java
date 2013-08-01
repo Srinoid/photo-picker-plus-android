@@ -39,6 +39,7 @@ public class PhotoPickerPreferenceUtil {
 
 	public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
 	private static final String SERVICE_LIST = "service_list";
+	private static final String CONFIG_URL = "config_url";
 	private final Context context;
 
 	private PhotoPickerPreferenceUtil(Context context) {
@@ -83,12 +84,16 @@ public class PhotoPickerPreferenceUtil {
 		setPreference(SERVICE_LIST, TextUtils.join(",", services));
 	}
 
-
 	public String getServiceList() {
 		return getPreferences().getString(SERVICE_LIST, null);
 	}
 
-	
+	public void setConfigUrl(String url) {
+		setPreference(CONFIG_URL, url);
+	}
 
+	public String getConfigUrl() {
+		return getPreferences().getString(CONFIG_URL, null);
+	}
 
 }

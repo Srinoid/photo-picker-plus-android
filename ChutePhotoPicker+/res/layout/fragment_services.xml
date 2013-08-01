@@ -136,7 +136,8 @@
         style="@style/textViewSecondaryTtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_user" />
+        android:text="@string/title_user"
+        android:visibility="gone" />
 
     <!-- SOCIAL SERVICES CONTENT -->
 
@@ -153,7 +154,8 @@
             android:id="@+id/linearLayoutFacebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/imageViewFacebook"
@@ -169,7 +171,8 @@
 
         <ImageView
             android:id="@+id/dividerFacebook"
-            style="@style/dividerLine" />
+            style="@style/dividerLine"
+            android:visibility="gone" />
 
         <!-- FLICKR -->
 
@@ -177,7 +180,8 @@
             android:id="@+id/linearLayoutFlickr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/imageViewFlickr"
@@ -193,7 +197,8 @@
 
         <ImageView
             android:id="@+id/dividerFlickr"
-            style="@style/dividerLine" />
+            style="@style/dividerLine"
+            android:visibility="gone" />
 
         <!-- INSTAGRAM -->
 
@@ -201,7 +206,8 @@
             android:id="@+id/linearLayoutInstagram"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/imageViewInstagram"
@@ -217,7 +223,8 @@
 
         <ImageView
             android:id="@+id/dividerInstagram"
-            style="@style/dividerLine" />
+            style="@style/dividerLine"
+            android:visibility="gone" />
 
         <!-- PICASA -->
 
@@ -225,7 +232,8 @@
             android:id="@+id/linearLayoutPicasa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/imageViewPicasa"
@@ -241,7 +249,8 @@
 
         <ImageView
             android:id="@+id/dividerPicasa"
-            style="@style/dividerLine" />
+            style="@style/dividerLine"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

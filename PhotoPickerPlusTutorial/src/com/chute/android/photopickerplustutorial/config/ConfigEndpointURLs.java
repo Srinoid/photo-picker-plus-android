@@ -1,4 +1,4 @@
-package com.chute.android.photopickerplus.config;
+package com.chute.android.photopickerplustutorial.config;
 
 public class ConfigEndpointURLs {
 

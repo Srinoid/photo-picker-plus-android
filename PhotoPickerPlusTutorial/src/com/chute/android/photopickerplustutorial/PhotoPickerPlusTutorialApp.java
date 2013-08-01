@@ -9,17 +9,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplustutorial;
 
+import java.util.ArrayList;
+
 import com.chute.android.photopickerplus.PhotoPickerPlusApp;
+import com.chute.android.photopickerplus.config.ConfigServicesFactory;
 import com.chute.android.photopickerplus.util.Constants;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
+import com.chute.android.photopickerplustutorial.config.ConfigEndpointURLs;
 import com.chute.sdk.v2.model.AccountStore;
 
 public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 
+	private ArrayList<String> services = new ArrayList<String>();
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		AccountStore.setAppId(getApplicationContext(),
-				Constants.APP_ID);
+		AccountStore.setAppId(getApplicationContext(), Constants.APP_ID);
+		services.add("Facebook");
+		services.add("Picasa");
+
+		/**
+		 * Call for managing services locally.
+		 **/
+		// ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
+		// ConfigServicesFactory.CONFIG_LOCAL, services);
+		/**
+		 * Get which services need to be used from the server; Important: Save
+		 * endpoint URL in PhotoPicker+ preferences.
+		 **/
+		PhotoPickerPreferenceUtil.get().setConfigUrl(ConfigEndpointURLs.SERVICES_ENDPOINT_URL);
+		ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
+				ConfigServicesFactory.CONFIG_SERVER, null);
+
 	}
 
 }

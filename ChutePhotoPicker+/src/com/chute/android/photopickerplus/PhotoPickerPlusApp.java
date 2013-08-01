@@ -37,7 +37,7 @@ public class PhotoPickerPlusApp extends Application {
 	}
 
 	private ImageLoader mImageLoader;
-	private ArrayList<String> services = new ArrayList<String>();
+	
 
 	@Override
 	public void onCreate() {
@@ -46,12 +46,7 @@ public class PhotoPickerPlusApp extends Application {
 		Chute.init(this, new AuthConstants(Constants.APP_ID, Constants.APP_SECRET));
 		PreferenceUtil.init(getApplicationContext());
 		PhotoPickerPreferenceUtil.init(getApplicationContext());
-		services.add("Facebook");
-		services.add("Picasa");
-		ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
-				ConfigServicesFactory.CONFIG_LOCAL, services);
-		// ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(ConfigServicesFactory.CONFIG_SERVER,
-		// null);
+		
 	}
 
 	@Override

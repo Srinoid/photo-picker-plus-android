@@ -29,6 +29,7 @@ public class ChooseServiceFragment extends Fragment {
 	private TextView textViewFlickr;
 	private TextView textViewInstagram;
 	private TextView textViewUserTitle;
+	private TextView textViewDefaultTitle;
 	private LinearLayout linearLayoutServices;
 	private LinearLayout linearLayoutTakePhoto;
 	private LinearLayout linearLayoutFacebook;
@@ -38,6 +39,10 @@ public class ChooseServiceFragment extends Fragment {
 	private LinearLayout linearLayoutAllPhotos;
 	private LinearLayout linearLayoutCameraPhotos;
 	private LinearLayout linearLayoutLastPhoto;
+	private ImageView dividerFacebook;
+	private ImageView dividerFlicker;
+	private ImageView dividerPicasa;
+	private ImageView dividerInstagram;
 	private ImageView imageViewAllPhotos;
 	private ImageView imageViewCameraPhotos;
 	private ImageView imageViewLastPhoto;
@@ -122,6 +127,12 @@ public class ChooseServiceFragment extends Fragment {
 		textViewInstagram = (TextView) view.findViewById(R.id.textViewInstagram);
 		textViewInstagram.setTag(AccountType.INSTAGRAM);
 		textViewUserTitle = (TextView) view.findViewById(R.id.textViewUserTitle);
+		textViewDefaultTitle = (TextView) view.findViewById(R.id.textViewDefaultTitle);
+
+		dividerFacebook = (ImageView) view.findViewById(R.id.dividerFacebook);
+		dividerPicasa = (ImageView) view.findViewById(R.id.dividerPicasa);
+		dividerFlicker = (ImageView) view.findViewById(R.id.dividerFlickr);
+		dividerInstagram = (ImageView) view.findViewById(R.id.dividerInstagram);
 
 		linearLayoutServices = (LinearLayout) view.findViewById(R.id.linearLayoutSocialServicesContent);
 		linearLayoutAllPhotos = (LinearLayout) view.findViewById(R.id.linearLayoutAllPhotos);
@@ -211,13 +222,28 @@ public class ChooseServiceFragment extends Fragment {
 
 	public void configureServices(List<String> services) {
 		Log.d("debug", "services = " + services.toString());
-		// set services visibility gone
-		// for (String service : services) {
-		// if (service.equals("facebook")) {
-		// linearLayoutFacebook.setVisibility(View.VISIBLE);
-		// }
-		// TODO the rest
-		// }
+		for (String service : services) {
+			if (service.equals("Facebook") || service.equals("Instagram") || service.equals("Picasa")
+					|| service.equals("Flickr")) {
+				textViewUserTitle.setVisibility(View.VISIBLE);
+			}
+			if (service.equals("Facebook")) {
+				linearLayoutFacebook.setVisibility(View.VISIBLE);
+				dividerFacebook.setVisibility(View.VISIBLE);
+			}
+			if (service.equals("Instagram")) {
+				linearLayoutInstagram.setVisibility(View.VISIBLE);
+				dividerInstagram.setVisibility(View.VISIBLE);
+			}
+			if (service.equals("Picasa")) {
+				linearLayoutPicasa.setVisibility(View.VISIBLE);
+				dividerPicasa.setVisibility(View.VISIBLE);
+			}
+			if (service.equals("Flickr")) {
+				linearLayoutFlickr.setVisibility(View.VISIBLE);
+				dividerFlicker.setVisibility(View.VISIBLE);
+			}
+		}
 
 	}
 }
