@@ -93,7 +93,7 @@ public class AssetsFragment extends Fragment {
 		gridSocialSelectItemListener = (GridSocialSingleSelectListener) activity;
 		confirmCursorAssetsListener = (ButtonConfirmCursorAssetsListener) activity;
 		confirmSocialAssetsListener = (ButtonConfirmSocialAssetsListener) activity;
-//		cancelListener = (ButtonCancelListener) activity;
+		// cancelListener = (ButtonCancelListener) activity;
 
 	}
 
@@ -191,14 +191,14 @@ public class AssetsFragment extends Fragment {
 	}
 
 	private final class CancelClickListener implements OnClickListener {
-//
+		//
 		@Override
 		public void onClick(View v) {
-//			if (!getResources().getBoolean(R.bool.has_two_panes)) {
-				getActivity().finish();
-//			} else {
-//				cancelListener.onCanceled();
-//			}
+			// if (!getResources().getBoolean(R.bool.has_two_panes)) {
+			getActivity().finish();
+			// } else {
+			// cancelListener.onCanceled();
+			// }
 		}
 
 	}

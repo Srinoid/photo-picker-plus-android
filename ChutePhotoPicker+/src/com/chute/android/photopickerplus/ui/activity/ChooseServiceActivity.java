@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothProfile.ServiceListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -111,6 +112,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 			chooseServiceFragment.configureServices(serviceList);
 		}
 
+		
 	}
 
 	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
@@ -356,8 +358,14 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	public void replaceContentWithEmptyFragment() {
 		fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), "EmptyFrag");
-		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
-
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d("debug", "onConfigurationChanged");
+	}
+	
+	
 }

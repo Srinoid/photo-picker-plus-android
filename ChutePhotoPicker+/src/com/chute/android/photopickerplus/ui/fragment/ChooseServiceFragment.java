@@ -1,6 +1,5 @@
 package com.chute.android.photopickerplus.ui.fragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -224,14 +223,15 @@ public class ChooseServiceFragment extends Fragment {
 	public void configureServices(List<String> services) {
 		Log.d("debug", "services = " + services.toString());
 		for (String service : services) {
-			if (service.equalsIgnoreCase(ConfigurableServices.Facebook.name()) || service.equalsIgnoreCase(ConfigurableServices.Instagram.name())
-					|| service.equalsIgnoreCase(ConfigurableServices.Picasa.name()) || service.equalsIgnoreCase(ConfigurableServices.Flickr.name())) {
+			if (service.equalsIgnoreCase(ConfigurableServices.Facebook.name())
+					|| service.equalsIgnoreCase(ConfigurableServices.Instagram.name())
+					|| service.equalsIgnoreCase(ConfigurableServices.Picasa.name())
+					|| service.equalsIgnoreCase(ConfigurableServices.Flickr.name())) {
 				textViewUserTitle.setVisibility(View.VISIBLE);
 			}
 			if (service.equalsIgnoreCase(ConfigurableServices.Facebook.name())) {
 				linearLayoutFacebook.setVisibility(View.VISIBLE);
 				dividerFacebook.setVisibility(View.VISIBLE);
-				Log.d("debug", "true");
 			}
 			if (service.equalsIgnoreCase(ConfigurableServices.Instagram.name())) {
 				linearLayoutInstagram.setVisibility(View.VISIBLE);
