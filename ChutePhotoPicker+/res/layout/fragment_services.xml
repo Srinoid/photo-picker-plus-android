@@ -54,7 +54,7 @@
 
         <ImageView
             android:id="@+id/dividerCameraShots"
-            style="@style/dividerLine" />
+            style="@style/dividerLineHorizontal" />
 
         <!-- ALL PHOTOS -->
 
@@ -78,7 +78,7 @@
 
         <ImageView
             android:id="@+id/dividerAllPhotos"
-            style="@style/dividerLine" />
+            style="@style/dividerLineHorizontal" />
 
         <!-- LAST PHOTO TAKEN -->
 
@@ -102,7 +102,7 @@
 
         <ImageView
             android:id="@+id/dividerLastPhotoTaken"
-            style="@style/dividerLine" />
+            style="@style/dividerLineHorizontal" />
 
         <!-- TAKE A PHOTO -->
 
@@ -126,7 +126,7 @@
 
         <ImageView
             android:id="@+id/dividerTakePhoto"
-            style="@style/dividerLine" />
+            style="@style/dividerLineHorizontal" />
     </LinearLayout>
 
     <!-- USER -->
@@ -171,7 +171,7 @@
 
         <ImageView
             android:id="@+id/dividerFacebook"
-            style="@style/dividerLine"
+            style="@style/dividerLineHorizontal"
             android:visibility="gone" />
 
         <!-- FLICKR -->
@@ -197,7 +197,7 @@
 
         <ImageView
             android:id="@+id/dividerFlickr"
-            style="@style/dividerLine"
+            style="@style/dividerLineHorizontal"
             android:visibility="gone" />
 
         <!-- INSTAGRAM -->
@@ -223,7 +223,7 @@
 
         <ImageView
             android:id="@+id/dividerInstagram"
-            style="@style/dividerLine"
+            style="@style/dividerLineHorizontal"
             android:visibility="gone" />
 
         <!-- PICASA -->
@@ -249,7 +249,7 @@
 
         <ImageView
             android:id="@+id/dividerPicasa"
-            style="@style/dividerLine"
+            style="@style/dividerLineHorizontal"
             android:visibility="gone" />
     </LinearLayout>
 

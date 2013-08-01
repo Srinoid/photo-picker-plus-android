@@ -99,7 +99,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 		String serialized = PhotoPickerPreferenceUtil.get().getServiceList();
 		if (serialized == null) {
-			Toast.makeText(getApplicationContext(), "Connect your device to the Internet for configuring the services",
+			Toast.makeText(getApplicationContext(), getString(R.string.connect_to_internet_to_cofigure_services),
 					Toast.LENGTH_LONG).show();
 		} else {
 			List<String> serviceList = Arrays.asList(TextUtils.split(serialized, ","));

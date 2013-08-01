@@ -35,5 +35,6 @@
     <string name="toast_feature_camera">Your device doesn\'t have a camera</string>
     <string name="no_camera_photos">No photos in camera roll</string>
     <string name="no_albums_found">No albums found</string>
+    <string name="connect_to_internet_to_cofigure_services">Connect your device to the Internet for configuring the services</string>
 
 </resources>

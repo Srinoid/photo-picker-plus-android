@@ -13,6 +13,6 @@
 
     <ImageView
         android:id="@+id/dividerFragments"
-        style="@style/dividerLine" />
+        style="@style/dividerLineHorizontal" />
 
 </LinearLayout>

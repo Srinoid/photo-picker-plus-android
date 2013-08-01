@@ -78,13 +78,14 @@
         <item name="android:padding">1dp</item>
     </style>
 
-    <!-- Divider Line -->
-    <style name="dividerLine">
+    <!-- Divider Line Horizontal -->
+    <style name="dividerLineHorizontal">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/divider_album_list</item>
     </style>
     
+    <!-- Divider Line Vertical -->
     <style name="dividerLineVertical">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">fill_parent</item>
