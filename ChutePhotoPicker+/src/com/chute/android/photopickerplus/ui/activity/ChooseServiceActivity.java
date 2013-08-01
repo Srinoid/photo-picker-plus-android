@@ -44,6 +44,7 @@ import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LastP
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.LoginListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.PhotoStreamListener;
 import com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment.TakePhotoListener;
+import com.chute.android.photopickerplus.ui.fragment.EmptyFragment;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -92,6 +93,10 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragmentChooseService);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
+
+		if (dualFragments && savedInstanceState==null) {
+			replaceContentWithEmptyFragment();
+		}
 
 		if (ppWrapper.areServicesHidden()) {
 			chooseServiceFragment.setSocialServicesHidden();
@@ -343,6 +348,12 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
 		fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID), "AlbumFrag");
+		fragmentTransaction.commit();
+	}
+
+	public void replaceContentWithEmptyFragment() {
+		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), "EmptyFrag");
 		fragmentTransaction.commit();
 	}
 

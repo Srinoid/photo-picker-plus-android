@@ -29,6 +29,12 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
     </style>
     
+     <!-- TextView Default Large -->
+    <style name="textViewDefaultLarge" parent="android:Widget.TextView">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLargeInverse</item>
+    </style>
+    
     <!-- TextView Default Small -->
     <style name="textViewDefaultSmall" parent="android:Widget.TextView">
         <item name="android:layout_gravity">center_horizontal</item>
