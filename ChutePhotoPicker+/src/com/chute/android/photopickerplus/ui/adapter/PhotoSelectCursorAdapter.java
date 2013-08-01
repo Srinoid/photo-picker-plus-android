@@ -35,15 +35,20 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 	public HashMap<Integer, String> tick;
 	private boolean shouldLoadImages = true;
 	private final DisplayMetrics displayMetrics;
+	private final Context context;
+	private final boolean dualFragments;
 
 	@SuppressWarnings("deprecation")
 	public PhotoSelectCursorAdapter(Context context, Cursor c) {
 		super(context, c);
+		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		loader = ImageLoader.getLoader(context);
 		dataIndex = c.getColumnIndex(MediaStore.Images.Media.DATA);
 		displayMetrics = context.getResources().getDisplayMetrics();
 		tick = new HashMap<Integer, String>();
+		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
+
 	}
 
 	public static class ViewHolder {
@@ -62,8 +67,10 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 		} else {
 			loader.displayImage(null, holder.imageViewThumb, null);
 		}
-		holder.imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3 - 2,
-				displayMetrics.widthPixels / 3 - 2));
+		// holder.imageViewThumb.setLayoutParams(new
+		// RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3 - 2,
+		// displayMetrics.heightPixels / 3 - 2));
+		configureImageViewDimensions(holder.imageViewThumb);
 		holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
 		if (tick.containsKey(cursor.getPosition())) {
 			holder.imageViewTick.setVisibility(View.VISIBLE);
@@ -136,5 +143,21 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 			tick.put(position, getItem(position));
 		}
 		notifyDataSetChanged();
+	}
+
+	private void configureImageViewDimensions(ImageView imageViewThumb) {
+		int orientation = context.getResources().getConfiguration().orientation;
+		if (!dualFragments) {
+			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+					displayMetrics.widthPixels / 3));
+		} else {
+			if (orientation == context.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+						displayMetrics.heightPixels / 3));
+			} else {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+						displayMetrics.widthPixels / 3));
+			}
+		}
 	}
 }

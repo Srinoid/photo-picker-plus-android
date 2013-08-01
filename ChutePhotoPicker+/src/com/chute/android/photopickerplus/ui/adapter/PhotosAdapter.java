@@ -39,6 +39,7 @@ public class PhotosAdapter extends BaseAdapter {
 	public HashMap<Integer, AccountMediaModel> tick;
 	private final DisplayMetrics displayMetrics;
 	private final Activity context;
+	private final boolean dualFragments;
 
 	public PhotosAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
 		if (collection == null) {
@@ -51,6 +52,7 @@ public class PhotosAdapter extends BaseAdapter {
 		loader = ImageLoader.getLoader(context);
 		displayMetrics = context.getResources().getDisplayMetrics();
 		tick = new HashMap<Integer, AccountMediaModel>();
+		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
 	}
 
 	@Override
@@ -87,8 +89,7 @@ public class PhotosAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.adapter_assets, null);
 			holder = new ViewHolder();
 			holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			holder.imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-					displayMetrics.widthPixels / 3));
+			configureImageViewDimensions(holder.imageViewThumb);
 			holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
 			holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
 			holder.imageViewTick.setTag(position);
@@ -132,6 +133,22 @@ public class PhotosAdapter extends BaseAdapter {
 			tick.put(position, getItem(position));
 		}
 		notifyDataSetChanged();
+	}
+
+	private void configureImageViewDimensions(ImageView imageViewThumb) {
+		int orientation = context.getResources().getConfiguration().orientation;
+		if (!dualFragments) {
+			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+					displayMetrics.widthPixels / 3));
+		} else {
+			if (orientation == context.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+						displayMetrics.heightPixels / 3));
+			} else {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+						displayMetrics.widthPixels / 3));
+			}
+		}
 	}
 
 }
