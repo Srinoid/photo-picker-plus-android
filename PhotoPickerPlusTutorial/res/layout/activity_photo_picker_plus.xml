@@ -29,7 +29,7 @@
         android:drawablePadding="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="Start PhotoPicker+"
+        android:text="@string/start_photo_picker"
         android:textColor="@color/white"
         android:textSize="15sp" />
 

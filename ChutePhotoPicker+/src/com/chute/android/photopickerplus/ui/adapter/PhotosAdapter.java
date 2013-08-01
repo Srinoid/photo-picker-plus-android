@@ -88,7 +88,7 @@ public class PhotosAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
 			holder.imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-					displayMetrics.widthPixels / 3));
+					displayMetrics.heightPixels / 3));
 			holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
 			holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
 			holder.imageViewTick.setTag(position);

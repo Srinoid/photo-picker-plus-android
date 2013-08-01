@@ -22,8 +22,8 @@
         android:fadingEdgeLength="0dip"
         android:fastScrollEnabled="true"
         android:horizontalSpacing="0dip"
-        android:numColumns="3"
-        android:verticalSpacing="0dip" />
+        android:verticalSpacing="0dip"
+        android:numColumns="3" />
     <!-- Preview listitem=@layout/adapter_photos -->
 
 

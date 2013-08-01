@@ -27,7 +27,6 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 
 import darko.imagedownloader.ImageLoader;
 
-
 public class GridAdapter extends BaseAdapter {
 
 	public static final String TAG = GridAdapter.class.getSimpleName();
@@ -75,7 +74,7 @@ public class GridAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
 			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-					displayMetrics.widthPixels / 3));
+					displayMetrics.heightPixels / 3));
 			holder.image.setScaleType(ScaleType.CENTER_CROP);
 			vi.setTag(holder);
 		} else {

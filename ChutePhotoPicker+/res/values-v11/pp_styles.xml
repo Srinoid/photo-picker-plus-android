@@ -2,9 +2,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- PhotoPicker+ Theme -->
-    <style name="PhotoPickerTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+    <style name="PhotoPickerTheme" parent="android:Theme.Holo.Light">
         <item name="android:windowBackground">@color/background_activity</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothProfile.ServiceListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -97,8 +98,13 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		}
 
 		String serialized = PhotoPickerPreferenceUtil.get().getServiceList();
-		List<String> serviceList = Arrays.asList(TextUtils.split(serialized, ","));
-		chooseServiceFragment.configureServices(serviceList);
+		if (serialized == null) {
+			Toast.makeText(getApplicationContext(), "Connect your device to the Internet for configuring the services",
+					Toast.LENGTH_LONG).show();
+		} else {
+			List<String> serviceList = Arrays.asList(TextUtils.split(serialized, ","));
+			chooseServiceFragment.configureServices(serviceList);
+		}
 
 	}
 

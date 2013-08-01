@@ -224,23 +224,24 @@ public class ChooseServiceFragment extends Fragment {
 	public void configureServices(List<String> services) {
 		Log.d("debug", "services = " + services.toString());
 		for (String service : services) {
-			if (service.equals(ConfigurableServices.Facebook.name()) || service.equals(ConfigurableServices.Instagram.name())
-					|| service.equals(ConfigurableServices.Picasa.name()) || service.equals(ConfigurableServices.Flickr.name())) {
+			if (service.equalsIgnoreCase(ConfigurableServices.Facebook.name()) || service.equalsIgnoreCase(ConfigurableServices.Instagram.name())
+					|| service.equalsIgnoreCase(ConfigurableServices.Picasa.name()) || service.equalsIgnoreCase(ConfigurableServices.Flickr.name())) {
 				textViewUserTitle.setVisibility(View.VISIBLE);
 			}
-			if (service.equals(ConfigurableServices.Facebook.name())) {
+			if (service.equalsIgnoreCase(ConfigurableServices.Facebook.name())) {
 				linearLayoutFacebook.setVisibility(View.VISIBLE);
 				dividerFacebook.setVisibility(View.VISIBLE);
+				Log.d("debug", "true");
 			}
-			if (service.equals(ConfigurableServices.Instagram.name())) {
+			if (service.equalsIgnoreCase(ConfigurableServices.Instagram.name())) {
 				linearLayoutInstagram.setVisibility(View.VISIBLE);
 				dividerInstagram.setVisibility(View.VISIBLE);
 			}
-			if (service.equals(ConfigurableServices.Picasa.name())) {
+			if (service.equalsIgnoreCase(ConfigurableServices.Picasa.name())) {
 				linearLayoutPicasa.setVisibility(View.VISIBLE);
 				dividerPicasa.setVisibility(View.VISIBLE);
 			}
-			if (service.equals(ConfigurableServices.Flickr.name())) {
+			if (service.equalsIgnoreCase(ConfigurableServices.Flickr.name())) {
 				linearLayoutFlickr.setVisibility(View.VISIBLE);
 				dividerFlicker.setVisibility(View.VISIBLE);
 			}
