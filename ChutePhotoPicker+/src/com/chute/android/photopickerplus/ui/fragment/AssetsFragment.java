@@ -52,6 +52,7 @@ public class AssetsFragment extends Fragment {
 	private GridSocialSingleSelectListener gridSocialSelectItemListener;
 	private ButtonConfirmCursorAssetsListener confirmCursorAssetsListener;
 	private ButtonConfirmSocialAssetsListener confirmSocialAssetsListener;
+	private ButtonCancelListener cancelListener;
 
 	public interface GridCursorSingleSelectListener {
 		public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId);
@@ -67,6 +68,10 @@ public class AssetsFragment extends Fragment {
 
 	public interface ButtonConfirmCursorAssetsListener {
 		public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId);
+	}
+
+	public interface ButtonCancelListener {
+		public void onCanceled();
 	}
 
 	public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId, String albumId,
@@ -88,6 +93,7 @@ public class AssetsFragment extends Fragment {
 		gridSocialSelectItemListener = (GridSocialSingleSelectListener) activity;
 		confirmCursorAssetsListener = (ButtonConfirmCursorAssetsListener) activity;
 		confirmSocialAssetsListener = (ButtonConfirmSocialAssetsListener) activity;
+//		cancelListener = (ButtonCancelListener) activity;
 
 	}
 
@@ -185,10 +191,14 @@ public class AssetsFragment extends Fragment {
 	}
 
 	private final class CancelClickListener implements OnClickListener {
-
+//
 		@Override
 		public void onClick(View v) {
-			getActivity().finish();
+//			if (!getResources().getBoolean(R.bool.has_two_panes)) {
+				getActivity().finish();
+//			} else {
+//				cancelListener.onCanceled();
+//			}
 		}
 
 	}
