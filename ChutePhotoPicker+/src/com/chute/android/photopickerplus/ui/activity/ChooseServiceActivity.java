@@ -325,6 +325,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragments,
 				AssetsFragment.newInstance(filterType, accountID, accountModelID, isMultiPicker));
+		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 
 	}
@@ -332,12 +333,14 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
 		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID), "AlbumFrag");
+		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 
 	public void replaceContentWithEmptyFragment() {
 		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), "EmptyFrag");
+		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 
