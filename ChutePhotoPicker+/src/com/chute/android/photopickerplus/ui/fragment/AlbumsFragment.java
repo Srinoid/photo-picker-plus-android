@@ -84,7 +84,7 @@ public class AlbumsFragment extends Fragment {
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountObjectModel> responseData) {
-			adapter = new AlbumsAdapter(getActivity(), (ArrayList<AccountObjectModel>) responseData.getData());
+			adapter = new AlbumsAdapter(getActivity().getApplicationContext(), (ArrayList<AccountObjectModel>) responseData.getData());
 			listViewAlbums.setAdapter(adapter);
 			if (adapter.getCount() == 0) {
 				emptyView.setVisibility(View.GONE);

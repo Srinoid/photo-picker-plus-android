@@ -11,7 +11,6 @@ package com.chute.android.photopickerplus.ui.adapter;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +30,9 @@ public class AlbumsAdapter extends BaseAdapter {
 	private static LayoutInflater inflater;
 	private final ImageLoader loader;
 	private final ArrayList<AccountObjectModel> collection;
-	private final Activity context;
+	private final Context context;
 
-	public AlbumsAdapter(final Activity context, final ArrayList<AccountObjectModel> collection) {
+	public AlbumsAdapter(final Context context, final ArrayList<AccountObjectModel> collection) {
 		this.context = context;
 		this.collection = collection;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

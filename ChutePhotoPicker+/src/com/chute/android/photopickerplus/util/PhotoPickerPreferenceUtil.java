@@ -40,6 +40,7 @@ public class PhotoPickerPreferenceUtil {
 	public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
 	private static final String SERVICE_LIST = "service_list";
 	private static final String CONFIG_URL = "config_url";
+	private static final String ACCOUNT_TYPE = "account_type";
 	private final Context context;
 
 	private PhotoPickerPreferenceUtil(Context context) {
@@ -94,6 +95,14 @@ public class PhotoPickerPreferenceUtil {
 
 	public String getConfigUrl() {
 		return getPreferences().getString(CONFIG_URL, null);
+	}
+
+	public void setAccountType(String accountType) {
+		setPreference(ACCOUNT_TYPE, accountType);
+	}
+
+	public String getAccountType() {
+		return getPreferences().getString(ACCOUNT_TYPE, null);
 	}
 
 }

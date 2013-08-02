@@ -16,14 +16,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothProfile.ServiceListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
@@ -83,19 +83,20 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	private boolean dualFragments = false;
 
 	private FragmentTransaction fragmentTransaction;
+	private static FragmentManager fragmentManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		fragmentManager = getSupportFragmentManager();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		chooseServiceFragment = (ChooseServiceFragment) getSupportFragmentManager().findFragmentById(
-				R.id.fragmentChooseService);
+		chooseServiceFragment = (ChooseServiceFragment) fragmentManager.findFragmentById(R.id.fragmentChooseService);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
-		if (dualFragments && savedInstanceState==null) {
+		if (dualFragments && savedInstanceState == null) {
 			replaceContentWithEmptyFragment();
 		}
 
@@ -112,7 +113,6 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 			chooseServiceFragment.configureServices(serviceList);
 		}
 
-		
 	}
 
 	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
@@ -120,7 +120,9 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		@Override
 		public void onSuccess(ListResponseModel<AccountModel> responseData) {
 			if (accountType == null) {
-				return;
+				// return;
+				String type = PhotoPickerPreferenceUtil.get().getAccountType();
+				accountType = AccountType.valueOf(type);
 			}
 			if (responseData.getData().size() == 0) {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_albums_found),
@@ -156,6 +158,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 			wrapper.setAccountName(accountName);
 			wrapper.startActivity(ChooseServiceActivity.this);
 		}
+		setAccountUserName();
 	}
 
 	@Override
@@ -206,30 +209,8 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-				chooseServiceFragment.setUserName(AccountType.PICASA,
-						PreferenceUtil.get().getAccountName(AccountType.PICASA));
-			}
-		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-				chooseServiceFragment.setUserName(AccountType.FACEBOOK,
-						PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
-			}
-		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-				chooseServiceFragment.setUserName(AccountType.FLICKR,
-						PreferenceUtil.get().getAccountName(AccountType.FLICKR));
-			}
-		}
-		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
-			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-				chooseServiceFragment.setUserName(AccountType.INSTAGRAM,
-						PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
-			}
-		}
+		setAccountUserName();
+
 	}
 
 	@Override
@@ -303,6 +284,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		if (PreferenceUtil.get().hasAccountId(accountType)) {
 			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
 		} else {
+			PhotoPickerPreferenceUtil.get().setAccountType(accountType.name());
 			AuthenticationFactory.getInstance().startAuthenticationActivity(ChooseServiceActivity.this, accountType);
 		}
 
@@ -340,32 +322,59 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	public void replaceContentWithAssetFragment(PhotoFilterType filterType, String accountID, String accountModelID,
 			boolean isMultiPicker) {
-		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragments,
 				AssetsFragment.newInstance(filterType, accountID, accountModelID, isMultiPicker));
-		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 
 	}
 
 	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
-		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID), "AlbumFrag");
-		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 
 	public void replaceContentWithEmptyFragment() {
-		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), "EmptyFrag");
 		fragmentTransaction.commit();
 	}
-	
+
 	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		Log.d("debug", "onConfigurationChanged");
+	public void onDestroy() {
+		Fragment fragment = fragmentManager.findFragmentByTag("AlbumFrag");
+		if (fragment != null && fragment.isResumed()) {
+			fragmentManager.beginTransaction().remove(fragment).commit();
+		}
+		super.onDestroy();
 	}
-	
-	
+
+	private void setAccountUserName() {
+		if (PreferenceUtil.get().hasAccountId(AccountType.PICASA)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+				chooseServiceFragment.setUserName(AccountType.PICASA,
+						PreferenceUtil.get().getAccountName(AccountType.PICASA));
+			}
+		}
+		if (PreferenceUtil.get().hasAccountId(AccountType.FACEBOOK)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+				chooseServiceFragment.setUserName(AccountType.FACEBOOK,
+						PreferenceUtil.get().getAccountName(AccountType.FACEBOOK));
+			}
+		}
+		if (PreferenceUtil.get().hasAccountId(AccountType.FLICKR)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+				chooseServiceFragment.setUserName(AccountType.FLICKR,
+						PreferenceUtil.get().getAccountName(AccountType.FLICKR));
+			}
+		}
+		if (PreferenceUtil.get().hasAccountId(AccountType.INSTAGRAM)) {
+			if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+				chooseServiceFragment.setUserName(AccountType.INSTAGRAM,
+						PreferenceUtil.get().getAccountName(AccountType.INSTAGRAM));
+			}
+		}
+	}
+
 }
