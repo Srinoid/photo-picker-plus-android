@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;

@@ -17,7 +17,6 @@ import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonCancelListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmCursorAssetsListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmSocialAssetsListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSingleSelectListener;

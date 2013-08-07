@@ -28,7 +28,6 @@ public class GridActivityIntentWrapper extends IntentWrapper {
 	private static final String KEY_ACCOUNT_ID = "accountId";
 	private static final String KEY_ALBUM_ID = "albumId";
 	private static final String KEY_PHOTO_COLLECTION = "photoCollection";
-	private static final String KEY_PHOTO_MODEL = "photoModel";
 	private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
 	private static final String KEY_CHUTE_ID = "key_chuteId";
 

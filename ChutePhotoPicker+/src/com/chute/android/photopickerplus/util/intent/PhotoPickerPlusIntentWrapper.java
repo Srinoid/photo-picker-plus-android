@@ -23,8 +23,8 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 	public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
 	public static final String FLAG_MULTI_PP = "flagMultiPp";
 	public static final String FLAG_SERVICES_HIDE = "flagHideServices";
-	public static final String KEY_PP_CHUTE_ID = "chuteID";
-	public static final String FLAG_SERVICE_LIST = "flagServiceList";
+	public static final String KEY_ALBUM_ID = "albumID";
+	public static final String KEY_SERVICE_LIST = "serviceList";
 
 	public PhotoPickerPlusIntentWrapper(Intent intent) {
 		super(intent);
@@ -46,12 +46,12 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 		getIntent().putExtra(FLAG_MULTI_PP, flag);
 	}
 
-	public String getChuteId() {
-		return getIntent().getExtras().getString(KEY_PP_CHUTE_ID);
+	public String getAlbumId() {
+		return getIntent().getExtras().getString(KEY_ALBUM_ID);
 	}
 
-	public void setChuteId(String id) {
-		getIntent().putExtra(KEY_PP_CHUTE_ID, id);
+	public void setAlbumId(String id) {
+		getIntent().putExtra(KEY_ALBUM_ID, id);
 	}
 
 	public boolean areServicesHidden() {
@@ -63,11 +63,11 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 	}
 
 	public void setServiceList(ArrayList<String> services) {
-		getIntent().putStringArrayListExtra(FLAG_SERVICE_LIST, services);
+		getIntent().putStringArrayListExtra(KEY_SERVICE_LIST, services);
 	}
 
 	public ArrayList<String> getServiceList() {
-		return getIntent().getExtras().getStringArrayList(FLAG_SERVICE_LIST);
+		return getIntent().getExtras().getStringArrayList(KEY_SERVICE_LIST);
 	}
 
 	public void startActivityForResult(Activity context, int code) {

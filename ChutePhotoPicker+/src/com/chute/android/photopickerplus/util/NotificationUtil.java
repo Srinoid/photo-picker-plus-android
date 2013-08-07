@@ -32,28 +32,12 @@ public class NotificationUtil {
 		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
 
-	public static void makeServerErrorToast(Context context) {
-		makeToast(context, R.string.http_error);
-	}
-
-	public static void makeServerErrorToast(Context context, String message) {
-		makeToast(context, message + ", " + context.getString(R.string.http_error));
-	}
-
 	public static void makeConnectionProblemToast(Context context) {
 		makeToast(context, R.string.http_exception);
 	}
 
 	public static void makeConnectionProblemToast(Context context, String message) {
 		makeToast(context, message + ", " + context.getString(R.string.http_exception));
-	}
-
-	public static void makeParserErrorToast(Context context) {
-		makeToast(context, R.string.parsing_exception);
-	}
-
-	public static void makeParserErrorToast(Context context, String message) {
-		makeToast(context, message + ", " + context.getString(R.string.parsing_exception));
 	}
 
 	public static void showAdapterToast(Context context, String message) {

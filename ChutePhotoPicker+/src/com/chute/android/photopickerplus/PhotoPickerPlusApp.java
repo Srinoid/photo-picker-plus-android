@@ -9,14 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus;
 
-import java.util.ArrayList;
-
 import android.app.Application;
 import android.content.Context;
 import android.util.TypedValue;
 
-import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.config.ConfigServicesFactory;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.api.Chute;

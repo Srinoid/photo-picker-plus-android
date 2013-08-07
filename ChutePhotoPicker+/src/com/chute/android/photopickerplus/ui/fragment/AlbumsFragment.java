@@ -74,7 +74,7 @@ public class AlbumsFragment extends Fragment {
 
 	public void updateFragment(String accountTitle, String accountId) {
 		this.accountId = accountId;
-		String albumName = AppUtil.asUpperCaseFirstChar(accountTitle.concat(" Albums"));
+		String albumName = AppUtil.asUpperCaseFirstChar(accountTitle.concat(" " + getString(R.string.albums)));
 		textViewAlbumTitle.setText(albumName);
 
 		GCAccounts.albums(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
@@ -84,7 +84,8 @@ public class AlbumsFragment extends Fragment {
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountObjectModel> responseData) {
-			adapter = new AlbumsAdapter(getActivity().getApplicationContext(), (ArrayList<AccountObjectModel>) responseData.getData());
+			adapter = new AlbumsAdapter(getActivity().getApplicationContext(),
+					(ArrayList<AccountObjectModel>) responseData.getData());
 			listViewAlbums.setAdapter(adapter);
 			if (adapter.getCount() == 0) {
 				emptyView.setVisibility(View.GONE);

@@ -56,7 +56,7 @@ public class AppUtil {
 	}
 
 	public static boolean hasImageCaptureBug() {
-		// list of known devices that have the bug
+		// list of known devices with image capturing bug
 		ArrayList<String> devices = new ArrayList<String>();
 		devices.add("android-devphone1/dream_devphone/dream");
 		devices.add("generic/sdk/generic");

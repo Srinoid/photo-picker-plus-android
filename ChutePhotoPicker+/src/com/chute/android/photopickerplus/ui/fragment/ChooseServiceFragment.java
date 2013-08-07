@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.config.ConfigurableServices;
 import com.chute.android.photopickerplus.dao.MediaDAO;
@@ -221,7 +221,7 @@ public class ChooseServiceFragment extends Fragment {
 	}
 
 	public void configureServices(List<String> services) {
-		Log.d("debug", "services = " + services.toString());
+		ALog.d("Services: " + services.toString());
 		for (String service : services) {
 			if (service.equalsIgnoreCase(ConfigurableServices.Facebook.name())
 					|| service.equalsIgnoreCase(ConfigurableServices.Instagram.name())

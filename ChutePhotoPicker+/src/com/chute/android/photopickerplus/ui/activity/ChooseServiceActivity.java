@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment;
@@ -143,7 +144,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 		@Override
 		public void onHttpError(ResponseStatus responseStatus) {
-			Log.d("debug", "error = " + responseStatus.getStatusCode() + " " + responseStatus.getStatusMessage());
+			ALog.d("Http Error: " + responseStatus.getStatusCode() + " " + responseStatus.getStatusMessage());
 		}
 
 	}
@@ -194,7 +195,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 				model.setThumbUrl(path);
 				model.setUrl(path);
 
-				IntentUtil.deliverDataToInitialActivity(this, model, ppWrapper.getChuteId());
+				IntentUtil.deliverDataToInitialActivity(this, model, ppWrapper.getAlbumId());
 			}
 		}
 	}
@@ -233,13 +234,13 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	public void photoStream() {
 		if (dualFragments) {
-			replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getChuteId(),
+			replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getAlbumId(),
 					ppWrapper.getIsMultiPicker());
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-			wrapper.setChuteId(ppWrapper.getChuteId());
+			wrapper.setChuteId(ppWrapper.getAlbumId());
 			wrapper.startActivityForResult(ChooseServiceActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 		}
@@ -257,7 +258,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 			model.setThumbUrl(uri.toString());
 			model.setUrl(uri.toString());
 
-			IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, model, ppWrapper.getChuteId());
+			IntentUtil.deliverDataToInitialActivity(ChooseServiceActivity.this, model, ppWrapper.getAlbumId());
 		}
 
 	}
@@ -265,13 +266,13 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	@Override
 	public void cameraRoll() {
 		if (dualFragments) {
-			replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getChuteId(),
+			replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getAlbumId(),
 					ppWrapper.getIsMultiPicker());
 		} else {
 			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ChooseServiceActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
-			wrapper.setChuteId(ppWrapper.getChuteId());
+			wrapper.setChuteId(ppWrapper.getAlbumId());
 			wrapper.startActivityForResult(ChooseServiceActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 		}
@@ -332,21 +333,21 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 
 	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
 		fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID), "AlbumFrag");
+		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID), Constants.TAG_FRAGMENT_ALBUM);
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 
 	public void replaceContentWithEmptyFragment() {
 		fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), "EmptyFrag");
+		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), Constants.TAG_FRAGMENT_EMPTY);
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 
 	@Override
 	public void onDestroy() {
-		Fragment fragment = fragmentManager.findFragmentByTag("AlbumFrag");
+		Fragment fragment = fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_ALBUM);
 		if (fragment != null && fragment.isResumed()) {
 			fragmentManager.beginTransaction().remove(fragment).commit();
 		}

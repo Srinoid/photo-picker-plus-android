@@ -26,14 +26,11 @@
 package com.chute.android.photopickerplus.util;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-
-import com.chute.sdk.v2.model.enums.AccountType;
 
 public class PhotoPickerPreferenceUtil {
 

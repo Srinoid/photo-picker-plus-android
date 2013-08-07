@@ -67,9 +67,6 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 		} else {
 			loader.displayImage(null, holder.imageViewThumb, null);
 		}
-		// holder.imageViewThumb.setLayoutParams(new
-		// RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3 - 2,
-		// displayMetrics.heightPixels / 3 - 2));
 		configureImageViewDimensions(holder.imageViewThumb);
 		holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
 		if (tick.containsKey(cursor.getPosition())) {

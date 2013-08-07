@@ -21,14 +21,11 @@ import android.widget.TextView;
 import com.chute.android.photopickerplus.R;
 import com.chute.sdk.v2.model.AccountObjectModel;
 
-import darko.imagedownloader.ImageLoader;
-
 public class AlbumsAdapter extends BaseAdapter {
 
 	public static final String TAG = AlbumsAdapter.class.getSimpleName();
 
 	private static LayoutInflater inflater;
-	private final ImageLoader loader;
 	private final ArrayList<AccountObjectModel> collection;
 	private final Context context;
 
@@ -36,7 +33,6 @@ public class AlbumsAdapter extends BaseAdapter {
 		this.context = context;
 		this.collection = collection;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		loader = ImageLoader.getLoader(context);
 	}
 
 	@Override

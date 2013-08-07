@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
 
+import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
@@ -41,9 +42,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 		findViewById(R.id.btnPhotoPicker).setOnClickListener(new OnPhotoPickerClickListener());
 		grid = (GridView) findViewById(R.id.grid);
 
-
 	}
-
 
 	private class OnPhotoPickerClickListener implements OnClickListener {
 
@@ -66,7 +65,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 		}
 		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(data);
 		grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this, wrapper.getMediaCollection()));
-		// Log.d(TAG, wrapper.toString());
+		ALog.d(wrapper.getMediaCollection().toString());
 
 		// String path;
 		// Uri uri = Uri.parse(wrapper.getMediaCollection().get(0).getUrl());
@@ -75,6 +74,6 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 		// } else {
 		// path = uri.getPath();
 		// }
-		// Log.d(TAG, "The Path or url of the file " + path);
+		// ALog.d("The Path or url of the file " + path);
 	}
 }

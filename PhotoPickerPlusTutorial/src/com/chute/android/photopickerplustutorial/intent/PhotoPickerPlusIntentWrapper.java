@@ -1,7 +1,6 @@
 package com.chute.android.photopickerplustutorial.intent;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
 

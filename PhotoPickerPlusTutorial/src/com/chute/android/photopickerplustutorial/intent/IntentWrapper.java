@@ -36,7 +36,7 @@ public class IntentWrapper {
     }
 
     /**
-     * You always
+     * Always
      * 
      * @return true if there are extras in the intent, the bundle is <b>not</b> null or empty
      */
