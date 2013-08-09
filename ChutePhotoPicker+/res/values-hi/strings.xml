@@ -23,11 +23,13 @@
     <string name="select_an_album">एक एल्बम का चयन करें</string>
     <string name="title_default">चूक</string>
     <string name="title_user">उपयोगकर्ता</string>
-    <string name="no_albums_found">No albums found</string>
 
     <!-- Toast -->
     <string name="toast_choose_photos">तस्वीरों का चयन करें</string>
     <string name="toast_feature_camera">आपकी डिवाइस एक कैमरा नहीं है</string>
     <string name="no_camera_photos">कैमरा रोल में कोई फ़ोटो</string>
+    <string name="no_albums_found">कोई एल्बम नहीं मिला</string>
+    <string name="no_album_selected">चुनाव नहीं किया एलबम</string>
+    <string name="connect_to_internet_to_cofigure_services">सेवाओं को संरचित करने के लिए इंटरनेट के लिए अपनी डिवाइस कनेक्ट</string>
 
 </resources>

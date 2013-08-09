@@ -29,5 +29,7 @@
     <string name="toast_feature_camera">您的设备不会有一个摄像头</string>
     <string name="no_camera_photos">相机胶卷中没有照片</string>
      <string name="no_albums_found">没有相册</string>
+     <string name="no_album_selected">没有选择专辑</string>
+    <string name="connect_to_internet_to_cofigure_services">配置服务将设备连接到互联网</string>
 
 </resources>

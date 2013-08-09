@@ -29,5 +29,8 @@
     <string name="toast_feature_camera">Il dispositivo non dispone di una fotocamera</string>
     <string name="no_camera_photos">Nessuna foto a rullino fotografico</string>
     <string name="no_albums_found">Nessun album trovato</string>
+    <string name="no_album_selected">Nessun album selezionato</string>
+    <string name="connect_to_internet_to_cofigure_services">Collegare il dispositivo a Internet per la configurazione dei servizi</string>
+    
 
 </resources>

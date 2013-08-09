@@ -29,5 +29,7 @@
     <string name="toast_feature_camera">Votre appareil ne dispose pas d\'un appareil photo</string>
     <string name="no_camera_photos">Pas de photos en roulis de la caméra</string>
     <string name="no_albums_found">Aucun album n\'a été trouvé</string>
+    <string name="no_album_selected">Aucun album sélectionné</string>
+    <string name="connect_to_internet_to_cofigure_services">Connectez votre appareil à Internet pour configurer les services</string>
 
 </resources>

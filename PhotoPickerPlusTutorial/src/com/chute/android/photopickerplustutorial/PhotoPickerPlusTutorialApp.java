@@ -28,19 +28,20 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 		AccountStore.setAppId(getApplicationContext(), Constants.APP_ID);
 		services.add("Facebook");
 		services.add("Picasa");
+		services.add("Flickr");
 
 		/**
 		 * Call for managing services locally.
 		 **/
-		// ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
-		// ConfigServicesFactory.CONFIG_LOCAL, services);
+		 ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
+		 ConfigServicesFactory.CONFIG_LOCAL, services);
 		/**
 		 * Get which services need to be used from the server; Important: Save
 		 * endpoint URL in PhotoPicker+ preferences.
 		 **/
-		PhotoPickerPreferenceUtil.get().setConfigUrl(ConfigEndpointURLs.SERVICES_ENDPOINT_URL);
-		ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
-				ConfigServicesFactory.CONFIG_SERVER, null);
+//		PhotoPickerPreferenceUtil.get().setConfigUrl(ConfigEndpointURLs.SERVICES_ENDPOINT_URL);
+//		ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
+//				ConfigServicesFactory.CONFIG_SERVER, null);
 
 	}
 

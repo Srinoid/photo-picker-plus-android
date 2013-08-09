@@ -29,5 +29,7 @@
     <string name="toast_feature_camera">El dispositivo no dispone de una cámara</string>
     <string name="no_camera_photos">Hay fotos en rollo de la cámara</string>
     <string name="no_albums_found">No hay discos</string>
+    <string name="no_album_selected">No álbum seleccionado</string>
+    <string name="connect_to_internet_to_cofigure_services">Conecte su dispositivo a Internet para configurar los servicios</string>
 
 </resources>
