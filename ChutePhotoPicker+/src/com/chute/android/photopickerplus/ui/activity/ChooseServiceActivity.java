@@ -58,9 +58,9 @@ import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrappe
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
+import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
-import com.chute.sdk.v2.model.AccountObjectModel;
 import com.chute.sdk.v2.model.AccountStore;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
@@ -292,7 +292,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	}
 
 	@Override
-	public void onAlbumSelected(AccountObjectModel model, String accountId) {
+	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
 		replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(),
 				ppWrapper.getIsMultiPicker());
 

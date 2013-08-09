@@ -18,7 +18,7 @@ import com.chute.android.photopickerplus.ui.adapter.AlbumsAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
-import com.chute.sdk.v2.model.AccountObjectModel;
+import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -36,7 +36,7 @@ public class AlbumsFragment extends Fragment {
 	private String accountId;
 
 	public interface SelectAlbumListener {
-		public void onAlbumSelected(AccountObjectModel model, String accountId);
+		public void onAlbumSelected(AccountAlbumModel model, String accountId);
 	}
 
 	public static AlbumsFragment newInstance(String albumTitle, String accountId) {
@@ -80,12 +80,12 @@ public class AlbumsFragment extends Fragment {
 		GCAccounts.albums(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
 	}
 
-	private final class ObjectsCallback implements HttpCallback<ListResponseModel<AccountObjectModel>> {
+	private final class ObjectsCallback implements HttpCallback<ListResponseModel<AccountAlbumModel>> {
 
 		@Override
-		public void onSuccess(ListResponseModel<AccountObjectModel> responseData) {
+		public void onSuccess(ListResponseModel<AccountAlbumModel> responseData) {
 			adapter = new AlbumsAdapter(getActivity().getApplicationContext(),
-					(ArrayList<AccountObjectModel>) responseData.getData());
+					(ArrayList<AccountAlbumModel>) responseData.getData());
 			listViewAlbums.setAdapter(adapter);
 			if (adapter.getCount() == 0) {
 				emptyView.setVisibility(View.GONE);
@@ -110,7 +110,7 @@ public class AlbumsFragment extends Fragment {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			AccountObjectModel accountObjectModel = adapter.getItem(position);
+			AccountAlbumModel accountObjectModel = adapter.getItem(position);
 			albumListener.onAlbumSelected(accountObjectModel, accountId);
 		}
 

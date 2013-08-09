@@ -21,7 +21,7 @@ import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
-import com.chute.sdk.v2.model.AccountObjectModel;
+import com.chute.sdk.v2.model.AccountAlbumModel;
 
 public class AlbumsActivity extends FragmentActivity implements SelectAlbumListener {
 
@@ -46,7 +46,7 @@ public class AlbumsActivity extends FragmentActivity implements SelectAlbumListe
 	}
 
 	@Override
-	public void onAlbumSelected(AccountObjectModel model, String accountId) {
+	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
 		final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(AlbumsActivity.this);
 		photosWrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
 		photosWrapper.setMultiPicker(isMultiPicker);
