@@ -138,6 +138,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
 				}
 				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
+				setAccountUserName();
 				accountClicked(accountModel.getId(), accountType.getName());
 			}
 		}
@@ -341,7 +342,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 	public void replaceContentWithEmptyFragment() {
 		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), Constants.TAG_FRAGMENT_EMPTY);
-		fragmentTransaction.addToBackStack(null);
+//		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 

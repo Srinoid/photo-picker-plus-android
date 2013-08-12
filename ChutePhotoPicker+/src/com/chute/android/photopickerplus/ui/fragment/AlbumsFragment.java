@@ -84,6 +84,7 @@ public class AlbumsFragment extends Fragment {
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountAlbumModel> responseData) {
+			if (responseData != null && getActivity() != null) {
 			adapter = new AlbumsAdapter(getActivity().getApplicationContext(),
 					(ArrayList<AccountAlbumModel>) responseData.getData());
 			listViewAlbums.setAdapter(adapter);
@@ -92,6 +93,7 @@ public class AlbumsFragment extends Fragment {
 			}
 			listViewAlbums.setOnItemClickListener(new OnAlbumsClickListener());
 			NotificationUtil.showAlbumsAdapterToast(getActivity().getApplicationContext(), adapter.getCount());
+		}
 		}
 
 		public void toggleEmptyViewErrorMessage() {

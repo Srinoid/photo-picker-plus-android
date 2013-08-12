@@ -207,6 +207,7 @@ public class AssetsFragment extends Fragment {
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountMediaModel> responseData) {
+			if (responseData != null && getActivity() != null) {
 			socialAdapter = new PhotosAdapter(getActivity(), (ArrayList<AccountMediaModel>) responseData.getData());
 			gridViewAssets.setAdapter(socialAdapter);
 
@@ -224,6 +225,7 @@ public class AssetsFragment extends Fragment {
 				gridViewAssets.setOnItemClickListener(new OnSingleGridItemClickListener());
 			}
 			NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(), socialAdapter.getCount());
+			}
 		}
 
 		public void toggleEmptyViewErrorMessage() {

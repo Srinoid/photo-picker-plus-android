@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,9 +142,10 @@ public class PhotosAdapter extends BaseAdapter {
 			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
 		} else {
-			if (orientation == context.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						displayMetrics.heightPixels / 3));
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				int fragmentWidth = displayMetrics.widthPixels - 310;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(fragmentWidth / 3,
+						(int) (displayMetrics.heightPixels / 2.5)));
 			} else {
 				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 						displayMetrics.widthPixels / 3));
