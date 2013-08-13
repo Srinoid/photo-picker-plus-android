@@ -129,11 +129,11 @@ public class ServicesVerticalGridAdapter extends BaseAdapter {
 			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
 		} else {
-			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				int fragmentWidth = displayMetrics.widthPixels - 310;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(fragmentWidth / 4,
-						(int) (displayMetrics.heightPixels / 3)));
-			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+//			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//				int fragmentWidth = displayMetrics.widthPixels - 310;
+//				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(fragmentWidth / 4,
+//						(int) (displayMetrics.heightPixels / 3)));
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				int fragmentHeight = displayMetrics.heightPixels - 500;
 				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 4,
 						fragmentHeight / 4));

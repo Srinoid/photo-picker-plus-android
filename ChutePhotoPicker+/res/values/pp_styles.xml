@@ -8,10 +8,8 @@
 
     <!-- TextView Fragment Title -->
     <style name="textViewTtitle" parent="android:Widget.TextView">
-        <item name="android:background">@color/sky_blue</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 
     <!-- TextView Service Fragment Secondary Titles -->
@@ -51,14 +49,6 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <!-- ListView Albums -->
-    <style name="listViewAlbums" parent="android:Widget.ListView">
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginRight">5dp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:background">@drawable/services_shape</item>
-        <item name="android:divider">@drawable/divider_album_list</item>
-    </style>
 
     <!-- LinearLayout Services -->
     <style name="linearLayoutServices">

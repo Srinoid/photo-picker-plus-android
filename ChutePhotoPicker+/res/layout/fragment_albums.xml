@@ -1,33 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
     android:orientation="vertical" >
 
-    <!-- Album Title -->
     <TextView
         android:id="@+id/textViewAlbumTitle"
-        style="@style/textViewTtitle"
+        android:textSize="20sp"
+        android:textColor="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
-
-    <ListView
+    
+    <ImageView android:id="@+id/imageViewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/textViewAlbumTitle"
+        android:background="@color/grey"/>
+    
+    <ListView 
         android:id="@+id/listViewAlbums"
-        style="@style/listViewAlbums"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAlbumTitle"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/imageViewDivider"
         android:cacheColorHint="@color/transparent"
+        android:divider="@null"
         android:dividerHeight="0dp"
         android:fadeScrollbars="true"
+        android:scrollbars="vertical"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dip"
         android:footerDividersEnabled="false"
         android:scrollingCache="false" >
     </ListView>
     <!-- Preview: listitem=@layout/adapter_albums -->
-
 
     <!-- Empty View -->
     <include
