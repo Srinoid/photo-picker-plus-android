@@ -3,7 +3,7 @@
 
     <!-- PhotoPicker+ Theme -->
     <style name="PhotoPickerTheme" parent="android:Theme.Holo.Light.NoActionBar">
-        <item name="android:windowBackground">@color/background_activity</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
 </resources>

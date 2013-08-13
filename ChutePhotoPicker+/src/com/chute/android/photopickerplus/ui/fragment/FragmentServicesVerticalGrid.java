@@ -209,8 +209,10 @@ public class FragmentServicesVerticalGrid extends Fragment {
 	private void setImageViewDimensions(ImageView imageView) {
 		DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
 		int fragmentHeight = displayMetrics.heightPixels - 310;
-		imageView.setLayoutParams(new LinearLayout.LayoutParams(displayMetrics.widthPixels / 5,
-				(int) (fragmentHeight / 1.5)));
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(displayMetrics.widthPixels / 5,
+				(int) (fragmentHeight / 1.5));
+		params.setMargins(10, 0, 0, 0);
+		imageView.setLayoutParams(params);
 	}
 
 	private final class OnLoginClickListener implements OnClickListener {
