@@ -33,6 +33,11 @@ import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSi
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridSocialSingleSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.EmptyFragment;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.CameraRollListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.LastPhotoListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.LoginListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.PhotoStreamListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.TakePhotoListener;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -54,11 +59,13 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class ServicesAlbumsActivity extends FragmentActivity implements SelectAlbumListener, GridCursorSingleSelectListener,
-GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener, ButtonConfirmSocialAssetsListener {
-	
+public class ServicesAlbumsActivity extends FragmentActivity implements SelectAlbumListener,
+		GridCursorSingleSelectListener, GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener,
+		ButtonConfirmSocialAssetsListener, LoginListener, LastPhotoListener, TakePhotoListener, CameraRollListener,
+		PhotoStreamListener {
+
 	private static final String TAG = ServicesAlbumsActivity.class.getSimpleName();
-	
+
 	private AccountType accountType;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
 
@@ -70,29 +77,31 @@ GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener, ButtonConfirm
 
 	private FragmentTransaction fragmentTransaction;
 	private static FragmentManager fragmentManager;
-	
-  @Override
-protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	fragmentManager = getSupportFragmentManager();
-	requestWindowFeature(Window.FEATURE_NO_TITLE);
-	setContentView(R.layout.main_layout);
 
-	ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-	fragmentServicesVertical = (FragmentServicesVerticalGrid) fragmentManager.findFragmentById(R.id.fragmentServices);
-	dualFragments = getResources().getBoolean(R.bool.has_two_panes);
-	
-	String serialized = PhotoPickerPreferenceUtil.get().getServiceList();
-	if (serialized == null) {
-		Toast.makeText(getApplicationContext(), getString(R.string.connect_to_internet_to_cofigure_services),
-				Toast.LENGTH_LONG).show();
-	} else {
-		List<String> serviceList = Arrays.asList(TextUtils.split(serialized, ","));
-		fragmentServicesVertical.configureServices(serviceList);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		fragmentManager = getSupportFragmentManager();
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.main_layout);
+
+		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
+		fragmentServicesVertical = (FragmentServicesVerticalGrid) fragmentManager
+				.findFragmentById(R.id.fragmentServices);
+		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
+
+		String serialized = PhotoPickerPreferenceUtil.get().getServiceList();
+		if (serialized == null) {
+			Toast.makeText(getApplicationContext(), getString(R.string.connect_to_internet_to_cofigure_services),
+					Toast.LENGTH_LONG).show();
+		} else {
+			List<String> serviceList = Arrays.asList(TextUtils.split(serialized, ","));
+			fragmentServicesVertical.configureServices(serviceList);
+		}
+
 	}
-   
-}
-  
+
+	@Override
 	public void takePhoto() {
 		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
 			NotificationUtil.makeToast(getApplicationContext(), R.string.toast_feature_camera);
@@ -109,6 +118,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 	}
 
+	@Override
 	public void photoStream() {
 		if (dualFragments) {
 			replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getAlbumId(),
@@ -124,6 +134,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 	}
 
+	@Override
 	public void lastPhoto() {
 		Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
 		if (uri.toString().equals("")) {
@@ -139,6 +150,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 	}
 
+	@Override
 	public void cameraRoll() {
 		if (dualFragments) {
 			replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getAlbumId(),
@@ -154,6 +166,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 	}
 
+	@Override
 	public void accountLogin(AccountType type) {
 		accountType = type;
 		if (PreferenceUtil.get().hasAccountId(accountType)) {
@@ -164,7 +177,7 @@ protected void onCreate(Bundle savedInstanceState) {
 		}
 
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -202,15 +215,14 @@ protected void onCreate(Bundle savedInstanceState) {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
 		finish();
 	}
-	
-	
+
 	public void replaceContentWithAssetFragment(PhotoFilterType filterType, String accountID, String accountModelID,
 			boolean isMultiPicker) {
 		fragmentTransaction = fragmentManager.beginTransaction();
@@ -223,17 +235,18 @@ protected void onCreate(Bundle savedInstanceState) {
 
 	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
 		fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID), Constants.TAG_FRAGMENT_ALBUM);
+		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID),
+				Constants.TAG_FRAGMENT_ALBUM);
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 
-	public void replaceContentWithEmptyFragment() {
-		fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), Constants.TAG_FRAGMENT_EMPTY);
-//		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
-	}
+//	public void replaceContentWithEmptyFragment() {
+//		fragmentTransaction = fragmentManager.beginTransaction();
+//		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), Constants.TAG_FRAGMENT_EMPTY);
+//		// fragmentTransaction.addToBackStack(null);
+//		fragmentTransaction.commit();
+//	}
 
 	@Override
 	public void onDestroy() {
@@ -243,7 +256,7 @@ protected void onCreate(Bundle savedInstanceState) {
 		}
 		super.onDestroy();
 	}
-	
+
 	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
 
 		@Override
@@ -266,7 +279,7 @@ protected void onCreate(Bundle savedInstanceState) {
 					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
 				}
 				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
-//				setAccountUserName();
+				// setAccountUserName();
 				accountClicked(accountModel.getId(), accountType.getName());
 			}
 		}
@@ -288,12 +301,13 @@ protected void onCreate(Bundle savedInstanceState) {
 			wrapper.setAccountName(accountName);
 			wrapper.startActivity(ServicesAlbumsActivity.this);
 		}
-//		setAccountUserName();
+		// setAccountUserName();
 	}
-	
+
 	@Override
 	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesAlbumsActivity.this, accountMediaModelList, null, null, albumId);
+		IntentUtil
+				.deliverDataToInitialActivity(ServicesAlbumsActivity.this, accountMediaModelList, null, null, albumId);
 
 	}
 
@@ -314,13 +328,11 @@ protected void onCreate(Bundle savedInstanceState) {
 		IntentUtil.deliverDataToInitialActivity(ServicesAlbumsActivity.this, accountMediaModel, albumId);
 	}
 
-
 	@Override
 	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
 		replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(),
 				ppWrapper.getIsMultiPicker());
 
 	}
-
 
 }

@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -24,12 +23,10 @@ import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.android.photopickerplus.ui.activity.ServicesAlbumsActivity;
-import com.chute.sdk.v2.model.enums.AccountType;
 
 import darko.imagedownloader.ImageLoader;
 
-public class ServicesVerticalGridAdapter extends BaseAdapter  {
+public class ServicesVerticalGridAdapter extends BaseAdapter {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = ServicesVerticalGridAdapter.class.getSimpleName();
@@ -38,7 +35,6 @@ public class ServicesVerticalGridAdapter extends BaseAdapter  {
 	private final DisplayMetrics displayMetrics;
 	private final Activity context;
 	private final boolean dualFragments;
-	private AccountType accountType;
 
 	private String[] services;
 
@@ -90,23 +86,18 @@ public class ServicesVerticalGridAdapter extends BaseAdapter  {
 		holder.imageView.setTag(position);
 		if (service.equals("Facebook")) {
 			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_facebook));
-			holder.imageView.setOnClickListener(new OnLoginClickListener());
 		}
 		if (service.equals("Flickr")) {
 			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_flickr));
-			holder.imageView.setOnClickListener(new OnLoginClickListener());
 		}
 		if (service.equals("Picasa")) {
 			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_picasa));
-			holder.imageView.setOnClickListener(new OnLoginClickListener());
 		}
 		if (service.equals("Instagram")) {
 			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_instagram));
-			holder.imageView.setOnClickListener(new OnLoginClickListener());
 		}
 		if (service.equals("Take Photo")) {
 			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_camera));
-			holder.imageView.setOnClickListener(new OnTakePhotoClickListener());
 		}
 		if (service.equals("Camera shots")) {
 			if (uriLastPhotoFromCameraPhotos != null) {
@@ -114,7 +105,6 @@ public class ServicesVerticalGridAdapter extends BaseAdapter  {
 			} else {
 				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
 			}
-			holder.imageView.setOnClickListener(new OnCameraRollClickListener());
 		}
 		if (service.equals("Last photo taken")) {
 			if (uriLastPhotoFromCameraPhotos != null) {
@@ -122,7 +112,6 @@ public class ServicesVerticalGridAdapter extends BaseAdapter  {
 			} else {
 				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
 			}
-			holder.imageView.setOnClickListener(new OnLastPhotoTakenClickListener());
 		}
 		if (service.equals("All photos")) {
 			if (uriAllPhotos != null) {
@@ -130,7 +119,6 @@ public class ServicesVerticalGridAdapter extends BaseAdapter  {
 			} else {
 				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
 			}
-			holder.imageView.setOnClickListener(new OnPhotoStreamClickListener());
 		}
 		return vi;
 	}
@@ -152,64 +140,5 @@ public class ServicesVerticalGridAdapter extends BaseAdapter  {
 			}
 		}
 	}
-	
-	private final class OnLoginClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			String service = services[(Integer) v.getTag()];
-			if (service.equalsIgnoreCase(AccountType.FACEBOOK.name())) {
-				accountType = AccountType.FACEBOOK;
-			}
-			if (service.equalsIgnoreCase(AccountType.INSTAGRAM.name())) {
-				accountType = AccountType.INSTAGRAM;
-			}
-			if (service.equalsIgnoreCase(AccountType.FLICKR.name())) {
-				accountType = AccountType.FLICKR;
-			}
-			if (service.equalsIgnoreCase(AccountType.PICASA.name())) {
-				accountType = AccountType.PICASA;
-			}
-			((ServicesAlbumsActivity)context).accountLogin(accountType);
-		}
-
-	}
-
-	private final class OnPhotoStreamClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			((ServicesAlbumsActivity)context).photoStream();
-		}
-	}
-
-	private final class OnCameraRollClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			((ServicesAlbumsActivity)context).cameraRoll();
-		}
-
-	}
-
-	private final class OnLastPhotoTakenClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			((ServicesAlbumsActivity)context).lastPhoto();
-		}
-
-	}
-
-	private final class OnTakePhotoClickListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			((ServicesAlbumsActivity)context).takePhoto();
-		}
-
-	}
-
-
 
 }

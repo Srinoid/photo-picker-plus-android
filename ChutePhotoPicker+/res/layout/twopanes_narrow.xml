@@ -3,14 +3,14 @@
     android:id="@+id/fragments"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
     <fragment
         android:id="@+id/fragmentServices"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         class="com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid" />
-
+    
     <ImageView
         android:id="@+id/dividerFragments"
         style="@style/dividerLineVertical" />
