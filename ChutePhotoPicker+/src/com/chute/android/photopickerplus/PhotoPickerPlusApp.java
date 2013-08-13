@@ -9,10 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus;
 
+import java.util.ArrayList;
+
 import android.app.Application;
 import android.content.Context;
 import android.util.TypedValue;
 
+import com.chute.android.photopickerplus.config.ConfigServicesFactory;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.api.Chute;
@@ -22,7 +25,7 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import darko.imagedownloader.ImageLoader;
 
 public class PhotoPickerPlusApp extends Application {
-
+	
 	public static final String TAG = PhotoPickerPlusApp.class.getSimpleName();
 
 	private static ImageLoader createImageLoader(Context context) {
@@ -42,6 +45,7 @@ public class PhotoPickerPlusApp extends Application {
 		Chute.init(this, new AuthConstants(Constants.APP_ID, Constants.APP_SECRET));
 		PreferenceUtil.init(getApplicationContext());
 		PhotoPickerPreferenceUtil.init(getApplicationContext());
+		
 		
 	}
 

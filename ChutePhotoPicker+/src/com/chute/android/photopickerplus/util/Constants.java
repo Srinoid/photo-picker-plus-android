@@ -49,5 +49,16 @@ public class Constants {
 	
 	public static final String TAG_FRAGMENT_ALBUM = "AlbumFrag";
 	public static final String TAG_FRAGMENT_EMPTY = "EmptyFrag";
+	
+	 public static String[] services = {   
+             "Facebook",   
+             "Flickr",   
+             "Instagram",      
+             "Picasa",      
+             "Take photo",   
+             "Last photo taken",           
+             "All photos",
+             "Camera shots"
+ };
 
 }

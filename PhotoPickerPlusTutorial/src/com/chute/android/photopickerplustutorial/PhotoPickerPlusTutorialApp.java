@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import com.chute.android.photopickerplus.PhotoPickerPlusApp;
 import com.chute.android.photopickerplus.config.ConfigServicesFactory;
 import com.chute.android.photopickerplus.util.Constants;
-import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
-import com.chute.android.photopickerplustutorial.config.ConfigEndpointURLs;
 import com.chute.sdk.v2.model.AccountStore;
 
 public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
@@ -28,20 +26,25 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 		AccountStore.setAppId(getApplicationContext(), Constants.APP_ID);
 		services.add("Facebook");
 		services.add("Picasa");
-		services.add("Flickr");
+		services.add("Instagram");
+		services.add("Take photo");
+		services.add("Last taken photo");
+		services.add("Camera shots");
+		services.add("All photos");
+		
 
 		/**
 		 * Call for managing services locally.
 		 **/
-//		 ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
-//		 ConfigServicesFactory.CONFIG_LOCAL, services);
+		 ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
+		 ConfigServicesFactory.CONFIG_LOCAL, services);
 		/**
 		 * Get which services need to be used from the server; Important: Save
 		 * endpoint URL in PhotoPicker+ preferences.
 		 **/
-		PhotoPickerPreferenceUtil.get().setConfigUrl(ConfigEndpointURLs.SERVICES_ENDPOINT_URL);
-		ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
-				ConfigServicesFactory.CONFIG_SERVER, null);
+//		PhotoPickerPreferenceUtil.get().setConfigUrl(ConfigEndpointURLs.SERVICES_ENDPOINT_URL);
+//		ConfigServicesFactory.getInstance(getApplicationContext()).configureServices(
+//				ConfigServicesFactory.CONFIG_SERVER, null);
 
 	}
 

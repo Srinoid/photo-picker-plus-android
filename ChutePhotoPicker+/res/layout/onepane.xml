@@ -4,9 +4,9 @@
     android:layout_height="match_parent" >
 
     <fragment
-        android:id="@+id/fragmentChooseService"
+        android:id="@+id/fragmentServices"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment" />
+        class="com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid" />
 
 </LinearLayout>

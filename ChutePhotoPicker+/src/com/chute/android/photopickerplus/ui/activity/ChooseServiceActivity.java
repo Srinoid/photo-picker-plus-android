@@ -94,7 +94,7 @@ public class ChooseServiceActivity extends FragmentActivity implements LoginList
 		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		chooseServiceFragment = (ChooseServiceFragment) fragmentManager.findFragmentById(R.id.fragmentChooseService);
+//		chooseServiceFragment = (ChooseServiceFragment) fragmentManager.findFragmentById(R.id.fragmentChooseService);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
 		if (dualFragments && savedInstanceState == null) {

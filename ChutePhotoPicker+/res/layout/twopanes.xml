@@ -6,10 +6,10 @@
     android:orientation="vertical" >
 
     <fragment
-        android:id="@+id/fragmentChooseService"
+        android:id="@+id/fragmentServices"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        class="com.chute.android.photopickerplus.ui.fragment.ChooseServiceFragment" />
+        android:layout_height="450dp"
+        class="com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid" />
 
     <ImageView
         android:id="@+id/dividerFragments"

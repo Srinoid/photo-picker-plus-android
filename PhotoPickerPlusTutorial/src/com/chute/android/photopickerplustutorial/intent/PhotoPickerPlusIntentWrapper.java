@@ -3,6 +3,7 @@ package com.chute.android.photopickerplustutorial.intent;
 import java.util.ArrayList;
 
 import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
+import com.chute.android.photopickerplus.ui.activity.ServicesAlbumsActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +25,7 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 	}
 
 	public PhotoPickerPlusIntentWrapper(Context packageContext) {
-		super(new Intent(packageContext, ChooseServiceActivity.class));
+		super(new Intent(packageContext, ServicesAlbumsActivity.class));
 	}
 
 	public boolean getIsMultiPicker() {
