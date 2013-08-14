@@ -95,13 +95,22 @@ public class FragmentServices extends Fragment {
 		View view = null;
 		loader = ImageLoader.getLoader(getActivity());
 		int orientation = getActivity().getResources().getConfiguration().orientation;
-		// if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
-		// view = inflater.inflate(R.layout.fragment_services_vertical,
-		// container, false);
-		// gridViewServices = (GridView)
-		// view.findViewById(R.id.gridViewServicesVertical);
-		// gridViewServices.setOnItemClickListener(new GridClickListener());
-		// } else {
+		 if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
+			 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+		 view = inflater.inflate(R.layout.fragment_services,
+		 container, false);
+		 gridViewServices = (GridView)
+		 view.findViewById(R.id.gridViewServicesVertical);
+		 gridViewServices.setNumColumns(5);
+		 gridViewServices.setOnItemClickListener(new GridClickListener());
+			 } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				 view = inflater.inflate(R.layout.fragment_services,
+						 container, false);
+						 gridViewServices = (GridView)
+						 view.findViewById(R.id.gridViewServicesVertical);
+						 gridViewServices.setOnItemClickListener(new GridClickListener()); 
+			 }
+		 } else {
 		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			// view = inflater.inflate(R.layout.fragment_services_horizontal,
 			// container, false);
@@ -138,16 +147,16 @@ public class FragmentServices extends Fragment {
 			// view.findViewById(R.id.imageViewCameraShots);
 			// cameraShots.setOnClickListener(new OnCameraRollListener());
 			// setImageViewDimensions(cameraShots);
-			view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
+			view = inflater.inflate(R.layout.fragment_services, container, false);
 			gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
 			gridViewServices.setNumColumns(8);
 			gridViewServices.setOnItemClickListener(new GridClickListener());
 		} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
+			view = inflater.inflate(R.layout.fragment_services, container, false);
 			gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
 			gridViewServices.setOnItemClickListener(new GridClickListener());
 		}
-		// }
+		 }
 		return view;
 	}
 

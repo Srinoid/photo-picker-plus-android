@@ -3,254 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <!-- SELECT AN ALBUM -->
-
+    
     <TextView
-        android:id="@+id/textViewSelectAlbumTitle"
-        style="@style/textViewTtitle"
+        android:id="@+id/textViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_an_album" >
-    </TextView>
-
-    <!-- DEFAULT -->
-
-    <TextView
-        android:id="@+id/textViewDefaultTitle"
-        style="@style/textViewSecondaryTtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_default" />
-
-    <!-- DEFAULT SERVICES CONTENT -->
-
-    <LinearLayout
-        android:id="@+id/linearLayoutServicesContent"
-        style="@style/linearLayoutServices"
+        android:gravity="center"
+        android:background="@drawable/gradient_blue"
+        android:text="SELECT AN ALBUM"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textColor="@color/white" />
+    
+    <GridView android:id="@+id/gridViewServicesVertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <!-- CAMERA SHOTS -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutCameraShots"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/imageViewCameraShots"
-                style="@style/imageViewServices" />
-
-            <TextView
-                android:id="@+id/textViewCameraShots"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/camera_shots" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerCameraShots"
-            style="@style/dividerLineHorizontal" />
-
-        <!-- ALL PHOTOS -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutAllPhotos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/imageViewAllPhotos"
-                style="@style/imageViewServices" />
-
-            <TextView
-                android:id="@+id/textViewAllPhotos"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/all_photos" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerAllPhotos"
-            style="@style/dividerLineHorizontal" />
-
-        <!-- LAST PHOTO TAKEN -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutLastPhotoTaken"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/imageViewLastPhotoTaken"
-                style="@style/imageViewServices" />
-
-            <TextView
-                android:id="@+id/textViewLastPhotoTaken"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/last_photo" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerLastPhotoTaken"
-            style="@style/dividerLineHorizontal" />
-
-        <!-- TAKE A PHOTO -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutTakePhoto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/imageViewTakePhoto"
-                style="@style/imageViewTakePhoto" />
-
-            <TextView
-                android:id="@+id/textViewTakePhoto"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/take_photos" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerTakePhoto"
-            style="@style/dividerLineHorizontal" />
-    </LinearLayout>
-
-    <!-- USER -->
-
-    <TextView
-        android:id="@+id/textViewUserTitle"
-        style="@style/textViewSecondaryTtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_user"
-        android:visibility="gone" />
-
-    <!-- SOCIAL SERVICES CONTENT -->
-
-    <LinearLayout
-        android:id="@+id/linearLayoutSocialServicesContent"
-        style="@style/linearLayoutServices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <!-- FACEBOOK -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone" >
-
-            <ImageView
-                android:id="@+id/imageViewFacebook"
-                style="@style/imageViewFacebook" />
-
-            <TextView
-                android:id="@+id/textViewFacebook"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/facebook" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerFacebook"
-            style="@style/dividerLineHorizontal"
-            android:visibility="gone" />
-
-        <!-- FLICKR -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutFlickr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone" >
-
-            <ImageView
-                android:id="@+id/imageViewFlickr"
-                style="@style/imageViewFlickr" />
-
-            <TextView
-                android:id="@+id/textViewFlickr"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/flickr" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerFlickr"
-            style="@style/dividerLineHorizontal"
-            android:visibility="gone" />
-
-        <!-- INSTAGRAM -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutInstagram"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone" >
-
-            <ImageView
-                android:id="@+id/imageViewInstagram"
-                style="@style/imageViewInstagram" />
-
-            <TextView
-                android:id="@+id/textViewInstagram"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/instagram" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerInstagram"
-            style="@style/dividerLineHorizontal"
-            android:visibility="gone" />
-
-        <!-- PICASA -->
-
-        <LinearLayout
-            android:id="@+id/linearLayoutPicasa"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone" >
-
-            <ImageView
-                android:id="@+id/imageViewPicasa"
-                style="@style/imageViewPicasa" />
-
-            <TextView
-                android:id="@+id/textViewPicasa"
-                style="@style/textViewServiceNames"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/picasa" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dividerPicasa"
-            style="@style/dividerLineHorizontal"
-            android:visibility="gone" />
-    </LinearLayout>
+        android:fadingEdgeLength="0dip"
+        android:fastScrollEnabled="true"
+        android:horizontalSpacing="10dip"
+        android:verticalSpacing="10dip"
+        android:numColumns="4" />
+    
 
 </LinearLayout>

@@ -137,8 +137,16 @@ public class PhotosAdapter extends BaseAdapter {
 	private void configureImageViewDimensions(ImageView imageViewThumb) {
 		int orientation = context.getResources().getConfiguration().orientation;
 		if (!dualFragments) {
-			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-					displayMetrics.widthPixels / 3));
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				int imageHeight = displayMetrics.widthPixels - 80;
+			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels /3,
+					imageHeight / 3));
+			}
+			else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				int imageHeight = displayMetrics.widthPixels - 120;
+			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 5,
+					imageHeight / 5));
+			}
 		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels,

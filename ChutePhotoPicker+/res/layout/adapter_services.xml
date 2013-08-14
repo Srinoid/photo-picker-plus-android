@@ -17,8 +17,11 @@
 	THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutServicesRoot"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/gray_light"
+    android:padding="1dp"
     android:layout_gravity="center" >
 
     <ImageView

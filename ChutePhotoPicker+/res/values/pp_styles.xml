@@ -70,7 +70,7 @@
     
     <!-- RelativeLayout Assets Adapter Item Holder -->
     <style name="relativeLayoutAdapterItemAssets" >
-        <item name="android:background">@color/black</item>
+        <item name="android:background">@color/gray_light</item>
         <item name="android:padding">1dp</item>
     </style>
 
@@ -115,8 +115,8 @@
     
      <!-- ImageView Adapter Item Assets -->
     <style name="imageViewAdapterItemAssets" parent="imageViewDefaultAssets">
-        <item name="android:layout_width">110dp</item>
-        <item name="android:layout_height">110dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
     </style>
     
      <!-- ImageView Album Cover -->

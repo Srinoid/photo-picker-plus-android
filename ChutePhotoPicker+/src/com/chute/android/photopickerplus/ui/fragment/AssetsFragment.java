@@ -119,10 +119,8 @@ public class AssetsFragment extends Fragment {
 		}
 		
 		int orientation = getResources().getConfiguration().orientation;
-		if (getResources().getBoolean(R.bool.has_two_panes)) {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				gridViewAssets.setNumColumns(5);
-			}
 		}
 
 		return view;

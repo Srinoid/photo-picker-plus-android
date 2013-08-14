@@ -31,7 +31,7 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 		services.add("Last taken photo");
 		services.add("Camera shots");
 		services.add("All photos");
-//		services.add("Flickr");
+		services.add("Flickr");
 		
 
 		/**

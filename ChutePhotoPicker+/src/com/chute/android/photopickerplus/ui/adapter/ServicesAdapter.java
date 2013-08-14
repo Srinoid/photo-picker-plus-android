@@ -85,39 +85,39 @@ public class ServicesAdapter extends BaseAdapter {
 		String service = services[position];
 		holder.imageView.setTag(position);
 		if (service.equalsIgnoreCase("Facebook")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.facebook));
+			holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.facebook));
 		}
 		if (service.equalsIgnoreCase("Flickr")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.flickr));
+			holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.flickr));
 		}
 		if (service.equalsIgnoreCase("Picasa")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_picasa));
+			holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.picassa));
 		}
 		if (service.equalsIgnoreCase("Instagram")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.instagram));
+			holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.instagram));
 		}
 		if (service.equalsIgnoreCase("Take Photo")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.take_photo));
+			holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.take_photo));
 		}
 		if (service.equalsIgnoreCase("Camera shots")) {
 			if (uriLastPhotoFromCameraPhotos != null) {
 				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView, null);
 			} else {
-				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
+				holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
 			}
 		}
 		if (service.equalsIgnoreCase("Last taken photo")) {
 			if (uriLastPhotoFromCameraPhotos != null) {
 				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView, null);
 			} else {
-				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
+				holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
 			}
 		}
 		if (service.equalsIgnoreCase("All photos")) {
 			if (uriAllPhotos != null) {
 				loader.displayImage(uriAllPhotos.toString(), holder.imageView, null);
 			} else {
-				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
+				holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
 			}
 		}
 		return vi;
@@ -126,17 +126,29 @@ public class ServicesAdapter extends BaseAdapter {
 	private void configureImageViewDimensions(ImageView imageViewThumb) {
 		int orientation = context.getResources().getConfiguration().orientation;
 		if (!dualFragments) {
-			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-					displayMetrics.widthPixels / 3));
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				int imageDimension = displayMetrics.widthPixels - 80;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageDimension / 5,
+						imageDimension / 5));
+			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				int imageDimension = displayMetrics.widthPixels - 70;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageDimension / 4,
+						imageDimension / 4));
+			}
 		} else {
-//			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//				int fragmentWidth = displayMetrics.widthPixels - 310;
-//				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(fragmentWidth / 4,
-//						(int) (displayMetrics.heightPixels / 3)));
+			 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			 int imageDimension = displayMetrics.widthPixels - 110;
+			 imageViewThumb.setLayoutParams(new
+			 RelativeLayout.LayoutParams(imageDimension / 8,
+			  (imageDimension / 8)));
+			 } else
 			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				int fragmentHeight = displayMetrics.heightPixels - 500;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 4,
-						fragmentHeight / 4));
+//				int fragmentHeight = displayMetrics.heightPixels - 500;
+//				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 4,
+//						fragmentHeight / 4));
+				int imageDimension = displayMetrics.widthPixels - 70;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageDimension / 4,
+						imageDimension / 4));
 			}
 		}
 	}
