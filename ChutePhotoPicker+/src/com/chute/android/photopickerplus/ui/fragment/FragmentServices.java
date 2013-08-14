@@ -13,24 +13,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.android.photopickerplus.ui.adapter.ServicesVerticalGridAdapter;
+import com.chute.android.photopickerplus.ui.adapter.ServicesAdapter;
 import com.chute.sdk.v2.model.enums.AccountType;
 
 import darko.imagedownloader.ImageLoader;
 
-public class FragmentServicesVerticalGrid extends Fragment {
+public class FragmentServices extends Fragment {
 
 	private GridView gridViewServices;
-	private ServicesVerticalGridAdapter adapter;
+	private ServicesAdapter adapter;
 
 	private ImageView facebook;
 	private ImageView flickr;
@@ -73,8 +73,8 @@ public class FragmentServicesVerticalGrid extends Fragment {
 		public void takePhoto();
 	}
 
-	public static FragmentServicesVerticalGrid newInstance(String[] services) {
-		FragmentServicesVerticalGrid frag = new FragmentServicesVerticalGrid();
+	public static FragmentServices newInstance(String[] services) {
+		FragmentServices frag = new FragmentServices();
 		Bundle args = new Bundle();
 		frag.setArguments(args);
 		return frag;
@@ -95,44 +95,46 @@ public class FragmentServicesVerticalGrid extends Fragment {
 		View view = null;
 		loader = ImageLoader.getLoader(getActivity());
 		int orientation = getActivity().getResources().getConfiguration().orientation;
-		if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
-			// one pane
-		} else {
+//		if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
+//			view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
+//			gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
+//			gridViewServices.setOnItemClickListener(new GridClickListener());
+//		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				view = inflater.inflate(R.layout.fragment_services_horizontal_grid2, container, false);
+				view = inflater.inflate(R.layout.fragment_services_horizontal, container, false);
 				facebook = (ImageView) view.findViewById(R.id.imageViewFacebook);
 				facebook.setTag(AccountType.FACEBOOK);
 				facebook.setOnClickListener(new OnLoginClickListener());
-				setImageViewDimensions(facebook);
+//				setImageViewDimensions(facebook);
 				flickr = (ImageView) view.findViewById(R.id.imageViewFlickr);
 				flickr.setTag(AccountType.FLICKR);
 				flickr.setOnClickListener(new OnLoginClickListener());
-				setImageViewDimensions(flickr);
+//				setImageViewDimensions(flickr);
 				instagram = (ImageView) view.findViewById(R.id.imageViewInstagram);
 				instagram.setTag(AccountType.INSTAGRAM);
 				instagram.setOnClickListener(new OnLoginClickListener());
-				setImageViewDimensions(instagram);
+//				setImageViewDimensions(instagram);
 				picasa = (ImageView) view.findViewById(R.id.imageViewPicasa);
-				picasa.setTag(AccountType.PICASA);
+//				picasa.setTag(AccountType.PICASA);
 				picasa.setOnClickListener(new OnLoginClickListener());
-				setImageViewDimensions(picasa);
+//				setImageViewDimensions(picasa);
 				allPhotos = (ImageView) view.findViewById(R.id.imageViewAllPhotos);
 				allPhotos.setOnClickListener(new OnPhotoStreamListener());
-				setImageViewDimensions(allPhotos);
+//				setImageViewDimensions(allPhotos);
 				lastPhotoTaken = (ImageView) view.findViewById(R.id.imageViewLastPhotoTaken);
 				lastPhotoTaken.setOnClickListener(new OnLastPhotoClickListener());
-				setImageViewDimensions(lastPhotoTaken);
+//				setImageViewDimensions(lastPhotoTaken);
 				takePhoto = (ImageView) view.findViewById(R.id.imageViewTakePhoto);
-				setImageViewDimensions(takePhoto);
+//				setImageViewDimensions(takePhoto);
 				cameraShots = (ImageView) view.findViewById(R.id.imageViewCameraShots);
 				cameraShots.setOnClickListener(new OnCameraRollListener());
-				setImageViewDimensions(cameraShots);
+//				setImageViewDimensions(cameraShots);
 			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				view = inflater.inflate(R.layout.fragment_services_vertical_grid, container, false);
+				view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
 				gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
 				gridViewServices.setOnItemClickListener(new GridClickListener());
 			}
-		}
+//		}
 		return view;
 	}
 
@@ -140,11 +142,11 @@ public class FragmentServicesVerticalGrid extends Fragment {
 		ALog.d("Services: " + servicesArray.toString());
 		services = new String[servicesArray.size()];
 		services = servicesArray.toArray(services);
-		adapter = new ServicesVerticalGridAdapter(getActivity(), services);
+		adapter = new ServicesAdapter(getActivity(), services);
 		int orientation = getActivity().getResources().getConfiguration().orientation;
-		if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
-			// one pane
-		} else {
+//		if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
+//			gridViewServices.setAdapter(adapter);
+//		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				Uri uriAllPhotos = MediaDAO.getLastPhotoFromAllPhotos(getActivity().getApplicationContext());
 				Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(getActivity()
@@ -194,7 +196,7 @@ public class FragmentServicesVerticalGrid extends Fragment {
 			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				gridViewServices.setAdapter(adapter);
 
-			}
+//			}
 		}
 
 	}
@@ -233,18 +235,25 @@ public class FragmentServicesVerticalGrid extends Fragment {
 	}
 
 	private void setImageViewDimensions(ImageView imageView) {
-		int orientation = getActivity().getResources().getConfiguration().orientation;
+		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+		int orientation = getResources().getConfiguration().orientation;
 		if (!getResources().getBoolean(R.bool.has_two_panes)) {
 //			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 //					displayMetrics.widthPixels / 3));
 		} else {
 			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
 				int fragmentHeight = displayMetrics.heightPixels - 310;
 				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(displayMetrics.widthPixels / 5,
 						(int) (fragmentHeight / 1.5));
 				params.setMargins(10, 0, 0, 0);
 				imageView.setLayoutParams(params);
+			} else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//				int fragmentHeight = displayMetrics.heightPixels - 220;
+//				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(displayMetrics.widthPixels / 6,
+//						(int) (displayMetrics.heightPixels));
+//				params.setMargins(10, 0, 0, 0);
+//				imageView.setLayoutParams(params);
+//				facebook.setScaleType(ScaleType.CENTER_CROP);
 			}
 		}
 	}

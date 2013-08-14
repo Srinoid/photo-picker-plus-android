@@ -15,7 +15,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
-import com.chute.android.photopickerplus.ui.activity.ServicesAlbumsActivity;
+import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class IntentUtil {
@@ -41,7 +41,7 @@ public class IntentUtil {
 			final ArrayList<AccountMediaModel> collection, final String albumId, final String accountId,
 			final String chuteId) {
 		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(new Intent(context,
-				ServicesAlbumsActivity.class));
+				ServicesActivity.class));
 		if (!TextUtils.isEmpty(accountId)) {
 			wrapper.setAccountId(accountId);
 		}

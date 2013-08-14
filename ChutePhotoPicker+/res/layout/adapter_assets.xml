@@ -25,6 +25,7 @@
     <ImageView
         android:id="@+id/imageViewThumb"
         style="@style/imageViewAdapterItemAssets"
+        android:scaleType="centerCrop"
         android:layout_centerInParent="true" >
     </ImageView>
 

@@ -34,7 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.chute.android.photopickerplus.ui.activity.ServicesAlbumsActivity" >
+        <activity android:name="com.chute.android.photopickerplus.ui.activity.ServicesActivity" >
         </activity>
             <activity android:name="com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity" />
         <activity android:name="com.chute.android.photopickerplus.ui.activity.AlbumsActivity" >

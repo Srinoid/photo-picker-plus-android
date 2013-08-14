@@ -2,20 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="20dp"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textViewAlbumTitle"
         android:textSize="20sp"
-        android:textColor="@color/grey"
+        android:textAllCaps="true"
+        android:textColor="@color/dark_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
     
     <ImageView android:id="@+id/imageViewDivider"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
         android:layout_below="@+id/textViewAlbumTitle"
         android:background="@color/grey"/>
     

@@ -32,12 +32,12 @@ import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfir
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSingleSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridSocialSingleSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.EmptyFragment;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.CameraRollListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.LastPhotoListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.LoginListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.PhotoStreamListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServicesVerticalGrid.TakePhotoListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices.CameraRollListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices.LastPhotoListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices.LoginListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices.PhotoStreamListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices.TakePhotoListener;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -59,17 +59,17 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class ServicesAlbumsActivity extends FragmentActivity implements SelectAlbumListener,
+public class ServicesActivity extends FragmentActivity implements SelectAlbumListener,
 		GridCursorSingleSelectListener, GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener,
 		ButtonConfirmSocialAssetsListener, LoginListener, LastPhotoListener, TakePhotoListener, CameraRollListener,
 		PhotoStreamListener {
 
-	private static final String TAG = ServicesAlbumsActivity.class.getSimpleName();
+	private static final String TAG = ServicesActivity.class.getSimpleName();
 
 	private AccountType accountType;
 	private PhotoPickerPlusIntentWrapper ppWrapper;
 
-	private FragmentServicesVerticalGrid fragmentServicesVertical;
+	private FragmentServices fragmentServicesVertical;
 
 	private String token;
 
@@ -86,7 +86,7 @@ public class ServicesAlbumsActivity extends FragmentActivity implements SelectAl
 		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		fragmentServicesVertical = (FragmentServicesVerticalGrid) fragmentManager
+		fragmentServicesVertical = (FragmentServices) fragmentManager
 				.findFragmentById(R.id.fragmentServices);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
@@ -109,7 +109,7 @@ public class ServicesAlbumsActivity extends FragmentActivity implements SelectAl
 		}
 		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		if (AppUtil.hasImageCaptureBug() == false) {
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AppUtil.getTempFile(ServicesAlbumsActivity.this)));
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AppUtil.getTempFile(ServicesActivity.this)));
 		} else {
 			intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
 					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -120,17 +120,17 @@ public class ServicesAlbumsActivity extends FragmentActivity implements SelectAl
 
 	@Override
 	public void photoStream() {
-		if (dualFragments) {
-			replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getAlbumId(),
-					ppWrapper.getIsMultiPicker());
-		} else {
-			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesAlbumsActivity.this);
+//		if (dualFragments) {
+//			replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getAlbumId(),
+//					ppWrapper.getIsMultiPicker());
+//		} else {
+			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 			wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setChuteId(ppWrapper.getAlbumId());
-			wrapper.startActivityForResult(ServicesAlbumsActivity.this,
+			wrapper.startActivityForResult(ServicesActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
-		}
+//		}
 
 	}
 
@@ -145,24 +145,24 @@ public class ServicesAlbumsActivity extends FragmentActivity implements SelectAl
 			model.setThumbUrl(uri.toString());
 			model.setUrl(uri.toString());
 
-			IntentUtil.deliverDataToInitialActivity(ServicesAlbumsActivity.this, model, ppWrapper.getAlbumId());
+			IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, model, ppWrapper.getAlbumId());
 		}
 
 	}
 
 	@Override
 	public void cameraRoll() {
-		if (dualFragments) {
-			replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getAlbumId(),
-					ppWrapper.getIsMultiPicker());
-		} else {
-			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesAlbumsActivity.this);
+//		if (dualFragments) {
+//			replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getAlbumId(),
+//					ppWrapper.getIsMultiPicker());
+//		} else {
+			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
 			wrapper.setChuteId(ppWrapper.getAlbumId());
-			wrapper.startActivityForResult(ServicesAlbumsActivity.this,
+			wrapper.startActivityForResult(ServicesActivity.this,
 					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
-		}
+//		}
 
 	}
 
@@ -173,7 +173,7 @@ public class ServicesAlbumsActivity extends FragmentActivity implements SelectAl
 			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
 		} else {
 			PhotoPickerPreferenceUtil.get().setAccountType(accountType.name());
-			AuthenticationFactory.getInstance().startAuthenticationActivity(ServicesAlbumsActivity.this, accountType);
+			AuthenticationFactory.getInstance().startAuthenticationActivity(ServicesActivity.this, accountType);
 		}
 
 	}
@@ -295,11 +295,11 @@ public class ServicesAlbumsActivity extends FragmentActivity implements SelectAl
 		if (dualFragments) {
 			replaceContentWithAlbumFragment(accountName, accountId);
 		} else {
-			AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ServicesAlbumsActivity.this);
+			AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ServicesActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setAccountId(accountId);
 			wrapper.setAccountName(accountName);
-			wrapper.startActivity(ServicesAlbumsActivity.this);
+			wrapper.startActivity(ServicesActivity.this);
 		}
 		// setAccountUserName();
 	}
@@ -307,31 +307,39 @@ public class ServicesAlbumsActivity extends FragmentActivity implements SelectAl
 	@Override
 	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
 		IntentUtil
-				.deliverDataToInitialActivity(ServicesAlbumsActivity.this, accountMediaModelList, null, null, albumId);
+				.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList, null, null, albumId);
 
 	}
 
 	@Override
 	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesAlbumsActivity.this, AppUtil.getPhotoCollection(assetPathList),
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, AppUtil.getPhotoCollection(assetPathList),
 				null, null, albumId);
 
 	}
 
 	@Override
 	public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesAlbumsActivity.this, accountMediaModel, albumId);
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel, albumId);
 	}
 
 	@Override
 	public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesAlbumsActivity.this, accountMediaModel, albumId);
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel, albumId);
 	}
 
 	@Override
 	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
-		replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(),
-				ppWrapper.getIsMultiPicker());
+//		replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(),
+//				ppWrapper.getIsMultiPicker());
+		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+		wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
+		wrapper.setChuteId(ppWrapper.getAlbumId());
+		wrapper.setAccountId(accountId);
+		wrapper.setAlbumId(model.getId());
+		wrapper.startActivityForResult(ServicesActivity.this,
+				PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
 	}
 

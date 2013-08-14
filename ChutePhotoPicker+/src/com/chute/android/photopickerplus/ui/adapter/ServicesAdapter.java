@@ -26,10 +26,10 @@ import com.chute.android.photopickerplus.dao.MediaDAO;
 
 import darko.imagedownloader.ImageLoader;
 
-public class ServicesVerticalGridAdapter extends BaseAdapter {
+public class ServicesAdapter extends BaseAdapter {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = ServicesVerticalGridAdapter.class.getSimpleName();
+	private static final String TAG = ServicesAdapter.class.getSimpleName();
 	private static LayoutInflater inflater;
 	public ImageLoader loader;
 	private final DisplayMetrics displayMetrics;
@@ -38,7 +38,7 @@ public class ServicesVerticalGridAdapter extends BaseAdapter {
 
 	private String[] services;
 
-	public ServicesVerticalGridAdapter(final Activity context, final String[] services) {
+	public ServicesAdapter(final Activity context, final String[] services) {
 		this.services = services;
 		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -84,36 +84,36 @@ public class ServicesVerticalGridAdapter extends BaseAdapter {
 		Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context.getApplicationContext());
 		String service = services[position];
 		holder.imageView.setTag(position);
-		if (service.equals("Facebook")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_facebook));
+		if (service.equalsIgnoreCase("Facebook")) {
+			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.facebook));
 		}
-		if (service.equals("Flickr")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_flickr));
+		if (service.equalsIgnoreCase("Flickr")) {
+			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.flickr));
 		}
-		if (service.equals("Picasa")) {
+		if (service.equalsIgnoreCase("Picasa")) {
 			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_picasa));
 		}
-		if (service.equals("Instagram")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_instagram));
+		if (service.equalsIgnoreCase("Instagram")) {
+			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.instagram));
 		}
-		if (service.equals("Take Photo")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_camera));
+		if (service.equalsIgnoreCase("Take Photo")) {
+			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.take_photo));
 		}
-		if (service.equals("Camera shots")) {
+		if (service.equalsIgnoreCase("Camera shots")) {
 			if (uriLastPhotoFromCameraPhotos != null) {
 				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView, null);
 			} else {
 				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
 			}
 		}
-		if (service.equals("Last photo taken")) {
+		if (service.equalsIgnoreCase("Last photo taken")) {
 			if (uriLastPhotoFromCameraPhotos != null) {
 				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView, null);
 			} else {
 				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
 			}
 		}
-		if (service.equals("All photos")) {
+		if (service.equalsIgnoreCase("All photos")) {
 			if (uriAllPhotos != null) {
 				loader.displayImage(uriAllPhotos.toString(), holder.imageView, null);
 			} else {

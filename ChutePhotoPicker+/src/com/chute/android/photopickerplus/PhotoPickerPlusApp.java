@@ -29,7 +29,7 @@ public class PhotoPickerPlusApp extends Application {
 	public static final String TAG = PhotoPickerPlusApp.class.getSimpleName();
 
 	private static ImageLoader createImageLoader(Context context) {
-		ImageLoader imageLoader = new ImageLoader(context, R.drawable.placeholder);
+		ImageLoader imageLoader = new ImageLoader(context, R.drawable.photo_placeholder);
 		imageLoader.setDefaultBitmapSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75, context
 				.getResources().getDisplayMetrics()));
 		return imageLoader;

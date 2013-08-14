@@ -19,7 +19,6 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
@@ -69,7 +68,6 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 			loader.displayImage(null, holder.imageViewThumb, null);
 		}
 		configureImageViewDimensions(holder.imageViewThumb);
-		holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
 		if (tick.containsKey(cursor.getPosition())) {
 			holder.imageViewTick.setVisibility(View.VISIBLE);
 			view.setBackgroundColor(context.getResources().getColor(R.color.orange));
@@ -149,13 +147,12 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
 					displayMetrics.widthPixels / 3));
 		} else {
-			int fragmentWidth = displayMetrics.widthPixels - 310;
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(fragmentWidth / 3,
-						(int) (displayMetrics.heightPixels / 2.5)));
-			} else {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels,
+						(int) (displayMetrics.heightPixels / 3.5)));
+			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						displayMetrics.widthPixels / 3));
+						(int) (displayMetrics.widthPixels / 3.5)));
 			}
 		}
 	}

@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
@@ -91,7 +90,6 @@ public class PhotosAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
 			configureImageViewDimensions(holder.imageViewThumb);
-			holder.imageViewThumb.setScaleType(ScaleType.CENTER_CROP);
 			holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
 			holder.imageViewTick.setTag(position);
 			vi.setTag(holder);
@@ -143,12 +141,11 @@ public class PhotosAdapter extends BaseAdapter {
 					displayMetrics.widthPixels / 3));
 		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				int fragmentWidth = displayMetrics.widthPixels - 310;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(fragmentWidth / 3,
-						(int) (displayMetrics.heightPixels / 2.5)));
-			} else {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels,
+						(int) (displayMetrics.heightPixels / 3.5)));
+			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						displayMetrics.widthPixels / 3));
+						(int) (displayMetrics.widthPixels / 3.5)));
 			}
 		}
 	}

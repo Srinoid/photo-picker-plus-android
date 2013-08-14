@@ -3,6 +3,7 @@ package com.chute.android.photopickerplus.ui.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -116,6 +117,13 @@ public class AssetsFragment extends Fragment {
 			updateFragment(getArguments().getString(ARG_ALBUM_ID), getArguments().getString(ARG_ACCOUNT_ID),
 					(PhotoFilterType) getArguments().get(ARG_FILTER_TYPE), getArguments().getBoolean(ARG_MULTIPICKER));
 		}
+		
+		int orientation = getResources().getConfiguration().orientation;
+		if (getResources().getBoolean(R.bool.has_two_panes)) {
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				gridViewAssets.setNumColumns(5);
+			}
+		}
 
 		return view;
 	}
@@ -124,6 +132,13 @@ public class AssetsFragment extends Fragment {
 		this.albumId = albumId;
 		this.filterType = filterType;
 		this.isMultipicker = isMultipicker;
+		
+//		int orientation = getResources().getConfiguration().orientation;
+//		if (getResources().getBoolean(R.bool.has_two_panes)) {
+//			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//				gridViewAssets.setNumColumns(5);
+//			}
+//		}
 
 		if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
 			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback());
