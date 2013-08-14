@@ -12,7 +12,7 @@
         android:background="@drawable/gradient_blue"
         android:text="SELECT AN ALBUM"
         android:textAllCaps="true"
-        android:textAppearance="@android:attr/textAppearanceLarge"
+        android:textSize="20sp"
         android:textColor="@color/white" />
     
     <GridView android:id="@+id/gridViewServicesVertical"

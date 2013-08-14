@@ -13,9 +13,9 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:background="@drawable/gradient_blue"
-        android:text="SELECT Photo"
+        android:text="Select Photo"
         android:textAllCaps="true"
-        android:textAppearance="@android:attr/textAppearanceLarge"
+        android:textSize="20sp"
         android:textColor="@color/white" />
 
     <GridView
@@ -29,6 +29,7 @@
         android:horizontalSpacing="20dip"
         android:verticalSpacing="20dip"
         android:padding="20dp"
+        android:scrollbars="none"
         android:numColumns="3" />
     <!-- Preview listitem=@layout/adapter_photos -->
 
