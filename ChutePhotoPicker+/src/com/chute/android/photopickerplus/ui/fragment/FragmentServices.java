@@ -95,46 +95,59 @@ public class FragmentServices extends Fragment {
 		View view = null;
 		loader = ImageLoader.getLoader(getActivity());
 		int orientation = getActivity().getResources().getConfiguration().orientation;
-//		if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
-//			view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
-//			gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
-//			gridViewServices.setOnItemClickListener(new GridClickListener());
-//		} else {
-			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				view = inflater.inflate(R.layout.fragment_services_horizontal, container, false);
-				facebook = (ImageView) view.findViewById(R.id.imageViewFacebook);
-				facebook.setTag(AccountType.FACEBOOK);
-				facebook.setOnClickListener(new OnLoginClickListener());
-//				setImageViewDimensions(facebook);
-				flickr = (ImageView) view.findViewById(R.id.imageViewFlickr);
-				flickr.setTag(AccountType.FLICKR);
-				flickr.setOnClickListener(new OnLoginClickListener());
-//				setImageViewDimensions(flickr);
-				instagram = (ImageView) view.findViewById(R.id.imageViewInstagram);
-				instagram.setTag(AccountType.INSTAGRAM);
-				instagram.setOnClickListener(new OnLoginClickListener());
-//				setImageViewDimensions(instagram);
-				picasa = (ImageView) view.findViewById(R.id.imageViewPicasa);
-//				picasa.setTag(AccountType.PICASA);
-				picasa.setOnClickListener(new OnLoginClickListener());
-//				setImageViewDimensions(picasa);
-				allPhotos = (ImageView) view.findViewById(R.id.imageViewAllPhotos);
-				allPhotos.setOnClickListener(new OnPhotoStreamListener());
-//				setImageViewDimensions(allPhotos);
-				lastPhotoTaken = (ImageView) view.findViewById(R.id.imageViewLastPhotoTaken);
-				lastPhotoTaken.setOnClickListener(new OnLastPhotoClickListener());
-//				setImageViewDimensions(lastPhotoTaken);
-				takePhoto = (ImageView) view.findViewById(R.id.imageViewTakePhoto);
-//				setImageViewDimensions(takePhoto);
-				cameraShots = (ImageView) view.findViewById(R.id.imageViewCameraShots);
-				cameraShots.setOnClickListener(new OnCameraRollListener());
-//				setImageViewDimensions(cameraShots);
-			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
-				gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
-				gridViewServices.setOnItemClickListener(new GridClickListener());
-			}
-//		}
+		// if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
+		// view = inflater.inflate(R.layout.fragment_services_vertical,
+		// container, false);
+		// gridViewServices = (GridView)
+		// view.findViewById(R.id.gridViewServicesVertical);
+		// gridViewServices.setOnItemClickListener(new GridClickListener());
+		// } else {
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			// view = inflater.inflate(R.layout.fragment_services_horizontal,
+			// container, false);
+			// facebook = (ImageView) view.findViewById(R.id.imageViewFacebook);
+			// facebook.setTag(AccountType.FACEBOOK);
+			// facebook.setOnClickListener(new OnLoginClickListener());
+			// setImageViewDimensions(facebook);
+			// flickr = (ImageView) view.findViewById(R.id.imageViewFlickr);
+			// flickr.setTag(AccountType.FLICKR);
+			// flickr.setOnClickListener(new OnLoginClickListener());
+			// setImageViewDimensions(flickr);
+			// instagram = (ImageView)
+			// view.findViewById(R.id.imageViewInstagram);
+			// instagram.setTag(AccountType.INSTAGRAM);
+			// instagram.setOnClickListener(new OnLoginClickListener());
+			// setImageViewDimensions(instagram);
+			// picasa = (ImageView) view.findViewById(R.id.imageViewPicasa);
+			// picasa.setTag(AccountType.PICASA);
+			// picasa.setOnClickListener(new OnLoginClickListener());
+			// setImageViewDimensions(picasa);
+			// allPhotos = (ImageView)
+			// view.findViewById(R.id.imageViewAllPhotos);
+			// allPhotos.setOnClickListener(new OnPhotoStreamListener());
+			// setImageViewDimensions(allPhotos);
+			// lastPhotoTaken = (ImageView)
+			// view.findViewById(R.id.imageViewLastPhotoTaken);
+			// lastPhotoTaken.setOnClickListener(new
+			// OnLastPhotoClickListener());
+			// setImageViewDimensions(lastPhotoTaken);
+			// takePhoto = (ImageView)
+			// view.findViewById(R.id.imageViewTakePhoto);
+			// setImageViewDimensions(takePhoto);
+			// cameraShots = (ImageView)
+			// view.findViewById(R.id.imageViewCameraShots);
+			// cameraShots.setOnClickListener(new OnCameraRollListener());
+			// setImageViewDimensions(cameraShots);
+			view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
+			gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
+			gridViewServices.setNumColumns(8);
+			gridViewServices.setOnItemClickListener(new GridClickListener());
+		} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			view = inflater.inflate(R.layout.fragment_services_vertical, container, false);
+			gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
+			gridViewServices.setOnItemClickListener(new GridClickListener());
+		}
+		// }
 		return view;
 	}
 
@@ -144,59 +157,64 @@ public class FragmentServices extends Fragment {
 		services = servicesArray.toArray(services);
 		adapter = new ServicesAdapter(getActivity(), services);
 		int orientation = getActivity().getResources().getConfiguration().orientation;
-//		if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
-//			gridViewServices.setAdapter(adapter);
-//		} else {
-			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				Uri uriAllPhotos = MediaDAO.getLastPhotoFromAllPhotos(getActivity().getApplicationContext());
-				Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(getActivity()
-						.getApplicationContext());
-				for (String service : servicesArray) {
-					if (service.equalsIgnoreCase("Facebook")) {
-						facebook.setVisibility(View.VISIBLE);
-					}
-					if (service.equalsIgnoreCase("Flickr")) {
-						flickr.setVisibility(View.VISIBLE);
-					}
-					if (service.equalsIgnoreCase("Picasa")) {
-						picasa.setVisibility(View.VISIBLE);
-					}
-					if (service.equalsIgnoreCase("Instagram")) {
-						instagram.setVisibility(View.VISIBLE);
-					}
-					if (service.equalsIgnoreCase("Take photo")) {
-						takePhoto.setVisibility(View.VISIBLE);
-						takePhoto.setOnClickListener(new OnTakePhotoClickListener());
-					}
-					if (service.equalsIgnoreCase("Last photo taken")) {
-						lastPhotoTaken.setVisibility(View.VISIBLE);
-						if (uriLastPhotoFromCameraPhotos != null) {
-							loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), lastPhotoTaken, null);
-						} else {
-							lastPhotoTaken.setBackground(getResources().getDrawable(R.drawable.default_thumb));
-						}
-					}
-					if (service.equalsIgnoreCase("Camera shots")) {
-						cameraShots.setVisibility(View.VISIBLE);
-						if (uriLastPhotoFromCameraPhotos != null) {
-							loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), cameraShots, null);
-						} else {
-							cameraShots.setBackground(getResources().getDrawable(R.drawable.default_thumb));
-						}
-					}
-					if (service.equalsIgnoreCase("All photos")) {
-						allPhotos.setVisibility(View.VISIBLE);
-						if (uriAllPhotos != null) {
-							loader.displayImage(uriAllPhotos.toString(), allPhotos, null);
-						} else {
-							allPhotos.setBackground(getResources().getDrawable(R.drawable.default_thumb));
-						}
-					}
-				}
-			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				gridViewServices.setAdapter(adapter);
+		// if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
+		// gridViewServices.setAdapter(adapter);
+		// } else {
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			// Uri uriAllPhotos =
+			// MediaDAO.getLastPhotoFromAllPhotos(getActivity().getApplicationContext());
+			// Uri uriLastPhotoFromCameraPhotos =
+			// MediaDAO.getLastPhotoFromCameraPhotos(getActivity()
+			// .getApplicationContext());
+			// for (String service : servicesArray) {
+			// if (service.equalsIgnoreCase("Facebook")) {
+			// facebook.setVisibility(View.VISIBLE);
+			// }
+			// if (service.equalsIgnoreCase("Flickr")) {
+			// flickr.setVisibility(View.VISIBLE);
+			// }
+			// if (service.equalsIgnoreCase("Picasa")) {
+			// picasa.setVisibility(View.VISIBLE);
+			// }
+			// if (service.equalsIgnoreCase("Instagram")) {
+			// instagram.setVisibility(View.VISIBLE);
+			// }
+			// if (service.equalsIgnoreCase("Take photo")) {
+			// takePhoto.setVisibility(View.VISIBLE);
+			// takePhoto.setOnClickListener(new OnTakePhotoClickListener());
+			// }
+			// if (service.equalsIgnoreCase("Last photo taken")) {
+			// lastPhotoTaken.setVisibility(View.VISIBLE);
+			// if (uriLastPhotoFromCameraPhotos != null) {
+			// loader.displayImage(uriLastPhotoFromCameraPhotos.toString(),
+			// lastPhotoTaken, null);
+			// } else {
+			// lastPhotoTaken.setBackground(getResources().getDrawable(R.drawable.default_thumb));
+			// }
+			// }
+			// if (service.equalsIgnoreCase("Camera shots")) {
+			// cameraShots.setVisibility(View.VISIBLE);
+			// if (uriLastPhotoFromCameraPhotos != null) {
+			// loader.displayImage(uriLastPhotoFromCameraPhotos.toString(),
+			// cameraShots, null);
+			// } else {
+			// cameraShots.setBackground(getResources().getDrawable(R.drawable.default_thumb));
+			// }
+			// }
+			// if (service.equalsIgnoreCase("All photos")) {
+			// allPhotos.setVisibility(View.VISIBLE);
+			// if (uriAllPhotos != null) {
+			// loader.displayImage(uriAllPhotos.toString(), allPhotos, null);
+			// } else {
+			// allPhotos.setBackground(getResources().getDrawable(R.drawable.default_thumb));
+			// }
+			// }
+			// }
+			gridViewServices.setAdapter(adapter);
+		} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			gridViewServices.setAdapter(adapter);
 
-//			}
+			// }
 		}
 
 	}
@@ -238,8 +256,9 @@ public class FragmentServices extends Fragment {
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		int orientation = getResources().getConfiguration().orientation;
 		if (!getResources().getBoolean(R.bool.has_two_panes)) {
-//			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-//					displayMetrics.widthPixels / 3));
+			// imageViewThumb.setLayoutParams(new
+			// RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+			// displayMetrics.widthPixels / 3));
 		} else {
 			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				int fragmentHeight = displayMetrics.heightPixels - 310;
@@ -248,12 +267,12 @@ public class FragmentServices extends Fragment {
 				params.setMargins(10, 0, 0, 0);
 				imageView.setLayoutParams(params);
 			} else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//				int fragmentHeight = displayMetrics.heightPixels - 220;
-//				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(displayMetrics.widthPixels / 6,
-//						(int) (displayMetrics.heightPixels));
-//				params.setMargins(10, 0, 0, 0);
-//				imageView.setLayoutParams(params);
-//				facebook.setScaleType(ScaleType.CENTER_CROP);
+				int fragmentHeight = displayMetrics.heightPixels - 550;
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(displayMetrics.widthPixels / 5,
+						(int) (fragmentHeight));
+				params.setMargins(10, 0, 0, 0);
+				imageView.setLayoutParams(params);
+				imageView.setScaleType(ScaleType.FIT_XY);
 			}
 		}
 	}

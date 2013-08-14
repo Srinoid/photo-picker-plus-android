@@ -106,7 +106,7 @@ public class ServicesAdapter extends BaseAdapter {
 				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
 			}
 		}
-		if (service.equalsIgnoreCase("Last photo taken")) {
+		if (service.equalsIgnoreCase("Last taken photo")) {
 			if (uriLastPhotoFromCameraPhotos != null) {
 				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView, null);
 			} else {
