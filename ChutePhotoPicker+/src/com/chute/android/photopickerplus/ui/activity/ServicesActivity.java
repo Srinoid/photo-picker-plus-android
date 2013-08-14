@@ -27,17 +27,10 @@ import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment.SelectAlbumListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmCursorAssetsListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmSocialAssetsListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSingleSelectListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridSocialSingleSelectListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.AssetFragmentListener;
 import com.chute.android.photopickerplus.ui.fragment.EmptyFragment;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServices.CameraRollListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServices.LastPhotoListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServices.LoginListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServices.PhotoStreamListener;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServices.TakePhotoListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -59,10 +52,8 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class ServicesActivity extends FragmentActivity implements SelectAlbumListener,
-		GridCursorSingleSelectListener, GridSocialSingleSelectListener, ButtonConfirmCursorAssetsListener,
-		ButtonConfirmSocialAssetsListener, LoginListener, LastPhotoListener, TakePhotoListener, CameraRollListener,
-		PhotoStreamListener {
+public class ServicesActivity extends FragmentActivity implements SelectAlbumListener, AssetFragmentListener,
+		ServiceClickedListener {
 
 	private static final String TAG = ServicesActivity.class.getSimpleName();
 
@@ -86,8 +77,7 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 		setContentView(R.layout.main_layout);
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		fragmentServicesVertical = (FragmentServices) fragmentManager
-				.findFragmentById(R.id.fragmentServices);
+		fragmentServicesVertical = (FragmentServices) fragmentManager.findFragmentById(R.id.fragmentServices);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
 		String serialized = PhotoPickerPreferenceUtil.get().getServiceList();
@@ -120,17 +110,17 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	@Override
 	public void photoStream() {
-//		if (dualFragments) {
-//			replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null, ppWrapper.getAlbumId(),
-//					ppWrapper.getIsMultiPicker());
-//		} else {
-			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-			wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
-			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-			wrapper.setChuteId(ppWrapper.getAlbumId());
-			wrapper.startActivityForResult(ServicesActivity.this,
-					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
-//		}
+		// if (dualFragments) {
+		// replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null,
+		// ppWrapper.getAlbumId(),
+		// ppWrapper.getIsMultiPicker());
+		// } else {
+		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+		wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
+		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+		wrapper.setChuteId(ppWrapper.getAlbumId());
+		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+		// }
 
 	}
 
@@ -152,17 +142,17 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	@Override
 	public void cameraRoll() {
-//		if (dualFragments) {
-//			replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null, ppWrapper.getAlbumId(),
-//					ppWrapper.getIsMultiPicker());
-//		} else {
-			final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-			wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
-			wrapper.setChuteId(ppWrapper.getAlbumId());
-			wrapper.startActivityForResult(ServicesActivity.this,
-					PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
-//		}
+		// if (dualFragments) {
+		// replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null,
+		// ppWrapper.getAlbumId(),
+		// ppWrapper.getIsMultiPicker());
+		// } else {
+		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+		wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
+		wrapper.setChuteId(ppWrapper.getAlbumId());
+		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+		// }
 
 	}
 
@@ -241,12 +231,13 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 		fragmentTransaction.commit();
 	}
 
-//	public void replaceContentWithEmptyFragment() {
-//		fragmentTransaction = fragmentManager.beginTransaction();
-//		fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(), Constants.TAG_FRAGMENT_EMPTY);
-//		// fragmentTransaction.addToBackStack(null);
-//		fragmentTransaction.commit();
-//	}
+	// public void replaceContentWithEmptyFragment() {
+	// fragmentTransaction = fragmentManager.beginTransaction();
+	// fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(),
+	// Constants.TAG_FRAGMENT_EMPTY);
+	// // fragmentTransaction.addToBackStack(null);
+	// fragmentTransaction.commit();
+	// }
 
 	@Override
 	public void onDestroy() {
@@ -306,15 +297,14 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	@Override
 	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
-		IntentUtil
-				.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList, null, null, albumId);
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList, null, null, albumId);
 
 	}
 
 	@Override
 	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, AppUtil.getPhotoCollection(assetPathList),
-				null, null, albumId);
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, AppUtil.getPhotoCollection(assetPathList), null,
+				null, albumId);
 
 	}
 
@@ -330,16 +320,16 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	@Override
 	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
-//		replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS, accountId, model.getId(),
-//				ppWrapper.getIsMultiPicker());
+		// replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS,
+		// accountId, model.getId(),
+		// ppWrapper.getIsMultiPicker());
 		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 		wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
 		wrapper.setChuteId(ppWrapper.getAlbumId());
 		wrapper.setAccountId(accountId);
 		wrapper.setAlbumId(model.getId());
-		wrapper.startActivityForResult(ServicesActivity.this,
-				PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
 	}
 
