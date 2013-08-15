@@ -28,7 +28,7 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 		services.add("Picasa");
 		services.add("Instagram");
 		services.add("Take photo");
-		services.add("Last taken photo");
+		services.add("Last photo taken");
 		services.add("Camera shots");
 		services.add("All photos");
 		services.add("Flickr");

@@ -17,6 +17,7 @@ import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.adapter.ServicesAdapter;
 import com.chute.sdk.v2.model.enums.AccountType;
+import com.chute.sdk.v2.model.enums.LocalMediaType;
 
 public class FragmentServices extends Fragment {
 
@@ -86,28 +87,28 @@ public class FragmentServices extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			String service = services[position];
-			if (service.equalsIgnoreCase(AccountType.FACEBOOK.name())) {
+			if (service.equalsIgnoreCase(AccountType.FACEBOOK.getName())) {
 				serviceClickedListener.accountLogin(AccountType.FACEBOOK);
 			}
-			if (service.equalsIgnoreCase(AccountType.FLICKR.name())) {
+			if (service.equalsIgnoreCase(AccountType.FLICKR.getName())) {
 				serviceClickedListener.accountLogin(AccountType.FLICKR);
 			}
-			if (service.equalsIgnoreCase(AccountType.PICASA.name())) {
+			if (service.equalsIgnoreCase(AccountType.PICASA.getName())) {
 				serviceClickedListener.accountLogin(AccountType.PICASA);
 			}
-			if (service.equalsIgnoreCase(AccountType.INSTAGRAM.name())) {
+			if (service.equalsIgnoreCase(AccountType.INSTAGRAM.getName())) {
 				serviceClickedListener.accountLogin(AccountType.INSTAGRAM);
 			}
-			if (service.equalsIgnoreCase(AccountType.ALL_PHOTOS.name())) {
+			if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
 				serviceClickedListener.photoStream();
 			}
-			if (service.equalsIgnoreCase(AccountType.CAMERA_SHOTS.name())) {
+			if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
 				serviceClickedListener.cameraRoll();
 			}
-			if (service.equalsIgnoreCase(AccountType.TAKE_PHOTO.name())) {
+			if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
 				serviceClickedListener.takePhoto();
 			}
-			if (service.equalsIgnoreCase(AccountType.LAST_PHOTO_TAKEN.name())) {
+			if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
 				serviceClickedListener.lastPhoto();
 			}
 		}

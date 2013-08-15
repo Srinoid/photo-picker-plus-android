@@ -28,7 +28,9 @@
         android:fastScrollEnabled="true"
         android:horizontalSpacing="10dip"
         android:verticalSpacing="10dip"
-        android:padding="20dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:scrollbars="none"
         android:numColumns="3" />
     <!-- Preview listitem=@layout/adapter_photos -->
