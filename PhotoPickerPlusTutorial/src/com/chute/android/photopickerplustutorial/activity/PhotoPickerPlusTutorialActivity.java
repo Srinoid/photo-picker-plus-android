@@ -11,6 +11,7 @@ package com.chute.android.photopickerplustutorial.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -41,6 +42,11 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
 		findViewById(R.id.btnPhotoPicker).setOnClickListener(new OnPhotoPickerClickListener());
 		grid = (GridView) findViewById(R.id.grid);
+		
+		int orientation = getResources().getConfiguration().orientation;
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			grid.setNumColumns(5);
+		}
 
 	}
 

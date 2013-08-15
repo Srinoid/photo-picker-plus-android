@@ -34,7 +34,7 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:fadeScrollbars="true"
-        android:scrollbars="vertical"
+        android:scrollbars="none"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dip"
         android:footerDividersEnabled="false"

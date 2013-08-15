@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ImageView.ScaleType;
 
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -34,6 +34,8 @@ public class GridAdapter extends BaseAdapter {
 	public ImageLoader loader;
 	private ArrayList<AccountMediaModel> collection;
 	private final DisplayMetrics displayMetrics;
+	private boolean dualFragments;
+	private Activity context;
 
 	public GridAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
 		if (collection == null) {
@@ -44,6 +46,8 @@ public class GridAdapter extends BaseAdapter {
 		loader = ImageLoader.getLoader(context);
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		displayMetrics = context.getResources().getDisplayMetrics();
+		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
+		this.context = context;
 	}
 
 	@Override
@@ -73,9 +77,7 @@ public class GridAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.grid_adapter_item, null);
 			holder = new ViewHolder();
 			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			holder.image.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-					displayMetrics.widthPixels / 3));
-			holder.image.setScaleType(ScaleType.CENTER_CROP);
+			configureImageViewDimensions(holder.image);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
@@ -87,5 +89,28 @@ public class GridAdapter extends BaseAdapter {
 	public void changeData(ArrayList<AccountMediaModel> collection) {
 		this.collection = collection;
 		notifyDataSetChanged();
+	}
+
+	private void configureImageViewDimensions(ImageView imageViewThumb) {
+		int orientation = context.getResources().getConfiguration().orientation;
+		if (!dualFragments) {
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				int imageHeight = displayMetrics.widthPixels - 80;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+						imageHeight / 3));
+			} else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				int imageHeight = displayMetrics.widthPixels - 120;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 5,
+						imageHeight / 5));
+			}
+		} else {
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels,
+						(int) (displayMetrics.heightPixels / 3.5)));
+			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+						(int) (displayMetrics.widthPixels / 3.5)));
+			}
+		}
 	}
 }

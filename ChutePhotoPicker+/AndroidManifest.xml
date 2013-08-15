@@ -18,7 +18,7 @@
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:theme="@style/PhotoPickerTheme" >
         <activity
-            android:name="com.chute.android.photopickerplus.ui.activity.ServicesAlbumsActivityActivity"
+            android:name="com.chute.android.photopickerplus.ui.activity.ServicesActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

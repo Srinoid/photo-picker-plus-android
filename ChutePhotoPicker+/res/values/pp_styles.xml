@@ -3,7 +3,6 @@
 
     <!-- PhotoPicker+ Theme -->
     <style name="PhotoPickerTheme" parent="android:Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <!-- TextView Fragment Title -->
