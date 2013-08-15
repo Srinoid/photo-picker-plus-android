@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="20dp"
+    android:paddingBottom="5dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="10dp"
@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/textViewAlbumTitle"
-        android:textSize="20sp"
+        android:textSize="@dimen/album_name"
         android:textAllCaps="true"
         android:textColor="@color/dark_gray"
         android:layout_width="match_parent"

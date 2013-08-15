@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ public class ServicesAdapter extends BaseAdapter {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = ServicesAdapter.class.getSimpleName();
+	private final int GRID_COLUMNS_LANDSCAPE_ONEPANE = 5;
+	private final int GRID_COLUMNS_LANDSCAPE_TWOPANES = 8;
+	private final int GRID_COLUMNS_PORTRAIT = 4;
+
 	private static LayoutInflater inflater;
 	public ImageLoader loader;
 	private final DisplayMetrics displayMetrics;
@@ -94,22 +99,22 @@ public class ServicesAdapter extends BaseAdapter {
 		if (!dualFragments) {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				imageViewDimension = displayMetrics.widthPixels - 80;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 5,
-						imageViewDimension / 5));
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_LANDSCAPE_ONEPANE, imageViewDimension / GRID_COLUMNS_LANDSCAPE_ONEPANE));
 			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				imageViewDimension = displayMetrics.widthPixels - 70;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 4,
-						imageViewDimension / 4));
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_PORTRAIT, imageViewDimension / GRID_COLUMNS_PORTRAIT));
 			}
 		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				imageViewDimension = displayMetrics.widthPixels - 110;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 8,
-						(imageViewDimension / 8)));
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_LANDSCAPE_TWOPANES, (imageViewDimension / GRID_COLUMNS_LANDSCAPE_TWOPANES)));
 			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				imageViewDimension = displayMetrics.widthPixels - 70;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 4,
-						imageViewDimension / 4));
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_PORTRAIT, imageViewDimension / GRID_COLUMNS_PORTRAIT));
 			}
 		}
 	}
@@ -119,6 +124,7 @@ public class ServicesAdapter extends BaseAdapter {
 		Uri uriAllPhotos = MediaDAO.getLastPhotoFromAllPhotos(context.getApplicationContext());
 		Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context.getApplicationContext());
 		String service = services[position];
+		Log.d("debug", "services = " + services[position].toString());
 		imageView.setTag(position);
 		if (service.equalsIgnoreCase(AccountType.FACEBOOK.getName())) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.facebook));
@@ -129,6 +135,8 @@ public class ServicesAdapter extends BaseAdapter {
 			serviceTitle.setVisibility(View.GONE);
 		}
 		if (service.equalsIgnoreCase(AccountType.PICASA.getName())) {
+			Log.d("debug", "picasa = " + AccountType.PICASA.getName());
+			Log.d("debug", "picasa service = " + service);
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.picassa));
 			serviceTitle.setVisibility(View.GONE);
 		}
@@ -149,6 +157,7 @@ public class ServicesAdapter extends BaseAdapter {
 			serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
 		}
 		if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
+			Log.d("debug", "last photo taken");
 			if (uriLastPhotoFromCameraPhotos != null) {
 				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
 			} else {

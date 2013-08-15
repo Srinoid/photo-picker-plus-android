@@ -2,5 +2,7 @@
 <resources>
 
     <dimen name="text_size_service_title">6dp</dimen>
+    <dimen name="fragment_title">14dp</dimen>
+    <dimen name="album_name">14dp</dimen>
 
 </resources>

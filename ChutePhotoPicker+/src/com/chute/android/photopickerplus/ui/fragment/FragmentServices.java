@@ -21,6 +21,8 @@ import com.chute.sdk.v2.model.enums.LocalMediaType;
 
 public class FragmentServices extends Fragment {
 
+	private final int GRID_COLUMNS_LANDSCAPE_ONEPANE = 5;
+	private final int GRID_COLUMNS_LANDSCAPE_TWOPANES = 8;
 	private GridView gridViewServices;
 	private ServicesAdapter adapter;
 
@@ -63,11 +65,11 @@ public class FragmentServices extends Fragment {
 		int orientation = getActivity().getResources().getConfiguration().orientation;
 		if (!getActivity().getResources().getBoolean(R.bool.has_two_panes)) {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				gridViewServices.setNumColumns(5);
+				gridViewServices.setNumColumns(GRID_COLUMNS_LANDSCAPE_ONEPANE);
 			}
 		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				gridViewServices.setNumColumns(8);
+				gridViewServices.setNumColumns(GRID_COLUMNS_LANDSCAPE_TWOPANES);
 			}
 		}
 		return view;
