@@ -73,7 +73,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 			view.setBackgroundColor(context.getResources().getColor(R.color.orange));
 		} else {
 			holder.imageViewTick.setVisibility(View.GONE);
-			view.setBackgroundColor(Color.BLACK);
+			view.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
 		}
 	}
 
