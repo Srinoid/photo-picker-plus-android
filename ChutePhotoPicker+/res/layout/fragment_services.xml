@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@drawable/gradient_blue"
-        android:text="SELECT AN ALBUM"
+        android:text="@string/select_an_album"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="@color/white" />
     
     <GridView android:id="@+id/gridViewServicesVertical"

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
@@ -66,6 +67,7 @@ public class ServicesAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
 		public ImageView imageView;
+		public TextView textViewServiceTitle;
 	}
 
 	@Override
@@ -76,57 +78,67 @@ public class ServicesAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.adapter_services, null);
 			holder = new ViewHolder();
 			holder.imageView = (ImageView) vi.findViewById(R.id.imageViewService);
-			configureImageViewDimensions(holder.imageView);
+			holder.textViewServiceTitle = (TextView) vi.findViewById(R.id.textViewServiceTitle);
+			configureImageViewDimensions(holder.imageView, holder.textViewServiceTitle);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-		setImageViewBackground(holder.imageView, position);
+		setImageViewBackground(holder.imageView, holder.textViewServiceTitle, position);
 		return vi;
 	}
 
-	private void configureImageViewDimensions(ImageView imageViewThumb) {
+	private void configureImageViewDimensions(ImageView imageViewThumb, TextView textViewServiceTitle) {
 		int orientation = context.getResources().getConfiguration().orientation;
+		int imageViewDimension = 0;
 		if (!dualFragments) {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				int imageDimension = displayMetrics.widthPixels - 80;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageDimension / 5, imageDimension / 5));
+				imageViewDimension = displayMetrics.widthPixels - 80;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 5,
+						imageViewDimension / 5));
 			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				int imageDimension = displayMetrics.widthPixels - 70;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageDimension / 4, imageDimension / 4));
+				imageViewDimension = displayMetrics.widthPixels - 70;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 4,
+						imageViewDimension / 4));
 			}
 		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				int imageDimension = displayMetrics.widthPixels - 110;
-				imageViewThumb
-						.setLayoutParams(new RelativeLayout.LayoutParams(imageDimension / 8, (imageDimension / 8)));
+				imageViewDimension = displayMetrics.widthPixels - 110;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 8,
+						(imageViewDimension / 8)));
 			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				int imageDimension = displayMetrics.widthPixels - 70;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageDimension / 4, imageDimension / 4));
+				imageViewDimension = displayMetrics.widthPixels - 70;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension / 4,
+						imageViewDimension / 4));
 			}
 		}
 	}
 
 	@SuppressWarnings("deprecation")
-	private void setImageViewBackground(ImageView imageView, int position) {
+	private void setImageViewBackground(ImageView imageView, TextView serviceTitle, int position) {
 		Uri uriAllPhotos = MediaDAO.getLastPhotoFromAllPhotos(context.getApplicationContext());
 		Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context.getApplicationContext());
 		String service = services[position];
 		imageView.setTag(position);
 		if (service.equalsIgnoreCase(AccountType.FACEBOOK.getName())) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.facebook));
+			serviceTitle.setVisibility(View.GONE);
 		}
 		if (service.equalsIgnoreCase(AccountType.FLICKR.getName())) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.flickr));
+			serviceTitle.setVisibility(View.GONE);
 		}
 		if (service.equalsIgnoreCase(AccountType.PICASA.getName())) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.picassa));
+			serviceTitle.setVisibility(View.GONE);
 		}
 		if (service.equalsIgnoreCase(AccountType.INSTAGRAM.getName())) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.instagram));
+			serviceTitle.setVisibility(View.GONE);
 		}
 		if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.take_photo));
+			serviceTitle.setText(context.getResources().getString(R.string.take_photos));
 		}
 		if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
 			if (uriLastPhotoFromCameraPhotos != null) {
@@ -134,6 +146,7 @@ public class ServicesAdapter extends BaseAdapter {
 			} else {
 				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
 			}
+			serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
 		}
 		if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
 			if (uriLastPhotoFromCameraPhotos != null) {
@@ -141,6 +154,7 @@ public class ServicesAdapter extends BaseAdapter {
 			} else {
 				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
 			}
+			serviceTitle.setText(context.getResources().getString(R.string.last_photo));
 		}
 		if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
 			if (uriAllPhotos != null) {
@@ -148,6 +162,7 @@ public class ServicesAdapter extends BaseAdapter {
 			} else {
 				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
 			}
+			serviceTitle.setText(context.getResources().getString(R.string.all_photos));
 		}
 	}
 

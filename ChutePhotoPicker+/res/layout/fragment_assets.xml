@@ -13,9 +13,8 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:background="@drawable/gradient_blue"
-        android:text="Select Photo"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="@color/white" />
 
     <GridView

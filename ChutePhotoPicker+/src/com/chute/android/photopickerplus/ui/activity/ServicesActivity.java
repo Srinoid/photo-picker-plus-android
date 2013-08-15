@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
@@ -75,7 +76,7 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 		fragmentManager = getSupportFragmentManager();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_layout);
-
+		
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 		fragmentServicesVertical = (FragmentServices) fragmentManager.findFragmentById(R.id.fragmentServices);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
