@@ -61,14 +61,11 @@ public class AlbumsAdapter extends BaseAdapter {
 		View vi = convertView;
 		ViewHolder holder;
 		if (convertView == null) {
-			Log.d("debug", "convert view null");
-			Log.d("debug", "inflater = " + inflater.toString());
 			vi = inflater.inflate(R.layout.adapter_albums, null);
 			holder = new ViewHolder();
 			holder.textViewAlbumName = (TextView) vi.findViewById(R.id.textViewAlbumName);
 			vi.setTag(holder);
 		} else {
-			Log.d("debug", "convert view not null");
 			holder = (ViewHolder) vi.getTag();
 		}
 		holder.textViewAlbumName.setText(getItem(position).getName());

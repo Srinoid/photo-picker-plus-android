@@ -13,17 +13,21 @@ import java.util.ArrayList;
 
 import com.chute.android.photopickerplus.PhotoPickerPlusApp;
 import com.chute.android.photopickerplus.config.ConfigServicesFactory;
-import com.chute.android.photopickerplus.util.Constants;
-import com.chute.sdk.v2.model.AccountStore;
+import com.chute.sdk.v2.api.Chute;
+import com.chute.sdk.v2.api.authentication.AuthConstants;
 
 public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 
+	public static final String APP_ID = "4f3c39ff38ecef0c89000003";
+	public static final String APP_SECRET = "c9a8cb57c52f49384ab6117c4f6483a1a5c5a14c4a50d4cef276a9a13286efc9";
+
+	
 	private ArrayList<String> services = new ArrayList<String>();
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		AccountStore.setAppId(getApplicationContext(), Constants.APP_ID);
+		Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
 		services.add("Facebook");
 		services.add("Flickr");
 		services.add("Google");
