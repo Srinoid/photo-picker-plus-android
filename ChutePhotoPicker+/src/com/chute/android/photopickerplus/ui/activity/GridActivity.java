@@ -17,18 +17,14 @@ import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmCursorAssetsListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.ButtonConfirmSocialAssetsListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridCursorSingleSelectListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.GridSocialSingleSelectListener;
+import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.AssetFragmentListener;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
-public class GridActivity extends FragmentActivity implements GridCursorSingleSelectListener,
-		GridSocialSingleSelectListener, ButtonConfirmSocialAssetsListener, ButtonConfirmCursorAssetsListener{
+public class GridActivity extends FragmentActivity implements AssetFragmentListener {
 
 	public static final String TAG = GridActivity.class.getSimpleName();
 	private String albumID;
@@ -88,6 +84,5 @@ public class GridActivity extends FragmentActivity implements GridCursorSingleSe
 		finish();
 
 	}
-
 
 }

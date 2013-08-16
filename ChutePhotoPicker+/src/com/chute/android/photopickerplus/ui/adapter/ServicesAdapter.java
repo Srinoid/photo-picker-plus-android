@@ -14,15 +14,19 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.sdk.v2.model.enums.AccountType;
+import com.chute.sdk.v2.model.enums.LocalMediaType;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -30,6 +34,10 @@ public class ServicesAdapter extends BaseAdapter {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = ServicesAdapter.class.getSimpleName();
+	private final int GRID_COLUMNS_LANDSCAPE_ONEPANE = 5;
+	private final int GRID_COLUMNS_LANDSCAPE_TWOPANES = 8;
+	private final int GRID_COLUMNS_PORTRAIT = 4;
+
 	private static LayoutInflater inflater;
 	public ImageLoader loader;
 	private final DisplayMetrics displayMetrics;
@@ -64,6 +72,7 @@ public class ServicesAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
 		public ImageView imageView;
+		public TextView textViewServiceTitle;
 	}
 
 	@Override
@@ -74,70 +83,95 @@ public class ServicesAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.adapter_services, null);
 			holder = new ViewHolder();
 			holder.imageView = (ImageView) vi.findViewById(R.id.imageViewService);
-			configureImageViewDimensions(holder.imageView);
+			holder.textViewServiceTitle = (TextView) vi.findViewById(R.id.textViewServiceTitle);
+			configureImageViewDimensions(holder.imageView, holder.textViewServiceTitle);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-
-		Uri uriAllPhotos = MediaDAO.getLastPhotoFromAllPhotos(context.getApplicationContext());
-		Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context.getApplicationContext());
-		String service = services[position];
-		holder.imageView.setTag(position);
-		if (service.equalsIgnoreCase("Facebook")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.facebook));
-		}
-		if (service.equalsIgnoreCase("Flickr")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.flickr));
-		}
-		if (service.equalsIgnoreCase("Picasa")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.icon_picasa));
-		}
-		if (service.equalsIgnoreCase("Instagram")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.instagram));
-		}
-		if (service.equalsIgnoreCase("Take Photo")) {
-			holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.take_photo));
-		}
-		if (service.equalsIgnoreCase("Camera shots")) {
-			if (uriLastPhotoFromCameraPhotos != null) {
-				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView, null);
-			} else {
-				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
-			}
-		}
-		if (service.equalsIgnoreCase("Last taken photo")) {
-			if (uriLastPhotoFromCameraPhotos != null) {
-				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView, null);
-			} else {
-				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
-			}
-		}
-		if (service.equalsIgnoreCase("All photos")) {
-			if (uriAllPhotos != null) {
-				loader.displayImage(uriAllPhotos.toString(), holder.imageView, null);
-			} else {
-				holder.imageView.setBackground(context.getResources().getDrawable(R.drawable.default_thumb));
-			}
-		}
+		setImageViewBackground(holder.imageView, holder.textViewServiceTitle, position);
 		return vi;
 	}
 
-	private void configureImageViewDimensions(ImageView imageViewThumb) {
+	private void configureImageViewDimensions(ImageView imageViewThumb, TextView textViewServiceTitle) {
 		int orientation = context.getResources().getConfiguration().orientation;
+		int imageViewDimension = 0;
 		if (!dualFragments) {
-			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-					displayMetrics.widthPixels / 3));
-		} else {
-//			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//				int fragmentWidth = displayMetrics.widthPixels - 310;
-//				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(fragmentWidth / 4,
-//						(int) (displayMetrics.heightPixels / 3)));
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				int fragmentHeight = displayMetrics.heightPixels - 500;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 4,
-						fragmentHeight / 4));
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				imageViewDimension = displayMetrics.widthPixels - 80;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_LANDSCAPE_ONEPANE, imageViewDimension / GRID_COLUMNS_LANDSCAPE_ONEPANE));
+			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				imageViewDimension = displayMetrics.widthPixels - 70;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_PORTRAIT, imageViewDimension / GRID_COLUMNS_PORTRAIT));
 			}
+		} else {
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				imageViewDimension = displayMetrics.widthPixels - 110;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_LANDSCAPE_TWOPANES, (imageViewDimension / GRID_COLUMNS_LANDSCAPE_TWOPANES)));
+			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				imageViewDimension = displayMetrics.widthPixels - 70;
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+						/ GRID_COLUMNS_PORTRAIT, imageViewDimension / GRID_COLUMNS_PORTRAIT));
+			}
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void setImageViewBackground(ImageView imageView, TextView serviceTitle, int position) {
+		Uri uriAllPhotos = MediaDAO.getLastPhotoFromAllPhotos(context.getApplicationContext());
+		Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context.getApplicationContext());
+		String service = services[position];
+		Log.d("debug", "services = " + services[position].toString());
+		imageView.setTag(position);
+		if (service.equalsIgnoreCase(AccountType.FACEBOOK.getName())) {
+			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.facebook));
+			serviceTitle.setVisibility(View.GONE);
+		}
+		if (service.equalsIgnoreCase(AccountType.FLICKR.getName())) {
+			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.flickr));
+			serviceTitle.setVisibility(View.GONE);
+		}
+		if (service.equalsIgnoreCase(AccountType.PICASA.getName())) {
+			Log.d("debug", "picasa = " + AccountType.PICASA.getName());
+			Log.d("debug", "picasa service = " + service);
+			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.picassa));
+			serviceTitle.setVisibility(View.GONE);
+		}
+		if (service.equalsIgnoreCase(AccountType.INSTAGRAM.getName())) {
+			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.instagram));
+			serviceTitle.setVisibility(View.GONE);
+		}
+		if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
+			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.take_photo));
+			serviceTitle.setText(context.getResources().getString(R.string.take_photos));
+		}
+		if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
+			if (uriLastPhotoFromCameraPhotos != null) {
+				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
+			} else {
+				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+			}
+			serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
+		}
+		if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
+			Log.d("debug", "last photo taken");
+			if (uriLastPhotoFromCameraPhotos != null) {
+				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
+			} else {
+				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+			}
+			serviceTitle.setText(context.getResources().getString(R.string.last_photo));
+		}
+		if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
+			if (uriAllPhotos != null) {
+				loader.displayImage(uriAllPhotos.toString(), imageView, null);
+			} else {
+				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+			}
+			serviceTitle.setText(context.getResources().getString(R.string.all_photos));
 		}
 	}
 

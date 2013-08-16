@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity;
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 
 public class PhotoPickerPlusIntentWrapper extends IntentWrapper {

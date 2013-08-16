@@ -70,7 +70,7 @@
     
     <!-- RelativeLayout Assets Adapter Item Holder -->
     <style name="relativeLayoutAdapterItemAssets" >
-        <item name="android:background">@color/black</item>
+        <item name="android:background">@color/gray_light</item>
         <item name="android:padding">1dp</item>
     </style>
 
@@ -115,8 +115,8 @@
     
      <!-- ImageView Adapter Item Assets -->
     <style name="imageViewAdapterItemAssets" parent="imageViewDefaultAssets">
-        <item name="android:layout_width">110dp</item>
-        <item name="android:layout_height">110dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
     </style>
     
      <!-- ImageView Album Cover -->
@@ -133,27 +133,27 @@
 
     <!-- ImageView Facebook -->
     <style name="imageViewFacebook" parent="imageViewServices">
-        <item name="android:background">@drawable/icon_facebook</item>
+        <item name="android:background">@drawable/facebook</item>
     </style>
 
     <!-- ImageView Flickr -->
     <style name="imageViewFlickr" parent="imageViewServices">
-        <item name="android:background">@drawable/icon_flickr</item>
+        <item name="android:background">@drawable/flickr</item>
     </style>
 
     <!-- ImageView Instagram -->
     <style name="imageViewInstagram" parent="imageViewServices">
-        <item name="android:background">@drawable/icon_instagram</item>
+        <item name="android:background">@drawable/instagram</item>
     </style>
 
     <!-- ImageView Picasa -->
     <style name="imageViewPicasa" parent="imageViewServices">
-        <item name="android:background">@drawable/icon_picasa</item>
+        <item name="android:background">@drawable/picassa</item>
     </style>
 
     <!-- ImageView Take Photo -->
     <style name="imageViewTakePhoto" parent="imageViewServices">
-        <item name="android:background">@drawable/icon_camera</item>
+        <item name="android:background">@drawable/take_photo</item>
     </style>
     
      <!-- Progress Bar Indeterminate  -->

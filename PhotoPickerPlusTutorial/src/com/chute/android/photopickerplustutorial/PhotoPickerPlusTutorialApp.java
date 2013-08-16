@@ -25,13 +25,13 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 		super.onCreate();
 		AccountStore.setAppId(getApplicationContext(), Constants.APP_ID);
 		services.add("Facebook");
-		services.add("Picasa");
+		services.add("Flickr");
+		services.add("Google");
 		services.add("Instagram");
 		services.add("Take photo");
-		services.add("Last taken photo");
+		services.add("Last photo taken");
 		services.add("Camera shots");
 		services.add("All photos");
-//		services.add("Flickr");
 		
 
 		/**
