@@ -3,8 +3,6 @@ package com.chute.android.photopickerplus.ui.activity;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,12 +10,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
@@ -29,7 +24,6 @@ import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment.SelectAlbumListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.AssetFragmentListener;
-import com.chute.android.photopickerplus.ui.fragment.EmptyFragment;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
 import com.chute.android.photopickerplus.util.AppUtil;
@@ -46,7 +40,6 @@ import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
-import com.chute.sdk.v2.model.AccountStore;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
@@ -63,7 +56,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	private FragmentServices fragmentServicesVertical;
 
-	private String token;
 
 	private boolean dualFragments = false;
 
@@ -179,8 +171,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			token = AccountStore.getInstance(getApplicationContext()).getPassword();
-			PreferenceUtil.get().setAccountToken(token);
 			GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback()).executeAsync();
 			if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
 				finish();
@@ -246,20 +236,20 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 	// fragmentTransaction.commit();
 	// }
 
-	@Override
-	public void onDestroy() {
-		Fragment fragment = fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_ALBUM);
-		if (fragment != null && fragment.isResumed()) {
-			fragmentManager.beginTransaction().remove(fragment).commit();
-		}
-		super.onDestroy();
-	}
+	// @Override
+	// public void onDestroy() {
+	// Fragment fragment =
+	// fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_ALBUM);
+	// if (fragment != null && fragment.isResumed()) {
+	// fragmentManager.beginTransaction().remove(fragment).commit();
+	// }
+	// super.onDestroy();
+	// }
 
 	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountModel> responseData) {
-			Log.d("debug", "responseData = " +responseData.toString());
 			if (accountType == null) {
 				// return;
 				String type = PhotoPickerPreferenceUtil.get().getAccountType();
@@ -341,4 +331,15 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	}
 
+	@Override
+	public void onBackPressed() {
+		AlbumsFragment frag = (AlbumsFragment) fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_ALBUM);
+		if (frag != null && fragmentManager.getBackStackEntryCount() > 0) {
+			fragmentManager.popBackStackImmediate(fragmentManager.getBackStackEntryAt(0).getName(),
+					FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			fragmentManager.beginTransaction().detach(frag).commit();
+		} else {
+			super.onBackPressed();
+		}
+	}
 }
