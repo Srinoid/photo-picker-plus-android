@@ -3,20 +3,21 @@ package com.chute.android.photopickerplus.config;
 
 import java.util.List;
 
+import com.chute.sdk.v2.model.enums.AccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ServiceResponseModel<T> {
+public class ServiceResponseModel {
 
 	public static final String TAG = ServiceResponseModel.class.getSimpleName();
 
 	@JsonProperty("services")
-	private List<T> services;
+	private List<AccountType> services;
 
-	public List<T> getServices() {
+	public List<AccountType> getServices() {
 		return services;
 	}
 
-	public void setServices(List<T> services) {
+	public void setServices(List<AccountType> services) {
 		this.services = services;
 	}
 
@@ -28,8 +29,5 @@ public class ServiceResponseModel<T> {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
 
-	
 }

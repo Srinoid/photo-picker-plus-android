@@ -44,9 +44,9 @@ public class ServicesAdapter extends BaseAdapter {
 	private final Activity context;
 	private final boolean dualFragments;
 
-	private String[] services;
+	private AccountType[] services;
 
-	public ServicesAdapter(final Activity context, final String[] services) {
+	public ServicesAdapter(final Activity context, final AccountType[] services) {
 		this.services = services;
 		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -123,56 +123,56 @@ public class ServicesAdapter extends BaseAdapter {
 	private void setImageViewBackground(ImageView imageView, TextView serviceTitle, int position) {
 		Uri uriAllPhotos = MediaDAO.getLastPhotoFromAllPhotos(context.getApplicationContext());
 		Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context.getApplicationContext());
-		String service = services[position];
+		AccountType service = services[position];
 		Log.d("debug", "services = " + services[position].toString());
 		imageView.setTag(position);
-		if (service.equalsIgnoreCase(AccountType.FACEBOOK.getName())) {
+		if (service.equals(AccountType.FACEBOOK)) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.facebook));
 			serviceTitle.setVisibility(View.GONE);
 		}
-		if (service.equalsIgnoreCase(AccountType.FLICKR.getName())) {
+		if (service.equals(AccountType.FLICKR)) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.flickr));
 			serviceTitle.setVisibility(View.GONE);
 		}
-		if (service.equalsIgnoreCase(AccountType.PICASA.getName())) {
+		if (service.equals(AccountType.PICASA)) {
 			Log.d("debug", "picasa = " + AccountType.PICASA.getName());
 			Log.d("debug", "picasa service = " + service);
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.picassa));
 			serviceTitle.setVisibility(View.GONE);
 		}
-		if (service.equalsIgnoreCase(AccountType.INSTAGRAM.getName())) {
+		if (service.equals(AccountType.INSTAGRAM)) {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.instagram));
 			serviceTitle.setVisibility(View.GONE);
 		}
-		if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
-			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.take_photo));
-			serviceTitle.setText(context.getResources().getString(R.string.take_photos));
-		}
-		if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
-			if (uriLastPhotoFromCameraPhotos != null) {
-				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
-			} else {
-				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
-			}
-			serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
-		}
-		if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
-			Log.d("debug", "last photo taken");
-			if (uriLastPhotoFromCameraPhotos != null) {
-				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
-			} else {
-				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
-			}
-			serviceTitle.setText(context.getResources().getString(R.string.last_photo));
-		}
-		if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
-			if (uriAllPhotos != null) {
-				loader.displayImage(uriAllPhotos.toString(), imageView, null);
-			} else {
-				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
-			}
-			serviceTitle.setText(context.getResources().getString(R.string.all_photos));
-		}
+//		if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
+//			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.take_photo));
+//			serviceTitle.setText(context.getResources().getString(R.string.take_photos));
+//		}
+//		if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
+//			if (uriLastPhotoFromCameraPhotos != null) {
+//				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
+//			} else {
+//				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+//			}
+//			serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
+//		}
+//		if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
+//			Log.d("debug", "last photo taken");
+//			if (uriLastPhotoFromCameraPhotos != null) {
+//				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
+//			} else {
+//				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+//			}
+//			serviceTitle.setText(context.getResources().getString(R.string.last_photo));
+//		}
+//		if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
+//			if (uriAllPhotos != null) {
+//				loader.displayImage(uriAllPhotos.toString(), imageView, null);
+//			} else {
+//				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+//			}
+//			serviceTitle.setText(context.getResources().getString(R.string.all_photos));
+//		}
 	}
 
 }

@@ -28,7 +28,7 @@ public class FragmentServices extends Fragment {
 
 	private ServiceClickedListener serviceClickedListener;
 
-	private String[] services;
+	private AccountType[] services;
 
 	public interface ServiceClickedListener {
 		public void accountLogin(AccountType accountType);
@@ -75,9 +75,9 @@ public class FragmentServices extends Fragment {
 		return view;
 	}
 
-	public void configureServices(List<String> servicesArray) {
+	public void configureServices(List<AccountType> servicesArray) {
 		ALog.d("Services: " + servicesArray.toString());
-		services = new String[servicesArray.size()];
+		services = new AccountType[servicesArray.size()];
 		services = servicesArray.toArray(services);
 		adapter = new ServicesAdapter(getActivity(), services);
 		gridViewServices.setAdapter(adapter);
@@ -88,31 +88,31 @@ public class FragmentServices extends Fragment {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			String service = services[position];
-			if (service.equalsIgnoreCase(AccountType.FACEBOOK.getName())) {
+			AccountType service = services[position];
+			if (service.equals(AccountType.FACEBOOK)) {
 				serviceClickedListener.accountLogin(AccountType.FACEBOOK);
 			}
-			if (service.equalsIgnoreCase(AccountType.FLICKR.getName())) {
+			if (service.equals(AccountType.FLICKR)) {
 				serviceClickedListener.accountLogin(AccountType.FLICKR);
 			}
-			if (service.equalsIgnoreCase(AccountType.PICASA.getName())) {
+			if (service.equals(AccountType.PICASA)) {
 				serviceClickedListener.accountLogin(AccountType.PICASA);
 			}
-			if (service.equalsIgnoreCase(AccountType.INSTAGRAM.getName())) {
+			if (service.equals(AccountType.INSTAGRAM)) {
 				serviceClickedListener.accountLogin(AccountType.INSTAGRAM);
 			}
-			if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
-				serviceClickedListener.photoStream();
-			}
-			if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
-				serviceClickedListener.cameraRoll();
-			}
-			if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
-				serviceClickedListener.takePhoto();
-			}
-			if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
-				serviceClickedListener.lastPhoto();
-			}
+//			if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
+//				serviceClickedListener.photoStream();
+//			}
+//			if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
+//				serviceClickedListener.cameraRoll();
+//			}
+//			if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
+//				serviceClickedListener.takePhoto();
+//			}
+//			if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
+//				serviceClickedListener.lastPhoto();
+//			}
 		}
 
 	}

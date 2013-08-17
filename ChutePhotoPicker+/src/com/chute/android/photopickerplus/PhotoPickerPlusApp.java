@@ -14,6 +14,7 @@ import android.content.Context;
 import android.util.TypedValue;
 
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
+import com.chute.sdk.v2.utils.PreferenceUtil;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -36,6 +37,7 @@ public class PhotoPickerPlusApp extends Application {
 		super.onCreate();
 		mImageLoader = createImageLoader(this);
 		PhotoPickerPreferenceUtil.init(getApplicationContext());
+		PreferenceUtil.init(getApplicationContext());
 		
 		
 	}

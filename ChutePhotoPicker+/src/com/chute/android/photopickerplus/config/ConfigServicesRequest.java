@@ -7,10 +7,10 @@ import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.client.BaseRestClient.RequestMethod;
 import com.dg.libs.rest.requests.ParameterHttpRequestImpl;
 
-public class ConfigServicesRequest extends ParameterHttpRequestImpl<ServiceResponseModel<String>> {
+public class ConfigServicesRequest extends ParameterHttpRequestImpl<ServiceResponseModel> {
 
-	public ConfigServicesRequest(Context context, HttpCallback<ServiceResponseModel<String>> callback) {
-		super(context, RequestMethod.GET, new ServiceResponseParser<String>(String.class), callback);
+	public ConfigServicesRequest(Context context, HttpCallback<ServiceResponseModel> callback) {
+		super(context, RequestMethod.GET, new ServiceResponseParser(), callback);
 		// TODO Auto-generated constructor stub
 	}
 

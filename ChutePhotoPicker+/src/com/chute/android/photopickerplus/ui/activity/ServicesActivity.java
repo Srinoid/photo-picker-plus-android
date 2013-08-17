@@ -76,19 +76,25 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 		fragmentManager = getSupportFragmentManager();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_layout);
-		
+
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 		fragmentServicesVertical = (FragmentServices) fragmentManager.findFragmentById(R.id.fragmentServices);
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
-		String serialized = PhotoPickerPreferenceUtil.get().getServiceList();
-		if (serialized == null) {
-			Toast.makeText(getApplicationContext(), getString(R.string.connect_to_internet_to_cofigure_services),
-					Toast.LENGTH_LONG).show();
-		} else {
-			List<String> serviceList = Arrays.asList(TextUtils.split(serialized, ","));
-			fragmentServicesVertical.configureServices(serviceList);
+		ArrayList<AccountType> serviceList = new ArrayList<AccountType>();
+		if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+			serviceList.add(AccountType.FACEBOOK);
 		}
+		if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+			serviceList.add(AccountType.FLICKR);
+		}
+		if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+			serviceList.add(AccountType.PICASA);
+		}
+		if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+			serviceList.add(AccountType.INSTAGRAM);
+		}
+		fragmentServicesVertical.configureServices(serviceList);
 
 	}
 
