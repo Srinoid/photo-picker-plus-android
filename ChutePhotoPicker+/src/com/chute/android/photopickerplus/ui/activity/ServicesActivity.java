@@ -259,6 +259,7 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 		@Override
 		public void onSuccess(ListResponseModel<AccountModel> responseData) {
+			Log.d("debug", "responseData = " +responseData.toString());
 			if (accountType == null) {
 				// return;
 				String type = PhotoPickerPreferenceUtil.get().getAccountType();

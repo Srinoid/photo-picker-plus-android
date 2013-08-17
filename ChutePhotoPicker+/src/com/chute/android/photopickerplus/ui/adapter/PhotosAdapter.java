@@ -99,7 +99,7 @@ public class PhotosAdapter extends BaseAdapter {
 
 		if (tick.containsKey(position)) {
 			holder.imageViewTick.setVisibility(View.VISIBLE);
-			vi.setBackgroundColor(context.getResources().getColor(R.color.orange));
+			vi.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
 		} else {
 			holder.imageViewTick.setVisibility(View.GONE);
 			vi.setBackgroundColor(context.getResources().getColor(R.color.gray_light));

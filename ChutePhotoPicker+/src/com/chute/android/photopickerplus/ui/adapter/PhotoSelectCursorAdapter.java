@@ -8,7 +8,6 @@ import java.util.Iterator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
@@ -70,7 +69,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 		configureImageViewDimensions(holder.imageViewThumb);
 		if (tick.containsKey(cursor.getPosition())) {
 			holder.imageViewTick.setVisibility(View.VISIBLE);
-			view.setBackgroundColor(context.getResources().getColor(R.color.orange));
+			view.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
 		} else {
 			holder.imageViewTick.setVisibility(View.GONE);
 			view.setBackgroundColor(context.getResources().getColor(R.color.gray_light));

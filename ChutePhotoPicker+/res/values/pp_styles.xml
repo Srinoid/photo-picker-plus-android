@@ -95,9 +95,9 @@
 
     <!-- ImageView Tick -->
     <style name="imageViewTick">
-        <item name="android:background">@drawable/tick</item>
-        <item name="android:layout_width">20dp</item>
-        <item name="android:layout_height">20dp</item>
+        <item name="android:background">@drawable/checked</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
     
      <!-- ImageView Default Albums -->
