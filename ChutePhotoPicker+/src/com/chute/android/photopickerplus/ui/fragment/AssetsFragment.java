@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,9 +27,7 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
-import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
-import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -84,6 +81,12 @@ public class AssetsFragment extends Fragment {
 	}
 
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		setRetainInstance(true);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_assets, container, false);
 
@@ -98,7 +101,7 @@ public class AssetsFragment extends Fragment {
 		ok.setOnClickListener(new OkClickListener());
 		cancel.setOnClickListener(new CancelClickListener());
 
-		if (getArguments() != null) {
+		if (getArguments() != null && savedInstanceState == null) {
 			updateFragment(getArguments().getString(ARG_ALBUM_ID), getArguments().getString(ARG_ACCOUNT_ID),
 					(PhotoFilterType) getArguments().get(ARG_FILTER_TYPE), getArguments().getBoolean(ARG_MULTIPICKER));
 		}
@@ -184,11 +187,7 @@ public class AssetsFragment extends Fragment {
 		//
 		@Override
 		public void onClick(View v) {
-			// if (!getResources().getBoolean(R.bool.has_two_panes)) {
 			getActivity().finish();
-			// } else {
-			// cancelListener.onCanceled();
-			// }
 		}
 
 	}

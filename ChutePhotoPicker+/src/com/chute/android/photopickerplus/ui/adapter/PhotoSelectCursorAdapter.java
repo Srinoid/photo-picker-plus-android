@@ -36,6 +36,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 	private final DisplayMetrics displayMetrics;
 	private final Context context;
 	private final boolean dualFragments;
+	private ArrayList<Integer> selectedItems = new ArrayList<Integer>();
 
 	@SuppressWarnings("deprecation")
 	public PhotoSelectCursorAdapter(Context context, Cursor c) {
@@ -70,9 +71,11 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 		if (tick.containsKey(cursor.getPosition())) {
 			holder.imageViewTick.setVisibility(View.VISIBLE);
 			view.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
+			selectedItems.add(cursor.getPosition());
 		} else {
 			holder.imageViewTick.setVisibility(View.GONE);
 			view.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
+			selectedItems.remove(cursor.getPosition());
 		}
 	}
 

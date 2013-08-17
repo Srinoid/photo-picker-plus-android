@@ -101,18 +101,18 @@ public class FragmentServices extends Fragment {
 			if (service.equals(AccountType.INSTAGRAM)) {
 				serviceClickedListener.accountLogin(AccountType.INSTAGRAM);
 			}
-//			if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
-//				serviceClickedListener.photoStream();
-//			}
-//			if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
-//				serviceClickedListener.cameraRoll();
-//			}
-//			if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
-//				serviceClickedListener.takePhoto();
-//			}
-//			if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
-//				serviceClickedListener.lastPhoto();
-//			}
+			if (service.equals(LocalMediaType.ALL_PHOTOS)) {
+				serviceClickedListener.photoStream();
+			}
+			if (service.equals(LocalMediaType.CAMERA_SHOTS)) {
+				serviceClickedListener.cameraRoll();
+			}
+			if (service.equals(LocalMediaType.TAKE_PHOTO)) {
+				serviceClickedListener.takePhoto();
+			}
+			if (service.equals(LocalMediaType.LAST_PHOTO_TAKEN)) {
+				serviceClickedListener.lastPhoto();
+			}
 		}
 
 	}

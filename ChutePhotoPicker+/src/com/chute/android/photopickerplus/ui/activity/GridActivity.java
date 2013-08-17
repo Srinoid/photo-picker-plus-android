@@ -48,8 +48,8 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 		filterType = wrapper.getFilterType();
 
 		AssetsFragment fragment = (AssetsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentAssets);
+		fragment.setRetainInstance(true);
 		fragment.updateFragment(albumID, accountID, filterType, isMultiPicker);
-
 	}
 
 	@Override

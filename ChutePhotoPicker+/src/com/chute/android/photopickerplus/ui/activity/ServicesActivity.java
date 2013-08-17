@@ -56,7 +56,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	private FragmentServices fragmentServicesVertical;
 
-
 	private boolean dualFragments = false;
 
 	private FragmentTransaction fragmentTransaction;
@@ -109,17 +108,11 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	@Override
 	public void photoStream() {
-		// if (dualFragments) {
-		// replaceContentWithAssetFragment(PhotoFilterType.ALL_PHOTOS, null,
-		// ppWrapper.getAlbumId(),
-		// ppWrapper.getIsMultiPicker());
-		// } else {
 		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 		wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
 		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 		wrapper.setChuteId(ppWrapper.getAlbumId());
 		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
-		// }
 
 	}
 
@@ -141,17 +134,11 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	@Override
 	public void cameraRoll() {
-		// if (dualFragments) {
-		// replaceContentWithAssetFragment(PhotoFilterType.CAMERA_ROLL, null,
-		// ppWrapper.getAlbumId(),
-		// ppWrapper.getIsMultiPicker());
-		// } else {
 		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 		wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
 		wrapper.setChuteId(ppWrapper.getAlbumId());
 		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
-		// }
 
 	}
 
@@ -236,16 +223,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 	// fragmentTransaction.commit();
 	// }
 
-	// @Override
-	// public void onDestroy() {
-	// Fragment fragment =
-	// fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_ALBUM);
-	// if (fragment != null && fragment.isResumed()) {
-	// fragmentManager.beginTransaction().remove(fragment).commit();
-	// }
-	// super.onDestroy();
-	// }
-
 	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
 
 		@Override
@@ -318,9 +295,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	@Override
 	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
-		// replaceContentWithAssetFragment(PhotoFilterType.SOCIAL_PHOTOS,
-		// accountId, model.getId(),
-		// ppWrapper.getIsMultiPicker());
 		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 		wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.sdk.v2.model.enums.AccountType;
+import com.chute.sdk.v2.model.enums.LocalMediaType;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -143,35 +144,34 @@ public class ServicesAdapter extends BaseAdapter {
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.instagram));
 			serviceTitle.setVisibility(View.GONE);
 		}
-//		if (service.equalsIgnoreCase(LocalMediaType.TAKE_PHOTO.getName())) {
-//			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.take_photo));
-//			serviceTitle.setText(context.getResources().getString(R.string.take_photos));
-//		}
-//		if (service.equalsIgnoreCase(LocalMediaType.CAMERA_SHOTS.getName())) {
-//			if (uriLastPhotoFromCameraPhotos != null) {
-//				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
-//			} else {
-//				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
-//			}
-//			serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
-//		}
-//		if (service.equalsIgnoreCase(LocalMediaType.LAST_PHOTO_TAKEN.getName())) {
-//			Log.d("debug", "last photo taken");
-//			if (uriLastPhotoFromCameraPhotos != null) {
-//				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
-//			} else {
-//				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
-//			}
-//			serviceTitle.setText(context.getResources().getString(R.string.last_photo));
-//		}
-//		if (service.equalsIgnoreCase(LocalMediaType.ALL_PHOTOS.getName())) {
-//			if (uriAllPhotos != null) {
-//				loader.displayImage(uriAllPhotos.toString(), imageView, null);
-//			} else {
-//				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
-//			}
-//			serviceTitle.setText(context.getResources().getString(R.string.all_photos));
-//		}
+		if (service.equals(LocalMediaType.TAKE_PHOTO)) {
+			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.take_photo));
+			serviceTitle.setText(context.getResources().getString(R.string.take_photos));
+		}
+		if (service.equals(LocalMediaType.CAMERA_SHOTS)) {
+			if (uriLastPhotoFromCameraPhotos != null) {
+				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
+			} else {
+				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+			}
+			serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
+		}
+		if (service.equals(LocalMediaType.LAST_PHOTO_TAKEN)) {
+			if (uriLastPhotoFromCameraPhotos != null) {
+				loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
+			} else {
+				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+			}
+			serviceTitle.setText(context.getResources().getString(R.string.last_photo));
+		}
+		if (service.equals(LocalMediaType.ALL_PHOTOS)) {
+			if (uriAllPhotos != null) {
+				loader.displayImage(uriAllPhotos.toString(), imageView, null);
+			} else {
+				imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.photo_placeholder));
+			}
+			serviceTitle.setText(context.getResources().getString(R.string.all_photos));
+		}
 	}
 
 }
