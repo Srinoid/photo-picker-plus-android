@@ -19,59 +19,59 @@ import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 
 public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
-	public static final int REQUEST_CODE = 1;
-	public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
-	public static final String FLAG_MULTI_PP = "flagMultiPp";
-	public static final String FLAG_SERVICES_HIDE = "flagHideServices";
-	public static final String KEY_ALBUM_ID = "albumID";
-	public static final String KEY_SERVICE_LIST = "serviceList";
+  public static final int REQUEST_CODE = 1;
+  public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
+  public static final String FLAG_MULTI_PP = "flagMultiPp";
+  public static final String FLAG_SERVICES_HIDE = "flagHideServices";
+  public static final String KEY_ALBUM_ID = "albumID";
+  public static final String KEY_SERVICE_LIST = "serviceList";
 
-	public PhotoPickerPlusIntentWrapper(Intent intent) {
-		super(intent);
-	}
+  public PhotoPickerPlusIntentWrapper(Intent intent) {
+    super(intent);
+  }
 
-	public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
-		super(packageContext, cls);
-	}
+  public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
+    super(packageContext, cls);
+  }
 
-	public PhotoPickerPlusIntentWrapper(Context packageContext) {
-		super(new Intent(packageContext, ServicesActivity.class));
-	}
+  public PhotoPickerPlusIntentWrapper(Context packageContext) {
+    super(new Intent(packageContext, ServicesActivity.class));
+  }
 
-	public boolean getIsMultiPicker() {
-		return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
-	}
+  public boolean getIsMultiPicker() {
+    return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
+  }
 
-	public void setMultiPicker(boolean flag) {
-		getIntent().putExtra(FLAG_MULTI_PP, flag);
-	}
+  public void setMultiPicker(boolean flag) {
+    getIntent().putExtra(FLAG_MULTI_PP, flag);
+  }
 
-	public String getAlbumId() {
-		return getIntent().getExtras().getString(KEY_ALBUM_ID);
-	}
+  public String getAlbumId() {
+    return getIntent().getExtras().getString(KEY_ALBUM_ID);
+  }
 
-	public void setAlbumId(String id) {
-		getIntent().putExtra(KEY_ALBUM_ID, id);
-	}
+  public void setAlbumId(String id) {
+    getIntent().putExtra(KEY_ALBUM_ID, id);
+  }
 
-	public boolean areServicesHidden() {
-		return getIntent().getExtras().getBoolean(FLAG_SERVICES_HIDE);
-	}
+  public boolean areServicesHidden() {
+    return getIntent().getExtras().getBoolean(FLAG_SERVICES_HIDE);
+  }
 
-	public void setServicesHidden(boolean flag) {
-		getIntent().putExtra(FLAG_SERVICES_HIDE, flag);
-	}
+  public void setServicesHidden(boolean flag) {
+    getIntent().putExtra(FLAG_SERVICES_HIDE, flag);
+  }
 
-	public void setServiceList(ArrayList<String> services) {
-		getIntent().putStringArrayListExtra(KEY_SERVICE_LIST, services);
-	}
+  public void setServiceList(ArrayList<String> services) {
+    getIntent().putStringArrayListExtra(KEY_SERVICE_LIST, services);
+  }
 
-	public ArrayList<String> getServiceList() {
-		return getIntent().getExtras().getStringArrayList(KEY_SERVICE_LIST);
-	}
+  public ArrayList<String> getServiceList() {
+    return getIntent().getExtras().getStringArrayList(KEY_SERVICE_LIST);
+  }
 
-	public void startActivityForResult(Activity context, int code) {
-		context.startActivityForResult(getIntent(), code);
-	}
+  public void startActivityForResult(Activity context, int code) {
+    context.startActivityForResult(getIntent(), code);
+  }
 
 }

@@ -19,18 +19,21 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class IntentUtil {
 
-	public static void deliverDataToInitialActivity(final FragmentActivity context, final AccountMediaModel model) {
-		ArrayList<AccountMediaModel> mediaCollection = new ArrayList<AccountMediaModel>();
-		mediaCollection.add(model);
-		deliverDataToInitialActivity(context, mediaCollection);
-	}
+  public static void deliverDataToInitialActivity(final FragmentActivity context,
+      final AccountMediaModel model) {
+    ArrayList<AccountMediaModel> mediaCollection = new ArrayList<AccountMediaModel>();
+    mediaCollection.add(model);
+    deliverDataToInitialActivity(context, mediaCollection);
+  }
 
-	public static void deliverDataToInitialActivity(final FragmentActivity context,
-			final ArrayList<AccountMediaModel> collection) {
-		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(new Intent(context,
-				ServicesActivity.class));
-		wrapper.setMediaCollection(collection);
-		wrapper.getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		wrapper.startActivity(context);
-	}
+  public static void deliverDataToInitialActivity(final FragmentActivity context,
+      final ArrayList<AccountMediaModel> collection) {
+    final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(new Intent(
+        context,
+        ServicesActivity.class));
+    wrapper.setMediaCollection(collection);
+    wrapper.getIntent().addFlags(
+        Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    wrapper.startActivity(context);
+  }
 }

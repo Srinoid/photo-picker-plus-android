@@ -29,141 +29,146 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 
 import darko.imagedownloader.ImageLoader;
 
-public class PhotosAdapter extends BaseAdapter {
+public class PhotosAdapter extends BaseAdapter implements MediaAdapter{
 
-	@SuppressWarnings("unused")
-	private static final String TAG = PhotosAdapter.class.getSimpleName();
-	private static LayoutInflater inflater;
-	public ImageLoader loader;
-	private ArrayList<AccountMediaModel> collection;
-	public HashMap<Integer, AccountMediaModel> tick;
-	private final DisplayMetrics displayMetrics;
-	private final Activity context;
-	private final boolean dualFragments;
+  @SuppressWarnings("unused")
+  private static final String TAG = PhotosAdapter.class.getSimpleName();
+  private static LayoutInflater inflater;
+  public ImageLoader loader;
+  private ArrayList<AccountMediaModel> collection;
+  public HashMap<Integer, AccountMediaModel> tick;
+  private final DisplayMetrics displayMetrics;
+  private final Activity context;
+  private final boolean dualFragments;
 
-	public PhotosAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
-		if (collection == null) {
-			this.collection = new ArrayList<AccountMediaModel>();
-		} else {
-			this.collection = collection;
-		}
-		this.context = context;
-		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		loader = ImageLoader.getLoader(context);
-		displayMetrics = context.getResources().getDisplayMetrics();
-		tick = new HashMap<Integer, AccountMediaModel>();
-		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
-	}
+  public PhotosAdapter(final Activity context,
+      final ArrayList<AccountMediaModel> collection) {
+    if (collection == null) {
+      this.collection = new ArrayList<AccountMediaModel>();
+    } else {
+      this.collection = collection;
+    }
+    this.context = context;
+    inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    loader = ImageLoader.getLoader(context);
+    displayMetrics = context.getResources().getDisplayMetrics();
+    tick = new HashMap<Integer, AccountMediaModel>();
+    dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
+  }
 
-	@Override
-	public int getCount() {
-		return collection.size();
-	}
+  @Override
+  public int getCount() {
+    return collection.size();
+  }
 
-	@Override
-	public AccountMediaModel getItem(final int position) {
-		return collection.get(position);
-	}
+  @Override
+  public AccountMediaModel getItem(final int position) {
+    return collection.get(position);
+  }
 
-	@Override
-	public long getItemId(final int position) {
-		return position;
-	}
+  @Override
+  public long getItemId(final int position) {
+    return position;
+  }
 
-	public static class ViewHolder {
+  public static class ViewHolder {
 
-		public ImageView imageViewThumb;
-		public ImageView imageViewTick;
-	}
+    public ImageView imageViewThumb;
+    public ImageView imageViewTick;
+  }
 
-	public void changeData(final ArrayList<AccountMediaModel> collection) {
-		this.collection = collection;
-		notifyDataSetChanged();
-	}
+  public void changeData(final ArrayList<AccountMediaModel> collection) {
+    this.collection = collection;
+    notifyDataSetChanged();
+  }
 
-	@Override
-	public View getView(final int position, final View convertView, final ViewGroup parent) {
-		View vi = convertView;
-		ViewHolder holder;
-		if (convertView == null) {
-			vi = inflater.inflate(R.layout.adapter_assets, null);
-			holder = new ViewHolder();
-			holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			configureImageViewDimensions(holder.imageViewThumb);
-			holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
-			holder.imageViewTick.setTag(position);
-			vi.setTag(holder);
-		} else {
-			holder = (ViewHolder) vi.getTag();
-		}
+  @Override
+  public View getView(final int position, final View convertView, final ViewGroup parent) {
+    View vi = convertView;
+    ViewHolder holder;
+    if (convertView == null) {
+      vi = inflater.inflate(R.layout.adapter_assets, null);
+      holder = new ViewHolder();
+      holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
+      configureImageViewDimensions(holder.imageViewThumb);
+      holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
+      holder.imageViewTick.setTag(position);
+      vi.setTag(holder);
+    } else {
+      holder = (ViewHolder) vi.getTag();
+    }
 
-		if (tick.containsKey(position)) {
-			holder.imageViewTick.setVisibility(View.VISIBLE);
-			vi.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
-		} else {
-			holder.imageViewTick.setVisibility(View.GONE);
-			vi.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
-		}
-		loader.displayImage(getItem(position).getUrl(), holder.imageViewThumb, null);
-		return vi;
-	}
+    if (tick.containsKey(position)) {
+      holder.imageViewTick.setVisibility(View.VISIBLE);
+      vi.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
+    } else {
+      holder.imageViewTick.setVisibility(View.GONE);
+      vi.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
+    }
+    loader.displayImage(getItem(position).getUrl(), holder.imageViewThumb, null);
+    return vi;
+  }
 
-	public ArrayList<AccountMediaModel> getPhotoCollection() {
-		final ArrayList<AccountMediaModel> photos = new ArrayList<AccountMediaModel>();
-		final Iterator<AccountMediaModel> iterator = tick.values().iterator();
-		while (iterator.hasNext()) {
-			photos.add(iterator.next());
-		}
-		return photos;
-	}
+  public ArrayList<AccountMediaModel> getPhotoCollection() {
+    final ArrayList<AccountMediaModel> photos = new ArrayList<AccountMediaModel>();
+    final Iterator<AccountMediaModel> iterator = tick.values().iterator();
+    while (iterator.hasNext()) {
+      photos.add(iterator.next());
+    }
+    return photos;
+  }
 
-	public ArrayList<Integer> getSelectedItemPositions() {
-		final ArrayList<Integer> positions = new ArrayList<Integer>();
-		final Iterator<Integer> iterator = tick.keySet().iterator();
-		while (iterator.hasNext()) {
-			positions.add(iterator.next());
-		}
-		return positions;
-	}
+  public ArrayList<Integer> getSelectedItemPositions() {
+    final ArrayList<Integer> positions = new ArrayList<Integer>();
+    final Iterator<Integer> iterator = tick.keySet().iterator();
+    while (iterator.hasNext()) {
+      positions.add(iterator.next());
+    }
+    return positions;
+  }
 
-	public boolean hasSelectedItems() {
-		return tick.size() > 0;
-	}
+  public boolean hasSelectedItems() {
+    return tick.size() > 0;
+  }
 
-	public int getSelectedItemsCount() {
-		return tick.size();
-	}
+  public int getSelectedItemsCount() {
+    return tick.size();
+  }
 
-	public void toggleTick(final int position) {
-		if (tick.containsKey(position)) {
-			tick.remove(position);
-		} else {
-			tick.put(position, getItem(position));
-		}
-		notifyDataSetChanged();
-	}
+  public void toggleTick(final int position) {
+    if (tick.containsKey(position)) {
+      tick.remove(position);
+    } else {
+      tick.put(position, getItem(position));
+    }
+    notifyDataSetChanged();
+  }
 
-	private void configureImageViewDimensions(ImageView imageViewThumb) {
-		int orientation = context.getResources().getConfiguration().orientation;
-		if (!dualFragments) {
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				int imageHeight = displayMetrics.widthPixels - 80;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						imageHeight / 3));
-			} else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				int imageHeight = displayMetrics.widthPixels - 120;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 5,
-						imageHeight / 5));
-			}
-		} else {
-			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels,
-						(int) (displayMetrics.heightPixels / 3.5)));
-			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						(int) (displayMetrics.widthPixels / 3.5)));
-			}
-		}
-	}
+  private void configureImageViewDimensions(ImageView imageViewThumb) {
+    int orientation = context.getResources().getConfiguration().orientation;
+    if (!dualFragments) {
+      if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        int imageHeight = displayMetrics.widthPixels - 80;
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels / 3,
+            imageHeight / 3));
+      } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        int imageHeight = displayMetrics.widthPixels - 120;
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels / 5,
+            imageHeight / 5));
+      }
+    } else {
+      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels,
+            (int) (displayMetrics.heightPixels / 3.5)));
+      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels / 3,
+            (int) (displayMetrics.widthPixels / 3.5)));
+      }
+    }
+  }
 
 }

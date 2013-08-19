@@ -33,7 +33,6 @@ import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrappe
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
-import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.enums.AccountType;
@@ -42,222 +41,241 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class ServicesActivity extends FragmentActivity implements AssetFragmentListener, ServiceClickedListener {
+public class ServicesActivity extends FragmentActivity implements AssetFragmentListener,
+    ServiceClickedListener {
 
-	private static final String TAG = ServicesActivity.class.getSimpleName();
+  private static final String TAG = ServicesActivity.class.getSimpleName();
 
-	private AccountType accountType;
-	private PhotoPickerPlusIntentWrapper ppWrapper;
+  private AccountType accountType;
+  private PhotoPickerPlusIntentWrapper ppWrapper;
 
-	private FragmentServices fragmentServicesVertical;
+  private FragmentServices fragmentServicesVertical;
 
-	private boolean dualFragments = false;
+  private boolean dualFragments;
 
-	private FragmentTransaction fragmentTransaction;
-	private static FragmentManager fragmentManager;
+  private FragmentTransaction fragmentTransaction;
+  private static FragmentManager fragmentManager;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		fragmentManager = getSupportFragmentManager();
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main_layout);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    fragmentManager = getSupportFragmentManager();
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
+    setContentView(R.layout.main_layout);
 
-		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-		fragmentServicesVertical = (FragmentServices) fragmentManager.findFragmentById(R.id.fragmentServices);
-		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
+    ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
+    fragmentServicesVertical = (FragmentServices) fragmentManager
+        .findFragmentById(R.id.fragmentServices);
+    dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
-		ArrayList<AccountType> serviceList = new ArrayList<AccountType>();
-		if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-			serviceList.add(AccountType.FACEBOOK);
-		}
-		if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-			serviceList.add(AccountType.FLICKR);
-		}
-		if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-			serviceList.add(AccountType.PICASA);
-		}
-		if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-			serviceList.add(AccountType.INSTAGRAM);
-		}
-		fragmentServicesVertical.configureServices(serviceList);
+    ArrayList<AccountType> serviceList = new ArrayList<AccountType>();
+    if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+      serviceList.add(AccountType.FACEBOOK);
+    }
+    if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+      serviceList.add(AccountType.FLICKR);
+    }
+    if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+      serviceList.add(AccountType.PICASA);
+    }
+    if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+      serviceList.add(AccountType.INSTAGRAM);
+    }
+    fragmentServicesVertical.configureServices(serviceList);
 
-	}
+  }
 
-	@Override
-	public void takePhoto() {
-		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-			NotificationUtil.makeToast(getApplicationContext(), R.string.toast_feature_camera);
-			return;
-		}
-		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		if (AppUtil.hasImageCaptureBug() == false) {
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AppUtil.getTempFile(ServicesActivity.this)));
-		} else {
-			intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
-					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		}
-		startActivityForResult(intent, Constants.CAMERA_PIC_REQUEST);
+  @Override
+  public void takePhoto() {
+    if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+      NotificationUtil.makeToast(getApplicationContext(), R.string.toast_feature_camera);
+      return;
+    }
+    final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (AppUtil.hasImageCaptureBug() == false) {
+      intent.putExtra(MediaStore.EXTRA_OUTPUT,
+          Uri.fromFile(AppUtil.getTempFile(ServicesActivity.this)));
+    } else {
+      intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
+          android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    }
+    startActivityForResult(intent, Constants.CAMERA_PIC_REQUEST);
 
-	}
+  }
 
-	@Override
-	public void photoStream() {
-		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-		wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
-		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-		wrapper.setChuteId(ppWrapper.getAlbumId());
-		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+  @Override
+  public void photoStream() {
+    final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+    wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
+    wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+    wrapper.setChuteId(ppWrapper.getAlbumId());
+    wrapper.startActivityForResult(ServicesActivity.this,
+        PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
-	}
+  }
 
-	@Override
-	public void lastPhoto() {
-		Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
-		if (uri.toString().equals("")) {
-			NotificationUtil.makeToast(getApplicationContext(), getResources().getString(R.string.no_camera_photos));
-		} else {
-			final AccountMediaModel model = new AccountMediaModel();
-			model.setLargeUrl(uri.toString());
-			model.setThumbUrl(uri.toString());
-			model.setUrl(uri.toString());
+  @Override
+  public void lastPhoto() {
+    Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
+    if (uri.toString().equals("")) {
+      NotificationUtil.makeToast(getApplicationContext(),
+          getResources().getString(R.string.no_camera_photos));
+    } else {
+      final AccountMediaModel model = new AccountMediaModel();
+      model.setLargeUrl(uri.toString());
+      model.setThumbUrl(uri.toString());
+      model.setUrl(uri.toString());
 
-			IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, model);
-		}
+      IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, model);
+    }
 
-	}
+  }
 
-	@Override
-	public void cameraRoll() {
-		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-		wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
-		wrapper.setChuteId(ppWrapper.getAlbumId());
-		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+  @Override
+  public void cameraRoll() {
+    final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+    wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+    wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
+    wrapper.setChuteId(ppWrapper.getAlbumId());
+    wrapper.startActivityForResult(ServicesActivity.this,
+        PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
-	}
+  }
 
-	@Override
-	public void accountLogin(AccountType type) {
-		accountType = type;
-		if (PreferenceUtil.get().hasAccountId(accountType)) {
-			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName(), PreferenceUtil.get()
-					.getShortcutForAccount(accountType));
-		} else {
-			PhotoPickerPreferenceUtil.get().setAccountType(accountType.name());
-			AuthenticationFactory.getInstance().startAuthenticationActivity(ServicesActivity.this, accountType);
-		}
+  @Override
+  public void accountLogin(AccountType type) {
+    accountType = type;
+    if (PreferenceUtil.get().hasAccountId(accountType)) {
+      accountClicked(PreferenceUtil.get().getAccountId(accountType),
+          accountType.getName(), PreferenceUtil.get()
+              .getShortcutForAccount(accountType));
+    } else {
+      PhotoPickerPreferenceUtil.get().setAccountType(accountType.name());
+      AuthenticationFactory.getInstance().startAuthenticationActivity(
+          ServicesActivity.this, accountType);
+    }
 
-	}
+  }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == Activity.RESULT_OK) {
-			GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback()).executeAsync();
-			if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
-				finish();
-			} else if (requestCode == Constants.CAMERA_PIC_REQUEST) {
-				// Bitmap image = (Bitmap) data.getExtras().get("data");
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode == Activity.RESULT_OK) {
+      GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback())
+          .executeAsync();
+      if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
+        finish();
+      } else if (requestCode == Constants.CAMERA_PIC_REQUEST) {
+        // Bitmap image = (Bitmap) data.getExtras().get("data");
 
-				String path = "";
-				File tempFile = AppUtil.getTempFile(getApplicationContext());
-				if (AppUtil.hasImageCaptureBug() == false && tempFile.length() > 0) {
-					try {
-						android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
-								tempFile.getAbsolutePath(), null, null);
-						tempFile.delete();
-						path = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext()).toString();
-					} catch (FileNotFoundException e) {
-						Log.d(TAG, "", e);
-					}
-				} else {
-					Log.e(TAG, "Bug " + data.getData().getPath());
-					path = Uri.fromFile(new File(AppUtil.getPath(getApplicationContext(), data.getData()))).toString();
-				}
-				Log.d(TAG, path);
-				final AccountMediaModel model = new AccountMediaModel();
-				model.setLargeUrl(path);
-				model.setThumbUrl(path);
-				model.setUrl(path);
+        String path = "";
+        File tempFile = AppUtil.getTempFile(getApplicationContext());
+        if (AppUtil.hasImageCaptureBug() == false && tempFile.length() > 0) {
+          try {
+            android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
+                tempFile.getAbsolutePath(), null, null);
+            tempFile.delete();
+            path = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext())
+                .toString();
+          } catch (FileNotFoundException e) {
+            Log.d(TAG, "", e);
+          }
+        } else {
+          Log.e(TAG, "Bug " + data.getData().getPath());
+          path = Uri.fromFile(
+              new File(AppUtil.getPath(getApplicationContext(), data.getData())))
+              .toString();
+        }
+        Log.d(TAG, path);
+        final AccountMediaModel model = new AccountMediaModel();
+        model.setLargeUrl(path);
+        model.setThumbUrl(path);
+        model.setUrl(path);
 
-				IntentUtil.deliverDataToInitialActivity(this, model);
-			}
-		}
-	}
+        IntentUtil.deliverDataToInitialActivity(this, model);
+      }
+    }
+  }
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
-		finish();
-	}
+  @Override
+  protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
+    finish();
+  }
 
-	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
+  private final class AccountsCallback implements
+      HttpCallback<ListResponseModel<AccountModel>> {
 
-		@Override
-		public void onSuccess(ListResponseModel<AccountModel> responseData) {
-			if (accountType == null) {
-				// return;
-				String type = PhotoPickerPreferenceUtil.get().getAccountType();
-				accountType = AccountType.valueOf(type);
-			}
-			if (responseData.getData().size() == 0) {
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_albums_found),
-						Toast.LENGTH_SHORT).show();
-				return;
-			}
-			AccountModel accountModel = responseData.getData().get(0);
-			if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
-				if (accountModel.getName().equals("")) {
-					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getUsername());
-				} else {
-					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
-				}
-				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
-				PreferenceUtil.get().setShortcutForAccount(accountType, accountModel.getShortcut());
-				accountClicked(accountModel.getId(), accountType.getName(), accountModel.getShortcut());
-			}
-		}
+    @Override
+    public void onSuccess(ListResponseModel<AccountModel> responseData) {
+      if (accountType == null) {
+        // return;
+        String type = PhotoPickerPreferenceUtil.get().getAccountType();
+        accountType = AccountType.valueOf(type);
+      }
+      if (responseData.getData().size() == 0) {
+        Toast.makeText(getApplicationContext(),
+            getResources().getString(R.string.no_albums_found),
+            Toast.LENGTH_SHORT).show();
+        return;
+      }
+      AccountModel accountModel = responseData.getData().get(0);
+      if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
+        if (accountModel.getName().equals("")) {
+          PreferenceUtil.get().setNameForAccount(accountType, accountModel.getUsername());
+        } else {
+          PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
+        }
+        PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
+        PreferenceUtil.get().setShortcutForAccount(accountType,
+            accountModel.getShortcut());
+        accountClicked(accountModel.getId(), accountType.getName(),
+            accountModel.getShortcut());
+      }
+    }
 
-		@Override
-		public void onHttpError(ResponseStatus responseStatus) {
-			ALog.d("Http Error: " + responseStatus.getStatusCode() + " " + responseStatus.getStatusMessage());
-		}
+    @Override
+    public void onHttpError(ResponseStatus responseStatus) {
+      ALog.d("Http Error: " + responseStatus.getStatusCode() + " "
+          + responseStatus.getStatusMessage());
+    }
 
-	}
+  }
 
-	public void accountClicked(String accountId, String accountName, String accountShortcut) {
-		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-		wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
-		wrapper.setAccountId(accountId);
-		wrapper.setAccountName(accountName);
-		wrapper.setAccountShortcut(accountShortcut);
-		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+  public void accountClicked(String accountId, String accountName, String accountShortcut) {
+    final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+    wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
+    wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
+    wrapper.setAccountId(accountId);
+    wrapper.setAccountName(accountName);
+    wrapper.setAccountShortcut(accountShortcut);
+    wrapper.startActivityForResult(ServicesActivity.this,
+        PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
-	}
+  }
 
-	@Override
-	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList);
+  @Override
+  public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList) {
+    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList);
 
-	}
+  }
 
-	@Override
-	public void onConfirmedCursorAssets(ArrayList<String> assetPathList) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, AppUtil.getPhotoCollection(assetPathList));
+  @Override
+  public void onConfirmedCursorAssets(ArrayList<String> assetPathList) {
+    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this,
+        AppUtil.getPhotoCollection(assetPathList));
 
-	}
+  }
 
-	@Override
-	public void onSelectedSocialItem(AccountMediaModel accountMediaModel) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
-	}
+  @Override
+  public void onSelectedSocialItem(AccountMediaModel accountMediaModel) {
+    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
+  }
 
-	@Override
-	public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
-	}
+  @Override
+  public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
+    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
+  }
 
 }

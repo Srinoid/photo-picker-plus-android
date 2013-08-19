@@ -13,129 +13,129 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class PhotosIntentWrapper extends IntentWrapper {
 
-	public static final String TAG = PhotosIntentWrapper.class.getSimpleName();
+  public static final String TAG = PhotosIntentWrapper.class.getSimpleName();
 
-	public static final int ACTIVITY_FOR_RESULT_PHOTO_KEY = 115;
-	public static final int ACTIVITY_FOR_RESULT_STREAM_KEY = 113;
+  public static final int ACTIVITY_FOR_RESULT_PHOTO_KEY = 115;
+  public static final int ACTIVITY_FOR_RESULT_STREAM_KEY = 113;
 
-	// social photos
-	private static final String KEY_ACCOUNT_ID = "accountId";
-	private static final String KEY_ACCOUNT_NAME = "accountName";
-	private static final String KEY_ACCOUNT_SHORTCUT = "accountShortcut";
-	private static final String KEY_ALBUM_ID = "albumId";
-	private static final String KEY_PHOTO_COLLECTION = "photoCollection";
-	private static final String KEY_PHOTO_MODEL = "photoModel";
-	private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
+  // social photos
+  private static final String KEY_ACCOUNT_ID = "accountId";
+  private static final String KEY_ACCOUNT_NAME = "accountName";
+  private static final String KEY_ACCOUNT_SHORTCUT = "accountShortcut";
+  private static final String KEY_ALBUM_ID = "albumId";
+  private static final String KEY_PHOTO_COLLECTION = "photoCollection";
+  private static final String KEY_PHOTO_MODEL = "photoModel";
+  private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
 
-	// cursor photos
-	private static final String EXTRA_KEY_PATH_LIST = "key_path_list";
-	private static final String EXTRA_KEY_PATH = "key_path";
-	private static final String EXTRA_KEY_CURSOR_PHOTOS = "cursor_photos";
+  // cursor photos
+  private static final String EXTRA_KEY_PATH_LIST = "key_path_list";
+  private static final String EXTRA_KEY_PATH = "key_path";
+  private static final String EXTRA_KEY_CURSOR_PHOTOS = "cursor_photos";
 
-	// types
-	public static final int TYPE_CAMERA_ROLL = 0;
-	public static final int TYPE_ALL_PHOTOS = 1;
-	public static final int TYPE_SOCIAL_PHOTOS = 2;
+  // types
+  public static final int TYPE_CAMERA_ROLL = 0;
+  public static final int TYPE_ALL_PHOTOS = 1;
+  public static final int TYPE_SOCIAL_PHOTOS = 2;
 
-	private static final String EXTRA_KEY_CHUTE_ID = "key_chute_id";
+  private static final String EXTRA_KEY_CHUTE_ID = "key_chute_id";
 
-	public PhotosIntentWrapper(Context context) {
-		super(context, GridActivity.class);
-	}
+  public PhotosIntentWrapper(Context context) {
+    super(context, GridActivity.class);
+  }
 
-	public PhotosIntentWrapper(Intent intent) {
-		super(intent);
-	}
+  public PhotosIntentWrapper(Intent intent) {
+    super(intent);
+  }
 
-	public String getAccountId() {
-		return getIntent().getExtras().getString(KEY_ACCOUNT_ID);
-	}
+  public String getAccountId() {
+    return getIntent().getExtras().getString(KEY_ACCOUNT_ID);
+  }
 
-	public void setAccountId(String accountId) {
-		getIntent().putExtra(KEY_ACCOUNT_ID, accountId);
-	}
+  public void setAccountId(String accountId) {
+    getIntent().putExtra(KEY_ACCOUNT_ID, accountId);
+  }
 
-	public String getAlbumId() {
-		return getIntent().getExtras().getString(KEY_ALBUM_ID);
-	}
+  public String getAlbumId() {
+    return getIntent().getExtras().getString(KEY_ALBUM_ID);
+  }
 
-	public void setAlbumId(String albumId) {
-		getIntent().putExtra(KEY_ALBUM_ID, albumId);
-	}
+  public void setAlbumId(String albumId) {
+    getIntent().putExtra(KEY_ALBUM_ID, albumId);
+  }
 
-	public ArrayList<AccountMediaModel> getMediaCollection() {
-		return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
-	}
+  public ArrayList<AccountMediaModel> getMediaCollection() {
+    return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
+  }
 
-	public void setMediaCollection(ArrayList<AccountMediaModel> mediaCollection) {
-		getIntent().putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
-	}
+  public void setMediaCollection(ArrayList<AccountMediaModel> mediaCollection) {
+    getIntent().putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
+  }
 
-	public boolean getIsMultiPicker() {
-		return getIntent().getExtras().getBoolean(FLAG_MULTI_PICKER);
-	}
+  public boolean getIsMultiPicker() {
+    return getIntent().getExtras().getBoolean(FLAG_MULTI_PICKER);
+  }
 
-	public void setMultiPicker(boolean flag) {
-		getIntent().putExtra(FLAG_MULTI_PICKER, flag);
-	}
+  public void setMultiPicker(boolean flag) {
+    getIntent().putExtra(FLAG_MULTI_PICKER, flag);
+  }
 
-	public void setAssetPathList(ArrayList<String> pathList) {
-		getIntent().putStringArrayListExtra(EXTRA_KEY_PATH_LIST, pathList);
-	}
+  public void setAssetPathList(ArrayList<String> pathList) {
+    getIntent().putStringArrayListExtra(EXTRA_KEY_PATH_LIST, pathList);
+  }
 
-	public ArrayList<String> getAssetPathList() {
-		return getIntent().getExtras().getStringArrayList(EXTRA_KEY_PATH_LIST);
-	}
+  public ArrayList<String> getAssetPathList() {
+    return getIntent().getExtras().getStringArrayList(EXTRA_KEY_PATH_LIST);
+  }
 
-	public void setAssetPath(String path) {
-		getIntent().putExtra(EXTRA_KEY_PATH, path);
-	}
+  public void setAssetPath(String path) {
+    getIntent().putExtra(EXTRA_KEY_PATH, path);
+  }
 
-	public String getAssetPath() {
-		return getIntent().getExtras().getString(EXTRA_KEY_PATH);
-	}
+  public String getAssetPath() {
+    return getIntent().getExtras().getString(EXTRA_KEY_PATH);
+  }
 
-	public PhotoFilterType getFilterType() {
-		return (PhotoFilterType) getIntent().getExtras().get(EXTRA_KEY_CURSOR_PHOTOS);
-	}
+  public PhotoFilterType getFilterType() {
+    return (PhotoFilterType) getIntent().getExtras().get(EXTRA_KEY_CURSOR_PHOTOS);
+  }
 
-	public void setFilterType(PhotoFilterType type) {
-		getIntent().putExtra(EXTRA_KEY_CURSOR_PHOTOS, type);
-	}
+  public void setFilterType(PhotoFilterType type) {
+    getIntent().putExtra(EXTRA_KEY_CURSOR_PHOTOS, type);
+  }
 
-	public AccountMediaModel getMediaModel() {
-		return getIntent().getExtras().getParcelable(KEY_PHOTO_MODEL);
-	}
+  public AccountMediaModel getMediaModel() {
+    return getIntent().getExtras().getParcelable(KEY_PHOTO_MODEL);
+  }
 
-	public void setMediaModel(AccountMediaModel model) {
-		getIntent().putExtra(KEY_PHOTO_MODEL, model);
-	}
+  public void setMediaModel(AccountMediaModel model) {
+    getIntent().putExtra(KEY_PHOTO_MODEL, model);
+  }
 
-	public String getChuteId() {
-		return getIntent().getExtras().getString(EXTRA_KEY_CHUTE_ID);
-	}
+  public String getChuteId() {
+    return getIntent().getExtras().getString(EXTRA_KEY_CHUTE_ID);
+  }
 
-	public void setChuteId(String id) {
-		getIntent().putExtra(EXTRA_KEY_CHUTE_ID, id);
-	}
+  public void setChuteId(String id) {
+    getIntent().putExtra(EXTRA_KEY_CHUTE_ID, id);
+  }
 
-	public String getAccountName() {
-		return getIntent().getExtras().getString(KEY_ACCOUNT_NAME);
-	}
+  public String getAccountName() {
+    return getIntent().getExtras().getString(KEY_ACCOUNT_NAME);
+  }
 
-	public void setAccountName(String accountName) {
-		getIntent().putExtra(KEY_ACCOUNT_NAME, accountName);
-	}
+  public void setAccountName(String accountName) {
+    getIntent().putExtra(KEY_ACCOUNT_NAME, accountName);
+  }
 
-	public String getAccountShortcut() {
-		return getIntent().getExtras().getString(KEY_ACCOUNT_SHORTCUT);
-	}
+  public String getAccountShortcut() {
+    return getIntent().getExtras().getString(KEY_ACCOUNT_SHORTCUT);
+  }
 
-	public void setAccountShortcut(String accountShortcut) {
-		getIntent().putExtra(KEY_ACCOUNT_SHORTCUT, accountShortcut);
-	}
+  public void setAccountShortcut(String accountShortcut) {
+    getIntent().putExtra(KEY_ACCOUNT_SHORTCUT, accountShortcut);
+  }
 
-	public void startActivityForResult(Activity context, int code) {
-		context.startActivityForResult(getIntent(), code);
-	}
+  public void startActivityForResult(Activity context, int code) {
+    context.startActivityForResult(getIntent(), code);
+  }
 }
