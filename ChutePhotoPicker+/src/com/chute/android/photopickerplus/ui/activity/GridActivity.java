@@ -28,7 +28,6 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 
 	public static final String TAG = GridActivity.class.getSimpleName();
 	public static final String KEY_SELECTED_ITEMS = "keySelectedItems";
-	private String albumID;
 	private String accountID;
 	private boolean isMultiPicker;
 	private PhotoFilterType filterType;
@@ -49,7 +48,6 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 				.getIntegerArrayList(KEY_SELECTED_ITEMS) : null;
 
 		wrapper = new PhotosIntentWrapper(getIntent());
-		albumID = wrapper.getAlbumId();
 		accountID = wrapper.getAccountId();
 		isMultiPicker = wrapper.getIsMultiPicker();
 		filterType = wrapper.getFilterType();
@@ -58,37 +56,37 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 
 		fragment = (AssetsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentAssets);
 		fragment.setRetainInstance(true);
-		fragment.updateFragment(albumID, accountID, filterType, isMultiPicker, selectedItemsPositions, accountName, accountShortcut);
+		fragment.updateFragment(accountID, filterType, isMultiPicker, selectedItemsPositions, accountName,
+				accountShortcut);
 	}
 
 	@Override
-	public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel, albumId);
+	public void onSelectedSocialItem(AccountMediaModel accountMediaModel) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel);
 		setResult(RESULT_OK);
 		finish();
 
 	}
 
 	@Override
-	public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel, albumId);
+	public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel);
 		setResult(RESULT_OK);
 		finish();
 
 	}
 
 	@Override
-	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(GridActivity.this, AppUtil.getPhotoCollection(assetPathList), null,
-				null, albumId);
+	public void onConfirmedCursorAssets(ArrayList<String> assetPathList) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, AppUtil.getPhotoCollection(assetPathList));
 		setResult(RESULT_OK);
 		finish();
 
 	}
 
 	@Override
-	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModelList, null, null, albumId);
+	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList) {
+		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModelList);
 		setResult(RESULT_OK);
 		finish();
 

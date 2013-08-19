@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.loaders.AssetsAsyncTaskLoader;
+import com.chute.android.photopickerplus.ui.adapter.AssetAdapter;
 import com.chute.android.photopickerplus.ui.adapter.PhotoSelectCursorAdapter;
 import com.chute.android.photopickerplus.ui.adapter.PhotosAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
@@ -30,8 +30,6 @@ import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
-import com.chute.sdk.v2.model.enums.AccountType;
-import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -40,20 +38,19 @@ public class AssetsFragment extends Fragment {
 
 	private static final String ARG_FILTER_TYPE = "argFilterType";
 	private static final String ARG_ACCOUNT_ID = "argAccountId";
-	private static final String ARG_ACCOUNT_NAME= "argAccountName";
+	private static final String ARG_ACCOUNT_NAME = "argAccountName";
 	private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
-	private static final String ARG_ALBUM_ID = "argAlbumId";
 	private static final String ARG_MULTIPICKER = "argMultiPicker";
 	private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
 
 	private GridView gridViewAssets;
 	private PhotoSelectCursorAdapter cursorAdapter;
 	private PhotosAdapter socialAdapter;
+	private AssetAdapter assetAdapter;
 	private TextView textViewSelectPhotos;
 	private View emptyView;
 
 	private boolean isMultipicker;
-	private String albumId;
 	private String accountName;
 	private String accountShortcut;
 	private ArrayList<Integer> selectedItemsPositions;
@@ -61,22 +58,21 @@ public class AssetsFragment extends Fragment {
 	private AssetFragmentListener assetFragmentListener;
 
 	public interface AssetFragmentListener {
-		public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId);
+		public void onSelectedCursorItem(AccountMediaModel accountMediaModel);
 
-		public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId);
+		public void onSelectedSocialItem(AccountMediaModel accountMediaModel);
 
-		public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId);
+		public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList);
 
-		public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId);
+		public void onConfirmedCursorAssets(ArrayList<String> assetPathList);
 
 	}
 
-	public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId, String albumId,
-			boolean isMultiPicker, ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
+	public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId, boolean isMultiPicker,
+			ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
 		AssetsFragment frag = new AssetsFragment();
 		Bundle args = new Bundle();
 		args.putSerializable(ARG_FILTER_TYPE, filterType);
-		args.putString(ARG_ALBUM_ID, albumId);
 		args.putString(ARG_ACCOUNT_ID, accountId);
 		args.putBoolean(ARG_MULTIPICKER, isMultiPicker);
 		args.putIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS, selectedItemPositions);
@@ -117,7 +113,7 @@ public class AssetsFragment extends Fragment {
 		if (getArguments() != null && savedInstanceState == null) {
 			accountName = getArguments().getString(ARG_ACCOUNT_NAME);
 			accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
-			updateFragment(getArguments().getString(ARG_ALBUM_ID), getArguments().getString(ARG_ACCOUNT_ID),
+			updateFragment(getArguments().getString(ARG_ACCOUNT_ID),
 					(PhotoFilterType) getArguments().get(ARG_FILTER_TYPE), getArguments().getBoolean(ARG_MULTIPICKER),
 					getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS), accountName, accountShortcut);
 		}
@@ -130,9 +126,8 @@ public class AssetsFragment extends Fragment {
 		return view;
 	}
 
-	public void updateFragment(String albumId, String accountId, PhotoFilterType filterType, boolean isMultipicker,
+	public void updateFragment(String accountId, PhotoFilterType filterType, boolean isMultipicker,
 			ArrayList<Integer> selectedItemsPositions, String accountName, String accountShortcut) {
-		this.albumId = albumId;
 		this.filterType = filterType;
 		this.isMultipicker = isMultipicker;
 		this.selectedItemsPositions = selectedItemsPositions;
@@ -140,10 +135,9 @@ public class AssetsFragment extends Fragment {
 		if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
 			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback());
 		} else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-//			GCAccounts.albumMedia(getActivity().getApplicationContext(), accountId, albumId, new PhotoListCallback())
-//					.executeAsync();
-//			 GCAccounts.accountRoot(getActivity(), AccountType.PICASA,
-//			 accountId, new RootCallback()).executeAsync();
+			// GCAccounts.albumMedia(getActivity().getApplicationContext(),
+			// accountId, albumId, new PhotoListCallback())
+			// .executeAsync();
 			GCAccounts.accountRoot(getActivity(), accountName, accountShortcut, new RootCallback()).executeAsync();
 		}
 	}
@@ -152,13 +146,42 @@ public class AssetsFragment extends Fragment {
 
 		@Override
 		public void onHttpError(ResponseStatus arg0) {
-			Log.d("debug", "error = " + arg0.getStatusCode());
+			NotificationUtil.makeConnectionProblemToast(getActivity().getApplicationContext());
+			toggleEmptyViewErrorMessage();
 
 		}
 
+		public void toggleEmptyViewErrorMessage() {
+			emptyView.setVisibility(View.GONE);
+		}
+
 		@Override
-		public void onSuccess(ResponseModel<AccountBaseModel> arg0) {
-			Log.d("debug", "repsonse = " + arg0.toString());
+		public void onSuccess(ResponseModel<AccountBaseModel> responseData) {
+			if (responseData != null && getActivity() != null) {
+				assetAdapter = new AssetAdapter(getActivity(), responseData.getData());
+				gridViewAssets.setAdapter(assetAdapter);
+
+				if (assetAdapter.getCount() == 0) {
+					emptyView.setVisibility(View.GONE);
+				}
+
+				if (selectedItemsPositions != null) {
+					for (int position : selectedItemsPositions) {
+						assetAdapter.toggleTick(position);
+					}
+				}
+
+				if (isMultipicker == true) {
+					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
+							.getString(R.string.select_photos));
+					gridViewAssets.setOnItemClickListener(new OnMultiGridItemClickListener());
+				} else {
+					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
+							.getString(R.string.select_a_photo));
+					gridViewAssets.setOnItemClickListener(new OnSingleGridItemClickListener());
+				}
+				NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(), assetAdapter.getCount());
+			}
 
 		}
 
@@ -222,7 +245,7 @@ public class AssetsFragment extends Fragment {
 
 		@Override
 		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-			assetFragmentListener.onSelectedCursorItem(AppUtil.getMediaModel(cursorAdapter.getItem(position)), albumId);
+			assetFragmentListener.onSelectedCursorItem(AppUtil.getMediaModel(cursorAdapter.getItem(position)));
 		}
 	}
 
@@ -235,55 +258,11 @@ public class AssetsFragment extends Fragment {
 
 	}
 
-	private final class PhotoListCallback implements HttpCallback<ListResponseModel<AccountMediaModel>> {
-
-		@Override
-		public void onSuccess(ListResponseModel<AccountMediaModel> responseData) {
-			if (responseData != null && getActivity() != null) {
-				socialAdapter = new PhotosAdapter(getActivity(), (ArrayList<AccountMediaModel>) responseData.getData());
-				gridViewAssets.setAdapter(socialAdapter);
-
-				if (socialAdapter.getCount() == 0) {
-					emptyView.setVisibility(View.GONE);
-				}
-				
-				if (selectedItemsPositions != null) {
-					for (int position : selectedItemsPositions) {
-						socialAdapter.toggleTick(position);
-					}
-				}
-
-				if (isMultipicker == true) {
-					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
-							.getString(R.string.select_photos));
-					gridViewAssets.setOnItemClickListener(new OnMultiGridItemClickListener());
-				} else {
-					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
-							.getString(R.string.select_a_photo));
-					gridViewAssets.setOnItemClickListener(new OnSingleGridItemClickListener());
-				}
-				NotificationUtil
-						.showPhotosAdapterToast(getActivity().getApplicationContext(), socialAdapter.getCount());
-			}
-		}
-
-		public void toggleEmptyViewErrorMessage() {
-			emptyView.setVisibility(View.GONE);
-		}
-
-		@Override
-		public void onHttpError(ResponseStatus responseStatus) {
-			NotificationUtil.makeConnectionProblemToast(getActivity().getApplicationContext());
-			toggleEmptyViewErrorMessage();
-
-		}
-	}
-
 	private final class OnSingleGridItemClickListener implements OnItemClickListener {
 
 		@Override
 		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-			assetFragmentListener.onSelectedSocialItem(socialAdapter.getItem(position), albumId);
+			assetFragmentListener.onSelectedSocialItem(socialAdapter.getItem(position));
 		}
 	}
 
@@ -300,9 +279,9 @@ public class AssetsFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-				assetFragmentListener.onConfirmedSocialAssets(socialAdapter.getPhotoCollection(), albumId);
+				assetFragmentListener.onConfirmedSocialAssets(socialAdapter.getPhotoCollection());
 			} else if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
-				assetFragmentListener.onConfirmedCursorAssets(cursorAdapter.getSelectedFilePaths(), albumId);
+				assetFragmentListener.onConfirmedCursorAssets(cursorAdapter.getSelectedFilePaths());
 			}
 		}
 	}
@@ -310,10 +289,9 @@ public class AssetsFragment extends Fragment {
 	public PhotoSelectCursorAdapter getPhotoSelectCursorAdapter() {
 		return cursorAdapter;
 	}
-	
+
 	public PhotosAdapter getSocialPhotoAdapter() {
 		return socialAdapter;
 	}
-
 
 }

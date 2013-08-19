@@ -20,8 +20,6 @@ import android.widget.Toast;
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment;
-import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment.SelectAlbumListener;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.AssetFragmentListener;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
@@ -30,7 +28,6 @@ import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
-import com.chute.android.photopickerplus.util.intent.AlbumsActivityIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
@@ -45,8 +42,7 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class ServicesActivity extends FragmentActivity implements SelectAlbumListener, AssetFragmentListener,
-		ServiceClickedListener {
+public class ServicesActivity extends FragmentActivity implements AssetFragmentListener, ServiceClickedListener {
 
 	private static final String TAG = ServicesActivity.class.getSimpleName();
 
@@ -126,7 +122,7 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 			model.setThumbUrl(uri.toString());
 			model.setUrl(uri.toString());
 
-			IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, model, ppWrapper.getAlbumId());
+			IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, model);
 		}
 
 	}
@@ -185,7 +181,7 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 				model.setThumbUrl(path);
 				model.setUrl(path);
 
-				IntentUtil.deliverDataToInitialActivity(this, model, ppWrapper.getAlbumId());
+				IntentUtil.deliverDataToInitialActivity(this, model);
 			}
 		}
 	}
@@ -196,22 +192,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 		setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
 		finish();
 	}
-
-	public void replaceContentWithAlbumFragment(String accountName, String accountID, String accountShortcut) {
-		fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.fragments,
-				AlbumsFragment.newInstance(accountName, accountID, accountShortcut), Constants.TAG_FRAGMENT_ALBUM);
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
-	}
-
-	// public void replaceContentWithEmptyFragment() {
-	// fragmentTransaction = fragmentManager.beginTransaction();
-	// fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(),
-	// Constants.TAG_FRAGMENT_EMPTY);
-	// // fragmentTransaction.addToBackStack(null);
-	// fragmentTransaction.commit();
-	// }
 
 	private final class AccountsCallback implements HttpCallback<ListResponseModel<AccountModel>> {
 
@@ -236,7 +216,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 				}
 				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
 				PreferenceUtil.get().setShortcutForAccount(accountType, accountModel.getShortcut());
-				// setAccountUserName();
 				accountClicked(accountModel.getId(), accountType.getName(), accountModel.getShortcut());
 			}
 		}
@@ -249,50 +228,10 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 	}
 
 	public void accountClicked(String accountId, String accountName, String accountShortcut) {
-		if (dualFragments) {
-			replaceContentWithAlbumFragment(accountName, accountId, accountShortcut);
-		} else {
-			AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ServicesActivity.this);
-			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-			wrapper.setAccountId(accountId);
-			wrapper.setAccountName(accountName);
-			wrapper.setAccountShortcut(accountShortcut);
-			wrapper.startActivity(ServicesActivity.this);
-		}
-		// setAccountUserName();
-	}
-
-	@Override
-	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList, null, null, albumId);
-
-	}
-
-	@Override
-	public void onConfirmedCursorAssets(ArrayList<String> assetPathList, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, AppUtil.getPhotoCollection(assetPathList), null,
-				null, albumId);
-
-	}
-
-	@Override
-	public void onSelectedSocialItem(AccountMediaModel accountMediaModel, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel, albumId);
-	}
-
-	@Override
-	public void onSelectedCursorItem(AccountMediaModel accountMediaModel, String albumId) {
-		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel, albumId);
-	}
-
-	@Override
-	public void onAlbumSelected(AccountAlbumModel model, String accountId, String accountName, String accountShortcut) {
 		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 		wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
-		wrapper.setChuteId(ppWrapper.getAlbumId());
 		wrapper.setAccountId(accountId);
-		wrapper.setAlbumId(model.getId());
 		wrapper.setAccountName(accountName);
 		wrapper.setAccountShortcut(accountShortcut);
 		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
@@ -300,14 +239,25 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 	}
 
 	@Override
-	public void onBackPressed() {
-		AlbumsFragment frag = (AlbumsFragment) fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_ALBUM);
-		if (frag != null && fragmentManager.getBackStackEntryCount() > 0) {
-			fragmentManager.popBackStackImmediate(fragmentManager.getBackStackEntryAt(0).getName(),
-					FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			fragmentManager.beginTransaction().detach(frag).commit();
-		} else {
-			super.onBackPressed();
-		}
+	public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList) {
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList);
+
 	}
+
+	@Override
+	public void onConfirmedCursorAssets(ArrayList<String> assetPathList) {
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, AppUtil.getPhotoCollection(assetPathList));
+
+	}
+
+	@Override
+	public void onSelectedSocialItem(AccountMediaModel accountMediaModel) {
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
+	}
+
+	@Override
+	public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
+		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
+	}
+
 }
