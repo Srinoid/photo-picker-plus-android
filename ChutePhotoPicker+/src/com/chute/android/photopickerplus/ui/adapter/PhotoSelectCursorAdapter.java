@@ -125,6 +125,15 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 		}
 		return photos;
 	}
+	
+	public ArrayList<Integer> getSelectedItemPositions() {
+		final ArrayList<Integer> positions = new ArrayList<Integer>();
+		final Iterator<Integer> iterator = tick.keySet().iterator();
+		while (iterator.hasNext()) {
+			positions.add(iterator.next());
+		}
+		return positions;
+	}
 
 	public boolean hasSelectedItems() {
 		return tick.size() > 0;
@@ -142,6 +151,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements OnScrollL
 		}
 		notifyDataSetChanged();
 	}
+	
 
 	private void configureImageViewDimensions(ImageView imageViewThumb) {
 		int orientation = context.getResources().getConfiguration().orientation;

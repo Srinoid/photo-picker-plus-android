@@ -22,7 +22,6 @@ import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment;
 import com.chute.android.photopickerplus.ui.fragment.AlbumsFragment.SelectAlbumListener;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
 import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.AssetFragmentListener;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
@@ -197,15 +196,6 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 		finish();
 	}
 
-	public void replaceContentWithAssetFragment(PhotoFilterType filterType, String accountID, String accountModelID,
-			boolean isMultiPicker) {
-		fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.fragments,
-				AssetsFragment.newInstance(filterType, accountID, accountModelID, isMultiPicker));
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
-
-	}
 
 	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
 		fragmentTransaction = fragmentManager.beginTransaction();

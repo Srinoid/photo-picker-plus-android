@@ -45,13 +45,13 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 		/**
 		 * Call for managing services locally.
 		 **/
-//		 ConfigServicesSingleton.getInstance(getApplicationContext()).setAvailableServices(services);
+		 ConfigServicesSingleton.getInstance(getApplicationContext()).setAvailableServices(services);
 		/**
 		 * Get which services need to be used from the server; Important: Save
 		 * endpoint URL in PhotoPicker+ preferences.
 		 **/
-		PhotoPickerPreferenceUtil.get().setConfigUrl(ConfigEndpointURLs.SERVICES_ENDPOINT_URL);
-		ConfigServicesSingleton.getInstance(getApplicationContext()).fetchConfigFromServer();
+//		PhotoPickerPreferenceUtil.get().setConfigUrl(ConfigEndpointURLs.SERVICES_ENDPOINT_URL);
+//		ConfigServicesSingleton.getInstance(getApplicationContext()).fetchConfigFromServer();
 
 	}
 

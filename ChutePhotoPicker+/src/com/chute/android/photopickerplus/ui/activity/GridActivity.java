@@ -27,11 +27,13 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 public class GridActivity extends FragmentActivity implements AssetFragmentListener {
 
 	public static final String TAG = GridActivity.class.getSimpleName();
+	public static final String KEY_SELECTED_ITEMS = "keySelectedItems";
 	private String albumID;
 	private String accountID;
 	private boolean isMultiPicker;
 	private PhotoFilterType filterType;
 	private PhotosIntentWrapper wrapper;
+	private AssetsFragment fragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +43,18 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 
 		setContentView(R.layout.activity_assets);
 
+		ArrayList<Integer> selectedItemsPositions = savedInstanceState != null ? savedInstanceState
+				.getIntegerArrayList(KEY_SELECTED_ITEMS) : null;
+
 		wrapper = new PhotosIntentWrapper(getIntent());
 		albumID = wrapper.getAlbumId();
 		accountID = wrapper.getAccountId();
 		isMultiPicker = wrapper.getIsMultiPicker();
 		filterType = wrapper.getFilterType();
 
-		AssetsFragment fragment = (AssetsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentAssets);
+		fragment = (AssetsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentAssets);
 		fragment.setRetainInstance(true);
-		fragment.updateFragment(albumID, accountID, filterType, isMultiPicker);
+		fragment.updateFragment(albumID, accountID, filterType, isMultiPicker, selectedItemsPositions);
 	}
 
 	@Override
@@ -82,6 +87,19 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 		IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModelList, null, null, albumId);
 		setResult(RESULT_OK);
 		finish();
+
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (fragment.getSocialPhotoAdapter() != null) {
+			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getSocialPhotoAdapter()
+					.getSelectedItemPositions());
+		} else {
+			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getPhotoSelectCursorAdapter()
+					.getSelectedItemPositions());
+		}
 
 	}
 

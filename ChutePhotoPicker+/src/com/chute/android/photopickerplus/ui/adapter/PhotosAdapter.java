@@ -117,6 +117,15 @@ public class PhotosAdapter extends BaseAdapter {
 		return photos;
 	}
 
+	public ArrayList<Integer> getSelectedItemPositions() {
+		final ArrayList<Integer> positions = new ArrayList<Integer>();
+		final Iterator<Integer> iterator = tick.keySet().iterator();
+		while (iterator.hasNext()) {
+			positions.add(iterator.next());
+		}
+		return positions;
+	}
+
 	public boolean hasSelectedItems() {
 		return tick.size() > 0;
 	}
@@ -139,13 +148,12 @@ public class PhotosAdapter extends BaseAdapter {
 		if (!dualFragments) {
 			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 				int imageHeight = displayMetrics.widthPixels - 80;
-			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels /3,
-					imageHeight / 3));
-			}
-			else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
+						imageHeight / 3));
+			} else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				int imageHeight = displayMetrics.widthPixels - 120;
-			imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 5,
-					imageHeight / 5));
+				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 5,
+						imageHeight / 5));
 			}
 		} else {
 			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {

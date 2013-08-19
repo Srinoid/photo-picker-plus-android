@@ -78,6 +78,7 @@ public class AlbumsFragment extends Fragment {
 		textViewAlbumTitle.setText(albumName);
 
 		GCAccounts.albums(getActivity().getApplicationContext(), accountId, new ObjectsCallback()).executeAsync();
+
 	}
 
 	private final class ObjectsCallback implements HttpCallback<ListResponseModel<AccountAlbumModel>> {
@@ -85,15 +86,15 @@ public class AlbumsFragment extends Fragment {
 		@Override
 		public void onSuccess(ListResponseModel<AccountAlbumModel> responseData) {
 			if (responseData != null && getActivity() != null) {
-			adapter = new AlbumsAdapter(getActivity().getApplicationContext(),
-					(ArrayList<AccountAlbumModel>) responseData.getData());
-			listViewAlbums.setAdapter(adapter);
-			if (adapter.getCount() == 0) {
-				emptyView.setVisibility(View.GONE);
+				adapter = new AlbumsAdapter(getActivity().getApplicationContext(),
+						(ArrayList<AccountAlbumModel>) responseData.getData());
+				listViewAlbums.setAdapter(adapter);
+				if (adapter.getCount() == 0) {
+					emptyView.setVisibility(View.GONE);
+				}
+				listViewAlbums.setOnItemClickListener(new OnAlbumsClickListener());
+				NotificationUtil.showAlbumsAdapterToast(getActivity().getApplicationContext(), adapter.getCount());
 			}
-			listViewAlbums.setOnItemClickListener(new OnAlbumsClickListener());
-			NotificationUtil.showAlbumsAdapterToast(getActivity().getApplicationContext(), adapter.getCount());
-		}
 		}
 
 		public void toggleEmptyViewErrorMessage() {

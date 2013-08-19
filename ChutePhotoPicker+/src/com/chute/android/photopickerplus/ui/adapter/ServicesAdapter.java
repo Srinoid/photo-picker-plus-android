@@ -135,8 +135,6 @@ public class ServicesAdapter extends BaseAdapter {
 			serviceTitle.setVisibility(View.GONE);
 		}
 		if (service.equals(AccountType.PICASA)) {
-			Log.d("debug", "picasa = " + AccountType.PICASA.getName());
-			Log.d("debug", "picasa service = " + service);
 			imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.picassa));
 			serviceTitle.setVisibility(View.GONE);
 		}
