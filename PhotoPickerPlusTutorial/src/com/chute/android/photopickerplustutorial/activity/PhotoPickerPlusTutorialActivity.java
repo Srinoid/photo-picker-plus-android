@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplustutorial.activity;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -23,10 +25,12 @@ import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
 import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusIntentWrapper;
+import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
 	public static final String TAG = PhotoPickerPlusTutorialActivity.class.getSimpleName();
+	private static final String KEY_SELECTED_ITEMS = "keySelectedItems";
 	private GridView grid;
 	/**
 	 * PhotoPicker+ component enables choosing multiple photos or a single photo
@@ -34,6 +38,8 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 	 * isMultipicker=true, otherwise set isMultiPicker=false.
 	 */
 	private final boolean isMultiPicker = true;
+	private GridAdapter adapter;
+	private ArrayList<AccountMediaModel> accountMediaList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,14 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
 		findViewById(R.id.btnPhotoPicker).setOnClickListener(new OnPhotoPickerClickListener());
 		grid = (GridView) findViewById(R.id.grid);
-		
+		if (savedInstanceState != null) {
+			accountMediaList = savedInstanceState.getParcelableArrayList(KEY_SELECTED_ITEMS);
+			adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this, accountMediaList);
+		} else {
+			adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this, new ArrayList<AccountMediaModel>());
+		}
+		grid.setAdapter(adapter);
+
 		int orientation = getResources().getConfiguration().orientation;
 		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			grid.setNumColumns(5);
@@ -70,8 +83,9 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 			return;
 		}
 		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(data);
-		grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this, wrapper.getMediaCollection()));
-		Log.d("debug" , wrapper.getMediaCollection().toString());
+		accountMediaList = wrapper.getMediaCollection();
+		adapter.changeData(accountMediaList);
+		// Log.d("debug", wrapper.getMediaCollection().toString());
 
 		// String path;
 		// Uri uri = Uri.parse(wrapper.getMediaCollection().get(0).getUrl());
@@ -81,5 +95,11 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 		// path = uri.getPath();
 		// }
 		// ALog.d("The Path or url of the file " + path);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putParcelableArrayList(KEY_SELECTED_ITEMS, accountMediaList);
+		super.onSaveInstanceState(outState);
 	}
 }
