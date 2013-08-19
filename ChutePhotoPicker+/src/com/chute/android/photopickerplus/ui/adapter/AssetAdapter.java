@@ -29,8 +29,8 @@ import com.chute.android.photopickerplus.R;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
-import com.chute.sdk.v2.model.Row;
-import com.chute.sdk.v2.model.enums.RowType;
+import com.chute.sdk.v2.model.MediaViewType;
+import com.chute.sdk.v2.model.enums.MediaType;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -47,7 +47,7 @@ public class AssetAdapter extends BaseAdapter {
 	private final DisplayMetrics displayMetrics;
 	private final Activity context;
 	private final boolean dualFragments;
-	private List<Row> rows;
+	private List<MediaViewType> rows;
 
 	public AssetAdapter(Activity context, AccountBaseModel baseModel) {
 		this.context = context;
@@ -56,15 +56,15 @@ public class AssetAdapter extends BaseAdapter {
 		displayMetrics = context.getResources().getDisplayMetrics();
 		tick = new HashMap<Integer, AccountMediaModel>();
 		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
-		rows = new ArrayList<Row>();// member variable
+		rows = new ArrayList<MediaViewType>();// member variable
 
 		if (baseModel.getFiles() != null) {
 			for (AccountMediaModel file : baseModel.getFiles()) {
-			rows.add(file);
+				rows.add(file);
 			}
 		} else if (baseModel.getFolders() != null) {
 			for (AccountAlbumModel folder : baseModel.getFolders()) {
-			rows.add(folder);
+				rows.add(folder);
 			}
 		}
 	}
@@ -114,10 +114,10 @@ public class AssetAdapter extends BaseAdapter {
 			holder = (ViewHolder) vi.getTag();
 		}
 
-		if (type == RowType.FOLDER.ordinal()) {
+		if (type == MediaType.FOLDER.ordinal()) {
 			holder.imageViewTick.setVisibility(View.GONE);
 			holder.imageViewThumb.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.album_default));
-		} else if (type == RowType.FILE.ordinal()) {
+		} else if (type == MediaType.FILE.ordinal()) {
 			holder.imageViewTick.setVisibility(View.VISIBLE);
 			loader.displayImage(((AccountMediaModel) getItem(position)).getUrl(), holder.imageViewThumb, null);
 		}
