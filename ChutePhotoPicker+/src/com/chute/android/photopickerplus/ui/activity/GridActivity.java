@@ -34,6 +34,8 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 	private PhotoFilterType filterType;
 	private PhotosIntentWrapper wrapper;
 	private AssetsFragment fragment;
+	private String accountName;
+	private String accountShortcut;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,12 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 		accountID = wrapper.getAccountId();
 		isMultiPicker = wrapper.getIsMultiPicker();
 		filterType = wrapper.getFilterType();
+		accountName = wrapper.getAccountName();
+		accountShortcut = wrapper.getAccountShortcut();
 
 		fragment = (AssetsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentAssets);
 		fragment.setRetainInstance(true);
-		fragment.updateFragment(albumID, accountID, filterType, isMultiPicker, selectedItemsPositions);
+		fragment.updateFragment(albumID, accountID, filterType, isMultiPicker, selectedItemsPositions, accountName, accountShortcut);
 	}
 
 	@Override
@@ -93,10 +97,12 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (fragment.getSocialPhotoAdapter() != null) {
+		if (fragment.getSocialPhotoAdapter() != null
+				&& fragment.getSocialPhotoAdapter().getSelectedItemPositions() != null) {
 			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getSocialPhotoAdapter()
 					.getSelectedItemPositions());
-		} else {
+		} else if (fragment.getPhotoSelectCursorAdapter() != null
+				&& fragment.getPhotoSelectCursorAdapter().getSelectedItemPositions() != null) {
 			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getPhotoSelectCursorAdapter()
 					.getSelectedItemPositions());
 		}

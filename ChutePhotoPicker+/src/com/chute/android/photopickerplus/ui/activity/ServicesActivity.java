@@ -145,7 +145,8 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 	public void accountLogin(AccountType type) {
 		accountType = type;
 		if (PreferenceUtil.get().hasAccountId(accountType)) {
-			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName());
+			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName(), PreferenceUtil.get()
+					.getShortcutForAccount(accountType));
 		} else {
 			PhotoPickerPreferenceUtil.get().setAccountType(accountType.name());
 			AuthenticationFactory.getInstance().startAuthenticationActivity(ServicesActivity.this, accountType);
@@ -196,11 +197,10 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 		finish();
 	}
 
-
-	public void replaceContentWithAlbumFragment(String accountName, String accountID) {
+	public void replaceContentWithAlbumFragment(String accountName, String accountID, String accountShortcut) {
 		fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.replace(R.id.fragments, AlbumsFragment.newInstance(accountName, accountID),
-				Constants.TAG_FRAGMENT_ALBUM);
+		fragmentTransaction.replace(R.id.fragments,
+				AlbumsFragment.newInstance(accountName, accountID, accountShortcut), Constants.TAG_FRAGMENT_ALBUM);
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
@@ -235,8 +235,9 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
 				}
 				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
+				PreferenceUtil.get().setShortcutForAccount(accountType, accountModel.getShortcut());
 				// setAccountUserName();
-				accountClicked(accountModel.getId(), accountType.getName());
+				accountClicked(accountModel.getId(), accountType.getName(), accountModel.getShortcut());
 			}
 		}
 
@@ -247,14 +248,15 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 
 	}
 
-	public void accountClicked(String accountId, String accountName) {
+	public void accountClicked(String accountId, String accountName, String accountShortcut) {
 		if (dualFragments) {
-			replaceContentWithAlbumFragment(accountName, accountId);
+			replaceContentWithAlbumFragment(accountName, accountId, accountShortcut);
 		} else {
 			AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(ServicesActivity.this);
 			wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 			wrapper.setAccountId(accountId);
 			wrapper.setAccountName(accountName);
+			wrapper.setAccountShortcut(accountShortcut);
 			wrapper.startActivity(ServicesActivity.this);
 		}
 		// setAccountUserName();
@@ -284,13 +286,15 @@ public class ServicesActivity extends FragmentActivity implements SelectAlbumLis
 	}
 
 	@Override
-	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
+	public void onAlbumSelected(AccountAlbumModel model, String accountId, String accountName, String accountShortcut) {
 		final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
 		wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
 		wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
 		wrapper.setChuteId(ppWrapper.getAlbumId());
 		wrapper.setAccountId(accountId);
 		wrapper.setAlbumId(model.getId());
+		wrapper.setAccountName(accountName);
+		wrapper.setAccountShortcut(accountShortcut);
 		wrapper.startActivityForResult(ServicesActivity.this, PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
 	}

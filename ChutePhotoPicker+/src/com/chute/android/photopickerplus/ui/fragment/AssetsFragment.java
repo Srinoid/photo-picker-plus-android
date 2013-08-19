@@ -32,6 +32,7 @@ import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
+import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
@@ -39,6 +40,8 @@ public class AssetsFragment extends Fragment {
 
 	private static final String ARG_FILTER_TYPE = "argFilterType";
 	private static final String ARG_ACCOUNT_ID = "argAccountId";
+	private static final String ARG_ACCOUNT_NAME= "argAccountName";
+	private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
 	private static final String ARG_ALBUM_ID = "argAlbumId";
 	private static final String ARG_MULTIPICKER = "argMultiPicker";
 	private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
@@ -51,6 +54,8 @@ public class AssetsFragment extends Fragment {
 
 	private boolean isMultipicker;
 	private String albumId;
+	private String accountName;
+	private String accountShortcut;
 	private ArrayList<Integer> selectedItemsPositions;
 	private PhotoFilterType filterType;
 	private AssetFragmentListener assetFragmentListener;
@@ -67,7 +72,7 @@ public class AssetsFragment extends Fragment {
 	}
 
 	public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId, String albumId,
-			boolean isMultiPicker, ArrayList<Integer> selectedItemPositions) {
+			boolean isMultiPicker, ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
 		AssetsFragment frag = new AssetsFragment();
 		Bundle args = new Bundle();
 		args.putSerializable(ARG_FILTER_TYPE, filterType);
@@ -75,6 +80,8 @@ public class AssetsFragment extends Fragment {
 		args.putString(ARG_ACCOUNT_ID, accountId);
 		args.putBoolean(ARG_MULTIPICKER, isMultiPicker);
 		args.putIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS, selectedItemPositions);
+		args.putString(ARG_ACCOUNT_NAME, accountName);
+		args.putString(ARG_ACCOUNT_SHORTCUT, accountShortcut);
 		frag.setArguments(args);
 		return frag;
 	}
@@ -108,9 +115,11 @@ public class AssetsFragment extends Fragment {
 		cancel.setOnClickListener(new CancelClickListener());
 
 		if (getArguments() != null && savedInstanceState == null) {
+			accountName = getArguments().getString(ARG_ACCOUNT_NAME);
+			accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
 			updateFragment(getArguments().getString(ARG_ALBUM_ID), getArguments().getString(ARG_ACCOUNT_ID),
 					(PhotoFilterType) getArguments().get(ARG_FILTER_TYPE), getArguments().getBoolean(ARG_MULTIPICKER),
-					getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS));
+					getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS), accountName, accountShortcut);
 		}
 
 		int orientation = getResources().getConfiguration().orientation;
@@ -122,7 +131,7 @@ public class AssetsFragment extends Fragment {
 	}
 
 	public void updateFragment(String albumId, String accountId, PhotoFilterType filterType, boolean isMultipicker,
-			ArrayList<Integer> selectedItemsPositions) {
+			ArrayList<Integer> selectedItemsPositions, String accountName, String accountShortcut) {
 		this.albumId = albumId;
 		this.filterType = filterType;
 		this.isMultipicker = isMultipicker;
@@ -131,14 +140,15 @@ public class AssetsFragment extends Fragment {
 		if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
 			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback());
 		} else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-			GCAccounts.albumMedia(getActivity().getApplicationContext(), accountId, albumId, new PhotoListCallback())
-					.executeAsync();
-			// GCAccounts.accountRoot(getActivity(), AccountType.PICASA,
-			// accountId, new RootCallback()).executeAsync();
+//			GCAccounts.albumMedia(getActivity().getApplicationContext(), accountId, albumId, new PhotoListCallback())
+//					.executeAsync();
+//			 GCAccounts.accountRoot(getActivity(), AccountType.PICASA,
+//			 accountId, new RootCallback()).executeAsync();
+			GCAccounts.accountRoot(getActivity(), accountName, accountShortcut, new RootCallback()).executeAsync();
 		}
 	}
 
-	private final class RootCallback implements HttpCallback<ListResponseModel<AccountBaseModel>> {
+	private final class RootCallback implements HttpCallback<ResponseModel<AccountBaseModel>> {
 
 		@Override
 		public void onHttpError(ResponseStatus arg0) {
@@ -147,7 +157,7 @@ public class AssetsFragment extends Fragment {
 		}
 
 		@Override
-		public void onSuccess(ListResponseModel<AccountBaseModel> arg0) {
+		public void onSuccess(ResponseModel<AccountBaseModel> arg0) {
 			Log.d("debug", "repsonse = " + arg0.toString());
 
 		}

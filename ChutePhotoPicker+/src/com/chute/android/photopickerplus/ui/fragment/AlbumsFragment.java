@@ -27,6 +27,7 @@ public class AlbumsFragment extends Fragment {
 
 	private static final String ARG_ALBUM_TITLE = "argAlbumTitle";
 	private static final String ARG_ACCOUNT_ID = "argAccountId";
+	private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
 	private ListView listViewAlbums;
 	private AlbumsAdapter adapter;
 	private View emptyView;
@@ -34,16 +35,19 @@ public class AlbumsFragment extends Fragment {
 	private TextView textViewAlbumTitle;
 
 	private String accountId;
+	private String accountShortcut;
+	private String accountName;
 
 	public interface SelectAlbumListener {
-		public void onAlbumSelected(AccountAlbumModel model, String accountId);
+		public void onAlbumSelected(AccountAlbumModel model, String accountId, String accountName, String accountShortcut);
 	}
 
-	public static AlbumsFragment newInstance(String albumTitle, String accountId) {
+	public static AlbumsFragment newInstance(String albumTitle, String accountId, String accountShortcut) {
 		AlbumsFragment frag = new AlbumsFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_ALBUM_TITLE, albumTitle);
 		args.putString(ARG_ACCOUNT_ID, accountId);
+		args.putString(ARG_ACCOUNT_SHORTCUT, accountShortcut);
 		frag.setArguments(args);
 		return frag;
 	}
@@ -66,14 +70,18 @@ public class AlbumsFragment extends Fragment {
 
 		if (getArguments() != null) {
 			accountId = getArguments().getString(ARG_ACCOUNT_ID);
-			updateFragment(getArguments().getString(ARG_ALBUM_TITLE), accountId);
+			accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
+			accountName = getArguments().getString(ARG_ALBUM_TITLE);
+			updateFragment(accountName, accountId, accountShortcut);
 		}
 
 		return view;
 	}
 
-	public void updateFragment(String accountTitle, String accountId) {
+	public void updateFragment(String accountTitle, String accountId, String accountShortcut) {
 		this.accountId = accountId;
+		this.accountShortcut = accountShortcut;
+		this.accountName = accountTitle;
 		String albumName = AppUtil.asUpperCaseFirstChar(accountTitle.concat(" " + getString(R.string.albums)));
 		textViewAlbumTitle.setText(albumName);
 
@@ -114,7 +122,7 @@ public class AlbumsFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			AccountAlbumModel accountObjectModel = adapter.getItem(position);
-			albumListener.onAlbumSelected(accountObjectModel, accountId);
+			albumListener.onAlbumSelected(accountObjectModel, accountId, accountName, accountShortcut);
 		}
 
 	}

@@ -29,6 +29,8 @@ public class AlbumsActivity extends FragmentActivity implements SelectAlbumListe
 	private static final String TAG = AlbumsActivity.class.getSimpleName();
 	private String accountId;
 	private boolean isMultiPicker;
+	private String accountShortcut;
+	private String accountTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +39,24 @@ public class AlbumsActivity extends FragmentActivity implements SelectAlbumListe
 		setContentView(R.layout.activity_albums);
 
 		AlbumsActivityIntentWrapper wrapper = new AlbumsActivityIntentWrapper(getIntent());
-		String accountTitle = wrapper.getAccountName();
+		accountTitle = wrapper.getAccountName();
 		accountId = wrapper.getAccountId();
+		accountShortcut = wrapper.getAccountShortcut();
 		isMultiPicker = wrapper.getIsMultiPicker();
 
 		AlbumsFragment frag = (AlbumsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentAlbums);
-		frag.updateFragment(accountTitle, accountId);
+		frag.updateFragment(accountTitle, accountId,accountShortcut);
 	}
 
 	@Override
-	public void onAlbumSelected(AccountAlbumModel model, String accountId) {
+	public void onAlbumSelected(AccountAlbumModel model, String accountId, String accountName, String accountShortcut) {
 		final PhotosIntentWrapper photosWrapper = new PhotosIntentWrapper(AlbumsActivity.this);
 		photosWrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
 		photosWrapper.setMultiPicker(isMultiPicker);
 		photosWrapper.setAlbumId(model.getId());
 		photosWrapper.setAccountId(accountId);
+		photosWrapper.setAccountName(accountTitle);
+		photosWrapper.setAccountShortcut(accountShortcut);
 		photosWrapper.startActivityForResult(AlbumsActivity.this,
 				GridActivityIntentWrapper.ACTIVITY_FOR_RESULT_PHOTO_KEY);
 

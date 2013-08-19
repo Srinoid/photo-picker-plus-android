@@ -18,12 +18,12 @@ import com.chute.android.photopickerplus.ui.activity.AlbumsActivity;
 public class AlbumsActivityIntentWrapper {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = AlbumsActivityIntentWrapper.class
-			.getSimpleName();
+	private static final String TAG = AlbumsActivityIntentWrapper.class.getSimpleName();
 
 	private static final String KEY_ACCOUNT_ID = "accountId";
 	private static final String KEY_ACCOUNT_NAME = "accountName";
 	private static final String KEY_MULTI_PICKER = "keyMultiPicker";
+	private static final String KEY_ACCOUNT_SHORTCUT = "keyAccountShortcut";
 
 	private final Intent intent;
 
@@ -60,6 +60,14 @@ public class AlbumsActivityIntentWrapper {
 
 	public void setAccountName(String accountName) {
 		intent.putExtra(KEY_ACCOUNT_NAME, accountName);
+	}
+
+	public String getAccountShortcut() {
+		return intent.getExtras().getString(KEY_ACCOUNT_SHORTCUT);
+	}
+
+	public void setAccountShortcut(String accountShortcut) {
+		intent.putExtra(KEY_ACCOUNT_SHORTCUT, accountShortcut);
 	}
 
 	public boolean getIsMultiPicker() {
