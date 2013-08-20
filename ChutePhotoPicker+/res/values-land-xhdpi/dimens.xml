@@ -5,4 +5,9 @@
     <dimen name="fragment_title">16dp</dimen>
     <dimen name="album_name">16dp</dimen>
 
+    <integer name="grid_columns_services">8</integer>
+    <integer name="image_dimensions_services">110</integer>
+    <integer name="grid_columns_assets">5</integer>
+    <integer name="image_dimensions_assets">120</integer>
+
 </resources>

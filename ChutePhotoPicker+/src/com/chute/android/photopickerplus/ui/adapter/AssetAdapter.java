@@ -16,8 +16,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,9 +43,7 @@ public class AssetAdapter extends BaseAdapter {
 	private static LayoutInflater inflater;
 	public ImageLoader loader;
 	public HashMap<Integer, AccountMediaModel> tick;
-	private final DisplayMetrics displayMetrics;
 	private final Activity context;
-	private final boolean dualFragments;
 	private List<MediaViewType> rows;
 	private AdapterItemClickListener listener;
 
@@ -63,9 +59,7 @@ public class AssetAdapter extends BaseAdapter {
 		this.listener = listener;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		loader = ImageLoader.getLoader(context);
-		displayMetrics = context.getResources().getDisplayMetrics();
 		tick = new HashMap<Integer, AccountMediaModel>();
-		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
 		rows = new ArrayList<MediaViewType>();
 
 		if (baseModel.getFiles() != null) {
@@ -181,26 +175,10 @@ public class AssetAdapter extends BaseAdapter {
 	}
 
 	private void configureImageViewDimensions(ImageView imageViewThumb) {
-		int orientation = context.getResources().getConfiguration().orientation;
-		if (!dualFragments) {
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				int imageHeight = displayMetrics.widthPixels - 80;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						imageHeight / 3));
-			} else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				int imageHeight = displayMetrics.widthPixels - 120;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 5,
-						imageHeight / 5));
-			}
-		} else {
-			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels,
-						(int) (displayMetrics.heightPixels / 3.5)));
-			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						(int) (displayMetrics.widthPixels / 3.5)));
-			}
-		}
+		int imageHeight = context.getResources().getInteger(R.integer.image_dimensions_assets);
+		int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
+		imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageHeight / gridColumns, imageHeight
+				/ gridColumns));
 	}
 
 	private final class OnFolderClickedListener implements OnClickListener {

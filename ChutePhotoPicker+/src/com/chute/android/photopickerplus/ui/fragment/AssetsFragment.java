@@ -3,7 +3,6 @@ package com.chute.android.photopickerplus.ui.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -120,10 +119,7 @@ public class AssetsFragment extends Fragment implements AdapterItemClickListener
 					getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS), accountName, accountShortcut);
 		}
 
-		int orientation = getResources().getConfiguration().orientation;
-		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			gridView.setNumColumns(5);
-		}
+		gridView.setNumColumns(getResources().getInteger(R.integer.grid_columns_assets));
 
 		return view;
 	}
@@ -267,10 +263,6 @@ public class AssetsFragment extends Fragment implements AdapterItemClickListener
 				assetFragmentListener.onConfirmedCursorAssets(cursorAdapter.getSelectedFilePaths());
 			}
 		}
-	}
-
-	public PhotoSelectCursorAdapter getPhotoSelectCursorAdapter() {
-		return cursorAdapter;
 	}
 
 	@Override

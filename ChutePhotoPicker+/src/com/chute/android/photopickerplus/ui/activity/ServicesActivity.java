@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
@@ -50,9 +49,6 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 
 	private FragmentServices fragmentServicesVertical;
 
-	private boolean dualFragments = false;
-
-	private FragmentTransaction fragmentTransaction;
 	private static FragmentManager fragmentManager;
 
 	@Override
@@ -64,7 +60,6 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 
 		ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
 		fragmentServicesVertical = (FragmentServices) fragmentManager.findFragmentById(R.id.fragmentServices);
-		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
 		ArrayList<AccountType> serviceList = new ArrayList<AccountType>();
 		if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
@@ -248,6 +243,5 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 	public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
 		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
 	}
-
 
 }
