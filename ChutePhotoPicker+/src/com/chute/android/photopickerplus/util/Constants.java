@@ -11,14 +11,13 @@ package com.chute.android.photopickerplus.util;
 
 public class Constants {
 
-	@SuppressWarnings("unused")
-	private static final String TAG = Constants.class.getSimpleName();
+  @SuppressWarnings("unused")
+  private static final String TAG = Constants.class.getSimpleName();
 
-	public static final int DELAY_TIME = 500;
-	public static final int CAMERA_PIC_REQUEST = 2500;
+  public static final int DELAY_TIME = 500;
+  public static final int CAMERA_PIC_REQUEST = 2500;
 
-	
-	public static final String TAG_FRAGMENT_ALBUM = "AlbumFrag";
-	public static final String TAG_FRAGMENT_EMPTY = "EmptyFrag";
-	
+  public static final String TAG_FRAGMENT_ALBUM = "AlbumFrag";
+  public static final String TAG_FRAGMENT_EMPTY = "EmptyFrag";
+
 }

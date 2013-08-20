@@ -9,14 +9,14 @@ import com.dg.libs.rest.requests.ParameterHttpRequestImpl;
 
 public class ConfigServicesRequest extends ParameterHttpRequestImpl<ServiceResponseModel> {
 
-	public ConfigServicesRequest(Context context, HttpCallback<ServiceResponseModel> callback) {
-		super(context, RequestMethod.GET, new ServiceResponseParser(), callback);
-		// TODO Auto-generated constructor stub
-	}
+  public ConfigServicesRequest(Context context,
+      HttpCallback<ServiceResponseModel> callback) {
+    super(context, RequestMethod.GET, new ServiceResponseParser(), callback);
+  }
 
-	@Override
-	protected String getUrl() {
-		return PhotoPickerPreferenceUtil.get().getConfigUrl();
-	}
+  @Override
+  protected String getUrl() {
+    return PhotoPickerPreferenceUtil.get().getConfigUrl();
+  }
 
 }

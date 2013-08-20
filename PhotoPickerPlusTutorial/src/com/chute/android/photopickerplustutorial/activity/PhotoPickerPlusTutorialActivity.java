@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
@@ -29,77 +28,79 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
-	public static final String TAG = PhotoPickerPlusTutorialActivity.class.getSimpleName();
-	private static final String KEY_SELECTED_ITEMS = "keySelectedItems";
-	private GridView grid;
-	/**
-	 * PhotoPicker+ component enables choosing multiple photos or a single photo
-	 * in a grid. If you wish to enable multi-picking functionality, set
-	 * isMultipicker=true, otherwise set isMultiPicker=false.
-	 */
-	private final boolean isMultiPicker = true;
-	private GridAdapter adapter;
-	private ArrayList<AccountMediaModel> accountMediaList;
+  public static final String TAG = PhotoPickerPlusTutorialActivity.class.getSimpleName();
+  private static final String KEY_SELECTED_ITEMS = "keySelectedItems";
+  private GridView grid;
+  /**
+   * PhotoPicker+ component enables choosing multiple photos or a single photo
+   * in a grid. If you wish to enable multi-picking functionality, set
+   * isMultipicker=true, otherwise set isMultiPicker=false.
+   */
+  private final boolean isMultiPicker = true;
+  private GridAdapter adapter;
+  private ArrayList<AccountMediaModel> accountMediaList;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_photo_picker_plus);
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_photo_picker_plus);
 
-		findViewById(R.id.btnPhotoPicker).setOnClickListener(new OnPhotoPickerClickListener());
-		grid = (GridView) findViewById(R.id.grid);
-		if (savedInstanceState != null) {
-			accountMediaList = savedInstanceState.getParcelableArrayList(KEY_SELECTED_ITEMS);
-			adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this, accountMediaList);
-		} else {
-			adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this, new ArrayList<AccountMediaModel>());
-		}
-		grid.setAdapter(adapter);
+    findViewById(R.id.btnPhotoPicker)
+        .setOnClickListener(new OnPhotoPickerClickListener());
+    grid = (GridView) findViewById(R.id.grid);
+    if (savedInstanceState != null) {
+      accountMediaList = savedInstanceState.getParcelableArrayList(KEY_SELECTED_ITEMS);
+      adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this, accountMediaList);
+    } else {
+      adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this,
+          new ArrayList<AccountMediaModel>());
+    }
+    grid.setAdapter(adapter);
 
-		int orientation = getResources().getConfiguration().orientation;
-		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			grid.setNumColumns(5);
-		}
+    int orientation = getResources().getConfiguration().orientation;
+    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      grid.setNumColumns(5);
+    }
 
-	}
+  }
 
-	private class OnPhotoPickerClickListener implements OnClickListener {
+  private class OnPhotoPickerClickListener implements OnClickListener {
 
-		@Override
-		public void onClick(View v) {
-			PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(
-					PhotoPickerPlusTutorialActivity.this);
-			wrapper.setMultiPicker(isMultiPicker);
-			wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this,
-					PhotoPickerPlusIntentWrapper.REQUEST_CODE);
+    @Override
+    public void onClick(View v) {
+      PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(
+          PhotoPickerPlusTutorialActivity.this);
+      wrapper.setMultiPicker(isMultiPicker);
+      wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this,
+          PhotoPickerPlusIntentWrapper.REQUEST_CODE);
 
-		}
-	}
+    }
+  }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode != Activity.RESULT_OK) {
-			return;
-		}
-		final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(data);
-		accountMediaList = wrapper.getMediaCollection();
-		adapter.changeData(accountMediaList);
-		// Log.d("debug", wrapper.getMediaCollection().toString());
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode != Activity.RESULT_OK) {
+      return;
+    }
+    final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(data);
+    accountMediaList = wrapper.getMediaCollection();
+    adapter.changeData(accountMediaList);
+    // Log.d("debug", wrapper.getMediaCollection().toString());
 
-		// String path;
-		// Uri uri = Uri.parse(wrapper.getMediaCollection().get(0).getUrl());
-		// if (uri.getScheme().contentEquals("http")) {
-		// path = uri.toString();
-		// } else {
-		// path = uri.getPath();
-		// }
-		// ALog.d("The Path or url of the file " + path);
-	}
+    // String path;
+    // Uri uri = Uri.parse(wrapper.getMediaCollection().get(0).getUrl());
+    // if (uri.getScheme().contentEquals("http")) {
+    // path = uri.toString();
+    // } else {
+    // path = uri.getPath();
+    // }
+    // ALog.d("The Path or url of the file " + path);
+  }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putParcelableArrayList(KEY_SELECTED_ITEMS, accountMediaList);
-		super.onSaveInstanceState(outState);
-	}
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    outState.putParcelableArrayList(KEY_SELECTED_ITEMS, accountMediaList);
+    super.onSaveInstanceState(outState);
+  }
 }

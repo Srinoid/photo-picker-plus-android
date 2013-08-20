@@ -13,19 +13,19 @@ import com.dg.libs.rest.domain.ResponseStatus;
 
 public class ConfigServicesSingleton {
 
-	private static ConfigServicesSingleton instance;
-	private Context context;
+  private static ConfigServicesSingleton instance;
+  private Context context;
 
-	public static ConfigServicesSingleton getInstance(Context context) {
-		if (instance == null) {
-			instance = new ConfigServicesSingleton(context);
-		}
-		return instance;
-	}
+  public static ConfigServicesSingleton getInstance(Context context) {
+    if (instance == null) {
+      instance = new ConfigServicesSingleton(context);
+    }
+    return instance;
+  }
 
-	private ConfigServicesSingleton(Context context) {
-		this.context = context;
-	}
+  private ConfigServicesSingleton(Context context) {
+    this.context = context;
+  }
 
 	public void setAvailableServices(ArrayList<AccountType> services) {
 		for (AccountType accountType : services) {

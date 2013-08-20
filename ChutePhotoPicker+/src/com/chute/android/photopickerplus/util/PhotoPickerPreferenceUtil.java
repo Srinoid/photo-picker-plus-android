@@ -36,73 +36,74 @@ import android.text.TextUtils;
 
 public class PhotoPickerPreferenceUtil {
 
-	public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
-	private static final String SERVICE_LIST = "service_list";
-	private static final String CONFIG_URL = "config_url";
-	private static final String ACCOUNT_TYPE = "account_type";
-	private final Context context;
+  public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
+  private static final String SERVICE_LIST = "service_list";
+  private static final String CONFIG_URL = "config_url";
+  private static final String ACCOUNT_TYPE = "account_type";
+  private final Context context;
 
-	private PhotoPickerPreferenceUtil(Context context) {
-		this.context = context;
-	}
+  private PhotoPickerPreferenceUtil(Context context) {
+    this.context = context;
+  }
 
-	static PhotoPickerPreferenceUtil instance;
+  static PhotoPickerPreferenceUtil instance;
 
-	public static PhotoPickerPreferenceUtil get() {
-		return instance;
-	}
+  public static PhotoPickerPreferenceUtil get() {
+    return instance;
+  }
 
-	public static void init(Context context) {
-		if (instance == null) {
-			instance = new PhotoPickerPreferenceUtil(context.getApplicationContext());
-		}
-	}
+  public static void init(Context context) {
+    if (instance == null) {
+      instance = new PhotoPickerPreferenceUtil(context.getApplicationContext());
+    }
+  }
 
-	public SharedPreferences getPreferences() {
-		return PreferenceManager.getDefaultSharedPreferences(context);
-	}
+  public SharedPreferences getPreferences() {
+    return PreferenceManager.getDefaultSharedPreferences(context);
+  }
 
-	private final <T> void setPreference(final String key, final T value) {
-		SharedPreferences.Editor edit = getPreferences().edit();
-		if (value.getClass().equals(String.class)) {
-			edit.putString(key, (String) value);
-		} else if (value.getClass().equals(Boolean.class)) {
-			edit.putBoolean(key, (Boolean) value);
-		} else if (value.getClass().equals(Integer.class)) {
-			edit.putInt(key, (Integer) value);
-		} else if (value.getClass().equals(Long.class)) {
-			edit.putLong(key, (Long) value);
-		} else if (value.getClass().equals(Float.class)) {
-			edit.putFloat(key, (Float) value);
-		} else {
-			throw new UnsupportedOperationException("Need to add a primitive type to shared prefs");
-		}
-		edit.commit();
-	}
+  private final <T> void setPreference(final String key, final T value) {
+    SharedPreferences.Editor edit = getPreferences().edit();
+    if (value.getClass().equals(String.class)) {
+      edit.putString(key, (String) value);
+    } else if (value.getClass().equals(Boolean.class)) {
+      edit.putBoolean(key, (Boolean) value);
+    } else if (value.getClass().equals(Integer.class)) {
+      edit.putInt(key, (Integer) value);
+    } else if (value.getClass().equals(Long.class)) {
+      edit.putLong(key, (Long) value);
+    } else if (value.getClass().equals(Float.class)) {
+      edit.putFloat(key, (Float) value);
+    } else {
+      throw new UnsupportedOperationException(
+          "Need to add a primitive type to shared prefs");
+    }
+    edit.commit();
+  }
 
-	public void setServiceList(ArrayList<String> services) {
-		setPreference(SERVICE_LIST, TextUtils.join(",", services));
-	}
+  public void setServiceList(ArrayList<String> services) {
+    setPreference(SERVICE_LIST, TextUtils.join(",", services));
+  }
 
-	public String getServiceList() {
-		return getPreferences().getString(SERVICE_LIST, null);
-	}
+  public String getServiceList() {
+    return getPreferences().getString(SERVICE_LIST, null);
+  }
 
-	public void setConfigUrl(String url) {
-		setPreference(CONFIG_URL, url);
-	}
+  public void setConfigUrl(String url) {
+    setPreference(CONFIG_URL, url);
+  }
 
-	public String getConfigUrl() {
-		return getPreferences().getString(CONFIG_URL, null);
-	}
+  public String getConfigUrl() {
+    return getPreferences().getString(CONFIG_URL, null);
+  }
 
-	public void setAccountType(String accountType) {
-		setPreference(ACCOUNT_TYPE, accountType);
-	}
+  public void setAccountType(String accountType) {
+    setPreference(ACCOUNT_TYPE, accountType);
+  }
 
-	public String getAccountType() {
-		return getPreferences().getString(ACCOUNT_TYPE, null);
-	}
+  public String getAccountType() {
+    return getPreferences().getString(ACCOUNT_TYPE, null);
+  }
 
 	// Account Name
 	public void setNameForAccount(AccountType accountType, String accountName) {
