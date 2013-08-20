@@ -105,17 +105,17 @@ public class PhotoPickerPreferenceUtil {
     return getPreferences().getString(ACCOUNT_TYPE, null);
   }
 
-	// Account Name
-	public void setNameForAccount(AccountType accountType, String accountName) {
-		setPreference(accountType.getLoginMethod() + "_name", accountName);
-	}
+  // Account Name
+  public void setNameForAccount(AccountType accountType, String accountName) {
+    setPreference(accountType.getLoginMethod() + "_name", accountName);
+  }
 
-	public boolean hasAccountName(AccountType accountType) {
-		return getPreferences().contains(accountType.getLoginMethod() + "_name");
-	}
+  public boolean hasAccountName(AccountType accountType) {
+    return getPreferences().contains(accountType.getLoginMethod() + "_name");
+  }
 
-	public String getAccountName(AccountType accountType) {
-		return getPreferences().getString(accountType.getLoginMethod() + "_name", null);
-	}
+  public String getAccountName(AccountType accountType) {
+    return getPreferences().getString(accountType.getLoginMethod() + "_name", null);
+  }
 
 }

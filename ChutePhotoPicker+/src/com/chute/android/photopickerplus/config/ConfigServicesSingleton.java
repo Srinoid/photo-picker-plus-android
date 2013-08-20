@@ -27,35 +27,38 @@ public class ConfigServicesSingleton {
     this.context = context;
   }
 
-	public void setAvailableServices(ArrayList<AccountType> services) {
-		for (AccountType accountType : services) {
-			PhotoPickerPreferenceUtil.get().setNameForAccount(accountType, accountType.getLoginMethod());
-		}
-	}
+  public void setAvailableServices(ArrayList<AccountType> services) {
+    for (AccountType accountType : services) {
+      PhotoPickerPreferenceUtil.get().setNameForAccount(accountType,
+          accountType.getLoginMethod());
+    }
+  }
 
-	public void fetchConfigFromServer() {
-		getConfigurableServices(context, new ConfigServicesCallback()).executeAsync();
-	}
+  public void fetchConfigFromServer() {
+    getConfigurableServices(context, new ConfigServicesCallback()).executeAsync();
+  }
 
-	private final class ConfigServicesCallback implements HttpCallback<ServiceResponseModel> {
+  private final class ConfigServicesCallback implements
+      HttpCallback<ServiceResponseModel> {
 
-		@Override
-		public void onHttpError(ResponseStatus status) {
-			ALog.d("Http Error = " + status.getStatusMessage() + " " + status.getStatusCode());
+    @Override
+    public void onHttpError(ResponseStatus status) {
+      ALog.d("Http Error = " + status.getStatusMessage() + " " + status.getStatusCode());
 
-		}
+    }
 
-		@Override
-		public void onSuccess(ServiceResponseModel data) {
-			ALog.d("Response = " + data.toString());
-			setAvailableServices((ArrayList<AccountType>) data.getServices());
+    @Override
+    public void onSuccess(ServiceResponseModel data) {
+      ALog.d("Response = " + data.toString());
+      setAvailableServices((ArrayList<AccountType>) data.getServices());
 
-		}
+    }
 
-	}
+  }
 
-	private HttpRequest getConfigurableServices(final Context context, final HttpCallback<ServiceResponseModel> callback) {
-		return new ConfigServicesRequest(context, callback);
-	}
+  private HttpRequest getConfigurableServices(final Context context,
+      final HttpCallback<ServiceResponseModel> callback) {
+    return new ConfigServicesRequest(context, callback);
+  }
 
 }

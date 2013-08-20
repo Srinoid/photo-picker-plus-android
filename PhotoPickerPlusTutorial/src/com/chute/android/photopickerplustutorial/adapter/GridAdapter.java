@@ -29,88 +29,93 @@ import darko.imagedownloader.ImageLoader;
 
 public class GridAdapter extends BaseAdapter {
 
-	public static final String TAG = GridAdapter.class.getSimpleName();
-	private static LayoutInflater inflater;
-	public ImageLoader loader;
-	private ArrayList<AccountMediaModel> collection;
-	private final DisplayMetrics displayMetrics;
-	private boolean dualFragments;
-	private Activity context;
+  public static final String TAG = GridAdapter.class.getSimpleName();
+  private static LayoutInflater inflater;
+  public ImageLoader loader;
+  private ArrayList<AccountMediaModel> collection;
+  private final DisplayMetrics displayMetrics;
+  private boolean dualFragments;
+  private Activity context;
 
-	public GridAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
-		if (collection == null) {
-			this.collection = new ArrayList<AccountMediaModel>();
-		} else {
-			this.collection = collection;
-		}
-		loader = ImageLoader.getLoader(context);
-		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		displayMetrics = context.getResources().getDisplayMetrics();
-		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
-		this.context = context;
-	}
+  public GridAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
+    if (collection == null) {
+      this.collection = new ArrayList<AccountMediaModel>();
+    } else {
+      this.collection = collection;
+    }
+    loader = ImageLoader.getLoader(context);
+    inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    displayMetrics = context.getResources().getDisplayMetrics();
+    dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
+    this.context = context;
+  }
 
-	@Override
-	public int getCount() {
-		return collection.size();
-	}
+  @Override
+  public int getCount() {
+    return collection.size();
+  }
 
-	@Override
-	public AccountMediaModel getItem(int position) {
-		return collection.get(position);
-	}
+  @Override
+  public AccountMediaModel getItem(int position) {
+    return collection.get(position);
+  }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+  @Override
+  public long getItemId(int position) {
+    return position;
+  }
 
-	public static class ViewHolder {
-		public ImageView image;
-	}
+  public static class ViewHolder {
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View vi = convertView;
-		ViewHolder holder;
-		if (convertView == null) {
-			vi = inflater.inflate(R.layout.grid_adapter_item, null);
-			holder = new ViewHolder();
-			holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
-			configureImageViewDimensions(holder.image);
-			vi.setTag(holder);
-		} else {
-			holder = (ViewHolder) vi.getTag();
-		}
-		loader.displayImage(getItem(position).getThumbnail(), holder.image, null);
-		return vi;
-	}
+    public ImageView image;
+  }
 
-	public void changeData(ArrayList<AccountMediaModel> collection) {
-		this.collection = collection;
-		notifyDataSetChanged();
-	}
+  @Override
+  public View getView(int position, View convertView, ViewGroup parent) {
+    View vi = convertView;
+    ViewHolder holder;
+    if (convertView == null) {
+      vi = inflater.inflate(R.layout.grid_adapter_item, null);
+      holder = new ViewHolder();
+      holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
+      configureImageViewDimensions(holder.image);
+      vi.setTag(holder);
+    } else {
+      holder = (ViewHolder) vi.getTag();
+    }
+    loader.displayImage(getItem(position).getThumbnail(), holder.image, null);
+    return vi;
+  }
 
-	private void configureImageViewDimensions(ImageView imageViewThumb) {
-		int orientation = context.getResources().getConfiguration().orientation;
-		if (!dualFragments) {
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				int imageHeight = displayMetrics.widthPixels - 80;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						imageHeight / 3));
-			} else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				int imageHeight = displayMetrics.widthPixels - 120;
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 5,
-						imageHeight / 5));
-			}
-		} else {
-			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels,
-						(int) (displayMetrics.heightPixels / 3.5)));
-			} else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetrics.widthPixels / 3,
-						(int) (displayMetrics.widthPixels / 3.5)));
-			}
-		}
-	}
+  public void changeData(ArrayList<AccountMediaModel> collection) {
+    this.collection = collection;
+    notifyDataSetChanged();
+  }
+
+  private void configureImageViewDimensions(ImageView imageViewThumb) {
+    int orientation = context.getResources().getConfiguration().orientation;
+    if (!dualFragments) {
+      if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        int imageHeight = displayMetrics.widthPixels - 80;
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels / 3,
+            imageHeight / 3));
+      } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        int imageHeight = displayMetrics.widthPixels - 120;
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels / 5,
+            imageHeight / 5));
+      }
+    } else {
+      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels,
+            (int) (displayMetrics.heightPixels / 3.5)));
+      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+            displayMetrics.widthPixels / 3,
+            (int) (displayMetrics.widthPixels / 3.5)));
+      }
+    }
+  }
 }
