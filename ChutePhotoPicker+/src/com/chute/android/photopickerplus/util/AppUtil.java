@@ -26,7 +26,6 @@ import com.chute.sdk.v2.utils.Utils;
 
 public class AppUtil {
 
-	@SuppressWarnings("unused")
 	private static final String TAG = AppUtil.class.getSimpleName();
 
 	private static String SDCARD_FOLDER_CACHE = Environment.getExternalStorageDirectory() + "/Android/data/%s/files/";
@@ -91,9 +90,8 @@ public class AppUtil {
 		for (String path : paths) {
 			final AccountMediaModel model = new AccountMediaModel();
 			path = Uri.fromFile(new File(path)).toString();
-			model.setLargeUrl(path);
-			model.setThumbUrl(path);
-			model.setUrl(path);
+			model.setThumbnail(path);
+			model.setImageUrl(path);
 			collection.add(model);
 		}
 		return collection;
@@ -102,9 +100,8 @@ public class AppUtil {
 	public static AccountMediaModel getMediaModel(String path) {
 		final AccountMediaModel model = new AccountMediaModel();
 		path = Uri.fromFile(new File(path)).toString();
-		model.setLargeUrl(path);
-		model.setThumbUrl(path);
-		model.setUrl(path);
+		model.setThumbnail(path);
+		model.setImageUrl(path);
 		return model;
 	}
 

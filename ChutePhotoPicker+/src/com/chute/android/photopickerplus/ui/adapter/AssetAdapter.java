@@ -20,6 +20,7 @@ import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -48,15 +49,24 @@ public class AssetAdapter extends BaseAdapter {
 	private final Activity context;
 	private final boolean dualFragments;
 	private List<MediaViewType> rows;
+	private AdapterItemClickListener listener;
 
-	public AssetAdapter(Activity context, AccountBaseModel baseModel) {
+	public interface AdapterItemClickListener {
+
+		public void onFolderClicked(int position);
+
+		public void onFileClicked(int position);
+	}
+
+	public AssetAdapter(Activity context, AccountBaseModel baseModel, AdapterItemClickListener listener) {
 		this.context = context;
+		this.listener = listener;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		loader = ImageLoader.getLoader(context);
 		displayMetrics = context.getResources().getDisplayMetrics();
 		tick = new HashMap<Integer, AccountMediaModel>();
 		dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
-		rows = new ArrayList<MediaViewType>();// member variable
+		rows = new ArrayList<MediaViewType>();
 
 		if (baseModel.getFiles() != null) {
 			for (AccountMediaModel file : baseModel.getFiles()) {
@@ -84,7 +94,7 @@ public class AssetAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int position) {
-		return position;
+		return rows.get(position);
 	}
 
 	public long getItemId(int position) {
@@ -114,12 +124,15 @@ public class AssetAdapter extends BaseAdapter {
 			holder = (ViewHolder) vi.getTag();
 		}
 
+		holder.imageViewThumb.setTag(position);
 		if (type == MediaType.FOLDER.ordinal()) {
 			holder.imageViewTick.setVisibility(View.GONE);
 			holder.imageViewThumb.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.album_default));
+			holder.imageViewThumb.setOnClickListener(new OnFolderClickedListener());
 		} else if (type == MediaType.FILE.ordinal()) {
 			holder.imageViewTick.setVisibility(View.VISIBLE);
-			loader.displayImage(((AccountMediaModel) getItem(position)).getUrl(), holder.imageViewThumb, null);
+			loader.displayImage(((AccountMediaModel) getItem(position)).getThumbnail(), holder.imageViewThumb, null);
+			holder.imageViewThumb.setOnClickListener(new OnFileClickedListener());
 		}
 
 		if (tick.containsKey(position)) {
@@ -188,5 +201,27 @@ public class AssetAdapter extends BaseAdapter {
 						(int) (displayMetrics.widthPixels / 3.5)));
 			}
 		}
+	}
+
+	private final class OnFolderClickedListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			Integer position = (Integer) v.getTag();
+			listener.onFolderClicked(position);
+
+		}
+
+	}
+
+	private final class OnFileClickedListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			Integer position = (Integer) v.getTag();
+			listener.onFileClicked(position);
+
+		}
+
 	}
 }

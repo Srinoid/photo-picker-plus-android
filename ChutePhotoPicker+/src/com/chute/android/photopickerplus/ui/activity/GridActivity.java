@@ -92,19 +92,20 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
 
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (fragment.getSocialPhotoAdapter() != null
-				&& fragment.getSocialPhotoAdapter().getSelectedItemPositions() != null) {
-			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getSocialPhotoAdapter()
-					.getSelectedItemPositions());
-		} else if (fragment.getPhotoSelectCursorAdapter() != null
-				&& fragment.getPhotoSelectCursorAdapter().getSelectedItemPositions() != null) {
-			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getPhotoSelectCursorAdapter()
-					.getSelectedItemPositions());
-		}
 
-	}
+//	@Override
+//	protected void onSaveInstanceState(Bundle outState) {
+//		super.onSaveInstanceState(outState);
+//		if (fragment.getSocialPhotoAdapter() != null
+//				&& fragment.getSocialPhotoAdapter().getSelectedItemPositions() != null) {
+//			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getSocialPhotoAdapter()
+//					.getSelectedItemPositions());
+//		} else if (fragment.getPhotoSelectCursorAdapter() != null
+//				&& fragment.getPhotoSelectCursorAdapter().getSelectedItemPositions() != null) {
+//			outState.putIntegerArrayList(KEY_SELECTED_ITEMS, fragment.getPhotoSelectCursorAdapter()
+//					.getSelectedItemPositions());
+//		}
+//
+//	}
 
 }

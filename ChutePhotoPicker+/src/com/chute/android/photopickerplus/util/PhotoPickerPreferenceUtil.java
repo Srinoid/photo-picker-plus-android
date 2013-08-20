@@ -27,6 +27,8 @@ package com.chute.android.photopickerplus.util;
 
 import java.util.ArrayList;
 
+import com.chute.sdk.v2.model.enums.AccountType;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -100,6 +102,19 @@ public class PhotoPickerPreferenceUtil {
 
 	public String getAccountType() {
 		return getPreferences().getString(ACCOUNT_TYPE, null);
+	}
+
+	// Account Name
+	public void setNameForAccount(AccountType accountType, String accountName) {
+		setPreference(accountType.getLoginMethod() + "_name", accountName);
+	}
+
+	public boolean hasAccountName(AccountType accountType) {
+		return getPreferences().contains(accountType.getLoginMethod() + "_name");
+	}
+
+	public String getAccountName(AccountType accountType) {
+		return getPreferences().getString(accountType.getLoginMethod() + "_name", null);
 	}
 
 }

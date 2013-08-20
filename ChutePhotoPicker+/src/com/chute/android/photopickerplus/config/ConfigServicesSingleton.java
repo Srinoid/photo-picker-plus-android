@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import android.content.Context;
 
 import com.araneaapps.android.libs.logger.ALog;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.model.enums.AccountType;
-import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.HttpRequest;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -29,7 +29,7 @@ public class ConfigServicesSingleton {
 
 	public void setAvailableServices(ArrayList<AccountType> services) {
 		for (AccountType accountType : services) {
-			PreferenceUtil.get().setNameForAccount(accountType, accountType.getName());
+			PhotoPickerPreferenceUtil.get().setNameForAccount(accountType, accountType.getLoginMethod());
 		}
 	}
 

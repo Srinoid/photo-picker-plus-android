@@ -33,7 +33,6 @@ import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrappe
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
-import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.enums.AccountType;
@@ -68,16 +67,16 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 		dualFragments = getResources().getBoolean(R.bool.has_two_panes);
 
 		ArrayList<AccountType> serviceList = new ArrayList<AccountType>();
-		if (PreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
+		if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
 			serviceList.add(AccountType.FACEBOOK);
 		}
-		if (PreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
+		if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
 			serviceList.add(AccountType.FLICKR);
 		}
-		if (PreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
+		if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
 			serviceList.add(AccountType.PICASA);
 		}
-		if (PreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
+		if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
 			serviceList.add(AccountType.INSTAGRAM);
 		}
 		fragmentServicesVertical.configureServices(serviceList);
@@ -118,9 +117,8 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 			NotificationUtil.makeToast(getApplicationContext(), getResources().getString(R.string.no_camera_photos));
 		} else {
 			final AccountMediaModel model = new AccountMediaModel();
-			model.setLargeUrl(uri.toString());
-			model.setThumbUrl(uri.toString());
-			model.setUrl(uri.toString());
+			model.setThumbnail(uri.toString());
+			model.setImageUrl(uri.toString());
 
 			IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, model);
 		}
@@ -140,9 +138,9 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 	@Override
 	public void accountLogin(AccountType type) {
 		accountType = type;
-		if (PreferenceUtil.get().hasAccountId(accountType)) {
-			accountClicked(PreferenceUtil.get().getAccountId(accountType), accountType.getName(), PreferenceUtil.get()
-					.getShortcutForAccount(accountType));
+		if (PreferenceUtil.get().hasAccount(accountType.getLoginMethod())) {
+			AccountModel account = PreferenceUtil.get().getAccount(accountType.getLoginMethod());
+			accountClicked(account.getId(), account.getType(), account.getShortcut());
 		} else {
 			PhotoPickerPreferenceUtil.get().setAccountType(accountType.name());
 			AuthenticationFactory.getInstance().startAuthenticationActivity(ServicesActivity.this, accountType);
@@ -177,9 +175,8 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 				}
 				Log.d(TAG, path);
 				final AccountMediaModel model = new AccountMediaModel();
-				model.setLargeUrl(path);
-				model.setThumbUrl(path);
-				model.setUrl(path);
+				model.setThumbnail(path);
+				model.setImageUrl(path);
 
 				IntentUtil.deliverDataToInitialActivity(this, model);
 			}
@@ -208,16 +205,8 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 				return;
 			}
 			AccountModel accountModel = responseData.getData().get(0);
-			if (accountModel.getType().equalsIgnoreCase(accountType.getName())) {
-				if (accountModel.getName().equals("")) {
-					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getUsername());
-				} else {
-					PreferenceUtil.get().setNameForAccount(accountType, accountModel.getName());
-				}
-				PreferenceUtil.get().setIdForAccount(accountType, accountModel.getId());
-				PreferenceUtil.get().setShortcutForAccount(accountType, accountModel.getShortcut());
-				accountClicked(accountModel.getId(), accountType.getName(), accountModel.getShortcut());
-			}
+			PreferenceUtil.get().saveAccount(accountModel);
+			accountClicked(accountModel.getId(), accountModel.getType(), accountModel.getShortcut());
 		}
 
 		@Override
@@ -259,5 +248,6 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 	public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
 		IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
 	}
+
 
 }

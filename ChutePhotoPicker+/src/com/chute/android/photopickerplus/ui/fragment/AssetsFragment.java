@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,19 +23,20 @@ import android.widget.TextView;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.loaders.AssetsAsyncTaskLoader;
 import com.chute.android.photopickerplus.ui.adapter.AssetAdapter;
+import com.chute.android.photopickerplus.ui.adapter.AssetAdapter.AdapterItemClickListener;
 import com.chute.android.photopickerplus.ui.adapter.PhotoSelectCursorAdapter;
-import com.chute.android.photopickerplus.ui.adapter.PhotosAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
+import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class AssetsFragment extends Fragment {
+public class AssetsFragment extends Fragment implements AdapterItemClickListener {
 
 	private static final String ARG_FILTER_TYPE = "argFilterType";
 	private static final String ARG_ACCOUNT_ID = "argAccountId";
@@ -43,9 +45,8 @@ public class AssetsFragment extends Fragment {
 	private static final String ARG_MULTIPICKER = "argMultiPicker";
 	private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
 
-	private GridView gridViewAssets;
+	private GridView gridView;
 	private PhotoSelectCursorAdapter cursorAdapter;
-	private PhotosAdapter socialAdapter;
 	private AssetAdapter assetAdapter;
 	private TextView textViewSelectPhotos;
 	private View emptyView;
@@ -58,6 +59,7 @@ public class AssetsFragment extends Fragment {
 	private AssetFragmentListener assetFragmentListener;
 
 	public interface AssetFragmentListener {
+
 		public void onSelectedCursorItem(AccountMediaModel accountMediaModel);
 
 		public void onSelectedSocialItem(AccountMediaModel accountMediaModel);
@@ -100,9 +102,9 @@ public class AssetsFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_assets, container, false);
 
 		textViewSelectPhotos = (TextView) view.findViewById(R.id.textViewSelectPhotos);
-		gridViewAssets = (GridView) view.findViewById(R.id.gridViewAssets);
+		gridView = (GridView) view.findViewById(R.id.gridViewAssets);
 		emptyView = view.findViewById(R.id.empty_view_layout);
-		gridViewAssets.setEmptyView(emptyView);
+		gridView.setEmptyView(emptyView);
 
 		Button ok = (Button) view.findViewById(R.id.buttonOk);
 		Button cancel = (Button) view.findViewById(R.id.buttonCancel);
@@ -120,7 +122,7 @@ public class AssetsFragment extends Fragment {
 
 		int orientation = getResources().getConfiguration().orientation;
 		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			gridViewAssets.setNumColumns(5);
+			gridView.setNumColumns(5);
 		}
 
 		return view;
@@ -131,13 +133,12 @@ public class AssetsFragment extends Fragment {
 		this.filterType = filterType;
 		this.isMultipicker = isMultipicker;
 		this.selectedItemsPositions = selectedItemsPositions;
+		this.accountShortcut = accountShortcut;
+		this.accountName = accountName;
 
 		if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
 			getActivity().getSupportLoaderManager().initLoader(1, null, new AssetsLoaderCallback());
 		} else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-			// GCAccounts.albumMedia(getActivity().getApplicationContext(),
-			// accountId, albumId, new PhotoListCallback())
-			// .executeAsync();
 			GCAccounts.accountRoot(getActivity(), accountName, accountShortcut, new RootCallback()).executeAsync();
 		}
 	}
@@ -158,8 +159,8 @@ public class AssetsFragment extends Fragment {
 		@Override
 		public void onSuccess(ResponseModel<AccountBaseModel> responseData) {
 			if (responseData != null && getActivity() != null) {
-				assetAdapter = new AssetAdapter(getActivity(), responseData.getData());
-				gridViewAssets.setAdapter(assetAdapter);
+				assetAdapter = new AssetAdapter(getActivity(), responseData.getData(), AssetsFragment.this);
+				gridView.setAdapter(assetAdapter);
 
 				if (assetAdapter.getCount() == 0) {
 					emptyView.setVisibility(View.GONE);
@@ -174,11 +175,9 @@ public class AssetsFragment extends Fragment {
 				if (isMultipicker == true) {
 					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
 							.getString(R.string.select_photos));
-					gridViewAssets.setOnItemClickListener(new OnMultiGridItemClickListener());
 				} else {
 					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
 							.getString(R.string.select_a_photo));
-					gridViewAssets.setOnItemClickListener(new OnSingleGridItemClickListener());
 				}
 				NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(), assetAdapter.getCount());
 			}
@@ -200,7 +199,7 @@ public class AssetsFragment extends Fragment {
 				return;
 			}
 			cursorAdapter = new PhotoSelectCursorAdapter(getActivity(), cursor);
-			gridViewAssets.setAdapter(cursorAdapter);
+			gridView.setAdapter(cursorAdapter);
 
 			if (cursorAdapter.getCount() == 0) {
 				emptyView.setVisibility(View.GONE);
@@ -215,11 +214,11 @@ public class AssetsFragment extends Fragment {
 			if (isMultipicker == true) {
 				textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
 						.getString(R.string.select_photos));
-				gridViewAssets.setOnItemClickListener(new OnMultiSelectGridItemClickListener());
+				gridView.setOnItemClickListener(new OnMultiSelectGridItemClickListener());
 			} else {
 				textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
 						.getString(R.string.select_a_photo));
-				gridViewAssets.setOnItemClickListener(new OnSingleSelectGridItemClickListener());
+				gridView.setOnItemClickListener(new OnSingleSelectGridItemClickListener());
 			}
 			NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(), cursorAdapter.getCount());
 
@@ -258,28 +257,12 @@ public class AssetsFragment extends Fragment {
 
 	}
 
-	private final class OnSingleGridItemClickListener implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-			assetFragmentListener.onSelectedSocialItem(socialAdapter.getItem(position));
-		}
-	}
-
-	private final class OnMultiGridItemClickListener implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-			socialAdapter.toggleTick(position);
-		}
-	}
-
 	private final class OkClickListener implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
 			if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-				assetFragmentListener.onConfirmedSocialAssets(socialAdapter.getPhotoCollection());
+				assetFragmentListener.onConfirmedSocialAssets(assetAdapter.getPhotoCollection());
 			} else if ((filterType == PhotoFilterType.ALL_PHOTOS) || (filterType == PhotoFilterType.CAMERA_ROLL)) {
 				assetFragmentListener.onConfirmedCursorAssets(cursorAdapter.getSelectedFilePaths());
 			}
@@ -290,8 +273,60 @@ public class AssetsFragment extends Fragment {
 		return cursorAdapter;
 	}
 
-	public PhotosAdapter getSocialPhotoAdapter() {
-		return socialAdapter;
+	@Override
+	public void onFolderClicked(int position) {
+		AccountAlbumModel album = (AccountAlbumModel) assetAdapter.getItem(position);
+		GCAccounts.accountSingle(getActivity(), accountName, accountShortcut, album.getId(),
+				new AccountSingleCallback()).executeAsync();
+
+	}
+
+	@Override
+	public void onFileClicked(int position) {
+		if (isMultipicker) {
+			assetFragmentListener.onSelectedSocialItem((AccountMediaModel) assetAdapter.getItem(position));
+		} else {
+			assetAdapter.toggleTick(position);
+		}
+
+	}
+
+	private final class AccountSingleCallback implements HttpCallback<ResponseModel<AccountBaseModel>> {
+
+		@Override
+		public void onHttpError(ResponseStatus arg0) {
+			Log.d("debug", "error = " + arg0.getStatusCode());
+
+		}
+
+		@Override
+		public void onSuccess(ResponseModel<AccountBaseModel> responseData) {
+			if (responseData != null && getActivity() != null) {
+				assetAdapter = new AssetAdapter(getActivity(), responseData.getData(), AssetsFragment.this);
+				gridView.setAdapter(assetAdapter);
+
+				if (assetAdapter.getCount() == 0) {
+					emptyView.setVisibility(View.GONE);
+				}
+
+				if (selectedItemsPositions != null) {
+					for (int position : selectedItemsPositions) {
+						assetAdapter.toggleTick(position);
+					}
+				}
+
+				if (isMultipicker == true) {
+					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
+							.getString(R.string.select_photos));
+				} else {
+					textViewSelectPhotos.setText(getActivity().getApplicationContext().getResources()
+							.getString(R.string.select_a_photo));
+				}
+				NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(), assetAdapter.getCount());
+			}
+
+		}
+
 	}
 
 }

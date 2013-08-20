@@ -82,7 +82,7 @@ public class GridAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-		loader.displayImage(getItem(position).getUrl(), holder.image, null);
+		loader.displayImage(getItem(position).getThumbnail(), holder.image, null);
 		return vi;
 	}
 
