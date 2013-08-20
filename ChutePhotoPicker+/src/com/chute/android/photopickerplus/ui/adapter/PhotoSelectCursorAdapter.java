@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.util.AppUtil;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -64,15 +65,15 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements MediaAdap
     } else {
       loader.displayImage(null, holder.imageViewThumb, null);
     }
-    configureImageViewDimensions(holder.imageViewThumb);
+    AppUtil.configureImageViewDimensions(holder.imageViewThumb, context);
     if (tick.containsKey(cursor.getPosition())) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
       view.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
-      selectedItems.add(cursor.getPosition());
+      // selectedItems.add(cursor.getPosition());
     } else {
       holder.imageViewTick.setVisibility(View.GONE);
       view.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
-      selectedItems.remove(cursor.getPosition());
+      // selectedItems.remove(cursor.getPosition());
     }
   }
 
@@ -150,12 +151,4 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements MediaAdap
     notifyDataSetChanged();
   }
 
-  private void configureImageViewDimensions(ImageView imageViewThumb) {
-    int imageHeight = context.getResources()
-        .getInteger(R.integer.image_dimensions_assets);
-    int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
-    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageHeight
-        / gridColumns, imageHeight
-        / gridColumns));
-  }
 }

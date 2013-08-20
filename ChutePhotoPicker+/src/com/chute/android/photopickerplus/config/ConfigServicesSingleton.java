@@ -3,6 +3,7 @@ package com.chute.android.photopickerplus.config;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;

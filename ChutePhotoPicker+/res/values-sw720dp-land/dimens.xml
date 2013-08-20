@@ -8,6 +8,9 @@
     <integer name="grid_columns_services">8</integer>
     <integer name="image_dimensions_services">110</integer>
     <integer name="grid_columns_assets">5</integer>
+
+    <item name="grid_columns_assets_float" format="float" type="dimen">3.5</item>
+
     <integer name="image_dimensions_assets">80</integer>
 
 </resources>

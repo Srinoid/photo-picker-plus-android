@@ -20,7 +20,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
+import com.chute.android.photopickerplus.R;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.utils.Utils;
 
@@ -117,6 +120,20 @@ public class AppUtil {
     String path = cursor.getString(column_index);
     cursor.close();
     return path;
+  }
+
+  public static void configureImageViewDimensions(ImageView imageViewThumb,
+      Context context) {
+    int imageHeight = context.getResources()
+        .getInteger(R.integer.image_dimensions_assets);
+    int displayMetricsWidth = context.getResources().getDisplayMetrics().widthPixels;
+    int displayMetricsHeight = context.getResources().getDisplayMetrics().heightPixels;
+    int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
+    float grid = Float.parseFloat(context.getResources().getString(
+        R.dimen.grid_columns_assets_float));
+    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsWidth
+        / (int) grid, displayMetricsWidth
+        / (int) grid));
   }
 
 }

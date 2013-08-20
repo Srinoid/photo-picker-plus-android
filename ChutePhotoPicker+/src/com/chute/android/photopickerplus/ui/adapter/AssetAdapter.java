@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -112,7 +113,7 @@ public class AssetAdapter extends BaseAdapter {
       vi = inflater.inflate(R.layout.adapter_assets, null);
       holder = new ViewHolder();
       holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
-      configureImageViewDimensions(holder.imageViewThumb);
+      AppUtil.configureImageViewDimensions(holder.imageViewThumb, context);
       holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
       holder.imageViewTick.setTag(position);
       vi.setTag(holder);
@@ -176,15 +177,6 @@ public class AssetAdapter extends BaseAdapter {
       tick.put(position, (AccountMediaModel) getItem(position));
     }
     notifyDataSetChanged();
-  }
-
-  private void configureImageViewDimensions(ImageView imageViewThumb) {
-    int imageHeight = context.getResources()
-        .getInteger(R.integer.image_dimensions_assets);
-    int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
-    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageHeight
-        / gridColumns, imageHeight
-        / gridColumns));
   }
 
   private final class OnFolderClickedListener implements OnClickListener {

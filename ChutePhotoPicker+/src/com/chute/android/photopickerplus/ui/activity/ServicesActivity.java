@@ -78,6 +78,18 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
     if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.INSTAGRAM)) {
       serviceList.add(Service.INSTAGRAM);
     }
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.ALL_PHOTOS)) {
+      serviceList.add(Service.ALL_PHOTOS);
+    }
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.CAMERA_SHOTS)) {
+      serviceList.add(Service.CAMERA_SHOTS);
+    }
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.LAST_PHOTO_TAKEN)) {
+      serviceList.add(Service.LAST_PHOTO_TAKEN);
+    }
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.TAKE_PHOTO)) {
+      serviceList.add(Service.TAKE_PHOTO);
+    }
     fragmentServicesVertical.configureServices(serviceList);
 
   }

@@ -16,4 +16,5 @@ public class ServiceResponseParser extends
     return mapper.readValue(responseBody,
         mapper.getTypeFactory().constructType(ServiceResponseModel.class));
   }
+
 }
