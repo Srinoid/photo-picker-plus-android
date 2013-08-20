@@ -102,6 +102,7 @@ public class AssetAdapter extends BaseAdapter {
     public ImageView imageViewTick;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public View getView(final int position, final View convertView, final ViewGroup parent) {
     View vi = convertView;

@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,7 @@ import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.sdk.v2.model.enums.AccountType;
-import com.chute.sdk.v2.model.enums.LocalMediaType;
+import com.chute.sdk.v2.model.enums.Service;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -39,9 +37,9 @@ public class ServicesAdapter extends BaseAdapter {
   private final DisplayMetrics displayMetrics;
   private final Activity context;
 
-  private AccountType[] services;
+  private Service[] services;
 
-  public ServicesAdapter(final Activity context, final AccountType[] services) {
+  public ServicesAdapter(final Activity context, final Service[] services) {
     this.services = services;
     this.context = context;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -106,35 +104,35 @@ public class ServicesAdapter extends BaseAdapter {
         .getLastPhotoFromAllPhotos(context.getApplicationContext());
     Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context
         .getApplicationContext());
-    AccountType service = services[position];
-    Log.d("debug", "services = " + services[position].toString());
+    Service service = services[position];
     imageView.setTag(position);
-    if (service.equals(AccountType.FACEBOOK)) {
+    switch (service) {
+    case FACEBOOK:
       imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.facebook));
       serviceTitle.setVisibility(View.GONE);
-    }
-    if (service.equals(AccountType.FLICKR)) {
+      break;
+    case FLICKR:
       imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.flickr));
       serviceTitle.setVisibility(View.GONE);
-    }
-    if (service.equals(AccountType.PICASA)) {
+      break;
+    case PICASA:
       imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.picassa));
       serviceTitle.setVisibility(View.GONE);
-    }
-    if (service.equals(AccountType.INSTAGRAM)) {
+      break;
+    case INSTAGRAM:
       imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.instagram));
       serviceTitle.setVisibility(View.GONE);
-    }
-    if (service.equals(LocalMediaType.TAKE_PHOTO)) {
+      break;
+    case TAKE_PHOTO:
       imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.take_photo));
       serviceTitle.setText(context.getResources().getString(R.string.take_photos));
-    }
-    if (service.equals(LocalMediaType.CAMERA_SHOTS)) {
+      break;
+    case CAMERA_SHOTS:
       if (uriLastPhotoFromCameraPhotos != null) {
         loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
       } else {
@@ -142,8 +140,8 @@ public class ServicesAdapter extends BaseAdapter {
             R.drawable.photo_placeholder));
       }
       serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
-    }
-    if (service.equals(LocalMediaType.LAST_PHOTO_TAKEN)) {
+      break;
+    case LAST_PHOTO_TAKEN:
       if (uriLastPhotoFromCameraPhotos != null) {
         loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
       } else {
@@ -151,8 +149,8 @@ public class ServicesAdapter extends BaseAdapter {
             R.drawable.photo_placeholder));
       }
       serviceTitle.setText(context.getResources().getString(R.string.last_photo));
-    }
-    if (service.equals(LocalMediaType.ALL_PHOTOS)) {
+      break;
+    case ALL_PHOTOS:
       if (uriAllPhotos != null) {
         loader.displayImage(uriAllPhotos.toString(), imageView, null);
       } else {
@@ -160,6 +158,9 @@ public class ServicesAdapter extends BaseAdapter {
             R.drawable.photo_placeholder));
       }
       serviceTitle.setText(context.getResources().getString(R.string.all_photos));
+      break;
+    default:
+      break;
     }
   }
 

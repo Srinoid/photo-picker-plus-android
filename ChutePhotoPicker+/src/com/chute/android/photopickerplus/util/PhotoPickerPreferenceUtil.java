@@ -27,12 +27,12 @@ package com.chute.android.photopickerplus.util;
 
 import java.util.ArrayList;
 
-import com.chute.sdk.v2.model.enums.AccountType;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+
+import com.chute.sdk.v2.model.enums.Service;
 
 public class PhotoPickerPreferenceUtil {
 
@@ -106,16 +106,16 @@ public class PhotoPickerPreferenceUtil {
   }
 
   // Account Name
-  public void setNameForAccount(AccountType accountType, String accountName) {
-    setPreference(accountType.getLoginMethod() + "_name", accountName);
+  public void setNameForAccount(Service service, String label) {
+    setPreference(service.getLabel() + "_label", label);
   }
 
-  public boolean hasAccountName(AccountType accountType) {
-    return getPreferences().contains(accountType.getLoginMethod() + "_name");
+  public boolean hasAccountName(Service service) {
+    return getPreferences().contains(service.getLabel() + "_label");
   }
 
-  public String getAccountName(AccountType accountType) {
-    return getPreferences().getString(accountType.getLoginMethod() + "_name", null);
+  public String getAccountName(Service service) {
+    return getPreferences().getString(service.getLabel() + "_label", null);
   }
 
 }

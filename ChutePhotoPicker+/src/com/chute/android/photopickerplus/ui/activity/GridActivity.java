@@ -16,8 +16,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.AssetFragmentListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentAssets;
+import com.chute.android.photopickerplus.ui.fragment.FragmentAssets.AssetFragmentListener;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
@@ -32,7 +32,7 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
   private boolean isMultiPicker;
   private PhotoFilterType filterType;
   private PhotosIntentWrapper wrapper;
-  private AssetsFragment fragment;
+  private FragmentAssets fragment;
   private String accountName;
   private String accountShortcut;
 
@@ -55,7 +55,7 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
     accountName = wrapper.getAccountName();
     accountShortcut = wrapper.getAccountShortcut();
 
-    fragment = (AssetsFragment) getSupportFragmentManager().findFragmentById(
+    fragment = (FragmentAssets) getSupportFragmentManager().findFragmentById(
         R.id.fragmentAssets);
     fragment.setRetainInstance(true);
     fragment.updateFragment(accountID, filterType, isMultiPicker, selectedItemsPositions,

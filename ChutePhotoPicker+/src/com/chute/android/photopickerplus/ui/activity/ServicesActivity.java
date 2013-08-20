@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.android.photopickerplus.ui.fragment.AssetsFragment.AssetFragmentListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentAssets.AssetFragmentListener;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
 import com.chute.android.photopickerplus.util.AppUtil;
@@ -35,6 +35,7 @@ import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.enums.AccountType;
+import com.chute.sdk.v2.model.enums.Service;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
@@ -45,6 +46,7 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
 
   private static final String TAG = ServicesActivity.class.getSimpleName();
 
+  private Service serviceType;
   private AccountType accountType;
   private PhotoPickerPlusIntentWrapper ppWrapper;
 
@@ -63,18 +65,18 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
     fragmentServicesVertical = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
 
-    ArrayList<AccountType> serviceList = new ArrayList<AccountType>();
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.FACEBOOK)) {
-      serviceList.add(AccountType.FACEBOOK);
+    ArrayList<Service> serviceList = new ArrayList<Service>();
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.FACEBOOK)) {
+      serviceList.add(Service.FACEBOOK);
     }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.FLICKR)) {
-      serviceList.add(AccountType.FLICKR);
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.FLICKR)) {
+      serviceList.add(Service.FLICKR);
     }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.PICASA)) {
-      serviceList.add(AccountType.PICASA);
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.PICASA)) {
+      serviceList.add(Service.PICASA);
     }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(AccountType.INSTAGRAM)) {
-      serviceList.add(AccountType.INSTAGRAM);
+    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.INSTAGRAM)) {
+      serviceList.add(Service.INSTAGRAM);
     }
     fragmentServicesVertical.configureServices(serviceList);
 
@@ -137,14 +139,15 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
   }
 
   @Override
-  public void accountLogin(AccountType type) {
-    accountType = type;
-    if (PreferenceUtil.get().hasAccount(accountType.getLoginMethod())) {
+  public void accountLogin(Service type) {
+    serviceType = type;
+    if (PreferenceUtil.get().hasAccount(serviceType.getLabel())) {
       AccountModel account = PreferenceUtil.get()
-          .getAccount(accountType.getLoginMethod());
+          .getAccount(serviceType.getLabel());
       accountClicked(account.getId(), account.getType(), account.getShortcut());
     } else {
-      PhotoPickerPreferenceUtil.get().setAccountType(accountType.name());
+      PhotoPickerPreferenceUtil.get().setAccountType(serviceType.getLabel());
+      accountType = AccountType.valueOf(serviceType.name());
       AuthenticationFactory.getInstance().startAuthenticationActivity(
           ServicesActivity.this, accountType);
     }

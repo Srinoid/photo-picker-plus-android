@@ -12,11 +12,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.adapter.ServicesAdapter;
-import com.chute.sdk.v2.model.enums.AccountType;
-import com.chute.sdk.v2.model.enums.LocalMediaType;
+import com.chute.sdk.v2.model.enums.Service;
 
 public class FragmentServices extends Fragment {
 
@@ -25,11 +23,11 @@ public class FragmentServices extends Fragment {
 
   private ServiceClickedListener serviceClickedListener;
 
-  private AccountType[] services;
+  private Service[] services;
 
   public interface ServiceClickedListener {
 
-    public void accountLogin(AccountType accountType);
+    public void accountLogin(Service accountType);
 
     public void photoStream();
 
@@ -66,9 +64,8 @@ public class FragmentServices extends Fragment {
     return view;
   }
 
-  public void configureServices(List<AccountType> servicesArray) {
-    ALog.d("Services: " + servicesArray.toString());
-    services = new AccountType[servicesArray.size()];
+  public void configureServices(List<Service> servicesArray) {
+    services = new Service[servicesArray.size()];
     services = servicesArray.toArray(services);
     adapter = new ServicesAdapter(getActivity(), services);
     gridViewServices.setAdapter(adapter);
@@ -79,30 +76,34 @@ public class FragmentServices extends Fragment {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-      AccountType service = services[position];
-      if (service.equals(AccountType.FACEBOOK)) {
-        serviceClickedListener.accountLogin(AccountType.FACEBOOK);
-      }
-      if (service.equals(AccountType.FLICKR)) {
-        serviceClickedListener.accountLogin(AccountType.FLICKR);
-      }
-      if (service.equals(AccountType.PICASA)) {
-        serviceClickedListener.accountLogin(AccountType.PICASA);
-      }
-      if (service.equals(AccountType.INSTAGRAM)) {
-        serviceClickedListener.accountLogin(AccountType.INSTAGRAM);
-      }
-      if (service.equals(LocalMediaType.ALL_PHOTOS)) {
+      Service service = services[position];
+      switch (service) {
+      case FACEBOOK:
+        serviceClickedListener.accountLogin(Service.FACEBOOK);
+        break;
+      case FLICKR:
+        serviceClickedListener.accountLogin(Service.FLICKR);
+        break;
+      case PICASA:
+        serviceClickedListener.accountLogin(Service.PICASA);
+        break;
+      case INSTAGRAM:
+        serviceClickedListener.accountLogin(Service.INSTAGRAM);
+        break;
+      case ALL_PHOTOS:
         serviceClickedListener.photoStream();
-      }
-      if (service.equals(LocalMediaType.CAMERA_SHOTS)) {
+        break;
+      case CAMERA_SHOTS:
         serviceClickedListener.cameraRoll();
-      }
-      if (service.equals(LocalMediaType.TAKE_PHOTO)) {
+        break;
+      case TAKE_PHOTO:
         serviceClickedListener.takePhoto();
-      }
-      if (service.equals(LocalMediaType.LAST_PHOTO_TAKEN)) {
+        break;
+      case LAST_PHOTO_TAKEN:
         serviceClickedListener.lastPhoto();
+        break;
+      default:
+        break;
       }
     }
 

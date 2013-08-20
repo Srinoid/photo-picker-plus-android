@@ -35,7 +35,7 @@ import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class AssetsFragment extends Fragment implements AdapterItemClickListener {
+public class FragmentAssets extends Fragment implements AdapterItemClickListener {
 
   private static final String ARG_FILTER_TYPE = "argFilterType";
   private static final String ARG_ACCOUNT_ID = "argAccountId";
@@ -69,10 +69,10 @@ public class AssetsFragment extends Fragment implements AdapterItemClickListener
 
   }
 
-  public static AssetsFragment newInstance(PhotoFilterType filterType, String accountId,
+  public static FragmentAssets newInstance(PhotoFilterType filterType, String accountId,
       boolean isMultiPicker,
       ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
-    AssetsFragment frag = new AssetsFragment();
+    FragmentAssets frag = new FragmentAssets();
     Bundle args = new Bundle();
     args.putSerializable(ARG_FILTER_TYPE, filterType);
     args.putString(ARG_ACCOUNT_ID, accountId);
@@ -166,7 +166,7 @@ public class AssetsFragment extends Fragment implements AdapterItemClickListener
     public void onSuccess(ResponseModel<AccountBaseModel> responseData) {
       if (responseData != null && getActivity() != null) {
         assetAdapter = new AssetAdapter(getActivity(), responseData.getData(),
-            AssetsFragment.this);
+            FragmentAssets.this);
         gridView.setAdapter(assetAdapter);
 
         if (assetAdapter.getCount() == 0) {
@@ -318,7 +318,7 @@ public class AssetsFragment extends Fragment implements AdapterItemClickListener
     public void onSuccess(ResponseModel<AccountBaseModel> responseData) {
       if (responseData != null && getActivity() != null) {
         assetAdapter = new AssetAdapter(getActivity(), responseData.getData(),
-            AssetsFragment.this);
+            FragmentAssets.this);
         gridView.setAdapter(assetAdapter);
 
         if (assetAdapter.getCount() == 0) {
