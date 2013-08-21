@@ -19,7 +19,8 @@ import android.widget.Toast;
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.android.photopickerplus.ui.fragment.FragmentAssets.AssetFragmentListener;
+import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
+import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
 import com.chute.android.photopickerplus.util.AppUtil;
@@ -41,7 +42,8 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class ServicesActivity extends FragmentActivity implements AssetFragmentListener,
+public class ServicesActivity extends FragmentActivity implements AccountFilesListener,
+    CursorFilesListener,
     ServiceClickedListener {
 
   private static final String TAG = ServicesActivity.class.getSimpleName();
@@ -255,26 +257,33 @@ public class ServicesActivity extends FragmentActivity implements AssetFragmentL
   }
 
   @Override
-  public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList) {
+  public void onDeliverAccountFiles(ArrayList<AccountMediaModel> accountMediaModelList) {
     IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList);
 
   }
 
   @Override
-  public void onConfirmedCursorAssets(ArrayList<String> assetPathList) {
+  public void onDeliverCursorAssets(ArrayList<String> assetPathList) {
     IntentUtil.deliverDataToInitialActivity(ServicesActivity.this,
         AppUtil.getPhotoCollection(assetPathList));
 
   }
 
   @Override
-  public void onSelectedSocialItem(AccountMediaModel accountMediaModel) {
+  public void onAccountFilesSelect(AccountMediaModel accountMediaModel) {
     IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
   }
 
   @Override
-  public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
+  public void onCursorAssetsSelect(AccountMediaModel accountMediaModel) {
     IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
+  }
+
+  @Override
+  public void onAccountFolderSelect(String accountType, String accountShortcut,
+      String folderId, boolean isMultipicker) {
+    // TODO Auto-generated method stub
+
   }
 
 }

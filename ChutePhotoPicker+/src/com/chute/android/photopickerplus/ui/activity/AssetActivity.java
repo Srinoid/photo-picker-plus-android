@@ -13,26 +13,31 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.ui.fragment.FragmentAssets;
-import com.chute.android.photopickerplus.ui.fragment.FragmentAssets.AssetFragmentListener;
+import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
+import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
+import com.chute.android.photopickerplus.ui.fragment.FragmentRoot;
+import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.util.AppUtil;
+import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
-public class GridActivity extends FragmentActivity implements AssetFragmentListener {
+public class AssetActivity extends FragmentActivity implements CursorFilesListener,
+    AccountFilesListener {
 
-  public static final String TAG = GridActivity.class.getSimpleName();
+  public static final String TAG = AssetActivity.class.getSimpleName();
   public static final String KEY_SELECTED_ITEMS = "keySelectedItems";
   private String accountID;
   private boolean isMultiPicker;
   private PhotoFilterType filterType;
   private PhotosIntentWrapper wrapper;
-  private FragmentAssets fragment;
+  private FragmentRoot fragment;
   private String accountName;
   private String accountShortcut;
 
@@ -55,7 +60,7 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
     accountName = wrapper.getAccountName();
     accountShortcut = wrapper.getAccountShortcut();
 
-    fragment = (FragmentAssets) getSupportFragmentManager().findFragmentById(
+    fragment = (FragmentRoot) getSupportFragmentManager().findFragmentById(
         R.id.fragmentAssets);
     fragment.setRetainInstance(true);
     fragment.updateFragment(accountID, filterType, isMultiPicker, selectedItemsPositions,
@@ -64,24 +69,24 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
   }
 
   @Override
-  public void onSelectedSocialItem(AccountMediaModel accountMediaModel) {
-    IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel);
+  public void onAccountFilesSelect(AccountMediaModel accountMediaModel) {
+    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, accountMediaModel);
     setResult(RESULT_OK);
     finish();
 
   }
 
   @Override
-  public void onSelectedCursorItem(AccountMediaModel accountMediaModel) {
-    IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModel);
+  public void onCursorAssetsSelect(AccountMediaModel accountMediaModel) {
+    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, accountMediaModel);
     setResult(RESULT_OK);
     finish();
 
   }
 
   @Override
-  public void onConfirmedCursorAssets(ArrayList<String> assetPathList) {
-    IntentUtil.deliverDataToInitialActivity(GridActivity.this,
+  public void onDeliverCursorAssets(ArrayList<String> assetPathList) {
+    IntentUtil.deliverDataToInitialActivity(AssetActivity.this,
         AppUtil.getPhotoCollection(assetPathList));
     setResult(RESULT_OK);
     finish();
@@ -89,10 +94,23 @@ public class GridActivity extends FragmentActivity implements AssetFragmentListe
   }
 
   @Override
-  public void onConfirmedSocialAssets(ArrayList<AccountMediaModel> accountMediaModelList) {
-    IntentUtil.deliverDataToInitialActivity(GridActivity.this, accountMediaModelList);
+  public void onDeliverAccountFiles(ArrayList<AccountMediaModel> accountMediaModelList) {
+    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, accountMediaModelList);
     setResult(RESULT_OK);
     finish();
+
+  }
+
+  @Override
+  public void onAccountFolderSelect(String accountType, String accountShortcut,
+      String folderId, boolean isMultipicker) {
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+        .beginTransaction();
+    fragmentTransaction
+        .replace(R.id.fragments, FragmentSingle.newInstance(accountType, accountShortcut,
+            folderId, isMultipicker), Constants.TAG_FRAGMENT_FILES);
+    fragmentTransaction.addToBackStack(null);
+    fragmentTransaction.commit();
 
   }
 

@@ -39,7 +39,7 @@
             <activity android:name="com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity" />
         <activity android:name="com.chute.android.photopickerplus.ui.activity.AlbumsActivity" >
         </activity>
-        <activity android:name="com.chute.android.photopickerplus.ui.activity.GridActivity" >
+        <activity android:name="com.chute.android.photopickerplus.ui.activity.AssetActivity" >
         </activity>
         <activity android:name="com.chute.android.photopickerplus.ui.activity.ContentActivity" >
         </activity>

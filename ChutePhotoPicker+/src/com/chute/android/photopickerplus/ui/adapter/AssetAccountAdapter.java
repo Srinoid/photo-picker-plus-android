@@ -34,10 +34,10 @@ import com.chute.sdk.v2.model.enums.MediaType;
 
 import darko.imagedownloader.ImageLoader;
 
-public class AssetAdapter extends BaseAdapter {
+public class AssetAccountAdapter extends BaseAdapter {
 
   @SuppressWarnings("unused")
-  private static final String TAG = AssetAdapter.class.getSimpleName();
+  private static final String TAG = AssetAccountAdapter.class.getSimpleName();
 
   private static final int TYPE_MAX_COUNT = 2;
 
@@ -55,7 +55,7 @@ public class AssetAdapter extends BaseAdapter {
     public void onFileClicked(int position);
   }
 
-  public AssetAdapter(Activity context, AccountBaseModel baseModel,
+  public AssetAccountAdapter(Activity context, AccountBaseModel baseModel,
       AdapterItemClickListener listener) {
     this.context = context;
     this.listener = listener;

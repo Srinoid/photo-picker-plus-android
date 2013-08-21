@@ -18,6 +18,6 @@ public class Constants {
   public static final int CAMERA_PIC_REQUEST = 2500;
 
   public static final String TAG_FRAGMENT_ALBUM = "AlbumFrag";
-  public static final String TAG_FRAGMENT_EMPTY = "EmptyFrag";
+  public static final String TAG_FRAGMENT_FILES = "FilesFrag";
 
 }

@@ -16,17 +16,16 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.util.AppUtil;
 
 import darko.imagedownloader.ImageLoader;
 
-public class PhotoSelectCursorAdapter extends CursorAdapter implements MediaAdapter,
+public class AssetCursorAdapter extends CursorAdapter implements
     OnScrollListener {
 
-  public static final String TAG = PhotoSelectCursorAdapter.class.getSimpleName();
+  public static final String TAG = AssetCursorAdapter.class.getSimpleName();
 
   private static LayoutInflater inflater = null;
   public ImageLoader loader;
@@ -37,7 +36,7 @@ public class PhotoSelectCursorAdapter extends CursorAdapter implements MediaAdap
   private ArrayList<Integer> selectedItems = new ArrayList<Integer>();
 
   @SuppressWarnings("deprecation")
-  public PhotoSelectCursorAdapter(Context context, Cursor c) {
+  public AssetCursorAdapter(Context context, Cursor c) {
     super(context, c);
     this.context = context;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

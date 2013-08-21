@@ -15,7 +15,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.chute.android.photopickerplus.ui.activity.GridActivity;
+import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;
 
 public class GridActivityIntentWrapper extends IntentWrapper {
@@ -32,7 +32,7 @@ public class GridActivityIntentWrapper extends IntentWrapper {
   private static final String KEY_CHUTE_ID = "key_chuteId";
 
   public GridActivityIntentWrapper(Context context) {
-    super(context, GridActivity.class);
+    super(context, AssetActivity.class);
   }
 
   public GridActivityIntentWrapper(Intent intent) {
