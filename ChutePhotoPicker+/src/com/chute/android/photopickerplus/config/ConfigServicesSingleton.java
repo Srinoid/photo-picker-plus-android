@@ -3,7 +3,6 @@ package com.chute.android.photopickerplus.config;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
@@ -51,7 +50,12 @@ public class ConfigServicesSingleton {
     @Override
     public void onSuccess(ServiceResponseModel data) {
       ALog.d("Response = " + data.toString());
-      setAvailableServices((ArrayList<Service>) data.getServices());
+      ArrayList<Service> services = new ArrayList<Service>();
+      for (String serviseResponseModel : data.getServices()) {
+        Service service = Service.valueOf(serviseResponseModel.toUpperCase());
+        services.add(service);
+      }
+      setAvailableServices(services);
 
     }
 
