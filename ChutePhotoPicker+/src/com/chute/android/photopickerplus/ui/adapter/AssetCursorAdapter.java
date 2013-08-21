@@ -61,9 +61,7 @@ public class AssetCursorAdapter extends CursorAdapter implements
     if (shouldLoadImages) {
       loader.displayImage(Uri.fromFile(new File(path)).toString(), holder.imageViewThumb,
           null);
-    } else {
-      loader.displayImage(null, holder.imageViewThumb, null);
-    }
+    } 
     AppUtil.configureImageViewDimensions(holder.imageViewThumb, context);
     if (tick.containsKey(cursor.getPosition())) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
