@@ -1,5 +1,7 @@
 package com.chute.android.photopickerplus.ui.fragment;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +32,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
   private static final String ARG_FOLDER_ID = "argAlbumId";
   private static final String ARG_MULTIPICKER = "argMultipicker";
+  private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
 
   private GridView gridView;
   private TextView textViewSelectPhotos;
@@ -39,18 +42,20 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   private String accountShortcut;
   private String folderId;
   private boolean isMultipicker;
+  private ArrayList<Integer> selectedItemsPositions;
 
   private AssetAccountAdapter accountAssetAdapter;
   private AccountFilesListener accountListener;
 
   public static FragmentSingle newInstance(String accountType, String accountShortcut,
-      String folderId, boolean isMultipicker) {
+      String folderId, boolean isMultipicker, ArrayList<Integer> selectedItemPositions) {
     FragmentSingle frag = new FragmentSingle();
     Bundle args = new Bundle();
     args.putString(ARG_ACCOUNT_TYPE, accountType);
     args.putString(ARG_ACCOUNT_SHORTCUT, accountShortcut);
     args.putString(ARG_FOLDER_ID, folderId);
     args.putBoolean(ARG_MULTIPICKER, isMultipicker);
+    args.putIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS, selectedItemPositions);
     frag.setArguments(args);
     return frag;
   }
@@ -83,6 +88,10 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
       accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
       folderId = getArguments().getString(ARG_FOLDER_ID);
       isMultipicker = getArguments().getBoolean(ARG_MULTIPICKER);
+      selectedItemsPositions = getArguments().getIntegerArrayList(
+          ARG_SELECTED_ITEM_POSITIONS);
+      updateFragment(accountType, accountShortcut, folderId, isMultipicker,
+          selectedItemsPositions);
     }
 
     Button ok = (Button) view.findViewById(R.id.buttonOk);
@@ -90,10 +99,21 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     Button cancel = (Button) view.findViewById(R.id.buttonCancel);
     cancel.setOnClickListener(new CancelClickListener());
 
+    return view;
+  }
+
+  public void updateFragment(String accountType, String accountShortcut, String folderId,
+      boolean isMultipicker,
+      ArrayList<Integer> selectedItemsPositions) {
+    this.accountType = accountType;
+    this.isMultipicker = isMultipicker;
+    this.selectedItemsPositions = selectedItemsPositions;
+    this.accountShortcut = accountShortcut;
+    this.folderId = folderId;
+
     GCAccounts.accountSingle(getActivity(), accountType, accountShortcut, folderId,
         new AccountSingleCallback()).executeAsync();
 
-    return view;
   }
 
   private final class AccountSingleCallback implements
@@ -119,11 +139,11 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
           emptyView.setVisibility(View.GONE);
         }
 
-        // if (selectedItemsPositions != null) {
-        // for (int position : selectedItemsPositions) {
-        // assetAdapter.toggleTick(position);
-        // }
-        // }
+        if (selectedItemsPositions != null) {
+          for (int position : selectedItemsPositions) {
+            accountAssetAdapter.toggleTick(position);
+          }
+        }
 
         if (isMultipicker == true) {
           textViewSelectPhotos.setText(getActivity().getApplicationContext()
@@ -134,8 +154,8 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
               .getResources()
               .getString(R.string.select_a_photo));
         }
-        NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-            accountAssetAdapter.getCount());
+        // NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+        // accountAssetAdapter.getCount());
       }
 
     }

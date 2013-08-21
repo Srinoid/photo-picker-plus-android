@@ -14,17 +14,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
@@ -34,7 +34,7 @@ import com.chute.sdk.v2.model.enums.MediaType;
 
 import darko.imagedownloader.ImageLoader;
 
-public class AssetAccountAdapter extends BaseAdapter {
+public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListener {
 
   @SuppressWarnings("unused")
   private static final String TAG = AssetAccountAdapter.class.getSimpleName();
@@ -44,7 +44,7 @@ public class AssetAccountAdapter extends BaseAdapter {
   private static LayoutInflater inflater;
   public ImageLoader loader;
   public HashMap<Integer, AccountMediaModel> tick;
-  private final Activity context;
+  private final FragmentActivity context;
   private List<MediaViewType> rows;
   private AdapterItemClickListener listener;
 
@@ -55,10 +55,11 @@ public class AssetAccountAdapter extends BaseAdapter {
     public void onFileClicked(int position);
   }
 
-  public AssetAccountAdapter(Activity context, AccountBaseModel baseModel,
+  public AssetAccountAdapter(FragmentActivity context, AccountBaseModel baseModel,
       AdapterItemClickListener listener) {
     this.context = context;
     this.listener = listener;
+    ((AssetActivity) context).setAdapterListener(this);
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     loader = ImageLoader.getLoader(context);
     tick = new HashMap<Integer, AccountMediaModel>();
@@ -153,15 +154,6 @@ public class AssetAccountAdapter extends BaseAdapter {
     return photos;
   }
 
-  public ArrayList<Integer> getSelectedItemPositions() {
-    final ArrayList<Integer> positions = new ArrayList<Integer>();
-    final Iterator<Integer> iterator = tick.keySet().iterator();
-    while (iterator.hasNext()) {
-      positions.add(iterator.next());
-    }
-    return positions;
-  }
-
   public boolean hasSelectedItems() {
     return tick.size() > 0;
   }
@@ -171,10 +163,14 @@ public class AssetAccountAdapter extends BaseAdapter {
   }
 
   public void toggleTick(final int position) {
-    if (tick.containsKey(position)) {
-      tick.remove(position);
-    } else {
-      tick.put(position, (AccountMediaModel) getItem(position));
+    if (getCount() > position) {
+      if (getItemViewType(position) == MediaType.FILE.ordinal()) {
+        if (tick.containsKey(position)) {
+          tick.remove(position);
+        } else {
+          tick.put(position, (AccountMediaModel) getItem(position));
+        }
+      }
     }
     notifyDataSetChanged();
   }
@@ -199,5 +195,15 @@ public class AssetAccountAdapter extends BaseAdapter {
 
     }
 
+  }
+
+  @Override
+  public ArrayList<Integer> getSelectedItemPositions() {
+    final ArrayList<Integer> positions = new ArrayList<Integer>();
+    final Iterator<Integer> iterator = tick.keySet().iterator();
+    while (iterator.hasNext()) {
+      positions.add(iterator.next());
+    }
+    return positions;
   }
 }

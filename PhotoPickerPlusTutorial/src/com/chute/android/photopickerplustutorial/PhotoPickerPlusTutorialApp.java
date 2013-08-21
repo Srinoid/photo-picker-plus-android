@@ -33,6 +33,8 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
     services.add(Service.FACEBOOK);
     services.add(Service.FLICKR);
     services.add(Service.PICASA);
+    services.add(Service.DROPBOX);
+    services.add(Service.SKYDRIVE);
     services.add(Service.INSTAGRAM);
     services.add(Service.TAKE_PHOTO);
     services.add(Service.LAST_PHOTO_TAKEN);

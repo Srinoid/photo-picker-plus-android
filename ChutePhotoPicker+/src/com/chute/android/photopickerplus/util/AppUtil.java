@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.enums.Service;
 import com.chute.sdk.v2.utils.Utils;
 
 public class AppUtil {
@@ -134,6 +135,26 @@ public class AppUtil {
     imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsWidth
         / (int) grid, displayMetricsWidth
         / (int) grid));
+  }
+
+  public static ArrayList<Service> allServices() {
+    ArrayList<Service> list = new ArrayList<Service>();
+    list.add(Service.ALL_PHOTOS);
+    list.add(Service.LAST_PHOTO_TAKEN);
+    list.add(Service.TAKE_PHOTO);
+    list.add(Service.CAMERA_SHOTS);
+    list.add(Service.FACEBOOK);
+    list.add(Service.FLICKR);
+    list.add(Service.PICASA);
+    list.add(Service.INSTAGRAM);
+    list.add(Service.GOOGLE_DRIVE);
+    list.add(Service.GOOGLE_PLUS);
+    list.add(Service.SKYDRIVE);
+    list.add(Service.DROPBOX);
+    list.add(Service.CHUTE);
+    list.add(Service.FOURSQUARE);
+    list.add(Service.TWITTER);
+    return list;
   }
 
 }

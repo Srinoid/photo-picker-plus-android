@@ -84,11 +84,23 @@ public class FragmentServices extends Fragment {
       case FLICKR:
         serviceClickedListener.accountLogin(Service.FLICKR);
         break;
+      case INSTAGRAM:
+        serviceClickedListener.accountLogin(Service.INSTAGRAM);
+        break;
       case PICASA:
         serviceClickedListener.accountLogin(Service.PICASA);
         break;
-      case INSTAGRAM:
-        serviceClickedListener.accountLogin(Service.INSTAGRAM);
+      case GOOGLE_PLUS:
+        serviceClickedListener.accountLogin(Service.GOOGLE_PLUS);
+        break;
+      case GOOGLE_DRIVE:
+        serviceClickedListener.accountLogin(Service.GOOGLE_DRIVE);
+        break;
+      case SKYDRIVE:
+        serviceClickedListener.accountLogin(Service.SKYDRIVE);
+        break;
+      case DROPBOX:
+        serviceClickedListener.accountLogin(Service.DROPBOX);
         break;
       case ALL_PHOTOS:
         serviceClickedListener.photoStream();

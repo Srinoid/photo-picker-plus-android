@@ -117,15 +117,24 @@ public class ServicesAdapter extends BaseAdapter {
           R.drawable.flickr));
       serviceTitle.setVisibility(View.GONE);
       break;
+    case INSTAGRAM:
+      imageView.setBackgroundDrawable(context.getResources().getDrawable(
+          R.drawable.instagram));
+      serviceTitle.setVisibility(View.GONE);
+      break;
     case PICASA:
       imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.picassa));
       serviceTitle.setVisibility(View.GONE);
       break;
-    case INSTAGRAM:
-      imageView.setBackgroundDrawable(context.getResources().getDrawable(
-          R.drawable.instagram));
-      serviceTitle.setVisibility(View.GONE);
+    case GOOGLE_PLUS:
+      // Replacing Picasa
+      break;
+    case GOOGLE_DRIVE:
+      break;
+    case SKYDRIVE:
+      break;
+    case DROPBOX:
       break;
     case TAKE_PHOTO:
       imageView.setBackgroundDrawable(context.getResources().getDrawable(

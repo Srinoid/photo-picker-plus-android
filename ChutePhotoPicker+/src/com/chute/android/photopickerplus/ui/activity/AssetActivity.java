@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.ui.adapter.AssetSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.FragmentRoot;
@@ -33,13 +34,26 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
 
   public static final String TAG = AssetActivity.class.getSimpleName();
   public static final String KEY_SELECTED_ITEMS = "keySelectedItems";
+  public static final String KEY_FOLDER_ID = "keyFolderId";
   private String accountID;
   private boolean isMultiPicker;
   private PhotoFilterType filterType;
   private PhotosIntentWrapper wrapper;
-  private FragmentRoot fragment;
+  private FragmentRoot fragmentRoot;
+  private FragmentSingle fragmentSingle;
   private String accountName;
   private String accountShortcut;
+  private ArrayList<Integer> selectedItemsPositions;
+  private AssetSelectListener adapterListener;
+  private String folderId;
+
+  public AssetSelectListener getAdapterListener() {
+    return adapterListener;
+  }
+
+  public void setAdapterListener(AssetSelectListener adapterListener) {
+    this.adapterListener = adapterListener;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +63,12 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
 
     setContentView(R.layout.activity_assets);
 
-    ArrayList<Integer> selectedItemsPositions = savedInstanceState != null ? savedInstanceState
+    selectedItemsPositions = savedInstanceState != null ? savedInstanceState
         .getIntegerArrayList(KEY_SELECTED_ITEMS)
+        : null;
+
+    folderId = savedInstanceState != null ? savedInstanceState
+        .getString(KEY_FOLDER_ID)
         : null;
 
     wrapper = new PhotosIntentWrapper(getIntent());
@@ -60,10 +78,11 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     accountName = wrapper.getAccountName();
     accountShortcut = wrapper.getAccountShortcut();
 
-    fragment = (FragmentRoot) getSupportFragmentManager().findFragmentById(
+    fragmentRoot = (FragmentRoot) getSupportFragmentManager().findFragmentById(
         R.id.fragmentAssets);
-    fragment.setRetainInstance(true);
-    fragment.updateFragment(accountID, filterType, isMultiPicker, selectedItemsPositions,
+    fragmentRoot.setRetainInstance(true);
+    fragmentRoot.updateFragment(accountID, filterType, isMultiPicker,
+        selectedItemsPositions,
         accountName,
         accountShortcut);
   }
@@ -104,32 +123,42 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   @Override
   public void onAccountFolderSelect(String accountType, String accountShortcut,
       String folderId, boolean isMultipicker) {
+    this.folderId = folderId;
     FragmentTransaction fragmentTransaction = getSupportFragmentManager()
         .beginTransaction();
     fragmentTransaction
         .replace(R.id.fragments, FragmentSingle.newInstance(accountType, accountShortcut,
-            folderId, isMultipicker), Constants.TAG_FRAGMENT_FILES);
+            folderId, isMultipicker, selectedItemsPositions),
+            Constants.TAG_FRAGMENT_FILES);
     fragmentTransaction.addToBackStack(null);
     fragmentTransaction.commit();
 
   }
 
-  // @Override
-  // protected void onSaveInstanceState(Bundle outState) {
-  // super.onSaveInstanceState(outState);
-  // if (fragment.getSocialPhotoAdapter() != null
-  // && fragment.getSocialPhotoAdapter().getSelectedItemPositions() != null) {
-  // outState.putIntegerArrayList(KEY_SELECTED_ITEMS,
-  // fragment.getSocialPhotoAdapter()
-  // .getSelectedItemPositions());
-  // } else if (fragment.getPhotoSelectCursorAdapter() != null
-  // && fragment.getPhotoSelectCursorAdapter().getSelectedItemPositions() !=
-  // null) {
-  // outState.putIntegerArrayList(KEY_SELECTED_ITEMS,
-  // fragment.getPhotoSelectCursorAdapter()
-  // .getSelectedItemPositions());
-  // }
-  //
-  // }
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(KEY_FOLDER_ID, folderId);
+    if (adapterListener != null
+        && adapterListener.getSelectedItemPositions() !=
+        null) {
+      outState.putIntegerArrayList(KEY_SELECTED_ITEMS,
+          adapterListener
+              .getSelectedItemPositions());
+    }
+
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    fragmentSingle = (FragmentSingle) getSupportFragmentManager().findFragmentByTag(
+        Constants.TAG_FRAGMENT_FILES);
+    if (fragmentSingle != null) {
+      fragmentSingle.setRetainInstance(true);
+      fragmentSingle.updateFragment(accountName, accountShortcut, folderId,
+          isMultiPicker, selectedItemsPositions);
+    }
+  }
 
 }

@@ -52,7 +52,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   private AccountType accountType;
   private PhotoPickerPlusIntentWrapper ppWrapper;
 
-  private FragmentServices fragmentServicesVertical;
+  private FragmentServices fragmentServices;
 
   private static FragmentManager fragmentManager;
 
@@ -64,35 +64,16 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     setContentView(R.layout.main_layout);
 
     ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
-    fragmentServicesVertical = (FragmentServices) fragmentManager
+    fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
 
     ArrayList<Service> serviceList = new ArrayList<Service>();
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.FACEBOOK)) {
-      serviceList.add(Service.FACEBOOK);
+    for (Service service : AppUtil.allServices()) {
+      if (PhotoPickerPreferenceUtil.get().hasAccountName(service)) {
+        serviceList.add(service);
+      }
     }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.FLICKR)) {
-      serviceList.add(Service.FLICKR);
-    }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.PICASA)) {
-      serviceList.add(Service.PICASA);
-    }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.INSTAGRAM)) {
-      serviceList.add(Service.INSTAGRAM);
-    }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.ALL_PHOTOS)) {
-      serviceList.add(Service.ALL_PHOTOS);
-    }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.CAMERA_SHOTS)) {
-      serviceList.add(Service.CAMERA_SHOTS);
-    }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.LAST_PHOTO_TAKEN)) {
-      serviceList.add(Service.LAST_PHOTO_TAKEN);
-    }
-    if (PhotoPickerPreferenceUtil.get().hasAccountName(Service.TAKE_PHOTO)) {
-      serviceList.add(Service.TAKE_PHOTO);
-    }
-    fragmentServicesVertical.configureServices(serviceList);
+    fragmentServices.configureServices(serviceList);
 
   }
 

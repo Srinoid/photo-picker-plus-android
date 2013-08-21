@@ -178,8 +178,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
               .getResources()
               .getString(R.string.select_a_photo));
         }
-        NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-            accountAssetAdapter.getCount());
+        // NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+        // accountAssetAdapter.getCount());
       }
 
     }
@@ -223,8 +223,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
             .getString(R.string.select_a_photo));
         gridView.setOnItemClickListener(new OnSingleSelectGridItemClickListener());
       }
-      NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-          cursorAssetAdapter.getCount());
+      // NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+      // cursorAssetAdapter.getCount());
 
     }
 
