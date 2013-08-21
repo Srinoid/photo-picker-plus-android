@@ -30,18 +30,18 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
   public void onCreate() {
     super.onCreate();
     Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
-    // services.add(Service.FACEBOOK);
-    // services.add(Service.FLICKR);
-    services.add(Service.PICASA);
-    services.add(Service.GOOGLE_DRIVE);
-    services.add(Service.GOOGLE_PLUS);
-    // services.add(Service.DROPBOX);
+     services.add(Service.FACEBOOK);
+//    services.add(Service.PICASA);
+//    services.add(Service.GOOGLE_DRIVE);
+//    services.add(Service.GOOGLE_PLUS);
+     services.add(Service.DROPBOX);
     // services.add(Service.SKYDRIVE);
     // services.add(Service.INSTAGRAM);
     // services.add(Service.TAKE_PHOTO);
-    // services.add(Service.LAST_PHOTO_TAKEN);
-    // services.add(Service.CAMERA_SHOTS);
-    // services.add(Service.ALL_PHOTOS);
+     services.add(Service.LAST_PHOTO_TAKEN);
+     services.add(Service.FLICKR);
+     services.add(Service.CAMERA_SHOTS);
+     services.add(Service.ALL_PHOTOS);
 
     /**
      * Call for managing services locally.

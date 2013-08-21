@@ -3,6 +3,8 @@ package com.chute.android.photopickerplus.ui.activity;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -73,8 +75,19 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
         serviceList.add(service);
       }
     }
+    Collections.sort(serviceList, new ServiceComparator());
+    Collections.reverse(serviceList);
     fragmentServices.configureServices(serviceList);
 
+  }
+
+  static class ServiceComparator implements Comparator<Service>
+  {
+
+    public int compare(Service s1, Service s2)
+    {
+      return s1.getDisplayableType().compareToIgnoreCase(s2.getDisplayableType());
+    }
   }
 
   @Override
