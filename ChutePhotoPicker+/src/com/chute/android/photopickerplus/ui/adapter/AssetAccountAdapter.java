@@ -30,8 +30,8 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
-import com.chute.sdk.v2.model.MediaViewType;
-import com.chute.sdk.v2.model.enums.MediaType;
+import com.chute.sdk.v2.model.enums.AccountMediaType;
+import com.chute.sdk.v2.model.interfaces.AccountMedia;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -46,7 +46,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
   public ImageLoader loader;
   public HashMap<Integer, AccountMediaModel> tick;
   private final FragmentActivity context;
-  private List<MediaViewType> rows;
+  private List<AccountMedia> rows;
   private AdapterItemClickListener listener;
 
   public interface AdapterItemClickListener {
@@ -64,7 +64,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     loader = ImageLoader.getLoader(context);
     tick = new HashMap<Integer, AccountMediaModel>();
-    rows = new ArrayList<MediaViewType>();
+    rows = new ArrayList<AccountMedia>();
 
     if (baseModel.getFiles() != null) {
       for (AccountMediaModel file : baseModel.getFiles()) {
@@ -84,7 +84,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
 
   @Override
   public int getItemViewType(int position) {
-    return rows.get(position).getViewType();
+    return rows.get(position).getViewType().ordinal();
   }
 
   public int getCount() {
@@ -126,7 +126,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     }
 
     holder.imageViewThumb.setTag(position);
-    if (type == MediaType.FOLDER.ordinal()) {
+    if (type == AccountMediaType.FOLDER.ordinal()) {
       holder.imageViewTick.setVisibility(View.GONE);
       holder.textViewFolderTitle.setVisibility(View.VISIBLE);
       String folderName = ((AccountAlbumModel) getItem(position)).getName();
@@ -134,7 +134,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       holder.imageViewThumb.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.album_default));
       holder.imageViewThumb.setOnClickListener(new OnFolderClickedListener());
-    } else if (type == MediaType.FILE.ordinal()) {
+    } else if (type == AccountMediaType.FILE.ordinal()) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
       loader.displayImage(((AccountMediaModel) getItem(position)).getThumbnail(),
           holder.imageViewThumb, null);
@@ -170,7 +170,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
 
   public void toggleTick(final int position) {
     if (getCount() > position) {
-      if (getItemViewType(position) == MediaType.FILE.ordinal()) {
+      if (getItemViewType(position) == AccountMediaType.FILE.ordinal()) {
         if (tick.containsKey(position)) {
           tick.remove(position);
         } else {

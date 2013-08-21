@@ -3,8 +3,6 @@ package com.chute.android.photopickerplus.ui.activity;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +14,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
@@ -29,16 +26,13 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
-import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
-import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.enums.AccountType;
-import com.chute.sdk.v2.model.enums.Service;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
@@ -50,8 +44,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   private static final String TAG = ServicesActivity.class.getSimpleName();
 
-  private Service serviceType;
-  private AccountType accountType;
   private PhotoPickerPlusIntentWrapper ppWrapper;
 
   private FragmentServices fragmentServices;
@@ -68,26 +60,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
     fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
-
-    ArrayList<Service> serviceList = new ArrayList<Service>();
-    for (Service service : AppUtil.allServices()) {
-      if (PhotoPickerPreferenceUtil.get().hasAccountName(service)) {
-        serviceList.add(service);
-      }
-    }
-    Collections.sort(serviceList, new ServiceComparator());
-    Collections.reverse(serviceList);
-    fragmentServices.configureServices(serviceList);
-
-  }
-
-  static class ServiceComparator implements Comparator<Service>
-  {
-
-    public int compare(Service s1, Service s2)
-    {
-      return s1.getDisplayableType().compareToIgnoreCase(s2.getDisplayableType());
-    }
   }
 
   @Override
@@ -147,17 +119,17 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void accountLogin(Service type) {
-    serviceType = type;
-    if (PreferenceUtil.get().hasAccount(serviceType.getLabel())) {
+  public void accountLogin(AccountType type) {
+    if (PreferenceUtil.get().hasAccount(type.getLoginMethod())) {
       AccountModel account = PreferenceUtil.get()
-          .getAccount(serviceType.getLoginMethod());
+          .getAccount(type.getLoginMethod());
       accountClicked(account.getId(), account.getType(), account.getShortcut());
     } else {
-      PhotoPickerPreferenceUtil.get().setAccountType(serviceType.getLabel());
+      // Rework, needs to save complete accounts then pull them if needed
+     /* PhotoPickerPreferenceUtil.get().setAccountType(serviceType.getLabel());
       accountType = AccountType.valueOf(serviceType.name());
       AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, accountType);
+          ServicesActivity.this, accountType);*/
     }
 
   }
@@ -213,7 +185,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
     @Override
     public void onSuccess(ListResponseModel<AccountModel> responseData) {
-      if (accountType == null) {
+      // FIX this to work with accounts
+      // Send in the callback constructor, the AccountType if you need it for some reason
+      /*if (accountType == null) {
         // return;
         String type = PhotoPickerPreferenceUtil.get().getAccountType();
         accountType = AccountType.valueOf(type);
@@ -227,7 +201,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       AccountModel accountModel = responseData.getData().get(0);
       PreferenceUtil.get().saveAccount(accountModel);
       accountClicked(accountModel.getId(), accountModel.getType(),
-          accountModel.getShortcut());
+          accountModel.getShortcut());*/
     }
 
     @Override

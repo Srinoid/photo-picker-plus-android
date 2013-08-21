@@ -9,12 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.ui.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -23,11 +27,16 @@ import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
-import com.chute.sdk.v2.model.enums.Service;
+import com.chute.android.photopickerplus.models.enums.LocalMediaType;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
+import com.chute.sdk.v2.model.enums.AccountType;
 
 import darko.imagedownloader.ImageLoader;
 
 public class ServicesAdapter extends BaseAdapter {
+
+  private static final int VIEW_TYPE_REMOTE_ACCOUNT = 1;
+  private static final int VIEW_TYPE_LOCAL_ACCOUNT = 0;
 
   @SuppressWarnings("unused")
   private static final String TAG = ServicesAdapter.class.getSimpleName();
@@ -37,11 +46,16 @@ public class ServicesAdapter extends BaseAdapter {
   private final DisplayMetrics displayMetrics;
   private final Activity context;
 
-  private Service[] services;
+  private List<AccountType> remoteAccounts = new ArrayList<AccountType>();
+  private List<LocalMediaType> localAccounts = new ArrayList<LocalMediaType>();
+  private ServiceClickedListener serviceClickedListener;
 
-  public ServicesAdapter(final Activity context, final Service[] services) {
-    this.services = services;
+  public ServicesAdapter(final Activity context, List<AccountType> remoteAccounts,
+      List<LocalMediaType> localAccounts, ServiceClickedListener serviceClickedListener) {
     this.context = context;
+    this.remoteAccounts = remoteAccounts;
+    this.localAccounts = localAccounts;
+    this.serviceClickedListener = serviceClickedListener;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     loader = ImageLoader.getLoader(context);
     displayMetrics = context.getResources().getDisplayMetrics();
@@ -49,12 +63,12 @@ public class ServicesAdapter extends BaseAdapter {
 
   @Override
   public int getCount() {
-    return services.length;
+    return remoteAccounts.size() + localAccounts.size();
   }
 
   @Override
   public Object getItem(final int position) {
-    return position;
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -62,10 +76,34 @@ public class ServicesAdapter extends BaseAdapter {
     return position;
   }
 
+  @Override
+  public int getItemViewType(int position) {
+    // local accounts will come first in the adapter
+    if (position < localAccounts.size()) {
+      // Its type Local Account
+      return VIEW_TYPE_LOCAL_ACCOUNT;
+    }
+    return VIEW_TYPE_REMOTE_ACCOUNT;
+  }
+
+  public LocalMediaType getLocalAccount(int position) {
+    return localAccounts.get(position);
+  }
+
+  public AccountType getRemoteAccount(int position) {
+    return remoteAccounts.get(position - localAccounts.size());
+  }
+
+  @Override
+  public int getViewTypeCount() {
+    return 2;
+  }
+
   public static class ViewHolder {
 
     public ImageView imageView;
     public TextView textViewServiceTitle;
+
   }
 
   @Override
@@ -82,7 +120,13 @@ public class ServicesAdapter extends BaseAdapter {
     } else {
       holder = (ViewHolder) vi.getTag();
     }
-    setImageViewBackground(holder.imageView, holder.textViewServiceTitle, position);
+
+    if (getItemViewType(position) == VIEW_TYPE_LOCAL_ACCOUNT) {
+      // Set an image as background
+      setupLocalService(holder, getLocalAccount(position));
+    } else {
+      setupRemoteService(holder, getRemoteAccount(position));
+    }
     return vi;
   }
 
@@ -98,34 +142,115 @@ public class ServicesAdapter extends BaseAdapter {
   }
 
   @SuppressWarnings("deprecation")
-  private void setImageViewBackground(ImageView imageView, TextView serviceTitle,
-      int position) {
+  private void setupLocalService(ViewHolder holder, LocalMediaType type) {
     Uri uriAllPhotos = MediaDAO
         .getLastPhotoFromAllPhotos(context.getApplicationContext());
     Uri uriLastPhotoFromCameraPhotos = MediaDAO.getLastPhotoFromCameraPhotos(context
         .getApplicationContext());
-    Service service = services[position];
-    imageView.setTag(position);
-    switch (service) {
+    switch (type) {
+    case TAKE_PHOTO:
+      holder.imageView.setBackgroundResource(R.drawable.take_photo);
+      holder.textViewServiceTitle.setText(R.string.take_photos);
+      break;
+    case CAMERA_SHOTS:
+      if (uriLastPhotoFromCameraPhotos != null) {
+        loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView,
+            null);
+      } else {
+        holder.imageView.setBackgroundResource(R.drawable.photo_placeholder);
+      }
+      holder.textViewServiceTitle.setText(R.string.camera_shots);
+      break;
+    case LAST_PHOTO_TAKEN:
+      if (uriLastPhotoFromCameraPhotos != null) {
+        loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView,
+            null);
+      } else {
+        holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
+            R.drawable.photo_placeholder));
+      }
+      holder.textViewServiceTitle.setText(context.getResources().getString(
+          R.string.last_photo));
+      break;
+    case ALL_PHOTOS:
+      if (uriAllPhotos != null) {
+        loader.displayImage(uriAllPhotos.toString(), holder.imageView, null);
+      } else {
+        holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
+            R.drawable.photo_placeholder));
+      }
+      holder.textViewServiceTitle.setText(context.getResources().getString(
+          R.string.all_photos));
+      break;
+    }
+
+    // Click listners
+    switch (type) {
+    case ALL_PHOTOS:
+      holder.imageView.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          serviceClickedListener.photoStream();
+        }
+      });
+      break;
+    case CAMERA_SHOTS:
+      holder.imageView.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          serviceClickedListener.cameraRoll();
+        }
+      });
+      
+      break;
+    case TAKE_PHOTO:
+      holder.imageView.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          serviceClickedListener.takePhoto();
+        }
+      });
+
+      break;
+    case LAST_PHOTO_TAKEN:
+      holder.imageView.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          serviceClickedListener.lastPhoto();
+        }
+      });
+      break;
+    }
+
+  }
+
+  @SuppressWarnings("deprecation")
+  private void setupRemoteService(ViewHolder holder,
+      final AccountType type) {
+    holder.textViewServiceTitle.setVisibility(View.GONE);
+    holder.imageView.setOnClickListener(new OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+        serviceClickedListener.accountLogin(type);
+      }
+    });
+    switch (type) {
     case FACEBOOK:
-      imageView.setBackgroundDrawable(context.getResources().getDrawable(
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.facebook));
-      serviceTitle.setVisibility(View.GONE);
       break;
     case FLICKR:
-      imageView.setBackgroundDrawable(context.getResources().getDrawable(
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.flickr));
-      serviceTitle.setVisibility(View.GONE);
       break;
     case INSTAGRAM:
-      imageView.setBackgroundDrawable(context.getResources().getDrawable(
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.instagram));
-      serviceTitle.setVisibility(View.GONE);
       break;
     case PICASA:
-      imageView.setBackgroundDrawable(context.getResources().getDrawable(
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.picassa));
-      serviceTitle.setVisibility(View.GONE);
       break;
     case GOOGLE_PLUS:
       // Replacing Picasa
@@ -136,37 +261,11 @@ public class ServicesAdapter extends BaseAdapter {
       break;
     case DROPBOX:
       break;
-    case TAKE_PHOTO:
-      imageView.setBackgroundDrawable(context.getResources().getDrawable(
-          R.drawable.take_photo));
-      serviceTitle.setText(context.getResources().getString(R.string.take_photos));
+    case CHUTE:
       break;
-    case CAMERA_SHOTS:
-      if (uriLastPhotoFromCameraPhotos != null) {
-        loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
-      } else {
-        imageView.setBackgroundDrawable(context.getResources().getDrawable(
-            R.drawable.photo_placeholder));
-      }
-      serviceTitle.setText(context.getResources().getString(R.string.camera_shots));
+    case FOURSQUARE:
       break;
-    case LAST_PHOTO_TAKEN:
-      if (uriLastPhotoFromCameraPhotos != null) {
-        loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), imageView, null);
-      } else {
-        imageView.setBackgroundDrawable(context.getResources().getDrawable(
-            R.drawable.photo_placeholder));
-      }
-      serviceTitle.setText(context.getResources().getString(R.string.last_photo));
-      break;
-    case ALL_PHOTOS:
-      if (uriAllPhotos != null) {
-        loader.displayImage(uriAllPhotos.toString(), imageView, null);
-      } else {
-        imageView.setBackgroundDrawable(context.getResources().getDrawable(
-            R.drawable.photo_placeholder));
-      }
-      serviceTitle.setText(context.getResources().getString(R.string.all_photos));
+    case TWITTER:
       break;
     default:
       break;

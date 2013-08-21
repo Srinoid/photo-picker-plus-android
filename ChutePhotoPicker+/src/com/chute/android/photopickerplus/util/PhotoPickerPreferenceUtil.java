@@ -25,21 +25,13 @@
 //
 package com.chute.android.photopickerplus.util;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
-
-import com.chute.sdk.v2.model.enums.Service;
 
 public class PhotoPickerPreferenceUtil {
 
   public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
-  private static final String SERVICE_LIST = "service_list";
-  private static final String CONFIG_URL = "config_url";
-  private static final String ACCOUNT_TYPE = "account_type";
   private final Context context;
 
   private PhotoPickerPreferenceUtil(Context context) {
@@ -80,42 +72,4 @@ public class PhotoPickerPreferenceUtil {
     }
     edit.commit();
   }
-
-  public void setServiceList(ArrayList<String> services) {
-    setPreference(SERVICE_LIST, TextUtils.join(",", services));
-  }
-
-  public String getServiceList() {
-    return getPreferences().getString(SERVICE_LIST, null);
-  }
-
-  public void setConfigUrl(String url) {
-    setPreference(CONFIG_URL, url);
-  }
-
-  public String getConfigUrl() {
-    return getPreferences().getString(CONFIG_URL, null);
-  }
-
-  public void setAccountType(String accountType) {
-    setPreference(ACCOUNT_TYPE, accountType);
-  }
-
-  public String getAccountType() {
-    return getPreferences().getString(ACCOUNT_TYPE, null);
-  }
-
-  // Account Name
-  public void setNameForAccount(Service service, String label) {
-    setPreference(service.getLabel() + "_label", label);
-  }
-
-  public boolean hasAccountName(Service service) {
-    return getPreferences().contains(service.getLabel() + "_label");
-  }
-
-  public String getAccountName(Service service) {
-    return getPreferences().getString(service.getLabel() + "_label", null);
-  }
-
 }

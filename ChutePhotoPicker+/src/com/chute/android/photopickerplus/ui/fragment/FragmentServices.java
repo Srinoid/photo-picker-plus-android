@@ -8,26 +8,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.config.ConfigServicesSingleton;
+import com.chute.android.photopickerplus.models.enums.LocalMediaType;
 import com.chute.android.photopickerplus.ui.adapter.ServicesAdapter;
-import com.chute.sdk.v2.model.enums.Service;
+import com.chute.sdk.v2.model.enums.AccountType;
 
 public class FragmentServices extends Fragment {
 
   private GridView gridViewServices;
   private ServicesAdapter adapter;
-
   private ServiceClickedListener serviceClickedListener;
-
-  private Service[] services;
 
   public interface ServiceClickedListener {
 
-    public void accountLogin(Service accountType);
+    public void accountLogin(AccountType accountType);
 
     public void photoStream();
 
@@ -58,67 +55,21 @@ public class FragmentServices extends Fragment {
     View view = null;
     view = inflater.inflate(R.layout.fragment_services, container, false);
     gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
-    gridViewServices.setOnItemClickListener(new GridClickListener());
     gridViewServices.setNumColumns(getResources().getInteger(
         R.integer.grid_columns_services));
     return view;
   }
-
-  public void configureServices(List<Service> servicesArray) {
-    services = new Service[servicesArray.size()];
-    services = servicesArray.toArray(services);
-    adapter = new ServicesAdapter(getActivity(), services);
-    gridViewServices.setAdapter(adapter);
-
+  
+  @Override
+  public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    ConfigServicesSingleton singleton = ConfigServicesSingleton.getInstance(getActivity());
+    configureServices(singleton.getRemoteServices(), singleton.getLocalServices());
   }
 
-  private final class GridClickListener implements OnItemClickListener {
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-      Service service = services[position];
-      switch (service) {
-      case FACEBOOK:
-        serviceClickedListener.accountLogin(Service.FACEBOOK);
-        break;
-      case FLICKR:
-        serviceClickedListener.accountLogin(Service.FLICKR);
-        break;
-      case INSTAGRAM:
-        serviceClickedListener.accountLogin(Service.INSTAGRAM);
-        break;
-      case PICASA:
-        serviceClickedListener.accountLogin(Service.PICASA);
-        break;
-      case GOOGLE_PLUS:
-        serviceClickedListener.accountLogin(Service.GOOGLE_PLUS);
-        break;
-      case GOOGLE_DRIVE:
-        serviceClickedListener.accountLogin(Service.GOOGLE_DRIVE);
-        break;
-      case SKYDRIVE:
-        serviceClickedListener.accountLogin(Service.SKYDRIVE);
-        break;
-      case DROPBOX:
-        serviceClickedListener.accountLogin(Service.DROPBOX);
-        break;
-      case ALL_PHOTOS:
-        serviceClickedListener.photoStream();
-        break;
-      case CAMERA_SHOTS:
-        serviceClickedListener.cameraRoll();
-        break;
-      case TAKE_PHOTO:
-        serviceClickedListener.takePhoto();
-        break;
-      case LAST_PHOTO_TAKEN:
-        serviceClickedListener.lastPhoto();
-        break;
-      default:
-        break;
-      }
-    }
-
+  private void configureServices(List<AccountType> remoteServices, List<LocalMediaType> localServices) {
+    adapter = new ServicesAdapter(getActivity(), remoteServices,localServices, serviceClickedListener);
+    gridViewServices.setAdapter(adapter);
   }
 
 }
