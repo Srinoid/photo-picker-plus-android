@@ -138,7 +138,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     serviceType = type;
     if (PreferenceUtil.get().hasAccount(serviceType.getLabel())) {
       AccountModel account = PreferenceUtil.get()
-          .getAccount(serviceType.getLabel());
+          .getAccount(serviceType.getLoginMethod());
       accountClicked(account.getId(), account.getType(), account.getShortcut());
     } else {
       PhotoPickerPreferenceUtil.get().setAccountType(serviceType.getLabel());

@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
@@ -102,6 +103,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
 
     public ImageView imageViewThumb;
     public ImageView imageViewTick;
+    public TextView textViewFolderTitle;
   }
 
   @SuppressWarnings("deprecation")
@@ -117,6 +119,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       AppUtil.configureImageViewDimensions(holder.imageViewThumb, context);
       holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
       holder.imageViewTick.setTag(position);
+      holder.textViewFolderTitle = (TextView) vi.findViewById(R.id.textViewFolderTitle);
       vi.setTag(holder);
     } else {
       holder = (ViewHolder) vi.getTag();
@@ -125,6 +128,9 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     holder.imageViewThumb.setTag(position);
     if (type == MediaType.FOLDER.ordinal()) {
       holder.imageViewTick.setVisibility(View.GONE);
+      holder.textViewFolderTitle.setVisibility(View.VISIBLE);
+      String folderName = ((AccountAlbumModel) getItem(position)).getName();
+      holder.textViewFolderTitle.setText(folderName != null ? folderName : " ");
       holder.imageViewThumb.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.album_default));
       holder.imageViewThumb.setOnClickListener(new OnFolderClickedListener());
