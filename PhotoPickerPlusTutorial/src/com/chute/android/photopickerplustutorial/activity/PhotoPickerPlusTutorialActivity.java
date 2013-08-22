@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
 
+import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
@@ -59,7 +60,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
     int orientation = getResources().getConfiguration().orientation;
     if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      grid.setNumColumns(5);
+      grid.setNumColumns(getResources().getInteger(R.integer.grid_columns_landscape));
     }
 
   }
@@ -86,7 +87,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
     final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(data);
     accountMediaList = wrapper.getMediaCollection();
     adapter.changeData(accountMediaList);
-    // Log.d("debug", wrapper.getMediaCollection().toString());
+    ALog.d(wrapper.getMediaCollection().toString());
 
     // String path;
     // Uri uri = Uri.parse(wrapper.getMediaCollection().get(0).getUrl());

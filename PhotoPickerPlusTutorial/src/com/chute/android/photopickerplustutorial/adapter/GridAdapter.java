@@ -34,7 +34,7 @@ public class GridAdapter extends BaseAdapter {
   public ImageLoader loader;
   private ArrayList<AccountMediaModel> collection;
   private final DisplayMetrics displayMetrics;
-  private boolean dualFragments;
+  private final int orientation;
   private Activity context;
 
   public GridAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
@@ -46,7 +46,7 @@ public class GridAdapter extends BaseAdapter {
     loader = ImageLoader.getLoader(context);
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     displayMetrics = context.getResources().getDisplayMetrics();
-    dualFragments = context.getResources().getBoolean(R.bool.has_two_panes);
+    orientation = context.getResources().getConfiguration().orientation;
     this.context = context;
   }
 
@@ -93,29 +93,19 @@ public class GridAdapter extends BaseAdapter {
   }
 
   private void configureImageViewDimensions(ImageView imageViewThumb) {
-    int orientation = context.getResources().getConfiguration().orientation;
-    if (!dualFragments) {
-      if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-        int imageHeight = displayMetrics.widthPixels - 80;
-        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
-            displayMetrics.widthPixels / 3,
-            imageHeight / 3));
-      } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        int imageHeight = displayMetrics.widthPixels - 120;
-        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
-            displayMetrics.widthPixels / 5,
-            imageHeight / 5));
-      }
-    } else {
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
-            displayMetrics.widthPixels,
-            (int) (displayMetrics.heightPixels / 3.5)));
-      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-        imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
-            displayMetrics.widthPixels / 3,
-            (int) (displayMetrics.widthPixels / 3.5)));
-      }
+    int gridColumns = 0;
+    int imageDimension = 0;
+    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+      gridColumns = context.getResources().getInteger(R.integer.grid_columns_portrait);
+      imageDimension = context.getResources().getInteger(R.integer.asset_width_portrait);
+    } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      gridColumns = context.getResources().getInteger(R.integer.grid_columns_landscape);
+      imageDimension = context.getResources().getInteger(R.integer.asset_width_landscape);
     }
+    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(
+        displayMetrics.widthPixels
+            / gridColumns, (displayMetrics.widthPixels - imageDimension)
+            / gridColumns));
   }
+
 }
