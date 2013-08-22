@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
@@ -30,6 +31,7 @@ import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
+import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.enums.AccountType;
@@ -45,10 +47,10 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   private static final String TAG = ServicesActivity.class.getSimpleName();
 
   private PhotoPickerPlusIntentWrapper ppWrapper;
-
+  private static FragmentManager fragmentManager;
   private FragmentServices fragmentServices;
 
-  private static FragmentManager fragmentManager;
+  private AccountType accountType;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -125,11 +127,10 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
           .getAccount(type.getLoginMethod());
       accountClicked(account.getId(), account.getType(), account.getShortcut());
     } else {
-      // Rework, needs to save complete accounts then pull them if needed
-     /* PhotoPickerPreferenceUtil.get().setAccountType(serviceType.getLabel());
-      accountType = AccountType.valueOf(serviceType.name());
+      accountType = AccountType.valueOf(type.name().toUpperCase());
       AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, accountType);*/
+          ServicesActivity.this, accountType);
+
     }
 
   }
@@ -185,12 +186,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
     @Override
     public void onSuccess(ListResponseModel<AccountModel> responseData) {
-      // FIX this to work with accounts
-      // Send in the callback constructor, the AccountType if you need it for some reason
-      /*if (accountType == null) {
-        // return;
-        String type = PhotoPickerPreferenceUtil.get().getAccountType();
-        accountType = AccountType.valueOf(type);
+      if (accountType == null) {
+        String type = responseData.getData().get(0).getType();
+        accountType = AccountType.valueOf(type.toUpperCase());
       }
       if (responseData.getData().size() == 0) {
         Toast.makeText(getApplicationContext(),
@@ -201,7 +199,8 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       AccountModel accountModel = responseData.getData().get(0);
       PreferenceUtil.get().saveAccount(accountModel);
       accountClicked(accountModel.getId(), accountModel.getType(),
-          accountModel.getShortcut());*/
+          accountModel.getShortcut());
+
     }
 
     @Override

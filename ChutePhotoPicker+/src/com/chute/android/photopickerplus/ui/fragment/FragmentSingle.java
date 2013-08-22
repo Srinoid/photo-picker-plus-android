@@ -99,6 +99,8 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     Button cancel = (Button) view.findViewById(R.id.buttonCancel);
     cancel.setOnClickListener(new CancelClickListener());
 
+    gridView.setNumColumns(getResources().getInteger(R.integer.grid_columns_assets));
+
     return view;
   }
 
@@ -154,8 +156,8 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
               .getResources()
               .getString(R.string.select_a_photo));
         }
-         NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-         accountAssetAdapter.getCount());
+        // NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+        // accountAssetAdapter.getCount());
       }
 
     }

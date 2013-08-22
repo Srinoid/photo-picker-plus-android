@@ -12,6 +12,9 @@ public class ServiceResponseModel {
   @JsonProperty("services")
   private List<String> services;
 
+  @JsonProperty("local_features")
+  private List<String> localFeatures;
+
   public List<String> getServices() {
     return services;
   }
@@ -20,11 +23,21 @@ public class ServiceResponseModel {
     this.services = services;
   }
 
+  public List<String> getLocalFeatures() {
+    return localFeatures;
+  }
+
+  public void setLocalFeatures(List<String> localFeatures) {
+    this.localFeatures = localFeatures;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("ServiceResponseModel [services=");
     builder.append(services);
+    builder.append(", localFeatures=");
+    builder.append(localFeatures);
     builder.append("]");
     return builder.toString();
   }

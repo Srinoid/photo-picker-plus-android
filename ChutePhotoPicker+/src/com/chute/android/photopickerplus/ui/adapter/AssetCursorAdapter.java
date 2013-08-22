@@ -61,8 +61,8 @@ public class AssetCursorAdapter extends CursorAdapter implements
     if (shouldLoadImages) {
       loader.displayImage(Uri.fromFile(new File(path)).toString(), holder.imageViewThumb,
           null);
-    } 
-    AppUtil.configureImageViewDimensions(holder.imageViewThumb, context);
+    }
+    AppUtil.configureAssetImageViewDimensions(context, holder.imageViewThumb);
     if (tick.containsKey(cursor.getPosition())) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
       view.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));

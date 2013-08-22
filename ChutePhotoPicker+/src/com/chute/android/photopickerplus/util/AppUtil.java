@@ -19,9 +19,11 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -122,19 +124,30 @@ public class AppUtil {
     return path;
   }
 
-  public static void configureImageViewDimensions(ImageView imageViewThumb,
-      Context context) {
-    int imageHeight = context.getResources()
+  public static void configureAssetImageViewDimensions(Context context,
+      ImageView imageViewThumb) {
+    int imageDimension = context.getResources()
         .getInteger(R.integer.image_dimensions_assets);
     int displayMetricsWidth = context.getResources().getDisplayMetrics().widthPixels;
-    int displayMetricsHeight = context.getResources().getDisplayMetrics().heightPixels;
     int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
     float grid = Float.parseFloat(context.getResources().getString(
         R.dimen.grid_columns_assets_float));
     imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsWidth
-        / (int) grid, displayMetricsWidth
-        / (int) grid));
+        / gridColumns, (displayMetricsWidth - imageDimension)
+        / gridColumns));
   }
 
+  public static void configureServiceImageViewDimensions(Context context,
+      ImageView imageViewThumb,
+      TextView textViewServiceTitle) {
+    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    int gridColumns = context.getResources().getInteger(R.integer.grid_columns_services);
+    int imageDimension = context.getResources().getInteger(
+        R.integer.image_dimensions_services);
+    int imageViewDimension = displayMetrics.widthPixels - imageDimension;
+    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+        / gridColumns,
+        imageViewDimension / gridColumns));
+  }
 
 }

@@ -29,6 +29,7 @@ import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
 import com.chute.android.photopickerplus.models.enums.LocalMediaType;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
+import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.sdk.v2.model.enums.AccountType;
 
 import darko.imagedownloader.ImageLoader;
@@ -115,7 +116,8 @@ public class ServicesAdapter extends BaseAdapter {
       holder = new ViewHolder();
       holder.imageView = (ImageView) vi.findViewById(R.id.imageViewService);
       holder.textViewServiceTitle = (TextView) vi.findViewById(R.id.textViewServiceTitle);
-      configureImageViewDimensions(holder.imageView, holder.textViewServiceTitle);
+      AppUtil.configureServiceImageViewDimensions(context, holder.imageView,
+          holder.textViewServiceTitle);
       vi.setTag(holder);
     } else {
       holder = (ViewHolder) vi.getTag();
@@ -130,17 +132,6 @@ public class ServicesAdapter extends BaseAdapter {
     return vi;
   }
 
-  private void configureImageViewDimensions(ImageView imageViewThumb,
-      TextView textViewServiceTitle) {
-    int gridColumns = context.getResources().getInteger(R.integer.grid_columns_services);
-    int imageDimension = context.getResources().getInteger(
-        R.integer.image_dimensions_services);
-    int imageViewDimension = displayMetrics.widthPixels - imageDimension;
-    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
-        / gridColumns,
-        imageViewDimension / gridColumns));
-  }
-
   @SuppressWarnings("deprecation")
   private void setupLocalService(ViewHolder holder, LocalMediaType type) {
     Uri uriAllPhotos = MediaDAO
@@ -152,7 +143,7 @@ public class ServicesAdapter extends BaseAdapter {
       holder.imageView.setBackgroundResource(R.drawable.take_photo);
       holder.textViewServiceTitle.setText(R.string.take_photos);
       break;
-    case CAMERA_SHOTS:
+    case CAMERA_PHOTOS:
       if (uriLastPhotoFromCameraPhotos != null) {
         loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView,
             null);
@@ -161,7 +152,7 @@ public class ServicesAdapter extends BaseAdapter {
       }
       holder.textViewServiceTitle.setText(R.string.camera_shots);
       break;
-    case LAST_PHOTO_TAKEN:
+    case LAST_TAKEN_PHOTO:
       if (uriLastPhotoFromCameraPhotos != null) {
         loader.displayImage(uriLastPhotoFromCameraPhotos.toString(), holder.imageView,
             null);
@@ -188,23 +179,26 @@ public class ServicesAdapter extends BaseAdapter {
     switch (type) {
     case ALL_PHOTOS:
       holder.imageView.setOnClickListener(new OnClickListener() {
+
         @Override
         public void onClick(View v) {
           serviceClickedListener.photoStream();
         }
       });
       break;
-    case CAMERA_SHOTS:
+    case CAMERA_PHOTOS:
       holder.imageView.setOnClickListener(new OnClickListener() {
+
         @Override
         public void onClick(View v) {
           serviceClickedListener.cameraRoll();
         }
       });
-      
+
       break;
     case TAKE_PHOTO:
       holder.imageView.setOnClickListener(new OnClickListener() {
+
         @Override
         public void onClick(View v) {
           serviceClickedListener.takePhoto();
@@ -212,8 +206,9 @@ public class ServicesAdapter extends BaseAdapter {
       });
 
       break;
-    case LAST_PHOTO_TAKEN:
+    case LAST_TAKEN_PHOTO:
       holder.imageView.setOnClickListener(new OnClickListener() {
+
         @Override
         public void onClick(View v) {
           serviceClickedListener.lastPhoto();

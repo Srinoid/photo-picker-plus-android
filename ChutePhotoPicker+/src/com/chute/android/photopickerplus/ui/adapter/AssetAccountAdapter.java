@@ -116,7 +116,6 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       vi = inflater.inflate(R.layout.adapter_assets, null);
       holder = new ViewHolder();
       holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
-      AppUtil.configureImageViewDimensions(holder.imageViewThumb, context);
       holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
       holder.imageViewTick.setTag(position);
       holder.textViewFolderTitle = (TextView) vi.findViewById(R.id.textViewFolderTitle);
@@ -140,6 +139,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
           holder.imageViewThumb, null);
       holder.imageViewThumb.setOnClickListener(new OnFileClickedListener());
     }
+    AppUtil.configureAssetImageViewDimensions(context, holder.imageViewThumb);
 
     if (tick.containsKey(position)) {
       holder.imageViewTick.setVisibility(View.VISIBLE);

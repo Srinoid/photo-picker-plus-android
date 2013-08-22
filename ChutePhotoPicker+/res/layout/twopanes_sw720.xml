@@ -8,8 +8,7 @@
     <fragment
         android:id="@+id/fragmentServices"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="match_parent"
         class="com.chute.android.photopickerplus.ui.fragment.FragmentServices" />
-
 
 </LinearLayout>

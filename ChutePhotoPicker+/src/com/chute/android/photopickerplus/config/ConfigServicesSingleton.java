@@ -1,5 +1,6 @@
 package com.chute.android.photopickerplus.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,6 +64,23 @@ public class ConfigServicesSingleton {
       // setAvailableServices(services);
       // You will have 2 different things in the response. Remote Services or
       // Local services. Parse for that.
+      List<AccountType> accountTypeList = new ArrayList<AccountType>();
+      List<LocalMediaType> localServiceList = new ArrayList<LocalMediaType>();
+      if (data.getServices() != null) {
+        for (String service : data.getServices()) {
+          AccountType accountType = AccountType.valueOf(service.toUpperCase());
+          accountTypeList.add(accountType);
+        }
+        ConfigServicesSingleton.this.remoteServices = accountTypeList;
+      }
+      if (data.getLocalFeatures() != null) {
+        for (String localFeature : data.getLocalFeatures()) {
+          LocalMediaType localMediaType = LocalMediaType.valueOf(localFeature
+              .toUpperCase());
+          localServiceList.add(localMediaType);
+        }
+        ConfigServicesSingleton.this.localServices = localServiceList;
+      }
     }
 
   }

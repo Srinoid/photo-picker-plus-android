@@ -59,16 +59,19 @@ public class FragmentServices extends Fragment {
         R.integer.grid_columns_services));
     return view;
   }
-  
+
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ConfigServicesSingleton singleton = ConfigServicesSingleton.getInstance(getActivity());
+    ConfigServicesSingleton singleton = ConfigServicesSingleton
+        .getInstance(getActivity());
     configureServices(singleton.getRemoteServices(), singleton.getLocalServices());
   }
 
-  private void configureServices(List<AccountType> remoteServices, List<LocalMediaType> localServices) {
-    adapter = new ServicesAdapter(getActivity(), remoteServices,localServices, serviceClickedListener);
+  private void configureServices(List<AccountType> remoteServices,
+      List<LocalMediaType> localServices) {
+    adapter = new ServicesAdapter(getActivity(), remoteServices, localServices,
+        serviceClickedListener);
     gridViewServices.setAdapter(adapter);
   }
 
