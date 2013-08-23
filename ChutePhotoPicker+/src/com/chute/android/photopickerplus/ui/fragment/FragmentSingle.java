@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.config.ServiceLoader;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -31,7 +32,6 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   private static final String ARG_ACCOUNT_TYPE = "argAccountType";
   private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
   private static final String ARG_FOLDER_ID = "argAlbumId";
-  private static final String ARG_MULTIPICKER = "argMultipicker";
   private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
 
   private GridView gridView;
@@ -48,13 +48,12 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   private AccountFilesListener accountListener;
 
   public static FragmentSingle newInstance(String accountType, String accountShortcut,
-      String folderId, boolean isMultipicker, ArrayList<Integer> selectedItemPositions) {
+      String folderId, ArrayList<Integer> selectedItemPositions) {
     FragmentSingle frag = new FragmentSingle();
     Bundle args = new Bundle();
     args.putString(ARG_ACCOUNT_TYPE, accountType);
     args.putString(ARG_ACCOUNT_SHORTCUT, accountShortcut);
     args.putString(ARG_FOLDER_ID, folderId);
-    args.putBoolean(ARG_MULTIPICKER, isMultipicker);
     args.putIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS, selectedItemPositions);
     frag.setArguments(args);
     return frag;
@@ -87,10 +86,9 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
       accountType = getArguments().getString(ARG_ACCOUNT_TYPE);
       accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
       folderId = getArguments().getString(ARG_FOLDER_ID);
-      isMultipicker = getArguments().getBoolean(ARG_MULTIPICKER);
       selectedItemsPositions = getArguments().getIntegerArrayList(
           ARG_SELECTED_ITEM_POSITIONS);
-      updateFragment(accountType, accountShortcut, folderId, isMultipicker,
+      updateFragment(accountType, accountShortcut, folderId,
           selectedItemsPositions);
     }
 
@@ -105,10 +103,9 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   }
 
   public void updateFragment(String accountType, String accountShortcut, String folderId,
-      boolean isMultipicker,
       ArrayList<Integer> selectedItemsPositions) {
+    isMultipicker = ServiceLoader.getInstance().isMultiPicker();
     this.accountType = accountType;
-    this.isMultipicker = isMultipicker;
     this.selectedItemsPositions = selectedItemsPositions;
     this.accountShortcut = accountShortcut;
     this.folderId = folderId;
@@ -168,7 +165,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   public void onFolderClicked(int position) {
     AccountAlbumModel album = (AccountAlbumModel) accountAssetAdapter.getItem(position);
     accountListener.onAccountFolderSelect(accountType, accountShortcut,
-        album.getId(), isMultipicker);
+        album.getId());
 
   }
 

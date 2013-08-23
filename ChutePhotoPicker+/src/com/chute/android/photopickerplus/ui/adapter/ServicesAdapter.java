@@ -15,14 +15,12 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
@@ -44,7 +42,6 @@ public class ServicesAdapter extends BaseAdapter {
 
   private static LayoutInflater inflater;
   public ImageLoader loader;
-  private final DisplayMetrics displayMetrics;
   private final Activity context;
 
   private List<AccountType> remoteAccounts = new ArrayList<AccountType>();
@@ -59,7 +56,6 @@ public class ServicesAdapter extends BaseAdapter {
     this.serviceClickedListener = serviceClickedListener;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     loader = ImageLoader.getLoader(context);
-    displayMetrics = context.getResources().getDisplayMetrics();
   }
 
   @Override

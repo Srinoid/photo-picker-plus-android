@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.config.ServiceLoader;
 import com.chute.android.photopickerplus.ui.adapter.AssetSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
@@ -71,9 +72,9 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
         .getString(KEY_FOLDER_ID)
         : null;
 
+    isMultiPicker = ServiceLoader.getInstance().isMultiPicker();
     wrapper = new PhotosIntentWrapper(getIntent());
     accountID = wrapper.getAccountId();
-    isMultiPicker = wrapper.getIsMultiPicker();
     filterType = wrapper.getFilterType();
     accountName = wrapper.getAccountName();
     accountShortcut = wrapper.getAccountShortcut();
@@ -81,7 +82,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     fragmentRoot = (FragmentRoot) getSupportFragmentManager().findFragmentById(
         R.id.fragmentAssets);
     fragmentRoot.setRetainInstance(true);
-    fragmentRoot.updateFragment(accountID, filterType, isMultiPicker,
+    fragmentRoot.updateFragment(accountID, filterType,
         selectedItemsPositions,
         accountName,
         accountShortcut);
@@ -122,13 +123,13 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
 
   @Override
   public void onAccountFolderSelect(String accountType, String accountShortcut,
-      String folderId, boolean isMultipicker) {
+      String folderId) {
     this.folderId = folderId;
     FragmentTransaction fragmentTransaction = getSupportFragmentManager()
         .beginTransaction();
     fragmentTransaction
         .replace(R.id.fragments, FragmentSingle.newInstance(accountType, accountShortcut,
-            folderId, isMultipicker, selectedItemsPositions),
+            folderId, selectedItemsPositions),
             Constants.TAG_FRAGMENT_FILES);
     fragmentTransaction.addToBackStack(null);
     fragmentTransaction.commit();
@@ -157,7 +158,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     if (fragmentSingle != null) {
       fragmentSingle.setRetainInstance(true);
       fragmentSingle.updateFragment(accountName, accountShortcut, folderId,
-          isMultiPicker, selectedItemsPositions);
+          selectedItemsPositions);
     }
   }
 

@@ -9,9 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplustutorial;
 
+import com.araneaapps.android.libs.logger.ALog;
+import com.araneaapps.android.libs.logger.ALog.DebugLevel;
 import com.chute.android.photopickerplus.PhotoPickerPlusApp;
-import com.chute.android.photopickerplus.config.ConfigServicesSingleton;
-import com.chute.android.photopickerplus.models.enums.LocalMediaType;
+import com.chute.android.photopickerplus.config.ServiceLoader;
+import com.chute.android.photopickerplus.config.ServiceConfiguration;
 import com.chute.android.photopickerplustutorial.config.ConfigEndpointURLs;
 import com.chute.sdk.v2.api.Chute;
 import com.chute.sdk.v2.api.authentication.AuthConstants;
@@ -25,23 +27,18 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
   @Override
   public void onCreate() {
     super.onCreate();
+    ALog.setDebugTag("PhotoPicker");
+    ALog.setDebugLevel(DebugLevel.ALL);
     Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
 
-    /**
-     * Set service configuration by adding the desired local or account services
-     */
-    // ConfigServicesSingleton.getInstance(getApplicationContext())
-    // .setAvailableLocalServices(LocalMediaType.ALL_PHOTOS,
-    // LocalMediaType.TAKE_PHOTO);
-    // ConfigServicesSingleton.getInstance(getApplicationContext())
-    // .setAvailableRemoteServices(AccountType.FACEBOOK, AccountType.INSTAGRAM);
-
-    /**
-     * Pull services from server
-     * 
-     **/
-    ConfigServicesSingleton.getInstance(getApplicationContext()).fetchConfigFromServer(
-        ConfigEndpointURLs.SERVICES_CONFIG_URL);
+    ServiceConfiguration config = new ServiceConfiguration.Builder(
+        getApplicationContext())
+        .isMultiPicker(true)
+        // .accountList(AccountType.FACEBOOK, AccountType.INSTAGRAM)
+        // .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.TAKE_PHOTO)
+        .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
+        .build();
+    ServiceLoader.getInstance().init(config);
 
   }
 

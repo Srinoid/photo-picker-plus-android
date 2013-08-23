@@ -19,6 +19,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.config.ServiceLoader;
 import com.chute.android.photopickerplus.loaders.AssetsAsyncTaskLoader;
 import com.chute.android.photopickerplus.ui.adapter.AssetCursorAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
@@ -40,7 +41,6 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   private static final String ARG_ACCOUNT_ID = "argAccountId";
   private static final String ARG_ACCOUNT_NAME = "argAccountName";
   private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
-  private static final String ARG_MULTIPICKER = "argMultiPicker";
   private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
 
   private GridView gridView;
@@ -58,13 +58,11 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   private AccountFilesListener accountListener;
 
   public static FragmentRoot newInstance(PhotoFilterType filterType, String accountId,
-      boolean isMultiPicker,
       ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
     FragmentRoot frag = new FragmentRoot();
     Bundle args = new Bundle();
     args.putSerializable(ARG_FILTER_TYPE, filterType);
     args.putString(ARG_ACCOUNT_ID, accountId);
-    args.putBoolean(ARG_MULTIPICKER, isMultiPicker);
     args.putIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS, selectedItemPositions);
     args.putString(ARG_ACCOUNT_NAME, accountName);
     args.putString(ARG_ACCOUNT_SHORTCUT, accountShortcut);
@@ -106,8 +104,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
       accountName = getArguments().getString(ARG_ACCOUNT_NAME);
       accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
       updateFragment(getArguments().getString(ARG_ACCOUNT_ID),
-          (PhotoFilterType) getArguments().get(ARG_FILTER_TYPE), getArguments()
-              .getBoolean(ARG_MULTIPICKER),
+          (PhotoFilterType) getArguments().get(ARG_FILTER_TYPE),
           getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS), accountName,
           accountShortcut);
     }
@@ -118,11 +115,10 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   }
 
   public void updateFragment(String accountId, PhotoFilterType filterType,
-      boolean isMultipicker,
       ArrayList<Integer> selectedItemsPositions, String accountName,
       String accountShortcut) {
+    isMultipicker = ServiceLoader.getInstance().isMultiPicker();
     this.filterType = filterType;
-    this.isMultipicker = isMultipicker;
     this.selectedItemsPositions = selectedItemsPositions;
     this.accountShortcut = accountShortcut;
     this.accountName = accountName;
@@ -178,8 +174,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
               .getResources()
               .getString(R.string.select_a_photo));
         }
-//         NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-//         accountAssetAdapter.getCount());
+        // NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+        // accountAssetAdapter.getCount());
       }
 
     }
@@ -285,7 +281,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   public void onFolderClicked(int position) {
     AccountAlbumModel album = (AccountAlbumModel) accountAssetAdapter.getItem(position);
     accountListener.onAccountFolderSelect(accountName, accountShortcut,
-        album.getId(), isMultipicker);
+        album.getId());
 
   }
 

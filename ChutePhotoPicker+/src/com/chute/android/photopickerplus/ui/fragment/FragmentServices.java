@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.config.ConfigServicesSingleton;
+import com.chute.android.photopickerplus.config.ServiceLoader;
 import com.chute.android.photopickerplus.models.enums.LocalMediaType;
 import com.chute.android.photopickerplus.ui.adapter.ServicesAdapter;
 import com.chute.sdk.v2.model.enums.AccountType;
@@ -63,8 +63,8 @@ public class FragmentServices extends Fragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ConfigServicesSingleton singleton = ConfigServicesSingleton
-        .getInstance(getActivity());
+    ServiceLoader singleton = ServiceLoader
+        .getInstance();
     configureServices(singleton.getRemoteServices(), singleton.getLocalServices());
   }
 

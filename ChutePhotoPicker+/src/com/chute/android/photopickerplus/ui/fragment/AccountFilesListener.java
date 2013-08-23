@@ -11,6 +11,6 @@ public interface AccountFilesListener {
   public void onDeliverAccountFiles(ArrayList<AccountMediaModel> accountMediaModelList);
 
   public void onAccountFolderSelect(String accountType, String accountShortcut,
-      String folderId, boolean isMultipicker);
+      String folderId);
 
 }

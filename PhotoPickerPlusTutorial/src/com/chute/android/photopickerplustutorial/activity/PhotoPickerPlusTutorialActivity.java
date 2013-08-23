@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.GridView;
 
 import com.araneaapps.android.libs.logger.ALog;
+import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
@@ -30,6 +31,7 @@ import com.chute.sdk.v2.model.AccountMediaModel;
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
   public static final String TAG = PhotoPickerPlusTutorialActivity.class.getSimpleName();
+  public static final int REQUEST_CODE = 189;
   private static final String KEY_SELECTED_ITEMS = "keySelectedItems";
   private GridView grid;
   /**
@@ -37,7 +39,6 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
    * in a grid. If you wish to enable multi-picking functionality, set
    * isMultipicker=true, otherwise set isMultiPicker=false.
    */
-  private final boolean isMultiPicker = true;
   private GridAdapter adapter;
   private ArrayList<AccountMediaModel> accountMediaList;
 
@@ -69,12 +70,8 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
     @Override
     public void onClick(View v) {
-      PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(
-          PhotoPickerPlusTutorialActivity.this);
-      wrapper.setMultiPicker(isMultiPicker);
-      wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this,
-          PhotoPickerPlusIntentWrapper.REQUEST_CODE);
-
+      Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
+      startActivityForResult(intent, REQUEST_CODE);
     }
   }
 

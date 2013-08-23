@@ -28,7 +28,6 @@ import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
-import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
@@ -46,10 +45,8 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   private static final String TAG = ServicesActivity.class.getSimpleName();
 
-  private PhotoPickerPlusIntentWrapper ppWrapper;
   private static FragmentManager fragmentManager;
   private FragmentServices fragmentServices;
-
   private AccountType accountType;
 
   @Override
@@ -59,9 +56,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.main_layout);
 
-    ppWrapper = new PhotoPickerPlusIntentWrapper(getIntent());
     fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
+
   }
 
   @Override
@@ -86,8 +83,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   public void photoStream() {
     final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
     wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
-    wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
-    wrapper.setChuteId(ppWrapper.getAlbumId());
     wrapper.startActivityForResult(ServicesActivity.this,
         PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
@@ -112,9 +107,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   @Override
   public void cameraRoll() {
     final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-    wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
     wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
-    wrapper.setChuteId(ppWrapper.getAlbumId());
     wrapper.startActivityForResult(ServicesActivity.this,
         PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
 
@@ -213,7 +206,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   public void accountClicked(String accountId, String accountName, String accountShortcut) {
     final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-    wrapper.setMultiPicker(ppWrapper.getIsMultiPicker());
     wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
     wrapper.setAccountId(accountId);
     wrapper.setAccountName(accountName);
@@ -248,7 +240,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   @Override
   public void onAccountFolderSelect(String accountType, String accountShortcut,
-      String folderId, boolean isMultipicker) {
+      String folderId) {
     // TODO Auto-generated method stub
 
   }
