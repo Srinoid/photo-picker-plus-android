@@ -24,6 +24,7 @@ import com.chute.android.photopickerplus.loaders.AssetsAsyncTaskLoader;
 import com.chute.android.photopickerplus.ui.adapter.AssetCursorAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
+import com.chute.android.photopickerplus.ui.adapter.AssetSelectListener;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;

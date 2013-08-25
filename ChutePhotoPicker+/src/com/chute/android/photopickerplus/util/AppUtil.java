@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -126,28 +127,42 @@ public class AppUtil {
 
   public static void configureAssetImageViewDimensions(Context context,
       ImageView imageViewThumb) {
+    int orientation = context.getResources().getConfiguration().orientation;
     int imageDimension = context.getResources()
         .getInteger(R.integer.image_dimensions_assets);
     int displayMetricsWidth = context.getResources().getDisplayMetrics().widthPixels;
+    int displayMetricsHeight = context.getResources().getDisplayMetrics().heightPixels;
     int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
     float grid = Float.parseFloat(context.getResources().getString(
         R.dimen.grid_columns_assets_float));
+    if (context.getResources().getBoolean(R.bool.has_two_panes) && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsHeight
+          / gridColumns, (displayMetricsHeight - imageDimension)
+          / gridColumns));
+    } else {
     imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsWidth
         / gridColumns, (displayMetricsWidth - imageDimension)
         / gridColumns));
+    }
   }
 
   public static void configureServiceImageViewDimensions(Context context,
       ImageView imageViewThumb,
       TextView textViewServiceTitle) {
+    int orientation = context.getResources().getConfiguration().orientation;
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    int imageViewDimension = 0;
     int gridColumns = context.getResources().getInteger(R.integer.grid_columns_services);
     int imageDimension = context.getResources().getInteger(
         R.integer.image_dimensions_services);
-    int imageViewDimension = displayMetrics.widthPixels - imageDimension;
+    if (context.getResources().getBoolean(R.bool.has_two_panes) && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+    imageViewDimension = displayMetrics.heightPixels - imageDimension;
+    } else {
+    imageViewDimension = displayMetrics.widthPixels - imageDimension;
+    }
     imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
         / gridColumns,
         imageViewDimension / gridColumns));
-  }
+    }
 
 }

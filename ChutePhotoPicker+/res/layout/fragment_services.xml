@@ -26,6 +26,7 @@
         android:fastScrollEnabled="true"
         android:horizontalSpacing="10dip"
         android:verticalSpacing="10dip"
+        android:scrollbars="none"
         android:numColumns="4" />
     
 

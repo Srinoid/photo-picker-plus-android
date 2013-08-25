@@ -10,8 +10,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
@@ -19,9 +21,13 @@ import android.widget.Toast;
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.dao.MediaDAO;
+import com.chute.android.photopickerplus.ui.adapter.AssetSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
+import com.chute.android.photopickerplus.ui.fragment.EmptyFragment;
+import com.chute.android.photopickerplus.ui.fragment.FragmentRoot;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
+import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
@@ -45,9 +51,26 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   private static final String TAG = ServicesActivity.class.getSimpleName();
 
+  private FragmentTransaction fragmentTransaction;
   private static FragmentManager fragmentManager;
   private FragmentServices fragmentServices;
   private AccountType accountType;
+  private boolean dualPanes;
+  private ArrayList<Integer> selectedItemPositions;
+  private String folderId;
+  private String accountName;
+  private String accountShortcut;
+  private AssetSelectListener assetSelectListener;
+  private FragmentSingle fragmentSingle;
+
+  // public AssetSelectListener getAssetSelectListener() {
+  // return assetSelectListener;
+  // }
+  //
+  // public void setAssetSelectListener(AssetSelectListener assetSelectListener)
+  // {
+  // this.assetSelectListener = assetSelectListener;
+  // }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +79,26 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.main_layout);
 
+    selectedItemPositions = savedInstanceState != null ? savedInstanceState
+        .getIntegerArrayList(Constants.KEY_SELECTED_ITEMS)
+        : null;
+
+    folderId = savedInstanceState != null ? savedInstanceState
+        .getString(Constants.KEY_FOLDER_ID)
+        : null;
+
+    accountName = savedInstanceState != null ? savedInstanceState
+        .getString(Constants.KEY_ACCOUNT_TYPE)
+        : null;
+
+    accountShortcut = savedInstanceState != null ? savedInstanceState
+        .getString(Constants.KEY_ACCOUNT_SHORTCUT)
+        : null;
+
+    dualPanes = getResources().getBoolean(R.bool.has_two_panes);
+    if (dualPanes && savedInstanceState == null) {
+      replaceContentWithEmptyFragment();
+    }
     fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
 
@@ -80,15 +123,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void photoStream() {
-    final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-    wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
-    wrapper.startActivityForResult(ServicesActivity.this,
-        PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
-
-  }
-
-  @Override
   public void lastPhoto() {
     Uri uri = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext());
     if (uri.toString().equals("")) {
@@ -105,12 +139,60 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void cameraRoll() {
-    final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-    wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
-    wrapper.startActivityForResult(ServicesActivity.this,
-        PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+  public void photoStream() {
+    if (!dualPanes) {
+      final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+      wrapper.setFilterType(PhotoFilterType.ALL_PHOTOS);
+      wrapper.startActivityForResult(ServicesActivity.this,
+          PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+    } else {
+      replaceContentWithRootFragment(null, null, null, PhotoFilterType.ALL_PHOTOS);
+    }
 
+  }
+
+  @Override
+  public void cameraRoll() {
+    if (!dualPanes) {
+      final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+      wrapper.setFilterType(PhotoFilterType.CAMERA_ROLL);
+      wrapper.startActivityForResult(ServicesActivity.this,
+          PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+    } else {
+      replaceContentWithRootFragment(null, null, null, PhotoFilterType.CAMERA_ROLL);
+    }
+
+  }
+
+  public void replaceContentWithSingleFragment(String accountName,
+      ArrayList<Integer> selectedItemPositions,
+      String accountShortcut, String folderId) {
+    fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.replace(R.id.fragments,
+        FragmentSingle.newInstance(accountName, accountShortcut,
+            folderId, selectedItemPositions),
+        Constants.TAG_FRAGMENT_FILES);
+    fragmentTransaction.addToBackStack(null);
+    fragmentTransaction.commit();
+
+  }
+
+  public void replaceContentWithRootFragment(String accountName, String accountID,
+      String accountShortcut, PhotoFilterType filterType) {
+    fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.replace(R.id.fragments,
+        FragmentRoot.newInstance(filterType, accountID, selectedItemPositions,
+            accountName, accountShortcut), Constants.TAG_FRAGMENT_FOLDER);
+    // fragmentTransaction.addToBackStack(null);
+    fragmentTransaction.commit();
+  }
+
+  public void replaceContentWithEmptyFragment() {
+    fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(),
+        Constants.TAG_FRAGMENT_EMPTY);
+    // fragmentTransaction.addToBackStack(null);
+    fragmentTransaction.commit();
   }
 
   @Override
@@ -205,13 +287,18 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   public void accountClicked(String accountId, String accountName, String accountShortcut) {
-    final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
-    wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
-    wrapper.setAccountId(accountId);
-    wrapper.setAccountName(accountName);
-    wrapper.setAccountShortcut(accountShortcut);
-    wrapper.startActivityForResult(ServicesActivity.this,
-        PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+    if (!dualPanes) {
+      final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
+      wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
+      wrapper.setAccountId(accountId);
+      wrapper.setAccountName(accountName);
+      wrapper.setAccountShortcut(accountShortcut);
+      wrapper.startActivityForResult(ServicesActivity.this,
+          PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY);
+    } else {
+      replaceContentWithRootFragment(accountName, accountId, accountShortcut,
+          PhotoFilterType.SOCIAL_PHOTOS);
+    }
 
   }
 
@@ -241,8 +328,53 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   @Override
   public void onAccountFolderSelect(String accountType, String accountShortcut,
       String folderId) {
-    // TODO Auto-generated method stub
+    this.folderId = folderId;
+    this.accountName = accountType;
+    this.accountShortcut = accountShortcut;
+    replaceContentWithSingleFragment(accountType, selectedItemPositions, accountShortcut,
+        folderId);
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(Constants.KEY_FOLDER_ID, folderId);
+    outState.putString(Constants.KEY_ACCOUNT_SHORTCUT, accountShortcut);
+    outState.putString(Constants.KEY_ACCOUNT_TYPE, accountName);
+    if (assetSelectListener != null
+        && assetSelectListener.getSelectedItemPositions() !=
+        null) {
+      outState.putIntegerArrayList(Constants.KEY_SELECTED_ITEMS,
+          assetSelectListener
+              .getSelectedItemPositions());
+    }
 
   }
 
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    fragmentSingle = (FragmentSingle) getSupportFragmentManager().findFragmentByTag(
+        Constants.TAG_FRAGMENT_FILES);
+    if (fragmentSingle != null) {
+      fragmentSingle.setRetainInstance(true);
+      fragmentSingle.updateFragment(accountName, accountShortcut, folderId,
+          selectedItemPositions);
+    }
+  }
+
+  @Override
+  public void onDestroy() {
+    Fragment fragmentFolder =
+        fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_FOLDER);
+    Fragment fragmentFiles =
+        fragmentManager.findFragmentByTag(Constants.TAG_FRAGMENT_FILES);
+    if (fragmentFolder != null && fragmentFolder.isResumed()) {
+      fragmentManager.beginTransaction().remove(fragmentFolder).commit();
+    }
+    if (fragmentFiles != null && fragmentFiles.isResumed()) {
+      fragmentManager.beginTransaction().remove(fragmentFiles).commit();
+    }
+    super.onDestroy();
+  }
 }

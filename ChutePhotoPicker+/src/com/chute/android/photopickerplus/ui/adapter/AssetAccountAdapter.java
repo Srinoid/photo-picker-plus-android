@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
+import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
@@ -47,7 +48,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
   public HashMap<Integer, AccountMediaModel> tick;
   private final FragmentActivity context;
   private List<AccountMedia> rows;
-  private AdapterItemClickListener listener;
+  private AdapterItemClickListener adapterItemClickListener;
 
   public interface AdapterItemClickListener {
 
@@ -57,10 +58,14 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
   }
 
   public AssetAccountAdapter(FragmentActivity context, AccountBaseModel baseModel,
-      AdapterItemClickListener listener) {
+      AdapterItemClickListener adapterItemClicklistener) {
     this.context = context;
-    this.listener = listener;
-    ((AssetActivity) context).setAdapterListener(this);
+    this.adapterItemClickListener = adapterItemClicklistener;
+//    if (context.isInstance(AssetActivity.class)) {
+//      ((AssetActivity) context).setAssetSelectListener(this);
+//    } else {
+//      ((ServicesActivity) context).setAssetSelectListener(this);
+//    }
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     loader = ImageLoader.getLoader(context);
     tick = new HashMap<Integer, AccountMediaModel>();
@@ -186,7 +191,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     @Override
     public void onClick(View v) {
       Integer position = (Integer) v.getTag();
-      listener.onFolderClicked(position);
+      adapterItemClickListener.onFolderClicked(position);
 
     }
 
@@ -197,7 +202,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     @Override
     public void onClick(View v) {
       Integer position = (Integer) v.getTag();
-      listener.onFileClicked(position);
+      adapterItemClickListener.onFileClicked(position);
 
     }
 

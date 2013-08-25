@@ -12,16 +12,18 @@ package com.chute.android.photopickerplus.ui.activity;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.config.ServiceLoader;
 import com.chute.android.photopickerplus.ui.adapter.AssetSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.FragmentRoot;
+import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
@@ -34,10 +36,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     AccountFilesListener {
 
   public static final String TAG = AssetActivity.class.getSimpleName();
-  public static final String KEY_SELECTED_ITEMS = "keySelectedItems";
-  public static final String KEY_FOLDER_ID = "keyFolderId";
   private String accountID;
-  private boolean isMultiPicker;
   private PhotoFilterType filterType;
   private PhotosIntentWrapper wrapper;
   private FragmentRoot fragmentRoot;
@@ -45,16 +44,18 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   private String accountName;
   private String accountShortcut;
   private ArrayList<Integer> selectedItemsPositions;
-  private AssetSelectListener adapterListener;
+  private AssetSelectListener assetSelectListener;
   private String folderId;
+  private static FragmentManager fragmentManager;
+  private FragmentServices fragmentServices;
 
-  public AssetSelectListener getAdapterListener() {
-    return adapterListener;
-  }
-
-  public void setAdapterListener(AssetSelectListener adapterListener) {
-    this.adapterListener = adapterListener;
-  }
+  // public AssetSelectListener getAdapterListener() {
+  // return assetSelectListener;
+  // }
+  //
+  // public void setAdapterListener(AssetSelectListener adapterListener) {
+  // this.assetSelectListener = adapterListener;
+  // }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +66,13 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     setContentView(R.layout.activity_assets);
 
     selectedItemsPositions = savedInstanceState != null ? savedInstanceState
-        .getIntegerArrayList(KEY_SELECTED_ITEMS)
+        .getIntegerArrayList(Constants.KEY_SELECTED_ITEMS)
         : null;
 
     folderId = savedInstanceState != null ? savedInstanceState
-        .getString(KEY_FOLDER_ID)
+        .getString(Constants.KEY_FOLDER_ID)
         : null;
 
-    isMultiPicker = ServiceLoader.getInstance().isMultiPicker();
     wrapper = new PhotosIntentWrapper(getIntent());
     accountID = wrapper.getAccountId();
     filterType = wrapper.getFilterType();
@@ -139,12 +139,12 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putString(KEY_FOLDER_ID, folderId);
-    if (adapterListener != null
-        && adapterListener.getSelectedItemPositions() !=
+    outState.putString(Constants.KEY_FOLDER_ID, folderId);
+    if (assetSelectListener != null
+        && assetSelectListener.getSelectedItemPositions() !=
         null) {
-      outState.putIntegerArrayList(KEY_SELECTED_ITEMS,
-          adapterListener
+      outState.putIntegerArrayList(Constants.KEY_SELECTED_ITEMS,
+          assetSelectListener
               .getSelectedItemPositions());
     }
 
@@ -161,5 +161,6 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
           selectedItemsPositions);
     }
   }
+
 
 }

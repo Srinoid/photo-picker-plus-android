@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
+import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.android.photopickerplus.util.AppUtil;
 
 import darko.imagedownloader.ImageLoader;
@@ -34,6 +35,7 @@ public class AssetCursorAdapter extends CursorAdapter implements
   private final int dataIndex;
   public HashMap<Integer, String> tick;
   private boolean shouldLoadImages = true;
+  private AssetSelectListener assetSelectListener;
 
   @SuppressWarnings("deprecation")
   public AssetCursorAdapter(FragmentActivity context, Cursor c) {
@@ -42,7 +44,6 @@ public class AssetCursorAdapter extends CursorAdapter implements
     loader = ImageLoader.getLoader(context);
     dataIndex = c.getColumnIndex(MediaStore.Images.Media.DATA);
     tick = new HashMap<Integer, String>();
-    ((AssetActivity) context).setAdapterListener(this);
 
   }
 
