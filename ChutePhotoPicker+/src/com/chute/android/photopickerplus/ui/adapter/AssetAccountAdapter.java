@@ -16,6 +16,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,11 +62,6 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       AdapterItemClickListener adapterItemClicklistener) {
     this.context = context;
     this.adapterItemClickListener = adapterItemClicklistener;
-//    if (context.isInstance(AssetActivity.class)) {
-//      ((AssetActivity) context).setAssetSelectListener(this);
-//    } else {
-//      ((ServicesActivity) context).setAssetSelectListener(this);
-//    }
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     loader = ImageLoader.getLoader(context);
     tick = new HashMap<Integer, AccountMediaModel>();
@@ -79,6 +75,11 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       for (AccountAlbumModel folder : baseModel.getFolders()) {
         rows.add(folder);
       }
+    }
+    if (context.getResources().getBoolean(R.bool.has_two_panes)) {
+      ((ServicesActivity) context).setAssetSelectListener(this);
+    } else {
+      ((AssetActivity) context).setAssetSelectListener(this);
     }
   }
 
@@ -174,7 +175,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
   }
 
   public void toggleTick(final int position) {
-    if (getCount() > position) {
+    if (getCount() >= position) {
       if (getItemViewType(position) == AccountMediaType.FILE.ordinal()) {
         if (tick.containsKey(position)) {
           tick.remove(position);

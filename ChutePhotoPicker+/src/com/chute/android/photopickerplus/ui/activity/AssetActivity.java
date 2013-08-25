@@ -12,7 +12,6 @@ package com.chute.android.photopickerplus.ui.activity;
 import java.util.ArrayList;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -49,13 +48,13 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   private static FragmentManager fragmentManager;
   private FragmentServices fragmentServices;
 
-  // public AssetSelectListener getAdapterListener() {
-  // return assetSelectListener;
-  // }
-  //
-  // public void setAdapterListener(AssetSelectListener adapterListener) {
-  // this.assetSelectListener = adapterListener;
-  // }
+   public AssetSelectListener getAdapterListener() {
+   return assetSelectListener;
+   }
+  
+   public void setAssetSelectListener(AssetSelectListener adapterListener) {
+   this.assetSelectListener = adapterListener;
+   }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
