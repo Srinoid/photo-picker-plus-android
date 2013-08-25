@@ -20,9 +20,8 @@
     android:id="@+id/relativeLayoutServicesRoot"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_gravity="center"
-    android:background="@color/gray_light"
-    android:padding="1dp" >
+    style="@style/relativeLayoutAdapterItemHolder"
+    android:layout_gravity="center" >
 
     <ImageView
         android:id="@+id/imageViewService"
@@ -37,13 +36,6 @@
         android:layout_alignBaseline="@+id/imageViewService"
         android:layout_alignBottom="@+id/imageViewService"
         android:layout_alignLeft="@+id/imageViewService"
-        android:gravity="center_horizontal"
-        android:paddingBottom="5dp"
-        android:paddingLeft="1dp"
-        android:paddingRight="1dp"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_service_title"
-        android:textStyle="bold" />
+        style="@style/textViewServiceName" />
 
 </RelativeLayout>

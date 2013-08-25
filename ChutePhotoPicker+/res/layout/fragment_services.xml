@@ -8,12 +8,7 @@
         android:id="@+id/textViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="@drawable/gradient_blue"
-        android:text="@string/select_an_album"
-        android:textAllCaps="true"
-        android:textSize="@dimen/fragment_title"
-        android:textColor="@color/white" />
+        style="@style/textViewServiceFragmentLabel" />
     
     <GridView android:id="@+id/gridViewServicesVertical"
         android:paddingLeft="20dp"

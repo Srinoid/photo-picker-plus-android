@@ -2,36 +2,35 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- PhotoPicker+ Theme -->
-    <style name="PhotoPickerTheme" parent="android:Theme.Light.NoTitleBar">
+    <style name="PhotoPickerTheme" parent="android:Theme.Light.NoTitleBar"></style>
+
+    <!-- TextView Service Name -->
+    <style name="textViewServiceName" parent="android:Widget.TextView">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">1dp</item>
+        <item name="android:paddingRight">1dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_service_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:visibility">gone</item>
     </style>
 
-    <!-- TextView Fragment Title -->
-    <style name="textViewTtitle" parent="android:Widget.TextView">
+    <!-- TextView Asset Fragment Label -->
+    <style name="textViewFragmentLabel" parent="android:Widget.TextView">
         <item name="android:gravity">center</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:background">@drawable/gradient_blue</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/fragment_title</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <!-- TextView Service Fragment Secondary Titles -->
-    <style name="textViewSecondaryTtitle" parent="android:Widget.TextView">
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+    <!-- TextView Service Fragment Label -->
+    <style name="textViewServiceFragmentLabel" parent="textViewFragmentLabel">
+        <item name="android:text">@string/select_an_album</item>
     </style>
 
-    <!-- TextView Service&Album Names -->
-    <style name="textViewServiceNames" parent="android:Widget.TextView">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:textColor">@color/dark_gray</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
-    </style>
-    
-     <!-- TextView Default Large -->
-    <style name="textViewDefaultLarge" parent="android:Widget.TextView">
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLargeInverse</item>
-    </style>
-    
     <!-- TextView Default Small -->
     <style name="textViewDefaultSmall" parent="android:Widget.TextView">
         <item name="android:layout_gravity">center_horizontal</item>
@@ -48,11 +47,9 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-
-    <!-- LinearLayout Services -->
-    <style name="linearLayoutServices">
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:background">@drawable/services_shape</item>
+    <!-- LinearLayout Empty Fragment Label -->
+    <style name="linearLayoutEmptyFragmentLabel" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/gradient_blue</item>
     </style>
 
     <!-- LinearLayout Progress Dialog -->
@@ -66,31 +63,16 @@
     <style name="linearLayoutNotificationDialog" parent="linearLayoutProgressDialog">
         <item name="android:background">@drawable/notification_window</item>
     </style>
-    
+
     <!-- RelativeLayout Assets Adapter Item Holder -->
-    <style name="relativeLayoutAdapterItemAssets" >
+    <style name="relativeLayoutAdapterItemHolder">
         <item name="android:background">@color/gray_light</item>
         <item name="android:padding">1dp</item>
     </style>
 
-    <!-- Divider Line Horizontal -->
-    <style name="dividerLineHorizontal">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/divider_album_list</item>
-    </style>
-    
-    <!-- Divider Line Vertical -->
-    <style name="dividerLineVertical">
-        <item name="android:layout_width">1dp</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@drawable/divider_album_list</item>
-    </style>
-    
-    <!-- ImageView Arrow -->
-    <style name="imageViewArrow">
-        <item name="android:background">@drawable/arrow_album_list</item>
-        <item name="android:layout_marginRight">5dp</item>
+    <!-- RelativeLayout Asset Fragment -->
+    <style name="relativeLayoutAssetFragment">
+        <item name="android:background">@color/white</item>
     </style>
 
     <!-- ImageView Tick -->
@@ -99,63 +81,20 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
-     <!-- ImageView Default Albums -->
-    <style name="imageViewDefaultAlbums">
-        <item name="android:background">@drawable/default_thumb</item>
-        <item name="android:scaleType">centerCrop</item>
-    </style>
-    
+
     <!-- ImageView Default Assets -->
     <style name="imageViewDefaultAssets">
         <item name="android:background">@drawable/photo_placeholder</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
-    
-     <!-- ImageView Adapter Item Assets -->
+
+    <!-- ImageView Adapter Item Assets -->
     <style name="imageViewAdapterItemAssets" parent="imageViewDefaultAssets">
         <item name="android:layout_width">60dp</item>
         <item name="android:layout_height">60dp</item>
     </style>
-    
-     <!-- ImageView Album Cover -->
-    <style name="imageViewAlbumCover" parent="imageViewDefaultAlbums">
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
-    </style>
-    
-     <!-- ImageView Services -->
-    <style name="imageViewServices" parent="imageViewDefaultAssets">
-        <item name="android:layout_width">42dp</item>
-        <item name="android:layout_height">42dp</item>
-    </style>
 
-    <!-- ImageView Facebook -->
-    <style name="imageViewFacebook" parent="imageViewServices">
-        <item name="android:background">@drawable/facebook</item>
-    </style>
-
-    <!-- ImageView Flickr -->
-    <style name="imageViewFlickr" parent="imageViewServices">
-        <item name="android:background">@drawable/flickr</item>
-    </style>
-
-    <!-- ImageView Instagram -->
-    <style name="imageViewInstagram" parent="imageViewServices">
-        <item name="android:background">@drawable/instagram</item>
-    </style>
-
-    <!-- ImageView Picasa -->
-    <style name="imageViewPicasa" parent="imageViewServices">
-        <item name="android:background">@drawable/picassa</item>
-    </style>
-
-    <!-- ImageView Take Photo -->
-    <style name="imageViewTakePhoto" parent="imageViewServices">
-        <item name="android:background">@drawable/take_photo</item>
-    </style>
-    
-     <!-- Progress Bar Indeterminate  -->
+    <!-- Progress Bar Indeterminate -->
     <style name="IndeterminateProgress" parent="@android:style/Widget.ProgressBar.Small">
         <item name="android:minWidth">35dip</item>
         <item name="android:maxWidth">35dip</item>
@@ -164,6 +103,5 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:indeterminateDrawable">@drawable/progress_bar_rotation</item>
     </style>
-    
 
 </resources>
