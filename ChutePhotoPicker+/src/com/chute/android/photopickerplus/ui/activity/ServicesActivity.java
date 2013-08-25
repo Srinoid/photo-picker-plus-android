@@ -33,6 +33,7 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
@@ -89,6 +90,12 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     }
     fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
+
+    Bundle extras = getIntent().getExtras();
+    if (extras != null) {
+      AuthenticationFactory.getInstance().startAuthenticationActivity(
+          ServicesActivity.this, AccountType.PICASA);
+    }
 
   }
 
@@ -205,15 +212,17 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   @Override
   public void accountLogin(AccountType type) {
+    accountType = type;
     if (PreferenceUtil.get().hasAccount(type.getLoginMethod())) {
       AccountModel account = PreferenceUtil.get()
           .getAccount(type.getLoginMethod());
       accountClicked(account.getId(), account.getType(), account.getShortcut());
     } else {
-      accountType = AccountType.valueOf(type.name().toUpperCase());
+      PhotoPickerPreferenceUtil.get().setAccountName(accountType.name());
       AuthenticationFactory.getInstance().startAuthenticationActivity(
           ServicesActivity.this, accountType);
     }
+
   }
 
   @Override
@@ -268,7 +277,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     @Override
     public void onSuccess(ListResponseModel<AccountModel> responseData) {
       if (accountType == null) {
-        String type = responseData.getData().get(0).getType();
+        String type = PhotoPickerPreferenceUtil.get().getAccountName();
         accountType = AccountType.valueOf(type.toUpperCase());
       }
       if (responseData.getData().size() == 0) {
@@ -277,10 +286,13 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
             Toast.LENGTH_SHORT).show();
         return;
       }
-      AccountModel accountModel = responseData.getData().get(0);
-      PreferenceUtil.get().saveAccount(accountModel);
-      accountClicked(accountModel.getId(), accountModel.getType(),
-          accountModel.getShortcut());
+      for (AccountModel accountModel : responseData.getData()) {
+        if (accountModel.getType().equals(accountType.name())) {
+          PreferenceUtil.get().saveAccount(accountModel);
+          accountClicked(accountModel.getId(), accountModel.getType(),
+              accountModel.getShortcut());
+        }
+      }
 
     }
 
@@ -401,5 +413,15 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       fragmentManager.beginTransaction().remove(fragmentFiles).commit();
     }
     super.onDestroy();
+  }
+
+  @Override
+  public void googleAccountLoggedOut(boolean isAccountLoggedOut) {
+    if (isAccountLoggedOut == true) {
+      NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
+      AuthenticationFactory.getInstance().startAuthenticationActivity(
+          ServicesActivity.this, AccountType.PICASA);
+    }
+
   }
 }

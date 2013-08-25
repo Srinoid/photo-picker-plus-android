@@ -3,6 +3,7 @@ package com.chute.android.photopickerplus.ui.fragment;
 import java.util.ArrayList;
 
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.enums.AccountType;
 
 public interface AccountFilesListener {
 
@@ -12,5 +13,7 @@ public interface AccountFilesListener {
 
   public void onAccountFolderSelect(String accountType, String accountShortcut,
       String folderId);
+
+  public void googleAccountLoggedOut(boolean isAccountLoggedOut);
 
 }

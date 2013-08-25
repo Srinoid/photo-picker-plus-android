@@ -26,4 +26,6 @@ public class Constants {
   public static final String KEY_ACCOUNT_TYPE = "keyAccountType";
   public static final String KEY_ACCOUNT_SHORTCUT = "keyAccountShortcut";
   public static final String KEY_PHOTO_FILTER_TYPE = "keyPhotoFilterType";
+
+  public static final String KEY_EXPIRED_SESSION = "keyExpiredSession";
 }

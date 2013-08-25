@@ -15,6 +15,7 @@ import com.chute.android.photopickerplus.PhotoPickerPlusApp;
 import com.chute.android.photopickerplus.config.ServiceLoader;
 import com.chute.android.photopickerplus.config.ServiceConfiguration;
 import com.chute.android.photopickerplus.models.enums.LocalMediaType;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplustutorial.config.ConfigEndpointURLs;
 import com.chute.sdk.v2.api.Chute;
 import com.chute.sdk.v2.api.authentication.AuthConstants;
@@ -22,6 +23,9 @@ import com.chute.sdk.v2.model.enums.AccountType;
 
 public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 
+  /**
+   * Test credentials
+   */
   public static final String APP_ID = "4f3c39ff38ecef0c89000003";
   public static final String APP_SECRET = "c9a8cb57c52f49384ab6117c4f6483a1a5c5a14c4a50d4cef276a9a13286efc9";
 
@@ -30,6 +34,7 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
     super.onCreate();
     ALog.setDebugTag("PhotoPicker");
     ALog.setDebugLevel(DebugLevel.ALL);
+    PhotoPickerPreferenceUtil.init(getApplicationContext());
     Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
 
     ServiceConfiguration config = new ServiceConfiguration.Builder(

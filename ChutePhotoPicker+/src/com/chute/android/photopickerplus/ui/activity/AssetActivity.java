@@ -11,6 +11,7 @@ package com.chute.android.photopickerplus.ui.activity;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,7 @@ import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
+import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
@@ -48,13 +50,13 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   private static FragmentManager fragmentManager;
   private FragmentServices fragmentServices;
 
-   public AssetSelectListener getAdapterListener() {
-   return assetSelectListener;
-   }
-  
-   public void setAssetSelectListener(AssetSelectListener adapterListener) {
-   this.assetSelectListener = adapterListener;
-   }
+  public AssetSelectListener getAdapterListener() {
+    return assetSelectListener;
+  }
+
+  public void setAssetSelectListener(AssetSelectListener adapterListener) {
+    this.assetSelectListener = adapterListener;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -161,5 +163,16 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     }
   }
 
+  @Override
+  public void googleAccountLoggedOut(boolean isAccountLoggedOut) {
+    if (isAccountLoggedOut == true) {
+      NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
+      Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
+      intent.putExtra(Constants.KEY_EXPIRED_SESSION, true);
+      startActivity(intent);
+      this.finish();
+    }
+
+  }
 
 }

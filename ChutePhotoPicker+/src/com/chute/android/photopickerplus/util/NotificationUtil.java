@@ -41,6 +41,10 @@ public class NotificationUtil {
     makeToast(context, message + ", " + context.getString(R.string.http_exception));
   }
 
+  public static void makeExpiredSessionLogginInAgainToast(Context context) {
+    makeToast(context, R.string.expired_session_logging_in);
+  }
+
   public static void showAdapterToast(Context context, String message) {
     View layout = LayoutInflater.from(context)
         .inflate(R.layout.toast_loaded_photos, null);
