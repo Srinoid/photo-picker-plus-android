@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.config.ServiceLoader;
+import com.chute.android.photopickerplus.config.PhotoPicker;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -105,7 +105,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
 
   public void updateFragment(String accountType, String accountShortcut, String folderId,
       ArrayList<Integer> selectedItemsPositions) {
-    isMultipicker = ServiceLoader.getInstance().isMultiPicker();
+    isMultipicker = PhotoPicker.getInstance().isMultiPicker();
     this.accountType = accountType;
     this.selectedItemsPositions = selectedItemsPositions;
     this.accountShortcut = accountShortcut;

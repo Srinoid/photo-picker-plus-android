@@ -19,7 +19,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.android.photopickerplus.config.ServiceLoader;
+import com.chute.android.photopickerplus.config.PhotoPicker;
 import com.chute.android.photopickerplus.loaders.AssetsAsyncTaskLoader;
 import com.chute.android.photopickerplus.ui.adapter.AssetCursorAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
@@ -117,7 +117,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   public void updateFragment(String accountId, PhotoFilterType filterType,
       ArrayList<Integer> selectedItemsPositions, String accountName,
       String accountShortcut) {
-    isMultipicker = ServiceLoader.getInstance().isMultiPicker();
+    isMultipicker = PhotoPicker.getInstance().isMultiPicker();
     this.filterType = filterType;
     this.selectedItemsPositions = selectedItemsPositions;
     this.accountShortcut = accountShortcut;

@@ -12,8 +12,8 @@ package com.chute.android.photopickerplustutorial;
 import com.araneaapps.android.libs.logger.ALog;
 import com.araneaapps.android.libs.logger.ALog.DebugLevel;
 import com.chute.android.photopickerplus.PhotoPickerPlusApp;
-import com.chute.android.photopickerplus.config.ServiceLoader;
-import com.chute.android.photopickerplus.config.ServiceConfiguration;
+import com.chute.android.photopickerplus.config.PhotoPicker;
+import com.chute.android.photopickerplus.config.PhotoPickerConfiguration;
 import com.chute.android.photopickerplus.models.enums.LocalMediaType;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplustutorial.config.ConfigEndpointURLs;
@@ -37,14 +37,14 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
     PhotoPickerPreferenceUtil.init(getApplicationContext());
     Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
 
-    ServiceConfiguration config = new ServiceConfiguration.Builder(
+    PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(
         getApplicationContext())
         .isMultiPicker(true)
         .accountList(AccountType.FACEBOOK, AccountType.INSTAGRAM)
         .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.TAKE_PHOTO)
         .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
         .build();
-    ServiceLoader.getInstance().init(config);
+    PhotoPicker.getInstance().init(config);
 
   }
 

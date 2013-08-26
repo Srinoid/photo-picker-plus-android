@@ -121,6 +121,7 @@ public class ServicesAdapter extends BaseAdapter {
 
     if (getItemViewType(position) == VIEW_TYPE_LOCAL_ACCOUNT) {
       // Set an image as background
+      holder.textViewServiceTitle.setVisibility(View.VISIBLE);
       setupLocalService(holder, getLocalAccount(position));
     } else {
       setupRemoteService(holder, getRemoteAccount(position));
@@ -244,19 +245,12 @@ public class ServicesAdapter extends BaseAdapter {
           R.drawable.picassa));
       break;
     case GOOGLE_PLUS:
-      // Replacing Picasa
       break;
     case GOOGLE_DRIVE:
       break;
     case SKYDRIVE:
       break;
     case DROPBOX:
-      break;
-    case CHUTE:
-      break;
-    case FOURSQUARE:
-      break;
-    case TWITTER:
       break;
     default:
       break;
