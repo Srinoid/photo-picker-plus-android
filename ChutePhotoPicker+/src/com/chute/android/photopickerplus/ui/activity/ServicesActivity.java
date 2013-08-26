@@ -93,6 +93,8 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
+      accountType = AccountType.PICASA;
+      PhotoPickerPreferenceUtil.get().setAccountName(accountType.name());
       AuthenticationFactory.getInstance().startAuthenticationActivity(
           ServicesActivity.this, AccountType.PICASA);
     }
@@ -286,7 +288,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
             Toast.LENGTH_SHORT).show();
         return;
       }
-      Log.d("debug", "reponse data = " + responseData.getData().toString());
       for (AccountModel accountModel : responseData.getData()) {
         if (accountModel.getType().equals(accountType.getLoginMethod())) {
           PreferenceUtil.get().saveAccount(accountModel);

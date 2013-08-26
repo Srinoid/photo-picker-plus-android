@@ -3,7 +3,11 @@ Introduction
 
 PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPicker+ component. It contains Chute SDK library as well as PhotoPicker+ library. This tutorial enables browsing albums and photos on your social services and device gallery, selecting a photo and display of the selected photo and its data.
 
-![image10](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/11.png)![image12](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/12.png)![image13](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/13.png)![image14](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/14.png)
+![image10](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/10.png)  
+![image11](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/11.png)  
+![image12](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/12.png)  
+![image13](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/13.png)  
+![image14](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/14.png)
 
 Setup
 ====
@@ -21,49 +25,39 @@ Setup
 
     ```
         <application
+        android:name=".PhotoPickerPlusTutorialApp"
+        android:allowBackup="true"
+        android:configChanges="keyboardHidden|orientation|screenSize"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".app.PhotoPickerPlusTutorialApp"
-        android:theme="@android:style/Theme.Light.NoTitleBar" >
-		
-         <service android:name="com.dg.libs.rest.services.HTTPRequestExecutorService" />
+        android:theme="@style/PhotoPickerTheme" >
+        <service android:name="com.dg.libs.rest.services.HTTPRequestExecutorService" />
 
         <activity
-            android:label="@string/app_name"
-            android:name=".app.PhotoPickerPlusTutorialActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-            <intent-filter >
+            android:name="com.chute.android.photopickerplustutorial.activity.PhotoPickerPlusTutorialActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.chute.android.photopickerplus.app.ChooseServiceActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        <activity android:name="com.chute.android.photopickerplus.ui.activity.ServicesActivity" >
         </activity>
-        <activity
-            android:name="com.chute.android.photopickerplus.app.AlbumsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            <activity android:name="com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity" />
+        <activity android:name="com.chute.android.photopickerplus.ui.activity.AlbumsActivity" >
+        </activity>
+        <activity android:name="com.chute.android.photopickerplus.ui.activity.AssetActivity" >
+        </activity>
+        <activity android:name="com.chute.android.photopickerplus.ui.activity.ContentActivity" >
         </activity>
         <activity
             android:name="com.chute.sdk.v2.api.authentication.AuthenticationActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.chute.android.photopickerplus.app.PhotoStreamActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.chute.android.photopickerplus.app.PhotosActivity"
-            android:screenOrientation="portrait"
+             android:configChanges="orientation|screenSize" 
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         </application>
+
     ```
 
 
@@ -86,6 +80,10 @@ If the developer decides to extend the Application class instead of PhotoPickerP
 
 <pre><code>
 public class PhotoPickerPlusTutorialApp extends Application {
+
+    public static final String APP_ID = "4f3c39ff38ecef0c89000003";
+    public static final String APP_SECRET = "c9a8cb57c52f49384ab6117c4f6483a1a5c5a14c4a50d4cef276a9a13286efc9";
+
     private static ImageLoader createImageLoader(Context context) {
 		ImageLoader imageLoader = new ImageLoader(context, R.drawable.placeholder);
 		imageLoader.setDefaultImageSize((int) TypedValue.applyDimension(
@@ -100,9 +98,20 @@ public class PhotoPickerPlusTutorialApp extends Application {
     public void onCreate() {
 	super.onCreate();
 	mImageLoader = createImageLoader(this);
-	TokenAuthenticationProvider.init(getApplicationContext(), TokenType.ACCESS_TOKEN);
 	PreferenceUtil.init(getApplicationContext());
 	PhotoPickerPreferenceUtil.init(getApplicationContext());
+        ALog.setDebugTag("PhotoPicker");
+        ALog.setDebugLevel(DebugLevel.ALL);
+        Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
+
+    PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(
+        getApplicationContext())
+        .isMultiPicker(true)
+        .accountList(AccountType.FACEBOOK, AccountType.INSTAGRAM)
+        .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.TAKE_PHOTO)
+        .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
+        .build();
+    PhotoPicker.getInstance().init(config);
     }
 
     @Override
@@ -120,21 +129,8 @@ public class PhotoPickerPlusTutorialApp extends Application {
 PhotoPickerPlusTutorialApp can also be neglected by registering PhotoPickerPlusApp into the manifest instead of PhotoPickerPlusTutoiralApp if the developer doesn't have the need for extending the Application class.
 
 ##PhotoPickerPlusTutorialActivity.java 
-This Activity class contains a Button and a GridView. When the button is clicked, PhotoPickerPlusIntentWrapper starts ChooseServiceActivity. PhotoPickerPlusIntentWrapper is a wrapper class that wraps the parameters needed for the intent.
-
-<pre><code>
-private class OnPhotoPickerClickListener implements OnClickListener {
-	@Override
-	public void onClick(View v) {
-	    PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(PhotoPickerPlusTutorialActivity.this);
-		wrapper.setMultiPicker(isMultiPicker);
-	    wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this, PhotoPickerPlusIntentWrapper.REQUEST_CODE);
-	}
-    }
-</code></pre>
-
-ChooseServiceActivity contains a list of services and device photos albums. You can authenticate using Facebook, Flickr, Instagram and Picasa, browse albums and photos, browse device photos as well as take a photo with the camera. 
-After selecting photos, a result is returned to the activity that started the component where the selected photos are displayed in a grid.
+PhotoPicker+ component shows a list of services and device photos albums. You can authenticate using Facebook, Flickr, Instagram, Picasa, Google Drive, Google+, Skydrive and Dropbox, browse albums and photos, browse device photos as well as take a photo with the camera. 
+After selecting photos, a result is returned to the activity that started the component i.e. PhotoPickerPlusTutorialAcitivity where the selected photos are displayed in a grid.
 
 <pre><code>
 @Override
@@ -145,13 +141,27 @@ After selecting photos, a result is returned to the activity that started the co
 	}
 	final PhotoActivityIntentWrapper wrapper = new PhotoActivityIntentWrapper(data);
 	grid.setAdapter(new GridAdapter(PhotoPickerPlusTutorialActivity.this, wrapper.getMediaCollection()));
-	Log.d(TAG, wrapper.toString());
+	Log.d(TAG, wrapper.getMediaCollection().toString());
     }
 </code></pre>
 
 PhotoActivityIntentWrapper encapsulates different information available for the selected image. Some of that additional info might be null depending of its availability. Different paths inside Media model can point to the same location if there are no additional sizes available.
 
+##Configuration
+In order to use the PhotoPicker+ component, you need to initialize it with configuration.  
+The Configuration builder allows you to choose which services (local and remote) your application is going to use. Local services included are: camera shots, all photos, last photo taken and take photo. Remote supported services include: Google+, Google Drive, SkyDrive, Facebook, Instagram, Flickr, Picasa and Dropbox.  
+All options in Configuration builder are required, except isMultiPicker(false), which is optional, with false as a default value and configUrl(url). If you want to use multipicking feature you should set isMultiPicker(true) option in the Configuration builder. configUrl(url) option must be initialized in the Configuration builder if you want to get the service list from a server. Note that accountList, localMediaList or both options in the Configuration builder must be initialized before initializing configUrl(url). This is important for appropriately setting up the services. When started for the first time the app displays the initialized local and remote services, while on the second run it shows the complete list of services retrieved from the server.  
 
+<pre><code>
+    PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(
+        getApplicationContext())
+        .isMultiPicker(true)
+        .accountList(AccountType.FACEBOOK, AccountType.INSTAGRAM)
+        .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.TAKE_PHOTO)
+        .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
+        .build();
+    PhotoPicker.getInstance().init(config);
+</code></pre>
     
       
 

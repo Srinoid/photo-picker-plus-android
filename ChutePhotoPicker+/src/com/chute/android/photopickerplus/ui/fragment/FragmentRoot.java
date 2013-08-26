@@ -25,6 +25,7 @@ import com.chute.android.photopickerplus.ui.adapter.AssetCursorAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
 import com.chute.android.photopickerplus.util.AppUtil;
+import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
@@ -138,7 +139,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
 
     @Override
     public void onHttpError(ResponseStatus responseStatus) {
-      if (responseStatus.getStatusCode() == 401) {
+      if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED) {
         accountListener.googleAccountLoggedOut(true);
       } else {
         NotificationUtil
@@ -179,8 +180,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
               .getResources()
               .getString(R.string.select_a_photo));
         }
-        // NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-        // accountAssetAdapter.getCount());
+        NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+            accountAssetAdapter.getCount());
       }
 
     }
@@ -224,8 +225,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
             .getString(R.string.select_a_photo));
         gridView.setOnItemClickListener(new OnSingleSelectGridItemClickListener());
       }
-      // NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-      // cursorAssetAdapter.getCount());
+      NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+          cursorAssetAdapter.getCount());
 
     }
 

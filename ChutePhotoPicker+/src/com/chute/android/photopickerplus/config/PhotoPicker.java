@@ -13,16 +13,16 @@ import com.dg.libs.rest.domain.ResponseStatus;
 public class PhotoPicker {
 
   private static final String LOG_INIT_CONFIG =
-      "Initialize ServiceLoader with configuration";
-  private static final String LOG_DESTROY = "Destroy ServiceLoader";
+      "Initialize PhotoPicker with configuration";
+  private static final String LOG_DESTROY = "Destroy PhotoPicker";
 
   private static final String WARNING_RE_INIT_CONFIG =
-      "Try to initialize ServiceLoader which had already been initialized before. "
-          + "To re-init ServiceLoader with new configuration call ServiceLoader.destroy() at first.";
+      "Try to initialize PhotoPicker which had already been initialized before. "
+          + "To re-init PhotoPicker with new configuration call ServiceLoader.destroy() at first.";
   private static final String ERROR_NOT_INIT =
-      "ServiceLoader must be initialized with configuration before using";
+      "PhotoPicker must be initialized with configuration before using";
   private static final String ERROR_INIT_CONFIG_WITH_NULL =
-      "ServiceLoader configuration can not be initialized with null";
+      "PhotoPicker configuration can not be initialized with null";
   private static final String WARNING_INIT_SERVICES =
       "Local and remote services need to be initialized when starting the application for the first time, otherwise the list of services will be empty";
   private static final String ERROR_HTTP =
