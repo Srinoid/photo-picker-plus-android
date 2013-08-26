@@ -3,6 +3,7 @@ package com.chute.android.photopickerplus.ui.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -110,7 +111,8 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     this.accountShortcut = accountShortcut;
     this.folderId = folderId;
 
-    GCAccounts.accountSingle(getActivity(), accountType, accountShortcut, folderId,
+    String encodedId = Uri.encode(folderId);
+    GCAccounts.accountSingle(getActivity(), accountType, accountShortcut, encodedId,
         new AccountSingleCallback()).executeAsync();
 
   }

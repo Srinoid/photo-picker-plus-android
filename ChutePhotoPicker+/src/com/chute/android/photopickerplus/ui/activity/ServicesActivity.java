@@ -286,8 +286,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
             Toast.LENGTH_SHORT).show();
         return;
       }
+      Log.d("debug", "reponse data = " + responseData.getData().toString());
       for (AccountModel accountModel : responseData.getData()) {
-        if (accountModel.getType().equals(accountType.name())) {
+        if (accountModel.getType().equals(accountType.getLoginMethod())) {
           PreferenceUtil.get().saveAccount(accountModel);
           accountClicked(accountModel.getId(), accountModel.getType(),
               accountModel.getShortcut());
