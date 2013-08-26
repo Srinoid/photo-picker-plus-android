@@ -14,6 +14,6 @@ public interface AccountFilesListener {
   public void onAccountFolderSelect(String accountType, String accountShortcut,
       String folderId);
 
-  public void googleAccountLoggedOut(boolean isAccountLoggedOut);
+  public void accountLoggedOut(boolean isAccountLoggedOut, AccountType accountType);
 
 }

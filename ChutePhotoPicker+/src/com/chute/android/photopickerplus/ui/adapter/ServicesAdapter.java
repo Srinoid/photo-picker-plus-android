@@ -245,12 +245,20 @@ public class ServicesAdapter extends BaseAdapter {
           R.drawable.picassa));
       break;
     case GOOGLE_PLUS:
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
+          R.drawable.google_plus));
       break;
     case GOOGLE_DRIVE:
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
+          R.drawable.google_drive));
       break;
     case SKYDRIVE:
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
+          R.drawable.skydrive));
       break;
     case DROPBOX:
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
+          R.drawable.dropbox));
       break;
     default:
       break;

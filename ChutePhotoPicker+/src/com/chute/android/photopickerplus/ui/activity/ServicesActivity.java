@@ -93,10 +93,11 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
-      accountType = AccountType.PICASA;
+      String accountName = extras.getString(Constants.KEY_EXPIRED_SESSION);
+      accountType = AccountType.valueOf(accountName);
       PhotoPickerPreferenceUtil.get().setAccountName(accountType.name());
       AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, AccountType.PICASA);
+          ServicesActivity.this, accountType);
     }
 
   }
@@ -418,11 +419,11 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void googleAccountLoggedOut(boolean isAccountLoggedOut) {
+  public void accountLoggedOut(boolean isAccountLoggedOut, AccountType accountType) {
     if (isAccountLoggedOut == true) {
       NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
       AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, AccountType.PICASA);
+          ServicesActivity.this, accountType);
     }
 
   }

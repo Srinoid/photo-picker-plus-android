@@ -32,6 +32,7 @@ import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.enums.AccountType;
 
 public class AssetActivity extends FragmentActivity implements CursorFilesListener,
     AccountFilesListener {
@@ -164,13 +165,13 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   }
 
   @Override
-  public void googleAccountLoggedOut(boolean isAccountLoggedOut) {
+  public void accountLoggedOut(boolean isAccountLoggedOut, AccountType accountType) {
     if (isAccountLoggedOut == true) {
       NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
       Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
-      intent.putExtra(Constants.KEY_EXPIRED_SESSION, true);
+      intent.putExtra(Constants.KEY_EXPIRED_SESSION, accountType.name());
       startActivity(intent);
-      this.finish();
+      AssetActivity.this.finish();
     }
 
   }
