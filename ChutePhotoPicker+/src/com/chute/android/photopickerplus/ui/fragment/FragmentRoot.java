@@ -32,7 +32,6 @@ import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
-import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -58,7 +57,6 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   private PhotoFilterType filterType;
   private CursorFilesListener cursorListener;
   private AccountFilesListener accountListener;
-  private AccountType accountType;
 
   public static FragmentRoot newInstance(PhotoFilterType filterType, String accountId,
       ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
@@ -142,12 +140,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     @Override
     public void onHttpError(ResponseStatus responseStatus) {
       if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED) {
-        if (AccountType.PICASA.getLoginMethod().equals(accountName)) {
-          accountType = AccountType.PICASA;
-        } else if (AccountType.SKYDRIVE.getLoginMethod().equals(accountName)) {
-          accountType = AccountType.SKYDRIVE;
-        }
-        accountListener.accountLoggedOut(true, accountType);
+        NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity().getApplicationContext());
         getActivity().finish();
       } else {
         NotificationUtil

@@ -20,7 +20,7 @@
     <string name="loading_photos">加载照片</string>
     <string name="select_a_photo">选择一个照片</string>
     <string name="select_photos">选择照片</string>
-    <string name="select_an_album">选择一个相册</string>
+    <string name="select_an_album">选择图片来源</string>
     <string name="title_default">默认</string>
     <string name="title_user">用户</string>
 
@@ -31,5 +31,6 @@
      <string name="no_albums_found">没有相册</string>
      <string name="no_album_selected">没有选择专辑</string>
     <string name="connect_to_internet_to_cofigure_services">配置服务将设备连接到互联网</string>
+    <string name="expired_session_logging_in">您的会话已过期。请重新登录</string>
 
 </resources>

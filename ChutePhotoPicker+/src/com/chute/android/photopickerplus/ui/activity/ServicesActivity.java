@@ -91,14 +91,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
 
-    Bundle extras = getIntent().getExtras();
-    if (extras != null) {
-      String accountName = extras.getString(Constants.KEY_EXPIRED_SESSION);
-      accountType = AccountType.valueOf(accountName);
-      PhotoPickerPreferenceUtil.get().setAccountName(accountType.name());
-      AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, accountType);
-    }
 
   }
 
@@ -271,7 +263,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
     setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
-    finish();
+    ServicesActivity.this.finish();
   }
 
   private final class AccountsCallback implements
@@ -418,13 +410,4 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     super.onDestroy();
   }
 
-  @Override
-  public void accountLoggedOut(boolean isAccountLoggedOut, AccountType accountType) {
-    if (isAccountLoggedOut == true) {
-      NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
-      AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, accountType);
-    }
-
-  }
 }

@@ -20,7 +20,7 @@
     <string name="loading_photos">Fotos werden geladen...</string>
     <string name="select_a_photo">Wählen Sie ein Foto</string>
     <string name="select_photos">Wählen Sie Fotos</string>
-    <string name="select_an_album">Wählen Sie ein Album</string>
+    <string name="select_an_album">Wählen Foto Quelle</string>
     <string name="title_default">Standard</string>
     <string name="title_user">Benutzer</string>
 
@@ -31,5 +31,6 @@
     <string name="no_albums_found">Keine Alben gefunden</string>
     <string name="no_album_selected">kein Album ausgewählt</string>
     <string name="connect_to_internet_to_cofigure_services">Verbinden Sie das Gerät mit dem Internet für die Konfiguration der Dienste</string>
+    <string name="expired_session_logging_in">Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut</string>
 
 </resources>

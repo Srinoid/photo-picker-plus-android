@@ -11,7 +11,6 @@ package com.chute.android.photopickerplus.ui.activity;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -162,18 +161,6 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
       fragmentSingle.updateFragment(accountName, accountShortcut, folderId,
           selectedItemsPositions);
     }
-  }
-
-  @Override
-  public void accountLoggedOut(boolean isAccountLoggedOut, AccountType accountType) {
-    if (isAccountLoggedOut == true) {
-      NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
-      Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
-      intent.putExtra(Constants.KEY_EXPIRED_SESSION, accountType.name());
-      startActivity(intent);
-      AssetActivity.this.finish();
-    }
-
   }
 
 }
