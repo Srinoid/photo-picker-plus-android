@@ -133,8 +133,6 @@ public class AppUtil {
     int displayMetricsWidth = context.getResources().getDisplayMetrics().widthPixels;
     int displayMetricsHeight = context.getResources().getDisplayMetrics().heightPixels;
     int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
-    float grid = Float.parseFloat(context.getResources().getString(
-        R.dimen.grid_columns_assets_float));
     if (context.getResources().getBoolean(R.bool.has_two_panes) && orientation == Configuration.ORIENTATION_LANDSCAPE) {
       imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsHeight
           / gridColumns, (displayMetricsHeight - imageDimension)

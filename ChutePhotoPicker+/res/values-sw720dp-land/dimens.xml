@@ -10,6 +10,4 @@
     <integer name="grid_columns_assets">4</integer>
     <integer name="image_dimensions_assets">150</integer>
 
-    <item name="grid_columns_assets_float" format="float" type="dimen">3.5</item>
-
 </resources>

@@ -5,11 +5,9 @@
     <dimen name="fragment_title">18dp</dimen>
     <dimen name="album_name">18dp</dimen>
 
-    <integer name="grid_columns_services">3</integer>
-    <integer name="image_dimensions_services">150</integer>
-    <integer name="grid_columns_assets">3</integer>
-    <integer name="image_dimensions_assets">50</integer>
-
-    <item name="grid_columns_assets_float" format="float" type="dimen">3.5</item>
+    <integer name="grid_columns_services">4</integer>
+    <integer name="image_dimensions_services">120</integer>
+    <integer name="grid_columns_assets">4</integer>
+    <integer name="image_dimensions_assets">100</integer>
 
 </resources>
