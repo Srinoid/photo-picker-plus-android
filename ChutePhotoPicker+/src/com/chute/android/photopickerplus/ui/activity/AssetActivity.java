@@ -11,12 +11,16 @@ package com.chute.android.photopickerplus.ui.activity;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
+import android.widget.Toast;
 
+import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.adapter.AssetSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
@@ -26,12 +30,19 @@ import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
-import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
+import com.chute.sdk.v2.api.accounts.GCAccounts;
+import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.enums.AccountType;
+import com.chute.sdk.v2.model.response.ListResponseModel;
+import com.chute.sdk.v2.utils.PreferenceUtil;
+import com.dg.libs.rest.callbacks.HttpCallback;
+import com.dg.libs.rest.domain.ResponseStatus;
 
 public class AssetActivity extends FragmentActivity implements CursorFilesListener,
     AccountFilesListener {
@@ -49,6 +60,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   private String folderId;
   private static FragmentManager fragmentManager;
   private FragmentServices fragmentServices;
+  private AccountType accountType;
 
   public AssetSelectListener getAdapterListener() {
     return assetSelectListener;
@@ -160,6 +172,65 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
       fragmentSingle.setRetainInstance(true);
       fragmentSingle.updateFragment(accountName, accountShortcut, folderId,
           selectedItemsPositions);
+    }
+  }
+
+  @Override
+  public void onSessionExpired(boolean isSessionExpired, AccountType accountType) {
+    PhotoPickerPreferenceUtil.get().setAccountType(accountType);
+    AuthenticationFactory.getInstance().startAuthenticationActivity(
+        AssetActivity.this, accountType);
+
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode == Activity.RESULT_OK) {
+      GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback())
+          .executeAsync();
+    }
+  }
+
+  private final class AccountsCallback implements
+      HttpCallback<ListResponseModel<AccountModel>> {
+
+    @Override
+    public void onSuccess(ListResponseModel<AccountModel> responseData) {
+      if (accountType == null) {
+        accountType = PhotoPickerPreferenceUtil.get().getAccountType();
+      }
+      if (responseData.getData().size() == 0) {
+        Toast.makeText(getApplicationContext(),
+            getResources().getString(R.string.no_albums_found),
+            Toast.LENGTH_SHORT).show();
+        return;
+      }
+      for (AccountModel accountModel : responseData.getData()) {
+        if (accountModel.getType().equals(accountType.getLoginMethod())) {
+          PreferenceUtil.get().saveAccount(accountModel);
+          accountClicked(accountModel.getId(), accountModel.getType(),
+              accountModel.getShortcut());
+        }
+      }
+    }
+
+    @Override
+    public void onHttpError(ResponseStatus responseStatus) {
+      ALog.d("Http Error: " + responseStatus.getStatusCode() + " "
+          + responseStatus.getStatusMessage());
+    }
+
+  }
+
+  public void accountClicked(String accountId, String accountName, String accountShortcut) {
+    selectedItemsPositions = null;
+    if (fragmentRoot != null) {
+      fragmentRoot.setRetainInstance(true);
+      fragmentRoot.updateFragment(accountId, filterType,
+          selectedItemsPositions,
+          accountName,
+          accountShortcut);
     }
   }
 

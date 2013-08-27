@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.config.PhotoPicker;
 import com.chute.android.photopickerplus.loaders.AssetsAsyncTaskLoader;
-import com.chute.android.photopickerplus.ui.adapter.AssetCursorAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
+import com.chute.android.photopickerplus.ui.adapter.AssetCursorAdapter;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -32,6 +32,7 @@ import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -57,6 +58,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   private PhotoFilterType filterType;
   private CursorFilesListener cursorListener;
   private AccountFilesListener accountListener;
+
+  private AccountType accountType;
 
   public static FragmentRoot newInstance(PhotoFilterType filterType, String accountId,
       ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
@@ -140,8 +143,14 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     @Override
     public void onHttpError(ResponseStatus responseStatus) {
       if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED) {
-        NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity().getApplicationContext());
-        getActivity().finish();
+        NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity()
+            .getApplicationContext());
+        for (AccountType type : AccountType.values()) {
+          if (accountName.equalsIgnoreCase(type.getLoginMethod())) {
+            accountType = type;
+          }
+        }
+        accountListener.onSessionExpired(true, accountType);
       } else {
         NotificationUtil
             .makeConnectionProblemToast(getActivity().getApplicationContext());

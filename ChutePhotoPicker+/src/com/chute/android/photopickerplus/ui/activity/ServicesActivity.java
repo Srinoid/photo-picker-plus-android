@@ -91,7 +91,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
 
-
   }
 
   @Override
@@ -213,7 +212,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
           .getAccount(type.getLoginMethod());
       accountClicked(account.getId(), account.getType(), account.getShortcut());
     } else {
-      PhotoPickerPreferenceUtil.get().setAccountName(accountType.name());
+      PhotoPickerPreferenceUtil.get().setAccountType(accountType);
       AuthenticationFactory.getInstance().startAuthenticationActivity(
           ServicesActivity.this, accountType);
     }
@@ -272,8 +271,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     @Override
     public void onSuccess(ListResponseModel<AccountModel> responseData) {
       if (accountType == null) {
-        String type = PhotoPickerPreferenceUtil.get().getAccountName();
-        accountType = AccountType.valueOf(type.toUpperCase());
+        accountType = PhotoPickerPreferenceUtil.get().getAccountType();
       }
       if (responseData.getData().size() == 0) {
         Toast.makeText(getApplicationContext(),
@@ -408,6 +406,13 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       fragmentManager.beginTransaction().remove(fragmentFiles).commit();
     }
     super.onDestroy();
+  }
+
+  @Override
+  public void onSessionExpired(boolean isSessionExpired, AccountType accountType) {
+    PhotoPickerPreferenceUtil.get().setAccountType(accountType);
+    AuthenticationFactory.getInstance().startAuthenticationActivity(
+        ServicesActivity.this, accountType);
   }
 
 }

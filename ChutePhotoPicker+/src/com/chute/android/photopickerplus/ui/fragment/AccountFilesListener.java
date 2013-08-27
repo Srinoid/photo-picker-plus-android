@@ -14,5 +14,6 @@ public interface AccountFilesListener {
   public void onAccountFolderSelect(String accountType, String accountShortcut,
       String folderId);
 
+  public void onSessionExpired(boolean isSessionExpired, AccountType accountType);
 
 }

@@ -15,7 +15,6 @@ import com.chute.android.photopickerplus.PhotoPickerPlusApp;
 import com.chute.android.photopickerplus.config.PhotoPicker;
 import com.chute.android.photopickerplus.config.PhotoPickerConfiguration;
 import com.chute.android.photopickerplus.models.enums.LocalMediaType;
-import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplustutorial.config.ConfigEndpointURLs;
 import com.chute.sdk.v2.api.Chute;
 import com.chute.sdk.v2.api.authentication.AuthConstants;

@@ -25,6 +25,8 @@
 //
 package com.chute.android.photopickerplus.util;
 
+import com.chute.sdk.v2.model.enums.AccountType;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -78,12 +80,19 @@ public class PhotoPickerPreferenceUtil {
     edit.commit();
   }
 
-  public void setAccountName(String accountType) {
-    setPreference(ACCOUNT_TYPE, accountType);
+  public void setAccountType(AccountType accountType) {
+    setPreference(ACCOUNT_TYPE, accountType.name());
   }
 
-  public String getAccountName() {
-    return getPreferences().getString(ACCOUNT_TYPE, null);
+  public AccountType getAccountType() {
+    String accountName = getPreferences().getString(ACCOUNT_TYPE, null);
+    AccountType type = null;
+    for (AccountType accountType : AccountType.values()) {
+      if (accountName.equalsIgnoreCase(accountType.name())) {
+        type = accountType;
+      }
+    }
+    return type;
   }
 
 }
