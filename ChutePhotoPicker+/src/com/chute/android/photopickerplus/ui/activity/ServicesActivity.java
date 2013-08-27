@@ -412,7 +412,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void onSessionExpired(boolean isSessionExpired, AccountType accountType) {
+  public void onSessionExpired(AccountType accountType) {
     PhotoPickerPreferenceUtil.get().setAccountType(accountType);
     AuthenticationFactory.getInstance().startAuthenticationActivity(
         ServicesActivity.this, accountType);

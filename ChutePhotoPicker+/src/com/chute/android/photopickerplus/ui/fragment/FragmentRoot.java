@@ -150,7 +150,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
             accountType = type;
           }
         }
-        accountListener.onSessionExpired(true, accountType);
+        accountListener.onSessionExpired(accountType);
       } else {
         NotificationUtil
             .makeConnectionProblemToast(getActivity().getApplicationContext());
