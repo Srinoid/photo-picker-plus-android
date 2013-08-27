@@ -23,7 +23,7 @@ public class Constants {
 
   public static final String KEY_SELECTED_ITEMS = "keySelectedItems";
   public static final String KEY_FOLDER_ID = "keyFolderId";
-  public static final String KEY_ACCOUNT_ID= "keyAccountId";
+  public static final String KEY_ACCOUNT_ID = "keyAccountId";
   public static final String KEY_ACCOUNT_TYPE = "keyAccountType";
   public static final String KEY_ACCOUNT_SHORTCUT = "keyAccountShortcut";
   public static final String KEY_PHOTO_FILTER_TYPE = "keyPhotoFilterType";
@@ -31,4 +31,6 @@ public class Constants {
   public static final String KEY_EXPIRED_SESSION = "keyExpiredSession";
 
   public static final int HTTP_ERROR_CODE_UNAUTHORIZED = 401;
+
+  public static final String SELECTED_IMAGES_URL = "http://api.getchute.com/v2/widgets/native";
 }
