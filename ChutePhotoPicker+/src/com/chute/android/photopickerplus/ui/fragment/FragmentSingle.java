@@ -133,7 +133,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     public void onSuccess(ResponseModel<AccountBaseModel> responseData) {
       if (responseData.getData() != null && getActivity() != null) {
         Log.d("debug", "response = " + responseData.getData().toString());
-        accountAssetAdapter = new AssetAccountAdapter(getActivity(),
+      /*  accountAssetAdapter = new AssetAccountAdapter(getActivity(),
             responseData.getData(),
             FragmentSingle.this);
         gridView.setAdapter(accountAssetAdapter);
@@ -157,8 +157,9 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
               .getResources()
               .getString(R.string.select_a_photo));
         }
-//        NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
-//            accountAssetAdapter.getCount());
+        NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
+            accountAssetAdapter.getCount());
+      */
       }
 
     }

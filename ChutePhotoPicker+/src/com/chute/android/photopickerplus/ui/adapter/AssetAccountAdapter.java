@@ -24,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
@@ -62,7 +63,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     this.context = context;
     this.adapterItemClickListener = adapterItemClicklistener;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    loader = ImageLoader.getLoader(context);
+    loader = ImageLoader.getLoader(context.getApplicationContext());
     tick = new HashMap<Integer, AccountMediaModel>();
     rows = new ArrayList<AccountMedia>();
 
@@ -97,7 +98,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     return rows.size();
   }
 
-  public Object getItem(int position) {
+  public AccountMedia getItem(int position) {
     return rows.get(position);
   }
 
@@ -114,47 +115,49 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
 
   @SuppressWarnings("deprecation")
   @Override
-  public View getView(final int position, final View convertView, final ViewGroup parent) {
-    View vi = convertView;
+  public View getView(final int position, View convertView, final ViewGroup parent) {
     ViewHolder holder;
     int type = getItemViewType(position);
     if (convertView == null) {
-      vi = inflater.inflate(R.layout.adapter_assets, null);
+      convertView = inflater.inflate(R.layout.adapter_assets, null);
       holder = new ViewHolder();
-      holder.imageViewThumb = (ImageView) vi.findViewById(R.id.imageViewThumb);
-      holder.imageViewTick = (ImageView) vi.findViewById(R.id.imageViewTick);
+      holder.imageViewThumb = (ImageView) convertView.findViewById(R.id.imageViewThumb);
+      holder.imageViewTick = (ImageView) convertView.findViewById(R.id.imageViewTick);
       holder.imageViewTick.setTag(position);
-      holder.textViewFolderTitle = (TextView) vi.findViewById(R.id.textViewFolderTitle);
-      vi.setTag(holder);
+      holder.textViewFolderTitle = (TextView) convertView.findViewById(R.id.textViewFolderTitle);
+      convertView.setTag(holder);
     } else {
-      holder = (ViewHolder) vi.getTag();
+      holder = (ViewHolder) convertView.getTag();
     }
 
     holder.imageViewThumb.setTag(position);
     if (type == AccountMediaType.FOLDER.ordinal()) {
       holder.imageViewTick.setVisibility(View.GONE);
       holder.textViewFolderTitle.setVisibility(View.VISIBLE);
-      String folderName = ((AccountAlbumModel) getItem(position)).getName();
-      holder.textViewFolderTitle.setText(folderName != null ? folderName : " ");
+      String folderName = getItem(position).getName();
+      holder.textViewFolderTitle.setText(folderName != null ? folderName : "");
       holder.imageViewThumb.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.album_default));
       holder.imageViewThumb.setOnClickListener(new OnFolderClickedListener());
     } else if (type == AccountMediaType.FILE.ordinal()) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
-      loader.displayImage(((AccountMediaModel) getItem(position)).getThumbnail(),
-          holder.imageViewThumb, null);
+      ALog.e(getItem(position).getThumbnail());
+   /*
+    * // TODO prai crash, treba da se sredi
+    *    loader.displayImage(getItem(position).getThumbnail(),
+          holder.imageViewThumb, null);*/
       holder.imageViewThumb.setOnClickListener(new OnFileClickedListener());
     }
     AppUtil.configureAssetImageViewDimensions(context, holder.imageViewThumb);
 
     if (tick.containsKey(position)) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
-      vi.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
+      convertView.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
     } else {
       holder.imageViewTick.setVisibility(View.GONE);
-      vi.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
+      convertView.setBackgroundColor(context.getResources().getColor(R.color.gray_light));
     }
-    return vi;
+    return convertView;
   }
 
   public ArrayList<AccountMediaModel> getPhotoCollection() {

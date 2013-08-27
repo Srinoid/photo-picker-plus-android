@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -96,7 +98,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     textViewSelectPhotos = (TextView) view.findViewById(R.id.textViewSelectPhotos);
     gridView = (GridView) view.findViewById(R.id.gridViewAssets);
     emptyView = view.findViewById(R.id.empty_view_layout);
-    gridView.setEmptyView(emptyView);
+   // gridView.setEmptyView(emptyView);
 
     Button ok = (Button) view.findViewById(R.id.buttonOk);
     Button cancel = (Button) view.findViewById(R.id.buttonCancel);
@@ -132,7 +134,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
       getActivity().getSupportLoaderManager().initLoader(1, null,
           new AssetsLoaderCallback());
     } else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-      GCAccounts.accountRoot(getActivity(), accountName, accountShortcut,
+      GCAccounts.accountRoot(getActivity().getApplicationContext(), accountName, accountShortcut,
           new RootCallback()).executeAsync();
     }
   }
@@ -170,7 +172,6 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
             responseData.getData(),
             FragmentRoot.this);
         gridView.setAdapter(accountAssetAdapter);
-
         if (accountAssetAdapter.getCount() == 0) {
           emptyView.setVisibility(View.GONE);
         }
@@ -193,6 +194,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
         NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
             accountAssetAdapter.getCount());
       }
+      
 
     }
 
