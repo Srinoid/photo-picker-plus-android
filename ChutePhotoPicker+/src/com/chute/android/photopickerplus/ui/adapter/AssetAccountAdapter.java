@@ -142,10 +142,8 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     } else if (type == AccountMediaType.FILE.ordinal()) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
       ALog.e(getItem(position).getThumbnail());
-   /*
-    * // TODO prai crash, treba da se sredi
-    *    loader.displayImage(getItem(position).getThumbnail(),
-          holder.imageViewThumb, null);*/
+        loader.displayImage(getItem(position).getThumbnail(),
+          holder.imageViewThumb, null);
       holder.imageViewThumb.setOnClickListener(new OnFileClickedListener());
     }
     AppUtil.configureAssetImageViewDimensions(context, holder.imageViewThumb);
