@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -85,7 +86,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     retrieveValuesFromBundle(savedInstanceState);
 
     dualPanes = getResources().getBoolean(R.bool.has_two_panes);
-    if (dualPanes && savedInstanceState == null) {
+    if (dualPanes
+        && savedInstanceState == null
+        && getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
       replaceContentWithEmptyFragment();
     }
     fragmentServices = (FragmentServices) fragmentManager
@@ -210,7 +213,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     if (PreferenceUtil.get().hasAccount(type.getLoginMethod())) {
       AccountModel account = PreferenceUtil.get()
           .getAccount(type.getLoginMethod());
-      accountClicked(account.getId(), account.getType(), account.getShortcut());
+      accountClicked(account.getId(), type.name().toLowerCase(), account.getShortcut());
     } else {
       PhotoPickerPreferenceUtil.get().setAccountType(accountType);
       AuthenticationFactory.getInstance().startAuthenticationActivity(
@@ -282,7 +285,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       for (AccountModel accountModel : responseData.getData()) {
         if (accountModel.getType().equals(accountType.getLoginMethod())) {
           PreferenceUtil.get().saveAccount(accountModel);
-          accountClicked(accountModel.getId(), accountModel.getType(),
+          accountClicked(accountModel.getId(), accountType.name().toLowerCase(),
               accountModel.getShortcut());
         }
       }
@@ -321,14 +324,14 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void onAccountFolderSelect(String accountType, String accountShortcut,
+  public void onAccountFolderSelect(String accountName, String accountShortcut,
       String folderId) {
     selectedItemPositions = null;
     photoFilterType = PhotoFilterType.SOCIAL_PHOTOS.ordinal();
     this.folderId = folderId;
-    this.accountName = accountType;
+    this.accountName = accountName;
     this.accountShortcut = accountShortcut;
-    replaceContentWithSingleFragment(accountType, selectedItemPositions, accountShortcut,
+    replaceContentWithSingleFragment(accountName, selectedItemPositions, accountShortcut,
         folderId);
   }
 

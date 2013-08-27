@@ -146,7 +146,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
         NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity()
             .getApplicationContext());
         for (AccountType type : AccountType.values()) {
-          if (accountName.equalsIgnoreCase(type.getLoginMethod())) {
+          if (accountName.equalsIgnoreCase(type.name())) {
             accountType = type;
           }
         }

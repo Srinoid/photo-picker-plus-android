@@ -244,11 +244,11 @@ public class ServicesAdapter extends BaseAdapter {
       holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.picassa));
       break;
-    case GOOGLE_PLUS:
+    case GOOGLE:
       holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.google_plus));
       break;
-    case GOOGLE_DRIVE:
+    case GOOGLEDRIVE:
       holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.google_drive));
       break;

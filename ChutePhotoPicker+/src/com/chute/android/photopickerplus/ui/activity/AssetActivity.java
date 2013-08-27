@@ -135,13 +135,13 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   }
 
   @Override
-  public void onAccountFolderSelect(String accountType, String accountShortcut,
+  public void onAccountFolderSelect(String accountName, String accountShortcut,
       String folderId) {
     this.folderId = folderId;
     FragmentTransaction fragmentTransaction = getSupportFragmentManager()
         .beginTransaction();
     fragmentTransaction
-        .replace(R.id.fragments, FragmentSingle.newInstance(accountType, accountShortcut,
+        .replace(R.id.fragments, FragmentSingle.newInstance(accountName, accountShortcut,
             folderId, selectedItemsPositions),
             Constants.TAG_FRAGMENT_FILES);
     fragmentTransaction.addToBackStack(null);
@@ -209,7 +209,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
       for (AccountModel accountModel : responseData.getData()) {
         if (accountModel.getType().equals(accountType.getLoginMethod())) {
           PreferenceUtil.get().saveAccount(accountModel);
-          accountClicked(accountModel.getId(), accountModel.getType(),
+          accountClicked(accountModel.getId(), accountType.name().toLowerCase(),
               accountModel.getShortcut());
         }
       }

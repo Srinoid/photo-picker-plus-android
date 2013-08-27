@@ -30,7 +30,7 @@ import com.dg.libs.rest.domain.ResponseStatus;
 
 public class FragmentSingle extends Fragment implements AdapterItemClickListener {
 
-  private static final String ARG_ACCOUNT_TYPE = "argAccountType";
+  private static final String ARG_ACCOUNT_NAME = "argAccountName";
   private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
   private static final String ARG_FOLDER_ID = "argAlbumId";
   private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
@@ -39,7 +39,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   private TextView textViewSelectPhotos;
   private View emptyView;
 
-  private String accountType;
+  private String accountName;
   private String accountShortcut;
   private String folderId;
   private boolean isMultipicker;
@@ -48,11 +48,11 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   private AssetAccountAdapter accountAssetAdapter;
   private AccountFilesListener accountListener;
 
-  public static FragmentSingle newInstance(String accountType, String accountShortcut,
+  public static FragmentSingle newInstance(String accountName, String accountShortcut,
       String folderId, ArrayList<Integer> selectedItemPositions) {
     FragmentSingle frag = new FragmentSingle();
     Bundle args = new Bundle();
-    args.putString(ARG_ACCOUNT_TYPE, accountType);
+    args.putString(ARG_ACCOUNT_NAME, accountName);
     args.putString(ARG_ACCOUNT_SHORTCUT, accountShortcut);
     args.putString(ARG_FOLDER_ID, folderId);
     args.putIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS, selectedItemPositions);
@@ -84,12 +84,12 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     gridView.setEmptyView(emptyView);
 
     if (getArguments() != null) {
-      accountType = getArguments().getString(ARG_ACCOUNT_TYPE);
+      accountName = getArguments().getString(ARG_ACCOUNT_NAME);
       accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
       folderId = getArguments().getString(ARG_FOLDER_ID);
       selectedItemsPositions = getArguments().getIntegerArrayList(
           ARG_SELECTED_ITEM_POSITIONS);
-      updateFragment(accountType, accountShortcut, folderId,
+      updateFragment(accountName, accountShortcut, folderId,
           selectedItemsPositions);
     }
 
@@ -103,16 +103,16 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     return view;
   }
 
-  public void updateFragment(String accountType, String accountShortcut, String folderId,
+  public void updateFragment(String accountName, String accountShortcut, String folderId,
       ArrayList<Integer> selectedItemsPositions) {
     isMultipicker = PhotoPicker.getInstance().isMultiPicker();
-    this.accountType = accountType;
+    this.accountName = accountName;
     this.selectedItemsPositions = selectedItemsPositions;
     this.accountShortcut = accountShortcut;
     this.folderId = folderId;
 
     String encodedId = Uri.encode(folderId);
-    GCAccounts.accountSingle(getActivity(), accountType, accountShortcut, encodedId,
+    GCAccounts.accountSingle(getActivity(), accountName, accountShortcut, encodedId,
         new AccountSingleCallback()).executeAsync();
 
   }
@@ -166,7 +166,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   @Override
   public void onFolderClicked(int position) {
     AccountAlbumModel album = (AccountAlbumModel) accountAssetAdapter.getItem(position);
-    accountListener.onAccountFolderSelect(accountType, accountShortcut,
+    accountListener.onAccountFolderSelect(accountName, accountShortcut,
         album.getId());
 
   }

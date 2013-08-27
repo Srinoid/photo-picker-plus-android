@@ -11,7 +11,7 @@ public interface AccountFilesListener {
 
   public void onDeliverAccountFiles(ArrayList<AccountMediaModel> accountMediaModelList);
 
-  public void onAccountFolderSelect(String accountType, String accountShortcut,
+  public void onAccountFolderSelect(String accountName, String accountShortcut,
       String folderId);
 
   public void onSessionExpired(boolean isSessionExpired, AccountType accountType);
