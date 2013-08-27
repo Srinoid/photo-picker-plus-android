@@ -20,7 +20,7 @@
     <string name="loading_photos">ロードの写真</string>
     <string name="select_a_photo">写真を選択</string>
     <string name="select_photos">写真を選択</string>
-    <string name="select_an_album">アルバムを選択</string>
+    <string name="select_an_album">写真ソースの選択</string>
     <string name="title_default">デフォルト</string>
     <string name="title_user">ユーザー</string>
 
@@ -31,5 +31,5 @@
     <string name="no_albums_found">いいえアルバムが見つかりませんでした</string>
     <string name="no_album_selected">選択されていないアルバムません</string>
     <string name="connect_to_internet_to_cofigure_services">サービスを設定するため、インターネットにお使いのデバイスを接続する</string>
-
+    <string name="expired_session_logging_in">セッションが期限切れになっています。もう一度ログインしてください</string>
 </resources>

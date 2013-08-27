@@ -9,24 +9,24 @@ A style is a set of one or more formatting attributes that you can apply as a un
 
 XML file for the style (saved in res/values/):  
     ```
-        <!-- TextView Fragment Title -->  
-        <style name="textViewTtitle" parent="android:Widget.TextView">  
-        <item name="android:background">@color/background_title</item>  
-        <item name="android:gravity">center</item>  
-        <item name="android:padding">5dp</item>  
-        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+        <!-- TextView Asset Fragment Label -->
+        <style name="textViewFragmentLabel" parent="android:Widget.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/gradient_blue</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/fragment_title</item>
+        <item name="android:textColor">@color/white</item>
         </style>  
     ```
 
 XML file that applies the style to a TextView (saved in res/layout/):  
     ``
         <TextView
-        android:id="@+id/textViewSelectAlbumTitle"  
-        style="@style/textViewTtitle"  
-        android:layout_width="match_parent"  
-        android:layout_height="wrap_content"  
-        android:text="@string/select_an_album" >  
-        </TextView>
+        android:id="@+id/textViewSelectPhotos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        style="@style/textViewFragmentLabel" />
     ``
  
 Inheritance
@@ -37,7 +37,7 @@ For example, imageViewAlbumCover style inherits the properties from imageViewDef
    ```
              <!-- ImageView Default -->  
              <style name="imageViewDefault">  
-                 <item name="android:background">@drawable/default_thumb</item>  
+                 <item name="android:background">@drawable/photo_placeholder</item>  
                  <item name="android:scaleType">centerCrop</item>  
              </style>  
     ```
@@ -53,12 +53,10 @@ For example, imageViewAlbumCover style inherits the properties from imageViewDef
 Themes
 ====
 A theme is a style applied to an entire Activity or Application, rather than an individual View. When a style is applied as a theme, every View in the Activity or Application will apply each style property that it supports.  
- For example, PhotoPickerTheme defines a custom color for the windowBackground property which will result in all Activities sharing the same background color applied in this style. 
 
    ```
            <!-- PhotoPicker+ Theme -->  
            <style name="PhotoPickerTheme" parent="android:Theme.Light.NoTitleBar">  
-               <item name="android:windowBackground">@color/background_activity</item>  
            </style>
    ```
 
@@ -68,14 +66,12 @@ To define custom themes, place the theme XML files in the /res/values folder. No
 /res/values/styles.xml  
 <!-- A simple theme based on the default theme for Android API level 10 and below -->  
 <style name="PhotoPickerTheme" parent="android:Theme.Ligh.NoTitleBar">  
-    <item name="android:windowBackground">@drawable/background_activity</item>  
 </style>  
    ```
    ```  
 /res/values-v11/styles.xml  
 <!-- For API level 11 and above, use the Holo theme -->  
 <style name="PhotoPickerTheme" parent="android:Holo">  
-    <item name="android:windowBackground">@drawable/background_activity</item>  
 </style>
    ```
 

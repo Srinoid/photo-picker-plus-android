@@ -11,7 +11,6 @@ package com.chute.android.photopickerplus.ui.activity;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -32,6 +31,7 @@ import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.enums.AccountType;
 
 public class AssetActivity extends FragmentActivity implements CursorFilesListener,
     AccountFilesListener {
@@ -161,18 +161,6 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
       fragmentSingle.updateFragment(accountName, accountShortcut, folderId,
           selectedItemsPositions);
     }
-  }
-
-  @Override
-  public void googleAccountLoggedOut(boolean isAccountLoggedOut) {
-    if (isAccountLoggedOut == true) {
-      NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
-      Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
-      intent.putExtra(Constants.KEY_EXPIRED_SESSION, true);
-      startActivity(intent);
-      this.finish();
-    }
-
   }
 
 }

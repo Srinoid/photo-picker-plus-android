@@ -16,7 +16,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,7 +70,8 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       for (AccountMediaModel file : baseModel.getFiles()) {
         rows.add(file);
       }
-    } else if (baseModel.getFolders() != null) {
+    }
+    if (baseModel.getFolders() != null) {
       for (AccountAlbumModel folder : baseModel.getFolders()) {
         rows.add(folder);
       }

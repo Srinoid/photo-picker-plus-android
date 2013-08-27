@@ -91,11 +91,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     fragmentServices = (FragmentServices) fragmentManager
         .findFragmentById(R.id.fragmentServices);
 
-    Bundle extras = getIntent().getExtras();
-    if (extras != null) {
-      AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, AccountType.PICASA);
-    }
 
   }
 
@@ -268,7 +263,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
     setResult(Activity.RESULT_OK, new Intent().putExtras(intent.getExtras()));
-    finish();
+    ServicesActivity.this.finish();
   }
 
   private final class AccountsCallback implements
@@ -287,7 +282,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
         return;
       }
       for (AccountModel accountModel : responseData.getData()) {
-        if (accountModel.getType().equals(accountType.name())) {
+        if (accountModel.getType().equals(accountType.getLoginMethod())) {
           PreferenceUtil.get().saveAccount(accountModel);
           accountClicked(accountModel.getId(), accountModel.getType(),
               accountModel.getShortcut());
@@ -415,13 +410,4 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     super.onDestroy();
   }
 
-  @Override
-  public void googleAccountLoggedOut(boolean isAccountLoggedOut) {
-    if (isAccountLoggedOut == true) {
-      NotificationUtil.makeExpiredSessionLogginInAgainToast(getApplicationContext());
-      AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, AccountType.PICASA);
-    }
-
-  }
 }

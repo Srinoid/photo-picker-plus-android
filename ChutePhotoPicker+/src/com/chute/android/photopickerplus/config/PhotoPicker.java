@@ -1,6 +1,7 @@
 package com.chute.android.photopickerplus.config;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.araneaapps.android.libs.logger.ALog;
@@ -9,46 +10,47 @@ import com.chute.sdk.v2.model.enums.AccountType;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
-public class ServiceLoader {
+public class PhotoPicker {
 
   private static final String LOG_INIT_CONFIG =
-      "Initialize ServiceLoader with configuration";
-  private static final String LOG_DESTROY = "Destroy ServiceLoader";
+      "Initialize PhotoPicker with configuration";
+  private static final String LOG_DESTROY = "Destroy PhotoPicker";
 
   private static final String WARNING_RE_INIT_CONFIG =
-      "Try to initialize ServiceLoader which had already been initialized before. "
-          + "To re-init ServiceLoader with new configuration call ServiceLoader.destroy() at first.";
+      "Try to initialize PhotoPicker which had already been initialized before. "
+          + "To re-init PhotoPicker with new configuration call ServiceLoader.destroy() at first.";
   private static final String ERROR_NOT_INIT =
-      "ServiceLoader must be initialized with configuration before using";
+      "PhotoPicker must be initialized with configuration before using";
   private static final String ERROR_INIT_CONFIG_WITH_NULL =
-      "ServiceLoader configuration can not be initialized with null";
+      "PhotoPicker configuration can not be initialized with null";
   private static final String WARNING_INIT_SERVICES =
       "Local and remote services need to be initialized when starting the application for the first time, otherwise the list of services will be empty";
   private static final String ERROR_HTTP =
       "Error when trying to get services from server: ";
+  private static final String WARNING_UNSUPPORTED_SERVICES = "Invalid service type. Supported valid services: Facebook, Google, Googledrive, Instagram, Flickr, Picasa, Dropbox, Skydrive";
 
   private List<AccountType> remoteServices;
   private List<LocalMediaType> localServices;
 
-  private ServiceConfiguration configuration;
+  private PhotoPickerConfiguration configuration;
 
-  private volatile static ServiceLoader instance;
+  private volatile static PhotoPicker instance;
 
-  public static ServiceLoader getInstance() {
+  public static PhotoPicker getInstance() {
     if (instance == null) {
-      synchronized (ServiceLoader.class) {
+      synchronized (PhotoPicker.class) {
         if (instance == null) {
-          instance = new ServiceLoader();
+          instance = new PhotoPicker();
         }
       }
     }
     return instance;
   }
 
-  protected ServiceLoader() {
+  protected PhotoPicker() {
   }
 
-  public synchronized void init(ServiceConfiguration configuration) {
+  public synchronized void init(PhotoPickerConfiguration configuration) {
     if (configuration == null) {
       throw new IllegalArgumentException(ERROR_INIT_CONFIG_WITH_NULL);
     }
@@ -102,6 +104,7 @@ public class ServiceLoader {
 
   public void setAvailableRemoteServices(List<AccountType> remoteServices) {
     this.remoteServices = remoteServices;
+    checkIfServiceIsSupported(remoteServices);
   }
 
   public void setAvailableLocalServices(List<LocalMediaType> localServices) {
@@ -153,6 +156,19 @@ public class ServiceLoader {
   private void checkConfiguration() {
     if (configuration == null) {
       throw new IllegalStateException(ERROR_NOT_INIT);
+    }
+  }
+
+  private void checkIfServiceIsSupported(List<AccountType> remoteServices) {
+    Iterator<AccountType> iterator = remoteServices.iterator();
+    while (iterator.hasNext()) {
+      AccountType accountType = iterator.next();
+      if (accountType.equals(AccountType.CHUTE)
+          || accountType.equals(AccountType.FOURSQUARE)
+          || accountType.equals(AccountType.TWITTER)) {
+        ALog.w(WARNING_UNSUPPORTED_SERVICES);
+        iterator.remove();
+      }
     }
   }
 

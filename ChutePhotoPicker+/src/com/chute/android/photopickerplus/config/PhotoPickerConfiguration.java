@@ -8,7 +8,7 @@ import android.content.Context;
 import com.chute.android.photopickerplus.models.enums.LocalMediaType;
 import com.chute.sdk.v2.model.enums.AccountType;
 
-public final class ServiceConfiguration {
+public final class PhotoPickerConfiguration {
 
   final Context context;
   final List<AccountType> accountList;
@@ -16,7 +16,7 @@ public final class ServiceConfiguration {
   final String configUrl;
   final boolean isMultiPicker;
 
-  private ServiceConfiguration(final Builder builder) {
+  private PhotoPickerConfiguration(final Builder builder) {
     context = builder.context;
     isMultiPicker = builder.isMultiPicker;
     accountList = builder.accountList;
@@ -36,8 +36,8 @@ public final class ServiceConfiguration {
       this.context = context.getApplicationContext();
     }
 
-    public ServiceConfiguration build() {
-      return new ServiceConfiguration(this);
+    public PhotoPickerConfiguration build() {
+      return new PhotoPickerConfiguration(this);
     }
 
     public Builder accountList(AccountType... accountList) {
