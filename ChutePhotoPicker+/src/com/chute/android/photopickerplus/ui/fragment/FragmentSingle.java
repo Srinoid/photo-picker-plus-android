@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -125,15 +124,14 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     public void onHttpError(ResponseStatus responseStatus) {
       ALog.d("Http Error: " + responseStatus.getStatusMessage() + " "
           + responseStatus.getStatusCode());
-//      NotificationUtil.makeConnectionProblemToast(getActivity());
+      NotificationUtil.makeConnectionProblemToast(getActivity());
 
     }
 
     @Override
     public void onSuccess(ResponseModel<AccountBaseModel> responseData) {
       if (responseData.getData() != null && getActivity() != null) {
-        Log.d("debug", "response = " + responseData.getData().toString());
-      /*  accountAssetAdapter = new AssetAccountAdapter(getActivity(),
+        accountAssetAdapter = new AssetAccountAdapter(getActivity(),
             responseData.getData(),
             FragmentSingle.this);
         gridView.setAdapter(accountAssetAdapter);
@@ -159,7 +157,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
         }
         NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
             accountAssetAdapter.getCount());
-      */
+
       }
 
     }

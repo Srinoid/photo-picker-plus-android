@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.models.enums.LocalMediaType;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
@@ -79,26 +80,30 @@ public class PhotoPicker {
   }
 
   public List<LocalMediaType> getLocalServices() {
-    if (localServices == null) {
+    ArrayList<LocalMediaType> localServiceListInPrefs = PhotoPickerPreferenceUtil.get()
+        .getLocalServiceList();
+    if (localServiceListInPrefs.isEmpty()) {
       if (configuration.localMediaList != null) {
         return configuration.localMediaList;
       } else {
         return new ArrayList<LocalMediaType>();
       }
     } else {
-      return localServices;
+      return localServiceListInPrefs;
     }
   }
 
   public List<AccountType> getRemoteServices() {
-    if (remoteServices == null) {
+    ArrayList<AccountType> accountServiceListInPrefs = PhotoPickerPreferenceUtil.get()
+        .getAccountServiceList();
+    if (accountServiceListInPrefs.isEmpty()) {
       if (configuration.accountList != null) {
         return configuration.accountList;
       } else {
         return new ArrayList<AccountType>();
       }
     } else {
-      return remoteServices;
+      return accountServiceListInPrefs;
     }
   }
 
@@ -134,7 +139,8 @@ public class PhotoPicker {
           AccountType accountType = AccountType.valueOf(service.toUpperCase());
           remoteServices.add(accountType);
         }
-        setAvailableRemoteServices(remoteServices);
+        PhotoPickerPreferenceUtil.get().setAccountServiceList(
+            (ArrayList<AccountType>) remoteServices);
       }
       if (data.getLocalFeatures() != null) {
         for (String localFeature : data.getLocalFeatures()) {
@@ -142,7 +148,8 @@ public class PhotoPicker {
               .toUpperCase());
           localServices.add(localMediaType);
         }
-        setAvailableLocalServices(localServices);
+        PhotoPickerPreferenceUtil.get().setLocalServiceList(
+            (ArrayList<LocalMediaType>) localServices);
       }
     }
 

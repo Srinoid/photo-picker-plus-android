@@ -25,6 +25,9 @@
 //
 package com.chute.android.photopickerplus.util;
 
+import java.util.ArrayList;
+
+import com.chute.android.photopickerplus.models.enums.LocalMediaType;
 import com.chute.sdk.v2.model.enums.AccountType;
 
 import android.content.Context;
@@ -35,6 +38,8 @@ public class PhotoPickerPreferenceUtil {
 
   public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
   private static final String ACCOUNT_TYPE = "accountType";
+  private static final String ACCOUNT_SERVICE_LIST = "accountServiceList";
+  private static final String LOCAL_SERVICE_LIST = "localServiceList";
   private final Context context;
 
   private PhotoPickerPreferenceUtil(Context context) {
@@ -93,6 +98,38 @@ public class PhotoPickerPreferenceUtil {
       }
     }
     return type;
+  }
+
+  public void setAccountServiceList(ArrayList<AccountType> accountList) {
+    for (AccountType accountType : accountList) {
+      setPreference(ACCOUNT_SERVICE_LIST + "_" + accountType, accountType.name());
+    }
+  }
+
+  public ArrayList<AccountType> getAccountServiceList() {
+    ArrayList<AccountType> accountList = new ArrayList<AccountType>();
+    for (AccountType accountType : AccountType.values()) {
+      if (getPreferences().contains(ACCOUNT_SERVICE_LIST + "_" + accountType)) {
+        accountList.add(accountType);
+      }
+    }
+    return accountList;
+  }
+
+  public void setLocalServiceList(ArrayList<LocalMediaType> localServiceList) {
+    for (LocalMediaType localMediaType : localServiceList) {
+      setPreference(LOCAL_SERVICE_LIST + "_" + localMediaType, localMediaType.name());
+    }
+  }
+
+  public ArrayList<LocalMediaType> getLocalServiceList() {
+    ArrayList<LocalMediaType> localServiceList = new ArrayList<LocalMediaType>();
+    for (LocalMediaType localMediaType : LocalMediaType.values()) {
+      if (getPreferences().contains(LOCAL_SERVICE_LIST + "_" + localMediaType)) {
+        localServiceList.add(localMediaType);
+      }
+    }
+    return localServiceList;
   }
 
 }

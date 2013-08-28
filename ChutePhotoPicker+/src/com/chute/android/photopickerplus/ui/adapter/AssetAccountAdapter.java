@@ -98,7 +98,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     return rows.size();
   }
 
-  public AccountMedia getItem(int position) {
+  public Object getItem(int position) {
     return rows.get(position);
   }
 
@@ -124,7 +124,8 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       holder.imageViewThumb = (ImageView) convertView.findViewById(R.id.imageViewThumb);
       holder.imageViewTick = (ImageView) convertView.findViewById(R.id.imageViewTick);
       holder.imageViewTick.setTag(position);
-      holder.textViewFolderTitle = (TextView) convertView.findViewById(R.id.textViewFolderTitle);
+      holder.textViewFolderTitle = (TextView) convertView
+          .findViewById(R.id.textViewFolderTitle);
       convertView.setTag(holder);
     } else {
       holder = (ViewHolder) convertView.getTag();
@@ -134,15 +135,15 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     if (type == AccountMediaType.FOLDER.ordinal()) {
       holder.imageViewTick.setVisibility(View.GONE);
       holder.textViewFolderTitle.setVisibility(View.VISIBLE);
-      String folderName = getItem(position).getName();
+      String folderName = ((AccountAlbumModel) getItem(position)).getName();
       holder.textViewFolderTitle.setText(folderName != null ? folderName : "");
       holder.imageViewThumb.setBackgroundDrawable(context.getResources().getDrawable(
           R.drawable.album_default));
       holder.imageViewThumb.setOnClickListener(new OnFolderClickedListener());
     } else if (type == AccountMediaType.FILE.ordinal()) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
-      ALog.e(getItem(position).getThumbnail());
-        loader.displayImage(getItem(position).getThumbnail(),
+      ALog.e(((AccountMediaModel) getItem(position)).getThumbnail());
+      loader.displayImage(((AccountMediaModel) getItem(position)).getThumbnail(),
           holder.imageViewThumb, null);
       holder.imageViewThumb.setOnClickListener(new OnFileClickedListener());
     }
