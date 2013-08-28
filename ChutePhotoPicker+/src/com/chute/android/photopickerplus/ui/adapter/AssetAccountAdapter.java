@@ -24,7 +24,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
@@ -142,7 +141,6 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
       holder.imageViewThumb.setOnClickListener(new OnFolderClickedListener());
     } else if (type == AccountMediaType.FILE.ordinal()) {
       holder.imageViewTick.setVisibility(View.VISIBLE);
-      ALog.e(((AccountMediaModel) getItem(position)).getThumbnail());
       loader.displayImage(((AccountMediaModel) getItem(position)).getThumbnail(),
           holder.imageViewThumb, null);
       holder.imageViewThumb.setOnClickListener(new OnFileClickedListener());
@@ -177,7 +175,7 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
   }
 
   public void toggleTick(final int position) {
-    if (getCount() >= position) {
+    if (getCount() > position) {
       if (getItemViewType(position) == AccountMediaType.FILE.ordinal()) {
         if (tick.containsKey(position)) {
           tick.remove(position);

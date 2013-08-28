@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AccountModel;
 
 public class PhotosIntentWrapper extends IntentWrapper {
 
@@ -19,9 +20,7 @@ public class PhotosIntentWrapper extends IntentWrapper {
   public static final int ACTIVITY_FOR_RESULT_STREAM_KEY = 113;
 
   // social photos
-  private static final String KEY_ACCOUNT_ID = "accountId";
-  private static final String KEY_ACCOUNT_NAME = "accountName";
-  private static final String KEY_ACCOUNT_SHORTCUT = "accountShortcut";
+  private static final String KEY_ACCOUNT = "account";
   private static final String KEY_ALBUM_ID = "albumId";
   private static final String KEY_PHOTO_COLLECTION = "photoCollection";
   private static final String KEY_PHOTO_MODEL = "photoModel";
@@ -47,12 +46,12 @@ public class PhotosIntentWrapper extends IntentWrapper {
     super(intent);
   }
 
-  public String getAccountId() {
-    return getIntent().getExtras().getString(KEY_ACCOUNT_ID);
+  public AccountModel getAccount() {
+    return getIntent().getExtras().getParcelable(KEY_ACCOUNT);
   }
 
-  public void setAccountId(String accountId) {
-    getIntent().putExtra(KEY_ACCOUNT_ID, accountId);
+  public void setAccount(AccountModel account) {
+    getIntent().putExtra(KEY_ACCOUNT, account);
   }
 
   public String getAlbumId() {
@@ -117,22 +116,6 @@ public class PhotosIntentWrapper extends IntentWrapper {
 
   public void setChuteId(String id) {
     getIntent().putExtra(EXTRA_KEY_CHUTE_ID, id);
-  }
-
-  public String getAccountName() {
-    return getIntent().getExtras().getString(KEY_ACCOUNT_NAME);
-  }
-
-  public void setAccountName(String accountName) {
-    getIntent().putExtra(KEY_ACCOUNT_NAME, accountName);
-  }
-
-  public String getAccountShortcut() {
-    return getIntent().getExtras().getString(KEY_ACCOUNT_SHORTCUT);
-  }
-
-  public void setAccountShortcut(String accountShortcut) {
-    getIntent().putExtra(KEY_ACCOUNT_SHORTCUT, accountShortcut);
   }
 
   public void startActivityForResult(Activity context, int code) {

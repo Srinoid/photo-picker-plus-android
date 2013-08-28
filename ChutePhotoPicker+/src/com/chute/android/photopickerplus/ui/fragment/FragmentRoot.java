@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -34,6 +32,7 @@ import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
@@ -42,9 +41,7 @@ import com.dg.libs.rest.domain.ResponseStatus;
 public class FragmentRoot extends Fragment implements AdapterItemClickListener {
 
   private static final String ARG_FILTER_TYPE = "argFilterType";
-  private static final String ARG_ACCOUNT_ID = "argAccountId";
-  private static final String ARG_ACCOUNT_NAME = "argAccountName";
-  private static final String ARG_ACCOUNT_SHORTCUT = "argAccountShortcut";
+  private static final String ARG_ACCOUNT = "argAccount";
   private static final String ARG_SELECTED_ITEM_POSITIONS = "argSelectedItemPositions";
 
   private GridView gridView;
@@ -54,24 +51,22 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   private View emptyView;
 
   private boolean isMultipicker;
-  private String accountName;
-  private String accountShortcut;
   private ArrayList<Integer> selectedItemsPositions;
+  private AccountModel account;
   private PhotoFilterType filterType;
   private CursorFilesListener cursorListener;
   private AccountFilesListener accountListener;
 
   private AccountType accountType;
 
-  public static FragmentRoot newInstance(PhotoFilterType filterType, String accountId,
-      ArrayList<Integer> selectedItemPositions, String accountName, String accountShortcut) {
+  public static FragmentRoot newInstance(AccountModel account,
+      PhotoFilterType filterType,
+      ArrayList<Integer> selectedItemPositions) {
     FragmentRoot frag = new FragmentRoot();
     Bundle args = new Bundle();
+    args.putParcelable(ARG_ACCOUNT, account);
     args.putSerializable(ARG_FILTER_TYPE, filterType);
-    args.putString(ARG_ACCOUNT_ID, accountId);
     args.putIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS, selectedItemPositions);
-    args.putString(ARG_ACCOUNT_NAME, accountName);
-    args.putString(ARG_ACCOUNT_SHORTCUT, accountShortcut);
     frag.setArguments(args);
     return frag;
   }
@@ -98,7 +93,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     textViewSelectPhotos = (TextView) view.findViewById(R.id.textViewSelectPhotos);
     gridView = (GridView) view.findViewById(R.id.gridViewAssets);
     emptyView = view.findViewById(R.id.empty_view_layout);
-   // gridView.setEmptyView(emptyView);
+    // gridView.setEmptyView(emptyView);
 
     Button ok = (Button) view.findViewById(R.id.buttonOk);
     Button cancel = (Button) view.findViewById(R.id.buttonCancel);
@@ -107,12 +102,9 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     cancel.setOnClickListener(new CancelClickListener());
 
     if (getArguments() != null && savedInstanceState == null) {
-      accountName = getArguments().getString(ARG_ACCOUNT_NAME);
-      accountShortcut = getArguments().getString(ARG_ACCOUNT_SHORTCUT);
-      updateFragment(getArguments().getString(ARG_ACCOUNT_ID),
-          (PhotoFilterType) getArguments().get(ARG_FILTER_TYPE),
-          getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS), accountName,
-          accountShortcut);
+      account = getArguments().getParcelable(ARG_ACCOUNT);
+      updateFragment(account,(PhotoFilterType) getArguments().get(ARG_FILTER_TYPE),
+          getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS));
     }
 
     gridView.setNumColumns(getResources().getInteger(R.integer.grid_columns_assets));
@@ -120,21 +112,20 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     return view;
   }
 
-  public void updateFragment(String accountId, PhotoFilterType filterType,
-      ArrayList<Integer> selectedItemsPositions, String accountName,
-      String accountShortcut) {
+  public void updateFragment(AccountModel account, PhotoFilterType filterType,
+      ArrayList<Integer> selectedItemsPositions) {
     isMultipicker = PhotoPicker.getInstance().isMultiPicker();
     this.filterType = filterType;
     this.selectedItemsPositions = selectedItemsPositions;
-    this.accountShortcut = accountShortcut;
-    this.accountName = accountName;
+    this.account = account;
 
     if ((filterType == PhotoFilterType.ALL_PHOTOS)
         || (filterType == PhotoFilterType.CAMERA_ROLL)) {
       getActivity().getSupportLoaderManager().initLoader(1, null,
           new AssetsLoaderCallback());
     } else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-      GCAccounts.accountRoot(getActivity().getApplicationContext(), accountName, accountShortcut,
+      GCAccounts.accountRoot(getActivity().getApplicationContext(),
+          account.getType().toLowerCase(), account.getShortcut(),
           new RootCallback()).executeAsync();
     }
   }
@@ -148,7 +139,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
         NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity()
             .getApplicationContext());
         for (AccountType type : AccountType.values()) {
-          if (accountName.equalsIgnoreCase(type.name())) {
+          if (account.getType().equalsIgnoreCase(type.name())) {
             accountType = type;
           }
         }
@@ -194,7 +185,6 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
         NotificationUtil.showPhotosAdapterToast(getActivity().getApplicationContext(),
             accountAssetAdapter.getCount());
       }
-      
 
     }
 
@@ -298,7 +288,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   @Override
   public void onFolderClicked(int position) {
     AccountAlbumModel album = (AccountAlbumModel) accountAssetAdapter.getItem(position);
-    accountListener.onAccountFolderSelect(accountName, accountShortcut,
+    accountListener.onAccountFolderSelect(account,
         album.getId());
 
   }

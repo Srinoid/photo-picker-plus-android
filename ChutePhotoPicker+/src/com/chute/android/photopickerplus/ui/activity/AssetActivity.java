@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import com.chute.android.photopickerplus.ui.adapter.AssetSelectListener;
 import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.FragmentRoot;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
@@ -48,18 +46,14 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     AccountFilesListener {
 
   public static final String TAG = AssetActivity.class.getSimpleName();
-  private String accountID;
   private PhotoFilterType filterType;
   private PhotosIntentWrapper wrapper;
   private FragmentRoot fragmentRoot;
   private FragmentSingle fragmentSingle;
-  private String accountName;
-  private String accountShortcut;
+  private AccountModel account;
   private ArrayList<Integer> selectedItemsPositions;
   private AssetSelectListener assetSelectListener;
   private String folderId;
-  private static FragmentManager fragmentManager;
-  private FragmentServices fragmentServices;
   private AccountType accountType;
 
   public AssetSelectListener getAdapterListener() {
@@ -87,18 +81,14 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
         : null;
 
     wrapper = new PhotosIntentWrapper(getIntent());
-    accountID = wrapper.getAccountId();
+    account = wrapper.getAccount();
     filterType = wrapper.getFilterType();
-    accountName = wrapper.getAccountName();
-    accountShortcut = wrapper.getAccountShortcut();
 
     fragmentRoot = (FragmentRoot) getSupportFragmentManager().findFragmentById(
         R.id.fragmentAssets);
     fragmentRoot.setRetainInstance(true);
-    fragmentRoot.updateFragment(accountID, filterType,
-        selectedItemsPositions,
-        accountName,
-        accountShortcut);
+    fragmentRoot.updateFragment(account, filterType,
+        selectedItemsPositions);
   }
 
   @Override
@@ -135,14 +125,14 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   }
 
   @Override
-  public void onAccountFolderSelect(String accountName, String accountShortcut,
+  public void onAccountFolderSelect(AccountModel account,
       String folderId) {
     this.folderId = folderId;
     FragmentTransaction fragmentTransaction = getSupportFragmentManager()
         .beginTransaction();
     fragmentTransaction
-        .replace(R.id.fragments, FragmentSingle.newInstance(accountName, accountShortcut,
-            folderId, selectedItemsPositions),
+        .replace(R.id.fragments,
+            FragmentSingle.newInstance(account, folderId, selectedItemsPositions),
             Constants.TAG_FRAGMENT_FILES);
     fragmentTransaction.addToBackStack(null);
     fragmentTransaction.commit();
@@ -157,8 +147,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
         && assetSelectListener.getSelectedItemPositions() !=
         null) {
       outState.putIntegerArrayList(Constants.KEY_SELECTED_ITEMS,
-          assetSelectListener
-              .getSelectedItemPositions());
+          assetSelectListener.getSelectedItemPositions());
     }
 
   }
@@ -170,8 +159,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
         Constants.TAG_FRAGMENT_FILES);
     if (fragmentSingle != null) {
       fragmentSingle.setRetainInstance(true);
-      fragmentSingle.updateFragment(accountName, accountShortcut, folderId,
-          selectedItemsPositions);
+      fragmentSingle.updateFragment(account, folderId, selectedItemsPositions);
     }
   }
 
@@ -227,10 +215,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     selectedItemsPositions = null;
     if (fragmentRoot != null) {
       fragmentRoot.setRetainInstance(true);
-      fragmentRoot.updateFragment(accountId, filterType,
-          selectedItemsPositions,
-          accountName,
-          accountShortcut);
+      fragmentRoot.updateFragment(account, filterType, selectedItemsPositions);
     }
   }
 
