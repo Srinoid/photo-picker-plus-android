@@ -28,6 +28,7 @@ import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
@@ -54,10 +55,9 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   private ArrayList<Integer> selectedItemsPositions;
   private AccountModel account;
   private PhotoFilterType filterType;
+  private AccountType accountType;
   private CursorFilesListener cursorListener;
   private AccountFilesListener accountListener;
-
-  private AccountType accountType;
 
   public static FragmentRoot newInstance(AccountModel account,
       PhotoFilterType filterType,
@@ -103,7 +103,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
 
     if (getArguments() != null && savedInstanceState == null) {
       account = getArguments().getParcelable(ARG_ACCOUNT);
-      updateFragment(account,(PhotoFilterType) getArguments().get(ARG_FILTER_TYPE),
+      updateFragment(account, (PhotoFilterType) getArguments().get(ARG_FILTER_TYPE),
           getArguments().getIntegerArrayList(ARG_SELECTED_ITEM_POSITIONS));
     }
 
@@ -118,6 +118,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     this.filterType = filterType;
     this.selectedItemsPositions = selectedItemsPositions;
     this.account = account;
+    accountType = PhotoPickerPreferenceUtil.get().getAccountType();
 
     if ((filterType == PhotoFilterType.ALL_PHOTOS)
         || (filterType == PhotoFilterType.CAMERA_ROLL)) {
@@ -125,7 +126,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
           new AssetsLoaderCallback());
     } else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
       GCAccounts.accountRoot(getActivity().getApplicationContext(),
-          account.getType().toLowerCase(), account.getShortcut(),
+          accountType.name().toLowerCase(),
+          account.getShortcut(),
           new RootCallback()).executeAsync();
     }
   }
@@ -138,11 +140,6 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
       if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED) {
         NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity()
             .getApplicationContext());
-        for (AccountType type : AccountType.values()) {
-          if (account.getType().equalsIgnoreCase(type.name())) {
-            accountType = type;
-          }
-        }
         accountListener.onSessionExpired(accountType);
       } else {
         NotificationUtil

@@ -55,7 +55,7 @@ public class ServicesAdapter extends BaseAdapter {
     this.localAccounts = localAccounts;
     this.serviceClickedListener = serviceClickedListener;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    loader = ImageLoader.getLoader(context);
+    loader = ImageLoader.getLoader(context.getApplicationContext());
   }
 
   @Override

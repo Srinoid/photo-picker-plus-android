@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.media.audiofx.AcousticEchoCanceler;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,7 +27,6 @@ import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.CursorFilesListener;
 import com.chute.android.photopickerplus.ui.fragment.EmptyFragment;
 import com.chute.android.photopickerplus.ui.fragment.FragmentRoot;
-import com.chute.android.photopickerplus.ui.fragment.FragmentServices;
 import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.ui.fragment.FragmentServices.ServiceClickedListener;
 import com.chute.android.photopickerplus.util.AppUtil;
@@ -56,7 +54,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   private FragmentTransaction fragmentTransaction;
   private static FragmentManager fragmentManager;
-  private FragmentServices fragmentServices;
   private AccountType accountType;
   private boolean dualPanes;
   private ArrayList<Integer> selectedItemPositions;
@@ -91,8 +88,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
         && getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
       replaceContentWithEmptyFragment();
     }
-    fragmentServices = (FragmentServices) fragmentManager
-        .findFragmentById(R.id.fragmentServices);
 
   }
 
@@ -205,12 +200,12 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   @Override
   public void accountLogin(AccountType type) {
     accountType = type;
+    PhotoPickerPreferenceUtil.get().setAccountType(accountType);
     if (PreferenceUtil.get().hasAccount(type.getLoginMethod())) {
       AccountModel account = PreferenceUtil.get()
           .getAccount(type.getLoginMethod());
       accountClicked(account);
     } else {
-      PhotoPickerPreferenceUtil.get().setAccountType(accountType);
       AuthenticationFactory.getInstance().startAuthenticationActivity(
           ServicesActivity.this, accountType);
     }

@@ -20,6 +20,7 @@ import com.chute.android.photopickerplus.config.PhotoPicker;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
 import com.chute.android.photopickerplus.util.NotificationUtil;
+import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
@@ -107,7 +108,8 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     this.folderId = folderId;
 
     String encodedId = Uri.encode(folderId);
-    GCAccounts.accountSingle(getActivity(), account.getType().toLowerCase(),
+    GCAccounts.accountSingle(getActivity(),
+        PhotoPickerPreferenceUtil.get().getAccountType().name().toLowerCase(),
         account.getShortcut(), encodedId,
         new AccountSingleCallback()).executeAsync();
 

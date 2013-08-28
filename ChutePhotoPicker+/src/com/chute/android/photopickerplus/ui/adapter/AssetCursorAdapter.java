@@ -40,7 +40,7 @@ public class AssetCursorAdapter extends CursorAdapter implements
   public AssetCursorAdapter(FragmentActivity context, Cursor c) {
     super(context, c);
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    loader = ImageLoader.getLoader(context);
+    loader = ImageLoader.getLoader(context.getApplicationContext());
     dataIndex = c.getColumnIndex(MediaStore.Images.Media.DATA);
     tick = new HashMap<Integer, String>();
     if (context.getResources().getBoolean(R.bool.has_two_panes)) {
@@ -134,7 +134,7 @@ public class AssetCursorAdapter extends CursorAdapter implements
   }
 
   public void toggleTick(int position) {
-    if (getCount() >= position) {
+    if (getCount() > position) {
     if (tick.containsKey(position)) {
       tick.remove(position);
     } else {
