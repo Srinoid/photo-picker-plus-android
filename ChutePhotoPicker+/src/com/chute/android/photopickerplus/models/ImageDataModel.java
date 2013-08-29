@@ -3,6 +3,7 @@ package com.chute.android.photopickerplus.models;
 import java.util.List;
 
 import com.araneaapps.android.libs.logger.ALog;
+import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.utils.JsonUtil;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +19,7 @@ public class ImageDataModel {
   private OptionsModel options;
 
   @JsonProperty("media")
-  private List<MediaModel> media;
+  private List<AccountMediaModel> media;
 
   public OptionsModel getOptions() {
     return options;
@@ -28,11 +29,11 @@ public class ImageDataModel {
     this.options = options;
   }
 
-  public List<MediaModel> getMedia() {
+  public List<AccountMediaModel> getMedia() {
     return media;
   }
 
-  public void setMedia(List<MediaModel> media) {
+  public void setMedia(List<AccountMediaModel> media) {
     this.media = media;
   }
 

@@ -37,9 +37,10 @@ import android.preference.PreferenceManager;
 public class PhotoPickerPreferenceUtil {
 
   public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();
-  private static final String ACCOUNT_TYPE = "accountType";
-  private static final String ACCOUNT_SERVICE_LIST = "accountServiceList";
-  private static final String LOCAL_SERVICE_LIST = "localServiceList";
+  private static final String KEY_ACCOUNT_TYPE = "accountType";
+  private static final String KEY_ACCOUNT_SERVICE_LIST = "accountServiceList";
+  private static final String KEY_LOCAL_SERVICE_LIST = "localServiceList";
+  private static final String KEY_CLIENT_ID = "clientId";
   private final Context context;
 
   private PhotoPickerPreferenceUtil(Context context) {
@@ -85,12 +86,20 @@ public class PhotoPickerPreferenceUtil {
     edit.commit();
   }
 
+  public void setClientId(String clientId) {
+    setPreference(KEY_CLIENT_ID, clientId);
+  }
+
+  public String getClientId() {
+    return getPreferences().getString(KEY_CLIENT_ID, null);
+  }
+
   public void setAccountType(AccountType accountType) {
-    setPreference(ACCOUNT_TYPE, accountType.name());
+    setPreference(KEY_ACCOUNT_TYPE, accountType.name());
   }
 
   public AccountType getAccountType() {
-    String accountName = getPreferences().getString(ACCOUNT_TYPE, null);
+    String accountName = getPreferences().getString(KEY_ACCOUNT_TYPE, null);
     AccountType type = null;
     for (AccountType accountType : AccountType.values()) {
       if (accountName.equalsIgnoreCase(accountType.name())) {
@@ -102,14 +111,14 @@ public class PhotoPickerPreferenceUtil {
 
   public void setAccountServiceList(ArrayList<AccountType> accountList) {
     for (AccountType accountType : accountList) {
-      setPreference(ACCOUNT_SERVICE_LIST + "_" + accountType, accountType.name());
+      setPreference(KEY_ACCOUNT_SERVICE_LIST + "_" + accountType, accountType.name());
     }
   }
 
   public ArrayList<AccountType> getAccountServiceList() {
     ArrayList<AccountType> accountList = new ArrayList<AccountType>();
     for (AccountType accountType : AccountType.values()) {
-      if (getPreferences().contains(ACCOUNT_SERVICE_LIST + "_" + accountType)) {
+      if (getPreferences().contains(KEY_ACCOUNT_SERVICE_LIST + "_" + accountType)) {
         accountList.add(accountType);
       }
     }
@@ -118,14 +127,14 @@ public class PhotoPickerPreferenceUtil {
 
   public void setLocalServiceList(ArrayList<LocalMediaType> localServiceList) {
     for (LocalMediaType localMediaType : localServiceList) {
-      setPreference(LOCAL_SERVICE_LIST + "_" + localMediaType, localMediaType.name());
+      setPreference(KEY_LOCAL_SERVICE_LIST + "_" + localMediaType, localMediaType.name());
     }
   }
 
   public ArrayList<LocalMediaType> getLocalServiceList() {
     ArrayList<LocalMediaType> localServiceList = new ArrayList<LocalMediaType>();
     for (LocalMediaType localMediaType : LocalMediaType.values()) {
-      if (getPreferences().contains(LOCAL_SERVICE_LIST + "_" + localMediaType)) {
+      if (getPreferences().contains(KEY_LOCAL_SERVICE_LIST + "_" + localMediaType)) {
         localServiceList.add(localMediaType);
       }
     }

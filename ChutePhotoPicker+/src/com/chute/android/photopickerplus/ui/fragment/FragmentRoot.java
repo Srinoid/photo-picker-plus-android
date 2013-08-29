@@ -19,8 +19,11 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
+import com.chute.android.photopickerplus.callback.ImageDataResponseLoader;
 import com.chute.android.photopickerplus.config.PhotoPicker;
 import com.chute.android.photopickerplus.loaders.AssetsAsyncTaskLoader;
+import com.chute.android.photopickerplus.models.ImageDataModel;
+import com.chute.android.photopickerplus.models.OptionsModel;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
 import com.chute.android.photopickerplus.ui.adapter.AssetCursorAdapter;
@@ -274,6 +277,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     @Override
     public void onClick(View v) {
       if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
+        // ImageDataResponse.postImageData(accountAssetAdapter.getPhotoCollection());
         accountListener.onDeliverAccountFiles(accountAssetAdapter.getPhotoCollection());
       } else if ((filterType == PhotoFilterType.ALL_PHOTOS)
           || (filterType == PhotoFilterType.CAMERA_ROLL)) {
@@ -296,10 +300,16 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     if (isMultipicker == true) {
       accountAssetAdapter.toggleTick(position);
     } else {
+      // ArrayList<AccountMediaModel> accountMediaModelList = new
+      // ArrayList<AccountMediaModel>();
+      // accountMediaModelList.add((AccountMediaModel) accountAssetAdapter
+      // .getItem(position));
+//       ImageDataResponse.postImageData(accountMediaModelList);
       accountListener.onAccountFilesSelect((AccountMediaModel) accountAssetAdapter
           .getItem(position));
     }
 
   }
+
 
 }

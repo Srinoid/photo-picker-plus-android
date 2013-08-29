@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
 import com.chute.android.photopickerplus.config.PhotoPicker;
+import com.chute.android.photopickerplus.models.ImageDataModel;
+import com.chute.android.photopickerplus.models.OptionsModel;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter;
 import com.chute.android.photopickerplus.ui.adapter.AssetAccountAdapter.AdapterItemClickListener;
 import com.chute.android.photopickerplus.util.NotificationUtil;
@@ -175,6 +177,11 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
     if (isMultipicker == true) {
       accountAssetAdapter.toggleTick(position);
     } else {
+      // ArrayList<AccountMediaModel> accountMediaModelList = new
+      // ArrayList<AccountMediaModel>();
+      // accountMediaModelList.add((AccountMediaModel) accountAssetAdapter
+      // .getItem(position));
+      // ImageDataResponse.postImageData(accountMediaModelList);
       accountListener.onAccountFilesSelect((AccountMediaModel) accountAssetAdapter
           .getItem(position));
     }
@@ -194,6 +201,7 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
 
     @Override
     public void onClick(View v) {
+      // ImageDataResponse.postImageData(accountAssetAdapter.getPhotoCollection());
       accountListener.onDeliverAccountFiles(accountAssetAdapter.getPhotoCollection());
     }
   }
