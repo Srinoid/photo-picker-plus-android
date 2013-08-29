@@ -1,7 +1,7 @@
 Introduction
 ====
 
-PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPicker+ component. It contains Chute SDK library as well as PhotoPicker+ library. This tutorial enables browsing albums and photos on your social services and device gallery, selecting a photo and display of the selected photo and its data.
+PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPicker+ component. It contains Chute SDK library as well as PhotoPicker+ library. This tutorial enables browsing your locally-stored photos as weel as your albums and photos from your social galleries, photo selection and display.
 
 ![image10](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/10.png)![image11](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/11.png)![image12](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/12.png)![image13](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/13.png)![image14](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/14.png)
 
@@ -62,7 +62,7 @@ Usage
 
 ##PhotoPickerPlusTutorialApp.java 
 This class is the extended Application class. It is registered inside the "application" tag in the manifest and is used for initializing the utility classes used in the component.
-PhotoPickerPlusTutorialApp can extend PhotoPickerPlusApp like shown in this tutorial:
+PhotoPickerPlusTutorialApp can extend PhotoPickerPlusApp as shown in this tutorial:
 
 <pre><code>
 public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
@@ -70,9 +70,9 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 }
 </code></pre>
 
-This way the developer can use his own methods and code inside the Application class. 
+This way you can use your own methods and code inside the Application class. 
 
-If the developer decides to extend the Application class instead of PhotoPickerPlusApp he must copy the all the code below:
+If you decide to extend the Application class instead of PhotoPickerPlusApp you must copy the all the code below:
 
 <pre><code>
 public class PhotoPickerPlusTutorialApp extends Application {
@@ -122,7 +122,7 @@ public class PhotoPickerPlusTutorialApp extends Application {
 }
 </code></pre>
 
-PhotoPickerPlusTutorialApp can also be neglected by registering PhotoPickerPlusApp into the manifest instead of PhotoPickerPlusTutoiralApp if the developer doesn't have the need for extending the Application class.
+PhotoPickerPlusTutorialApp can also be neglected by registering PhotoPickerPlusApp into the manifest instead of PhotoPickerPlusTutoiralApp if you don't need to extend the Application class.
 
 ##PhotoPickerPlusTutorialActivity.java 
 PhotoPicker+ component shows a list of services and device photos albums. You can authenticate using Facebook, Flickr, Instagram, Picasa, Google Drive, Google+, Skydrive and Dropbox, browse albums and photos, browse device photos as well as take a photo with the camera. 
@@ -141,12 +141,12 @@ After selecting photos, a result is returned to the activity that started the co
     }
 </code></pre>
 
-PhotoActivityIntentWrapper encapsulates different information available for the selected image. Some of that additional info might be null depending of its availability. Different paths inside Media model can point to the same location if there are no additional sizes available.
+PhotoActivityIntentWrapper encapsulates different information available for the selected image. Some of the additional info might be null depending of its availability. Different AccountMediaModel image paths can point to the same location if there are no additional sizes available.
 
 ##Configuration
 In order to use the PhotoPicker+ component, you need to initialize it with configuration.  
 The Configuration builder allows you to choose which services (local and remote) your application is going to use. Local services included are: camera shots, all photos, last photo taken and take photo. Remote supported services include: Google+, Google Drive, SkyDrive, Facebook, Instagram, Flickr, Picasa and Dropbox.  
-All options in Configuration builder are required, except isMultiPicker(false), which is optional, with false as a default value and configUrl(url). If you want to use multipicking feature you should set isMultiPicker(true) option in the Configuration builder. configUrl(url) option must be initialized in the Configuration builder if you want to get the service list from a server. Note that accountList, localMediaList or both options in the Configuration builder must be initialized before initializing configUrl(url). This is important for appropriately setting up the services. When started for the first time the app displays the initialized local and remote services, while on the second run it shows the complete list of services retrieved from the server.  
+All options in Configuration builder are required, except <code>isMultiPicker(false)</code>, which is optional, with false as a default value and <code>configUrl(url)</code>. If you want to use multipicking feature you should set <code>isMultiPicker(true)</code> option in the Configuration builder. <code>configUrl(url)</code> option must be initialized in the Configuration builder if you want to get the service list from a server. Note that accountList, localMediaList or both options in the Configuration builder must be initialized before initializing <code>configUrl(url)</code>. This is important for appropriately setting up the services. When started for the first time the app displays the initialized local and remote services, while on the second run it shows the complete list of services retrieved from the server.  
 
 <pre><code>
     PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(

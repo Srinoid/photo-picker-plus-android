@@ -1,7 +1,7 @@
 Introduction
 ====
 
-PhotoPicker+ is a component made for developers to easily integrate it inside their app and enable photo picking functionality. This component enables browsing photos from services such as Facebook, Picasa, Instagram or Flickr, also enables taking photos with the native camera application and choosing photos from the users device.
+PhotoPicker+ is a component made for developers to easily integrate it inside their application and enable photo picking functionality. This component enables browsing photos from services such as Facebook, Picasa, Instagram, Flickr, Google+, Google Drive, SkyDrive and Dropbox. It also enables taking photos with the native camera application and choosing photos from the device.
 
 
 Screenshots
@@ -37,7 +37,7 @@ Some of PhotoPicker+ supported languages might not be correctly translated. Any 
 Styles setup
 ====
 
-In order to achieve the desired look for your application, you need to override the existing styles or modify the defined resources. PhotoPickerStyleGuide.md will show you how to change views appearance or application theme and guide you throughout the way.
+In order to achieve the desired look for your application, you need to override the existing styles or modify the defined resources. [PhotoPickerStyleGuide.md](https://github.com/chute/photo-picker-plus/blob/v2-photopickerplus/Android/PhotoPickerPlusTutorial/PhotoPickerStyleGuide.md) will show you how to change views appearance or application theme and guide you throughout the way.
 
 
 Modifying the component
