@@ -118,13 +118,13 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     this.filterType = filterType;
     this.selectedItemsPositions = selectedItemsPositions;
     this.account = account;
-    accountType = PhotoPickerPreferenceUtil.get().getAccountType();
 
     if ((filterType == PhotoFilterType.ALL_PHOTOS)
         || (filterType == PhotoFilterType.CAMERA_ROLL)) {
       getActivity().getSupportLoaderManager().initLoader(1, null,
           new AssetsLoaderCallback());
     } else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
+      accountType = PhotoPickerPreferenceUtil.get().getAccountType();
       GCAccounts.accountRoot(getActivity().getApplicationContext(),
           accountType.name().toLowerCase(),
           account.getShortcut(),
@@ -137,7 +137,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
 
     @Override
     public void onHttpError(ResponseStatus responseStatus) {
-      if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED) {
+      if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED
+          && getActivity() != null) {
         NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity()
             .getApplicationContext());
         accountListener.onSessionExpired(accountType);

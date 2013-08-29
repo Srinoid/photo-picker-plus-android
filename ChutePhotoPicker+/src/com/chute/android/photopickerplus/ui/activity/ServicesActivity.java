@@ -221,8 +221,6 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
         finish();
       } else if (requestCode == Constants.CAMERA_PIC_REQUEST) {
-        // Bitmap image = (Bitmap) data.getExtras().get("data");
-
         String path = "";
         File tempFile = AppUtil.getTempFile(getApplicationContext());
         if (AppUtil.hasImageCaptureBug() == false && tempFile.length() > 0) {
@@ -346,7 +344,8 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     fragmentRoot = (FragmentRoot) getSupportFragmentManager().findFragmentByTag(
         Constants.TAG_FRAGMENT_FOLDER);
     if (fragmentSingle != null
-        && photoFilterType == PhotoFilterType.SOCIAL_PHOTOS.ordinal()) {
+        && photoFilterType == PhotoFilterType.SOCIAL_PHOTOS.ordinal()
+        && fragmentSingle.isInLayout()) {
       fragmentSingle.setRetainInstance(true);
       fragmentSingle.updateFragment(account, folderId, selectedItemPositions);
     }
