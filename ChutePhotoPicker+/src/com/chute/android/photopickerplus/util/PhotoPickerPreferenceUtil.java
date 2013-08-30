@@ -41,6 +41,7 @@ public class PhotoPickerPreferenceUtil {
   private static final String KEY_ACCOUNT_SERVICE_LIST = "accountServiceList";
   private static final String KEY_LOCAL_SERVICE_LIST = "localServiceList";
   private static final String KEY_CLIENT_ID = "clientId";
+  private static final String KEY_CLIENT_SECRET = "clientSecret";
   private final Context context;
 
   private PhotoPickerPreferenceUtil(Context context) {
@@ -92,6 +93,14 @@ public class PhotoPickerPreferenceUtil {
 
   public String getClientId() {
     return getPreferences().getString(KEY_CLIENT_ID, null);
+  }
+
+  public void setClientSecret(String clientSecret) {
+    setPreference(KEY_CLIENT_SECRET, clientSecret);
+  }
+
+  public String getClientSecret() {
+    return getPreferences().getString(KEY_CLIENT_SECRET, null);
   }
 
   public void setAccountType(AccountType accountType) {

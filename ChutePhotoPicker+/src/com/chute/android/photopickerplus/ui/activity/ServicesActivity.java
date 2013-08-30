@@ -38,8 +38,8 @@ import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
-import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
+import com.chute.sdk.v2.model.AssetModel;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
@@ -116,9 +116,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       NotificationUtil.makeToast(getApplicationContext(),
           getResources().getString(R.string.no_camera_photos));
     } else {
-      final AccountMediaModel model = new AccountMediaModel();
+      final AssetModel model = new AssetModel();
       model.setThumbnail(uri.toString());
-      model.setImageUrl(uri.toString());
+      model.setUrl(uri.toString());
 
       IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, model);
     }
@@ -240,9 +240,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
               .toString();
         }
         Log.d(TAG, path);
-        final AccountMediaModel model = new AccountMediaModel();
+        final AssetModel model = new AssetModel();
         model.setThumbnail(path);
-        model.setImageUrl(path);
+        model.setUrl(path);
 
         IntentUtil.deliverDataToInitialActivity(this, model);
       }
@@ -288,8 +288,8 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void onDeliverAccountFiles(ArrayList<AccountMediaModel> accountMediaModelList) {
-    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModelList);
+  public void onDeliverAccountFiles(ArrayList<AssetModel> assetList) {
+    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, assetList);
 
   }
 
@@ -301,13 +301,13 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   @Override
-  public void onAccountFilesSelect(AccountMediaModel accountMediaModel) {
-    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
+  public void onAccountFilesSelect(AssetModel assetModel) {
+    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, assetModel);
   }
 
   @Override
-  public void onCursorAssetsSelect(AccountMediaModel accountMediaModel) {
-    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, accountMediaModel);
+  public void onCursorAssetsSelect(AssetModel assetModel) {
+    IntentUtil.deliverDataToInitialActivity(ServicesActivity.this, assetModel);
   }
 
   @Override

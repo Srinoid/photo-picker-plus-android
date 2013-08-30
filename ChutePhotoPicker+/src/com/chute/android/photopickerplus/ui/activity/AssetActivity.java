@@ -34,8 +34,8 @@ import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
-import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
+import com.chute.sdk.v2.model.AssetModel;
 import com.chute.sdk.v2.model.enums.AccountType;
 import com.chute.sdk.v2.model.response.ListResponseModel;
 import com.chute.sdk.v2.utils.PreferenceUtil;
@@ -92,16 +92,16 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   }
 
   @Override
-  public void onAccountFilesSelect(AccountMediaModel accountMediaModel) {
-    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, accountMediaModel);
+  public void onAccountFilesSelect(AssetModel assetModel) {
+    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, assetModel);
     setResult(RESULT_OK);
     finish();
 
   }
 
   @Override
-  public void onCursorAssetsSelect(AccountMediaModel accountMediaModel) {
-    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, accountMediaModel);
+  public void onCursorAssetsSelect(AssetModel assetModel) {
+    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, assetModel);
     setResult(RESULT_OK);
     finish();
 
@@ -117,8 +117,8 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   }
 
   @Override
-  public void onDeliverAccountFiles(ArrayList<AccountMediaModel> accountMediaModelList) {
-    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, accountMediaModelList);
+  public void onDeliverAccountFiles(ArrayList<AssetModel> assetModelList) {
+    IntentUtil.deliverDataToInitialActivity(AssetActivity.this, assetModelList);
     setResult(RESULT_OK);
     finish();
 

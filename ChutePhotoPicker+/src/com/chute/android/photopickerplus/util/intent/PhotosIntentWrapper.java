@@ -11,6 +11,7 @@ import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AccountModel;
+import com.chute.sdk.v2.model.AssetModel;
 
 public class PhotosIntentWrapper extends IntentWrapper {
 
@@ -24,7 +25,6 @@ public class PhotosIntentWrapper extends IntentWrapper {
   private static final String KEY_ALBUM_ID = "albumId";
   private static final String KEY_PHOTO_COLLECTION = "photoCollection";
   private static final String KEY_PHOTO_MODEL = "photoModel";
-  private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
 
   // cursor photos
   private static final String EXTRA_KEY_PATH_LIST = "key_path_list";
@@ -62,20 +62,12 @@ public class PhotosIntentWrapper extends IntentWrapper {
     getIntent().putExtra(KEY_ALBUM_ID, albumId);
   }
 
-  public ArrayList<AccountMediaModel> getMediaCollection() {
+  public ArrayList<AssetModel> getMediaCollection() {
     return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
   }
 
-  public void setMediaCollection(ArrayList<AccountMediaModel> mediaCollection) {
+  public void setMediaCollection(ArrayList<AssetModel> mediaCollection) {
     getIntent().putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
-  }
-
-  public boolean getIsMultiPicker() {
-    return getIntent().getExtras().getBoolean(FLAG_MULTI_PICKER);
-  }
-
-  public void setMultiPicker(boolean flag) {
-    getIntent().putExtra(FLAG_MULTI_PICKER, flag);
   }
 
   public void setAssetPathList(ArrayList<String> pathList) {
@@ -102,13 +94,13 @@ public class PhotosIntentWrapper extends IntentWrapper {
     getIntent().putExtra(EXTRA_KEY_CURSOR_PHOTOS, type);
   }
 
-  public AccountMediaModel getMediaModel() {
-    return getIntent().getExtras().getParcelable(KEY_PHOTO_MODEL);
-  }
-
-  public void setMediaModel(AccountMediaModel model) {
-    getIntent().putExtra(KEY_PHOTO_MODEL, model);
-  }
+//  public AccountMediaModel getMediaModel() {
+//    return getIntent().getExtras().getParcelable(KEY_PHOTO_MODEL);
+//  }
+//
+//  public void setMediaModel(AccountMediaModel model) {
+//    getIntent().putExtra(KEY_PHOTO_MODEL, model);
+//  }
 
   public String getChuteId() {
     return getIntent().getExtras().getString(EXTRA_KEY_CHUTE_ID);

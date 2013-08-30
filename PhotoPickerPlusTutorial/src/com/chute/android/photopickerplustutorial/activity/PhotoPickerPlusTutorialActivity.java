@@ -27,6 +27,7 @@ import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
 import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AssetModel;
 
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
@@ -40,7 +41,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
    * isMultipicker=true, otherwise set isMultiPicker=false.
    */
   private GridAdapter adapter;
-  private ArrayList<AccountMediaModel> accountMediaList;
+  private ArrayList<AssetModel> accountMediaList;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
       adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this, accountMediaList);
     } else {
       adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this,
-          new ArrayList<AccountMediaModel>());
+          new ArrayList<AssetModel>());
     }
     grid.setAdapter(adapter);
 

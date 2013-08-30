@@ -15,19 +15,19 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
-import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AssetModel;
 
 public class IntentUtil {
 
   public static void deliverDataToInitialActivity(final FragmentActivity context,
-      final AccountMediaModel model) {
-    ArrayList<AccountMediaModel> mediaCollection = new ArrayList<AccountMediaModel>();
+      final AssetModel model) {
+    ArrayList<AssetModel> mediaCollection = new ArrayList<AssetModel>();
     mediaCollection.add(model);
     deliverDataToInitialActivity(context, mediaCollection);
   }
 
   public static void deliverDataToInitialActivity(final FragmentActivity context,
-      final ArrayList<AccountMediaModel> collection) {
+      final ArrayList<AssetModel> collection) {
     final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(new Intent(
         context,
         ServicesActivity.class));

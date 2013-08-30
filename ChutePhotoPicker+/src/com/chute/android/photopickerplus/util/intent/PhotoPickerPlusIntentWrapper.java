@@ -21,7 +21,6 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
   public static final int REQUEST_CODE = 1;
   public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
-  public static final String FLAG_MULTI_PP = "flagMultiPp";
   public static final String FLAG_SERVICES_HIDE = "flagHideServices";
   public static final String KEY_ALBUM_ID = "albumID";
   public static final String KEY_SERVICE_LIST = "serviceList";
@@ -36,14 +35,6 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
   public PhotoPickerPlusIntentWrapper(Context packageContext) {
     super(new Intent(packageContext, ServicesActivity.class));
-  }
-
-  public boolean getIsMultiPicker() {
-    return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
-  }
-
-  public void setMultiPicker(boolean flag) {
-    getIntent().putExtra(FLAG_MULTI_PP, flag);
   }
 
   public String getAlbumId() {

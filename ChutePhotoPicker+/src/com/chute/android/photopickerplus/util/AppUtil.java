@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chute.android.photopickerplus.R;
-import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AssetModel;
 import com.chute.sdk.v2.utils.Utils;
 
 public class AppUtil {
@@ -95,23 +95,23 @@ public class AppUtil {
         + (target.length() > 1 ? target.substring(1) : "");
   }
 
-  public static ArrayList<AccountMediaModel> getPhotoCollection(ArrayList<String> paths) {
-    final ArrayList<AccountMediaModel> collection = new ArrayList<AccountMediaModel>();
+  public static ArrayList<AssetModel> getPhotoCollection(ArrayList<String> paths) {
+    final ArrayList<AssetModel> collection = new ArrayList<AssetModel>();
     for (String path : paths) {
-      final AccountMediaModel model = new AccountMediaModel();
+      final AssetModel model = new AssetModel();
       path = Uri.fromFile(new File(path)).toString();
       model.setThumbnail(path);
-      model.setImageUrl(path);
+      model.setUrl(path);
       collection.add(model);
     }
     return collection;
   }
 
-  public static AccountMediaModel getMediaModel(String path) {
-    final AccountMediaModel model = new AccountMediaModel();
+  public static AssetModel getMediaModel(String path) {
+    final AssetModel model = new AssetModel();
     path = Uri.fromFile(new File(path)).toString();
     model.setThumbnail(path);
-    model.setImageUrl(path);
+    model.setUrl(path);
     return model;
   }
 

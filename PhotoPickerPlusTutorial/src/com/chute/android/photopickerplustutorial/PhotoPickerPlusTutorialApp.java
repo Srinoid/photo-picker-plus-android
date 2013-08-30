@@ -36,6 +36,7 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
     ALog.setDebugLevel(DebugLevel.ALL);
     Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
     PhotoPickerPreferenceUtil.get().setClientId(APP_ID);
+    PhotoPickerPreferenceUtil.get().setClientSecret(APP_SECRET);
 
     PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(
         getApplicationContext())

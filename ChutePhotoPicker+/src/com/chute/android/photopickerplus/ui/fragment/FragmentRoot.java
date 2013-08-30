@@ -30,7 +30,10 @@ import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
+import com.chute.sdk.v2.api.Chute;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
+import com.chute.sdk.v2.api.authentication.AuthConstants;
+import com.chute.sdk.v2.api.authentication.TokenAuthenticationProvider;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -115,6 +118,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
 
   public void updateFragment(AccountModel account, PhotoFilterType filterType,
       ArrayList<Integer> selectedItemsPositions) {
+
     isMultipicker = PhotoPicker.getInstance().isMultiPicker();
     this.filterType = filterType;
     this.selectedItemsPositions = selectedItemsPositions;
@@ -138,14 +142,15 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
 
     @Override
     public void onHttpError(ResponseStatus responseStatus) {
-      if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED
-          && getActivity() != null) {
-        NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity()
-            .getApplicationContext());
-        accountListener.onSessionExpired(accountType);
-      } else {
-        NotificationUtil
-            .makeConnectionProblemToast(getActivity().getApplicationContext());
+      if (getActivity() != null) {
+        if (responseStatus.getStatusCode() == Constants.HTTP_ERROR_CODE_UNAUTHORIZED) {
+          NotificationUtil.makeExpiredSessionLogginInAgainToast(getActivity()
+              .getApplicationContext());
+          accountListener.onSessionExpired(accountType);
+        } else {
+          NotificationUtil
+              .makeConnectionProblemToast(getActivity().getApplicationContext());
+        }
       }
       toggleEmptyViewErrorMessage();
 
@@ -275,9 +280,8 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     @Override
     public void onClick(View v) {
       if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-        // ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
-        // accountAssetAdapter.getPhotoCollection(), accountListener);
-        accountListener.onDeliverAccountFiles(accountAssetAdapter.getPhotoCollection());
+        ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
+            accountAssetAdapter.getPhotoCollection(), accountListener);
       } else if ((filterType == PhotoFilterType.ALL_PHOTOS)
           || (filterType == PhotoFilterType.CAMERA_ROLL)) {
         cursorListener.onDeliverCursorAssets(cursorAssetAdapter
@@ -299,14 +303,12 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     if (isMultipicker == true) {
       accountAssetAdapter.toggleTick(position);
     } else {
-      // ArrayList<AccountMediaModel> accountMediaModelList = new
-      // ArrayList<AccountMediaModel>();
-      // accountMediaModelList.add((AccountMediaModel) accountAssetAdapter
-      // .getItem(position));
-      // ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
-      // accountMediaModelList, accountListener);
-      accountListener.onAccountFilesSelect((AccountMediaModel) accountAssetAdapter
+      ArrayList<AccountMediaModel> accountMediaModelList = new
+          ArrayList<AccountMediaModel>();
+      accountMediaModelList.add((AccountMediaModel) accountAssetAdapter
           .getItem(position));
+      ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
+          accountMediaModelList, accountListener);
     }
 
   }

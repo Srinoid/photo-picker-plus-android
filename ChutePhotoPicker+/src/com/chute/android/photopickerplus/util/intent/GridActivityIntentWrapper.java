@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AssetModel;
 
 public class GridActivityIntentWrapper extends IntentWrapper {
 
@@ -28,7 +30,6 @@ public class GridActivityIntentWrapper extends IntentWrapper {
   private static final String KEY_ACCOUNT_ID = "accountId";
   private static final String KEY_ALBUM_ID = "albumId";
   private static final String KEY_PHOTO_COLLECTION = "photoCollection";
-  private static final String FLAG_MULTI_PICKER = "flagMultiPicker";
   private static final String KEY_CHUTE_ID = "key_chuteId";
 
   public GridActivityIntentWrapper(Context context) {
@@ -55,22 +56,14 @@ public class GridActivityIntentWrapper extends IntentWrapper {
     getIntent().putExtra(KEY_ALBUM_ID, albumId);
   }
 
-  public ArrayList<AccountMediaModel> getMediaCollection() {
-    return (ArrayList<AccountMediaModel>) getIntent().getExtras().getSerializable(
+  public ArrayList<AssetModel> getMediaCollection() {
+    return (ArrayList<AssetModel>) getIntent().getExtras().getParcelable(
         KEY_PHOTO_COLLECTION);
   }
 
-  public void setMediaCollection(ArrayList<AccountMediaModel> mediaCollection) {
+  public void setMediaCollection(ArrayList<AssetModel> mediaCollection) {
     getIntent()
-        .putExtra(KEY_PHOTO_COLLECTION, mediaCollection);
-  }
-
-  public boolean getIsMultiPicker() {
-    return getIntent().getExtras().getBoolean(FLAG_MULTI_PICKER);
-  }
-
-  public void setMultiPicker(boolean flag) {
-    getIntent().putExtra(FLAG_MULTI_PICKER, flag);
+        .putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
   }
 
   public String getChuteId() {

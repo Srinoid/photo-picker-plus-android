@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.sdk.v2.model.AccountMediaModel;
+import com.chute.sdk.v2.model.AssetModel;
 
 import darko.imagedownloader.ImageLoader;
 
@@ -32,14 +33,14 @@ public class GridAdapter extends BaseAdapter {
   public static final String TAG = GridAdapter.class.getSimpleName();
   private static LayoutInflater inflater;
   public ImageLoader loader;
-  private ArrayList<AccountMediaModel> collection;
+  private ArrayList<AssetModel> collection;
   private final DisplayMetrics displayMetrics;
   private final int orientation;
   private Activity context;
 
-  public GridAdapter(final Activity context, final ArrayList<AccountMediaModel> collection) {
+  public GridAdapter(final Activity context, final ArrayList<AssetModel> collection) {
     if (collection == null) {
-      this.collection = new ArrayList<AccountMediaModel>();
+      this.collection = new ArrayList<AssetModel>();
     } else {
       this.collection = collection;
     }
@@ -56,7 +57,7 @@ public class GridAdapter extends BaseAdapter {
   }
 
   @Override
-  public AccountMediaModel getItem(int position) {
+  public AssetModel getItem(int position) {
     return collection.get(position);
   }
 
@@ -87,7 +88,7 @@ public class GridAdapter extends BaseAdapter {
     return vi;
   }
 
-  public void changeData(ArrayList<AccountMediaModel> collection) {
+  public void changeData(ArrayList<AssetModel> collection) {
     this.collection = collection;
     notifyDataSetChanged();
   }
