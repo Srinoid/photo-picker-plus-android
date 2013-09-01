@@ -6,7 +6,6 @@ import com.chute.android.photopickerplus.models.ImageResponseModel;
 import com.chute.android.photopickerplus.models.MediaModel;
 import com.chute.android.photopickerplus.util.Constants;
 import com.chute.sdk.v2.api.parsers.ResponseParser;
-import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.response.ResponseModel;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.client.BaseRestClient.RequestMethod;
@@ -20,7 +19,7 @@ public class ImageDataRequest extends
   public ImageDataRequest(Context context, MediaModel imageData,
       HttpCallback<ResponseModel<ImageResponseModel>> callback) {
     super(context, RequestMethod.POST, new ResponseParser<ImageResponseModel>(
-        AccountMediaModel.class),
+        ImageResponseModel.class),
         callback);
     if (imageData == null) {
       throw new IllegalArgumentException("Need to provide image data");

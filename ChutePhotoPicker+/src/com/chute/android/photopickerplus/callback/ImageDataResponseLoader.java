@@ -80,13 +80,11 @@ public class ImageDataResponseLoader {
     @Override
     public void onSuccess(ResponseModel<ImageResponseModel> responseData) {
       if (responseData.getData() != null) {
-        List<AssetModel> assetList = responseData.getData().getAssetModel();
-        ALog.d("Asset List: " + assetList.toString());
+        List<AssetModel> assetList = responseData.getData().getAssetList();
         listener.onDeliverAccountFiles((ArrayList<AssetModel>) assetList);
       }
 
     }
-
   }
 
 }

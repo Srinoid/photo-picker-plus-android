@@ -14,10 +14,8 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
-import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AssetModel;
 
 public class GridActivityIntentWrapper extends IntentWrapper {
@@ -57,13 +55,13 @@ public class GridActivityIntentWrapper extends IntentWrapper {
   }
 
   public ArrayList<AssetModel> getMediaCollection() {
-    return (ArrayList<AssetModel>) getIntent().getExtras().getParcelable(
+    return (ArrayList<AssetModel>) getIntent().getExtras().getSerializable(
         KEY_PHOTO_COLLECTION);
   }
 
   public void setMediaCollection(ArrayList<AssetModel> mediaCollection) {
     getIntent()
-        .putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
+        .putExtra(KEY_PHOTO_COLLECTION, mediaCollection);
   }
 
   public String getChuteId() {
