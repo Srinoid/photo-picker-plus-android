@@ -12,7 +12,7 @@ Setup
 
 * Add Chute SDK library by selecting Properties -> Java Build Path -> Libraries -> Add JARs and choose the jar located in PhotoPicker+ component libs/ direcotry. Select Order and Export tab and put a check on the lib you just added.
 
-* Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/master/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for more info.
+* Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/v2-photopickerplus/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for more info.
 
    ![image15](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/15.png)![image16](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/16.png)
 

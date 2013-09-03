@@ -2,12 +2,8 @@
 <resources>
 
     <plurals name="numberOfLoadedPhotos">
-        <item quantity="one">Loaded 1 photo in this album</item>
-        <item quantity="other">Loaded %d photos in this album</item>
-    </plurals>
-    <plurals name="numberOfLoadedAlbums">
-        <item quantity="one">Loaded 1 album</item>
-        <item quantity="other">Loaded %d albums</item>
+        <item quantity="one">Loaded 1 item in this album</item>
+        <item quantity="other">Loaded %d items in this album</item>
     </plurals>
 
 </resources>

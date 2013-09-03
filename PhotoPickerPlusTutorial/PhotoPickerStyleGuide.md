@@ -8,47 +8,47 @@ A style is a set of one or more formatting attributes that you can apply as a un
 
 
 XML file for the style (saved in res/values/):  
-    ```
-        <!-- TextView Asset Fragment Label -->
-        <style name="textViewFragmentLabel" parent="android:Widget.TextView">
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/gradient_blue</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">@dimen/fragment_title</item>
-        <item name="android:textColor">@color/white</item>
-        </style>  
-    ```
+ ```
+          <!-- TextView Asset Fragment Label -->  
+          <style name="textViewFragmentLabel" parent="android:Widget.TextView">  
+          <item name="android:gravity">center</item>  
+          <item name="android:background">@drawable/gradient_blue</item>  
+          <item name="android:textAllCaps">true</item>  
+          <item name="android:textSize">@dimen/fragment_title</item>  
+          <item name="android:textColor">@color/white</item>  
+          </style>  
+```
 
 XML file that applies the style to a TextView (saved in res/layout/):  
-    ``
-        <TextView
-        android:id="@+id/textViewSelectPhotos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        style="@style/textViewFragmentLabel" />
-    ``
+```
+          <TextView  
+            android:id="@+id/textViewSelectPhotos"  
+            android:layout_width="match_parent"  
+            android:layout_height="wrap_content"  
+            android:layout_alignParentTop="true"  
+            style="@style/textViewFragmentLabel" />
+```
  
 Inheritance
 ====
 The parent attribute in the ``<style>`` element lets you specify a style from which your style should inherit properties. You can use this to inherit properties from an existing style and then define only the properties that you want to change or add. You can inherit from styles that you've created yourself or from styles that are built into the platform.  
 For example, imageViewAlbumCover style inherits the properties from imageViewDefault style, defines its own width and height properties and overrides the background drawable property.  
-  
-   ```
-             <!-- ImageView Default -->  
-             <style name="imageViewDefault">  
-                 <item name="android:background">@drawable/photo_placeholder</item>  
-                 <item name="android:scaleType">centerCrop</item>  
-             </style>  
-    ```
-    ```  
-             <!-- ImageView Album Cover -->  
-             <style name="imageViewAlbumCover" parent="imageViewDefault">  
-                  <item name="android:background">@drawable/icon_camera</item>  
-                  <item name="android:layout_width">48dp</item>  
-                  <item name="android:layout_height">48dp</item>  
-             </style>
-    ```
+ 
+```
+         <!-- ImageView Default -->    
+         <style name="imageViewDefault">    
+         <item name="android:background">@drawable/photo_placeholder</item>    
+         <item name="android:scaleType">centerCrop</item>    
+         </style>    
+    
+     
+          <!-- ImageView Album Cover -->  
+          <style name="imageViewAlbumCover" parent="imageViewDefault">  
+          <item name="android:background">@drawable/icon_camera</item>  
+          <item name="android:layout_width">48dp</item>  
+          <item name="android:layout_height">48dp</item>  
+          </style>
+```
 
 Themes
 ====
@@ -62,17 +62,19 @@ A theme is a style applied to an entire Activity or Application, rather than an 
 
 To define custom themes, place the theme XML files in the /res/values folder. Note that you can also define version-specific themes by adding a values-version folder. A theme defined in values-v11 will be used for API level 11  (3.0/Honeycomb) and above, and a theme defined in values-v14 will be used for API level 14 (4.0/Ice Cream Sandwich) and above.  For example, if you want your theme to be based on the Holo theme in Android 4.0 and above, you could create two themes files:
 
-   ```
+
 /res/values/styles.xml  
-<!-- A simple theme based on the default theme for Android API level 10 and below -->  
-<style name="PhotoPickerTheme" parent="android:Theme.Ligh.NoTitleBar">  
-</style>  
    ```
-   ```  
+        <!-- A simple theme based on the default theme for Android API level 10 and below -->    
+        <style name="PhotoPickerTheme" parent="android:Theme.Ligh.NoTitleBar">    
+        </style>    
+   ```
+ 
 /res/values-v11/styles.xml  
-<!-- For API level 11 and above, use the Holo theme -->  
-<style name="PhotoPickerTheme" parent="android:Holo">  
-</style>
+   ```
+         <!-- For API level 11 and above, use the Holo theme -->  
+         <style name="PhotoPickerTheme" parent="android:Holo">  
+         </style>
    ```
 
 
@@ -83,6 +85,5 @@ To set this theme for all the activites of your application, open the AndroidMan
 ``<application android:theme="@style/PhotoPickerTheme" >``  
 
 If you want the theme applied to just one Activity in your application, then add the theme attribute to the ``<activity>`` tag, instead.
-
 
 

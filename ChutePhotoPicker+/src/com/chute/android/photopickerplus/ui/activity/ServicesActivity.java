@@ -158,6 +158,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   public void accountClicked(AccountModel account) {
     photoFilterType = PhotoFilterType.SOCIAL_PHOTOS.ordinal();
     selectedItemPositions = null;
+    this.account = account;
     if (!dualPanes) {
       final PhotosIntentWrapper wrapper = new PhotosIntentWrapper(ServicesActivity.this);
       wrapper.setFilterType(PhotoFilterType.SOCIAL_PHOTOS);
@@ -369,7 +370,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     account = (AccountModel) (savedInstanceState != null ? savedInstanceState
         .getParcelable(Constants.KEY_ACCOUNT)
         : null);
-
+    
     photoFilterType = savedInstanceState != null ? savedInstanceState
         .getInt(Constants.KEY_PHOTO_FILTER_TYPE)
         : 0;
