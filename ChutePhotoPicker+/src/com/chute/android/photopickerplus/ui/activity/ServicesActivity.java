@@ -345,15 +345,13 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     fragmentRoot = (FragmentRoot) getSupportFragmentManager().findFragmentByTag(
         Constants.TAG_FRAGMENT_FOLDER);
     if (fragmentSingle != null
-        && photoFilterType == PhotoFilterType.SOCIAL_PHOTOS.ordinal()
-        && fragmentSingle.isInLayout()) {
+        && photoFilterType == PhotoFilterType.SOCIAL_PHOTOS.ordinal()) {
       fragmentSingle.setRetainInstance(true);
       fragmentSingle.updateFragment(account, folderId, selectedItemPositions);
     }
-    if (fragmentRoot != null
-        && photoFilterType != PhotoFilterType.SOCIAL_PHOTOS.ordinal()) {
+    if (fragmentRoot != null) {
       fragmentRoot.setRetainInstance(true);
-      fragmentRoot.updateFragment(null, PhotoFilterType.values()[photoFilterType],
+      fragmentRoot.updateFragment(account, PhotoFilterType.values()[photoFilterType],
           selectedItemPositions);
     }
   }
@@ -370,7 +368,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     account = (AccountModel) (savedInstanceState != null ? savedInstanceState
         .getParcelable(Constants.KEY_ACCOUNT)
         : null);
-    
+
     photoFilterType = savedInstanceState != null ? savedInstanceState
         .getInt(Constants.KEY_PHOTO_FILTER_TYPE)
         : 0;
@@ -397,6 +395,23 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     PhotoPickerPreferenceUtil.get().setAccountType(accountType);
     AuthenticationFactory.getInstance().startAuthenticationActivity(
         ServicesActivity.this, accountType);
+  }
+
+  @Override
+  public void onBackPressed() {
+    fragmentRoot = (FragmentRoot) getSupportFragmentManager().findFragmentByTag(
+        Constants.TAG_FRAGMENT_FOLDER);
+    fragmentSingle = (FragmentSingle) getSupportFragmentManager().findFragmentByTag(
+        Constants.TAG_FRAGMENT_FILES);
+    if (fragmentRoot != null && fragmentRoot.isVisible()) {
+      fragmentRoot.onDestroy();
+      if (fragmentSingle != null) {
+        fragmentSingle.onDestroy();
+      }
+    } else {
+      super.onBackPressed();
+    }
+
   }
 
 }

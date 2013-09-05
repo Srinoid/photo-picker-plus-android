@@ -30,10 +30,7 @@ import com.chute.android.photopickerplus.util.Constants;
 import com.chute.android.photopickerplus.util.NotificationUtil;
 import com.chute.android.photopickerplus.util.PhotoFilterType;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
-import com.chute.sdk.v2.api.Chute;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
-import com.chute.sdk.v2.api.authentication.AuthConstants;
-import com.chute.sdk.v2.api.authentication.TokenAuthenticationProvider;
 import com.chute.sdk.v2.model.AccountAlbumModel;
 import com.chute.sdk.v2.model.AccountBaseModel;
 import com.chute.sdk.v2.model.AccountMediaModel;
@@ -97,7 +94,7 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     textViewSelectPhotos = (TextView) view.findViewById(R.id.textViewSelectPhotos);
     gridView = (GridView) view.findViewById(R.id.gridViewAssets);
     emptyView = view.findViewById(R.id.empty_view_layout);
-    // gridView.setEmptyView(emptyView);
+    gridView.setEmptyView(emptyView);
 
     Button ok = (Button) view.findViewById(R.id.buttonOk);
     Button cancel = (Button) view.findViewById(R.id.buttonCancel);
@@ -128,13 +125,14 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
         || (filterType == PhotoFilterType.CAMERA_ROLL)) {
       getActivity().getSupportLoaderManager().initLoader(1, null,
           new AssetsLoaderCallback());
-    } else if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
+    } else if (filterType == PhotoFilterType.SOCIAL_PHOTOS && getActivity() != null) {
       accountType = PhotoPickerPreferenceUtil.get().getAccountType();
       GCAccounts.accountRoot(getActivity().getApplicationContext(),
           accountType.name().toLowerCase(),
           account.getShortcut(),
           new RootCallback()).executeAsync();
     }
+
   }
 
   private final class RootCallback implements
@@ -312,5 +310,6 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     }
 
   }
+
 
 }
