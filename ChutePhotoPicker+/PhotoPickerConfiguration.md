@@ -3,7 +3,7 @@ In order to use the PhotoPicker+ component, you need to initialize it with confi
 Configuration builder
 ====
  
-The Configuration builder allows you to choose which services (local and remote) your application is going to use. Local services included are: camera shots, all photos, last photo taken and take photo. Remote supported services include: Google+, Google Drive, SkyDrive, Facebook, Instagram, Flickr, Picasa and Dropbox.  
+The Configuration builder allows you to choose which services (local and remote) your application is going to use. Local services included are: Camera shots, All photos, Last photo taken and Take photo. Remote supported services include: Google+, Google Drive, SkyDrive, Facebook, Instagram, Flickr, Picasa and Dropbox.  
 All options in Configuration builder are required for appropriately setting up the services, except <code>isMultiPicker(false)</code>, which is optional, with false as a default value and <code>configUrl(url)</code>. If you want to use multipicking feature you should set <code>isMultiPicker(true)</code> option in the Configuration builder.  
 <code>configUrl(url)</code> option must be initialized in the Configuration builder if you want to get the service list from a server. 
 When started for the first time the app displays the initialized local and remote services, while on the second run it shows the complete list of services retrieved from the server if <code>configUrl(url)</code> option is initialized.  
