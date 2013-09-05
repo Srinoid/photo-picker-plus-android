@@ -39,13 +39,13 @@ Some of PhotoPicker+ supported languages might not be correctly translated. Any 
 
 Configuration
 ====
-Follow (PhotoPickerConfiguration.md)[] on how to initialize PhotoPicker+ component with configuration.
+Follow [PhotoPickerConfiguration.md](https://github.com/chute/photo-picker-plus/blob/master/Android/ChutePhotoPicker%2B/PhotoPickerConfiguration.md) on how to initialize PhotoPicker+ component with configuration.
 
 
 Styles setup
 ====
 
-In order to achieve the desired look for your application, you need to override the existing styles or modify the defined resources. [PhotoPickerStyleGuide.md](https://github.com/chute/photo-picker-plus/blob/v2-photopickerplus/Android/PhotoPickerPlusTutorial/PhotoPickerStyleGuide.md) will show you how to change views appearance or application theme and guide you throughout the way.
+In order to achieve the desired look for your application, you need to override the existing styles or modify the defined resources. [PhotoPickerStyleGuide.md](https://github.com/chute/photo-picker-plus/blob/master/Android/ChutePhotoPicker%2B/PhotoPickerStyleGuide.md) will show you how to change views appearance or application theme and guide you throughout the way.
 
 
 Modifying the component
