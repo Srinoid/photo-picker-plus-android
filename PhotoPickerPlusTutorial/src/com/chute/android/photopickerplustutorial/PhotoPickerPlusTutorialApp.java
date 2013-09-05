@@ -35,14 +35,12 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
     ALog.setDebugTag("PhotoPicker");
     ALog.setDebugLevel(DebugLevel.ALL);
     Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
-    PhotoPickerPreferenceUtil.get().setClientId(APP_ID);
-    PhotoPickerPreferenceUtil.get().setClientSecret(APP_SECRET);
 
     PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(
         getApplicationContext())
         .isMultiPicker(true)
         .accountList(AccountType.FACEBOOK, AccountType.INSTAGRAM)
-        .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.TAKE_PHOTO)
+        .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.CAMERA_PHOTOS)
         .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
         .build();
     PhotoPicker.getInstance().init(config);

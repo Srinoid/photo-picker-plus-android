@@ -52,12 +52,7 @@ Adding the SDK library to your project
   is adding the Chute SDK as a library.
 * Chute SDK project can be found and downloaded at [https://github.com/chute/photo-picker-plus/tree/master/Android/SDK](https://github.com/chute/photo-picker-plus/tree/master/Android/SDK). Or visit [http://developer.getchute.com/](http://developer.getchute.com/) for more info.
 
-- You can add Chute SDK library either by:
-* Coping the jar file located in target/ directory of the Chute SDK library project into libs/ directory or your project
-  or
-* adding Chute SDK library project in your project's build path by selecting Properties -> Java Build Path -> Add
-
-       ![image9](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/9.png)
+* You can add Chute SDK library by coping the jar file located in target/ directory of the Chute SDK library project into libs/ directory or your project.
   
     
 Android manifest setup

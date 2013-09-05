@@ -12,9 +12,9 @@ import com.chute.android.photopickerplus.models.MediaDataModel;
 import com.chute.android.photopickerplus.models.MediaModel;
 import com.chute.android.photopickerplus.models.OptionsModel;
 import com.chute.android.photopickerplus.ui.fragment.AccountFilesListener;
-import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.sdk.v2.api.Chute;
 import com.chute.sdk.v2.api.authentication.AuthConstants;
+import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
 import com.chute.sdk.v2.api.authentication.TokenAuthenticationProvider;
 import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AssetModel;
@@ -29,8 +29,9 @@ public class ImageDataResponseLoader {
       ArrayList<AccountMediaModel> selectedImages, AccountFilesListener accountListener) {
 
     String token = TokenAuthenticationProvider.getInstance().getToken();
-    String clientId = PhotoPickerPreferenceUtil.get().getClientId();
-    String clientSecret = PhotoPickerPreferenceUtil.get().getClientSecret();
+    AuthConstants authConstants = AuthenticationFactory.getInstance().getAuthConstants();
+    String clientId = authConstants.clientId;
+    String clientSecret = authConstants.clientSecret;
     Chute.init(context, new AuthConstants(clientId, clientSecret), token);
 
     ArrayList<MediaDataModel> mediaModelList = new ArrayList<MediaDataModel>();

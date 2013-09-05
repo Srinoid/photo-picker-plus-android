@@ -10,12 +10,7 @@ Setup
 
 * Add the PhotoPicker+ component to your project by either copying all the resources and source code or by adding it as an Android Library project.
 
-* Add Chute SDK library by selecting Properties -> Java Build Path -> Libraries -> Add JARs and choose the jar located in PhotoPicker+ component libs/ direcotry. Select Order and Export tab and put a check on the lib you just added.
-
 * Go through [ProjectSetup.md](https://github.com/chute/photo-picker-plus/blob/v2-photopickerplus/Android/PhotoPickerPlusTutorial/ProjectSetup.md) for more info.
-
-   ![image15](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/15.png)![image16](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/16.png)
-
 
 * Register the activities, services and the application class into AndroidManifest.xml file:
 
@@ -40,12 +35,7 @@ Setup
         </activity>
         <activity android:name="com.chute.android.photopickerplus.ui.activity.ServicesActivity" >
         </activity>
-            <activity android:name="com.chute.android.photopickerplus.ui.activity.ChooseServiceActivity" />
-        <activity android:name="com.chute.android.photopickerplus.ui.activity.AlbumsActivity" >
-        </activity>
         <activity android:name="com.chute.android.photopickerplus.ui.activity.AssetActivity" >
-        </activity>
-        <activity android:name="com.chute.android.photopickerplus.ui.activity.ContentActivity" >
         </activity>
         <activity
             android:name="com.chute.sdk.v2.api.authentication.AuthenticationActivity"
@@ -143,22 +133,7 @@ After selecting photos, a result is returned to the activity that started the co
 
 PhotoActivityIntentWrapper encapsulates different information available for the selected image. Some of the additional info might be null depending of its availability. Different AccountMediaModel image paths can point to the same location if there are no additional sizes available.
 
-##Configuration
-In order to use the PhotoPicker+ component, you need to initialize it with configuration.  
-The Configuration builder allows you to choose which services (local and remote) your application is going to use. Local services included are: camera shots, all photos, last photo taken and take photo. Remote supported services include: Google+, Google Drive, SkyDrive, Facebook, Instagram, Flickr, Picasa and Dropbox.  
-All options in Configuration builder are required, except <code>isMultiPicker(false)</code>, which is optional, with false as a default value and <code>configUrl(url)</code>. If you want to use multipicking feature you should set <code>isMultiPicker(true)</code> option in the Configuration builder. <code>configUrl(url)</code> option must be initialized in the Configuration builder if you want to get the service list from a server. Note that accountList, localMediaList or both options in the Configuration builder must be initialized before initializing <code>configUrl(url)</code>. This is important for appropriately setting up the services. When started for the first time the app displays the initialized local and remote services, while on the second run it shows the complete list of services retrieved from the server.  
 
-<pre><code>
-    PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(
-        getApplicationContext())
-        .isMultiPicker(true)
-        .accountList(AccountType.FACEBOOK, AccountType.INSTAGRAM)
-        .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.TAKE_PHOTO)
-        .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
-        .build();
-    PhotoPicker.getInstance().init(config);
-</code></pre>
-    
       
 
     

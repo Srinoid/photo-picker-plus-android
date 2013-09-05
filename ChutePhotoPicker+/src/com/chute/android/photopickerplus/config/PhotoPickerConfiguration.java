@@ -24,6 +24,10 @@ public final class PhotoPickerConfiguration {
     configUrl = builder.configUrl;
   }
 
+  public static PhotoPickerConfiguration createDefault(Context context) {
+    return new Builder(context).build();
+  }
+
   public static class Builder {
 
     private Context context;
@@ -37,6 +41,7 @@ public final class PhotoPickerConfiguration {
     }
 
     public PhotoPickerConfiguration build() {
+      initEmptyFieldsWithDefaultValues();
       return new PhotoPickerConfiguration(this);
     }
 
@@ -60,5 +65,11 @@ public final class PhotoPickerConfiguration {
       return this;
     }
 
+    private void initEmptyFieldsWithDefaultValues() {
+      if (localMediaList == null && accountList == null) {
+        localMediaList = DefaultConfigurationFactory.createLocalMediaList();
+        accountList = DefaultConfigurationFactory.createAccountTypeList();
+      }
+    }
   }
 }

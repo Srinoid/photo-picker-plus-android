@@ -14,10 +14,12 @@ Setup
 
 PhotoPicker+ uses [https://github.com/chute/Chute-SDK-V2-Android](https://github.com/chute/Chute-SDK-V2-Android) library. In order to add the library, create the directory libs/ at the root of PhotoPicker+ project and add the jar file that is located in the target/ directory in Chute-SDK-V2-Android project.
 
+
 Implementation
 ====
 
-Follow the PhotoPicker+ tutorial on how to setup and use the component.
+Follow the [PhotoPicker+ tutorial](https://github.com/chute/photo-picker-plus/tree/master/Android/PhotoPickerPlusTutorial) on how to setup and use the component.
+
 
 Localization
 ====
@@ -34,6 +36,12 @@ Contain Japanese text for all the strings except title.
 
 Some of PhotoPicker+ supported languages might not be correctly translated. Any feedback is welcomed.
 
+
+Configuration
+====
+Follow (PhotoPickerConfiguration.md)[] on how to initialize PhotoPicker+ component with configuration.
+
+
 Styles setup
 ====
 
@@ -44,6 +52,8 @@ Modifying the component
 ====
 
 Since the component is opensource you can easily modify the resources to your own needs. Just replace the drawables and modify the color values. Additionally you can even adjust the layouts.
+
+
 
 
 

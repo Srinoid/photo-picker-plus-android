@@ -24,8 +24,6 @@ public class PhotoPicker {
       "PhotoPicker must be initialized with configuration before using";
   private static final String ERROR_INIT_CONFIG_WITH_NULL =
       "PhotoPicker configuration can not be initialized with null";
-  private static final String WARNING_INIT_SERVICES =
-      "Local and remote services need to be initialized when starting the application for the first time, otherwise the list of services will be empty";
   private static final String ERROR_HTTP =
       "Error when trying to get services from server: ";
   private static final String WARNING_UNSUPPORTED_SERVICES = "Invalid service type. Supported valid services: Facebook, Google, Googledrive, Instagram, Flickr, Picasa, Dropbox, Skydrive";
@@ -67,14 +65,6 @@ public class PhotoPicker {
   public void fetchConfigFromServer() {
     checkConfiguration();
     if (configuration.configUrl != null) {
-      checkAvailableLocalOrRemoteServices(configuration.configUrl);
-    }
-  }
-
-  private void checkAvailableLocalOrRemoteServices(String url) {
-    if (getLocalServices() == null && getRemoteServices() == null) {
-      ALog.w(WARNING_INIT_SERVICES);
-    } else {
       fetchConfigFromServer(configuration.configUrl);
     }
   }
