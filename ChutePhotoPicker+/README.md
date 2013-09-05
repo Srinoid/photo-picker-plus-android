@@ -7,7 +7,7 @@ PhotoPicker+ is a component made for developers to easily integrate it inside th
 Screenshots
 ====
 
-![SS_Slidechute1](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/ChutePhotoPicker+/screenshots/SS_Slidechute1.png)![SS_Slidechute2](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/ChutePhotoPicker+/screenshots/SS_Slidechute2.png)![SS_Slidechute3](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/ChutePhotoPicker+/screenshots/SS_Slidechute3.png)
+![SS_Slidechute1](/screenshots/SS_Slidechute1.png)![SS_Slidechute2](/screenshots/SS_Slidechute2.png)![SS_Slidechute3](/screenshots/SS_Slidechute3.png)
 
 Setup
 ====
@@ -18,7 +18,7 @@ PhotoPicker+ uses [https://github.com/chute/Chute-SDK-V2-Android](https://github
 Implementation
 ====
 
-Follow the [PhotoPicker+ tutorial](https://github.com/chute/photo-picker-plus/tree/master/Android/PhotoPickerPlusTutorial) on how to setup and use the component.
+Follow the [PhotoPicker+ tutorial](../PhotoPickerPlusTutorial) on how to setup and use the component.
 
 
 Localization
@@ -39,13 +39,13 @@ Some of PhotoPicker+ supported languages might not be correctly translated. Any 
 
 Configuration
 ====
-Follow [PhotoPickerConfiguration.md](https://github.com/chute/photo-picker-plus/blob/master/Android/ChutePhotoPicker%2B/PhotoPickerConfiguration.md) on how to initialize PhotoPicker+ component with configuration.
+Follow [PhotoPickerConfiguration.md](PhotoPickerConfiguration.md) on how to initialize PhotoPicker+ component with configuration.
 
 
 Styles setup
 ====
 
-In order to achieve the desired look for your application, you need to override the existing styles or modify the defined resources. [PhotoPickerStyleGuide.md](https://github.com/chute/photo-picker-plus/blob/master/Android/ChutePhotoPicker%2B/PhotoPickerStyleGuide.md) will show you how to change views appearance or application theme and guide you throughout the way.
+In order to achieve the desired look for your application, you need to override the existing styles or modify the defined resources. [PhotoPickerStyleGuide.md](PhotoPickerStyleGuide.md) will show you how to change views appearance or application theme and guide you throughout the way.
 
 
 Modifying the component
