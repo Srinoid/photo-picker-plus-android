@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- PhotoPicker+ Theme -->
+    <style name="PhotoPickerTheme" parent="android:Theme.Light.NoTitleBar"></style>
+
+    <!-- TextView Service Name -->
+    <style name="textViewServiceName" parent="android:Widget.TextView">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">1dp</item>
+        <item name="android:paddingRight">1dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_service_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- TextView Asset Fragment Label -->
+    <style name="textViewFragmentLabel" parent="android:Widget.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/gradient_blue</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/fragment_title</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- TextView Service Fragment Label -->
+    <style name="textViewServiceFragmentLabel" parent="textViewFragmentLabel">
+        <item name="android:text">@string/select_an_album</item>
+    </style>
+
+    <!-- TextView Default Small -->
+    <style name="textViewDefaultSmall" parent="android:Widget.TextView">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+    </style>
+
+    <!-- TextView Progress Dialog -->
+    <style name="textViewProgressDialog" parent="textViewDefaultSmall">
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <!-- TextView Notification Dialog -->
+    <style name="textViewNotificationDialog" parent="textViewDefaultSmall">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- LinearLayout Empty Fragment Label -->
+    <style name="linearLayoutEmptyFragmentLabel" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/gradient_blue</item>
+    </style>
+
+    <!-- LinearLayout Progress Dialog -->
+    <style name="linearLayoutProgressDialog">
+        <item name="android:padding">20dp</item>
+        <item name="android:background">@drawable/progress_bar_window</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- LinearLayout Notification Dialog -->
+    <style name="linearLayoutNotificationDialog" parent="linearLayoutProgressDialog">
+        <item name="android:background">@drawable/notification_window</item>
+    </style>
+
+    <!-- RelativeLayout Assets Adapter Item Holder -->
+    <style name="relativeLayoutAdapterItemHolder">
+        <item name="android:background">@color/gray_light</item>
+        <item name="android:padding">1dp</item>
+    </style>
+
+    <!-- RelativeLayout Asset Fragment -->
+    <style name="relativeLayoutAssetFragment">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!-- ImageView Tick -->
+    <style name="imageViewTick">
+        <item name="android:background">@drawable/checked</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- ImageView Default Assets -->
+    <style name="imageViewDefaultAssets">
+        <item name="android:background">@drawable/photo_placeholder</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <!-- ImageView Adapter Item Assets -->
+    <style name="imageViewAdapterItemAssets" parent="imageViewDefaultAssets">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+    </style>
+
+    <!-- Progress Bar Indeterminate -->
+    <style name="IndeterminateProgress" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:minWidth">35dip</item>
+        <item name="android:maxWidth">35dip</item>
+        <item name="android:minHeight">35dip</item>
+        <item name="android:maxHeight">35dip</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:indeterminateDrawable">@drawable/progress_bar_rotation</item>
+    </style>
+
+</resources>

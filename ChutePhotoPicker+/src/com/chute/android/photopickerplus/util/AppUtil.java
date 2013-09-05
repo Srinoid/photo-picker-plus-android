@@ -14,110 +14,153 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.chute.sdk.collections.GCAccountMediaCollection;
-import com.chute.sdk.model.GCAccountMediaModel;
-import com.chute.sdk.utils.GCUtils;
+import com.chute.android.photopickerplus.R;
+import com.chute.sdk.v2.model.AssetModel;
+import com.chute.sdk.v2.utils.Utils;
 
 public class AppUtil {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = AppUtil.class.getSimpleName();
+  private static final String TAG = AppUtil.class.getSimpleName();
 
-    private static String SDCARD_FOLDER_CACHE = Environment.getExternalStorageDirectory()
-	    + "/Android/data/%s/files/";
+  private static String SDCARD_FOLDER_CACHE = Environment.getExternalStorageDirectory()
+      + "/Android/data/%s/files/";
 
-    public static String getThumbSmallUrl(String urlNormal) {
-	return GCUtils.getCustomSizePhotoURL(urlNormal, 100, 100);
+  public static String getThumbSmallUrl(String urlNormal) {
+    return Utils.getCustomSizePhotoURL(urlNormal, 100, 100);
+  }
+
+  public static File getTempFile(Context context) {
+    final File path = getAppCacheDir(context);
+    if (!path.exists()) {
+      path.mkdirs();
+    }
+    File f = new File(path, "temp_image.jpg");
+    if (f.exists() == false) {
+      try {
+        f.createNewFile();
+      } catch (IOException e) {
+        Log.w(TAG, e.getMessage(), e);
+      }
+    }
+    return f;
+  }
+
+  public static File getAppCacheDir(Context context) {
+    return new File(String.format(SDCARD_FOLDER_CACHE, context.getPackageName()));
+  }
+
+  public static boolean hasImageCaptureBug() {
+    // list of known devices with image capturing bug
+    ArrayList<String> devices = new ArrayList<String>();
+    devices.add("android-devphone1/dream_devphone/dream");
+    devices.add("generic/sdk/generic");
+    devices.add("vodafone/vfpioneer/sapphire");
+    devices.add("tmobile/kila/dream");
+    devices.add("verizon/voles/sholes");
+    devices.add("google_ion/google_ion/sapphire");
+    devices.add("SEMC/X10i_1232-9897/X10i");
+
+    return devices
+        .contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
+            + android.os.Build.DEVICE);
+  }
+
+  public static String getPath(Context context, Uri uri) throws NullPointerException {
+    final String[] projection = { MediaColumns.DATA };
+    final Cursor cursor = context.getContentResolver().query(uri, projection, null, null,
+        null);
+    final int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
+    cursor.moveToFirst();
+    return cursor.getString(column_index);
+  }
+
+  public final static String asUpperCaseFirstChar(final String target) {
+
+    if ((target == null) || (target.length() == 0)) {
+      return target;
+    }
+    return Character.toUpperCase(target.charAt(0))
+        + (target.length() > 1 ? target.substring(1) : "");
+  }
+
+  public static ArrayList<AssetModel> getPhotoCollection(ArrayList<String> paths) {
+    final ArrayList<AssetModel> collection = new ArrayList<AssetModel>();
+    for (String path : paths) {
+      final AssetModel model = new AssetModel();
+      path = Uri.fromFile(new File(path)).toString();
+      model.setThumbnail(path);
+      model.setUrl(path);
+      collection.add(model);
+    }
+    return collection;
+  }
+
+  public static AssetModel getMediaModel(String path) {
+    final AssetModel model = new AssetModel();
+    path = Uri.fromFile(new File(path)).toString();
+    model.setThumbnail(path);
+    model.setUrl(path);
+    return model;
+  }
+
+  public static String convertMediaUriToPath(Context context, Uri uri) {
+    String[] proj = { MediaStore.Images.Media.DATA };
+    Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+    cursor.moveToFirst();
+    String path = cursor.getString(column_index);
+    cursor.close();
+    return path;
+  }
+
+  public static void configureAssetImageViewDimensions(Context context,
+      ImageView imageViewThumb) {
+    int orientation = context.getResources().getConfiguration().orientation;
+    int imageDimension = context.getResources()
+        .getInteger(R.integer.image_dimensions_assets);
+    int displayMetricsWidth = context.getResources().getDisplayMetrics().widthPixels;
+    int displayMetricsHeight = context.getResources().getDisplayMetrics().heightPixels;
+    int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
+    if (context.getResources().getBoolean(R.bool.has_two_panes) && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsHeight
+          / gridColumns, (displayMetricsHeight - imageDimension)
+          / gridColumns));
+    } else {
+    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsWidth
+        / gridColumns, (displayMetricsWidth - imageDimension)
+        / gridColumns));
+    }
+  }
+
+  public static void configureServiceImageViewDimensions(Context context,
+      ImageView imageViewThumb,
+      TextView textViewServiceTitle) {
+    int orientation = context.getResources().getConfiguration().orientation;
+    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    int imageViewDimension = 0;
+    int gridColumns = context.getResources().getInteger(R.integer.grid_columns_services);
+    int imageDimension = context.getResources().getInteger(
+        R.integer.image_dimensions_services);
+    if (context.getResources().getBoolean(R.bool.has_two_panes) && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+    imageViewDimension = displayMetrics.heightPixels - imageDimension;
+    } else {
+    imageViewDimension = displayMetrics.widthPixels - imageDimension;
+    }
+    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
+        / gridColumns,
+        imageViewDimension / gridColumns));
     }
 
-    public static File getTempFile(Context context) {
-	final File path = getAppCacheDir(context);
-	if (!path.exists()) {
-	    path.mkdirs();
-	}
-	File f = new File(path, "temp_image.jpg");
-	if (f.exists() == false) {
-	    try {
-		f.createNewFile();
-	    } catch (IOException e) {
-		Log.w(TAG, e.getMessage(), e);
-	    }
-	}
-	return f;
-    }
-
-    public static File getAppCacheDir(Context context) {
-	return new File(String.format(SDCARD_FOLDER_CACHE, context.getPackageName()));
-    }
-
-    public static boolean hasImageCaptureBug() {
-	// list of known devices that have the bug
-	ArrayList<String> devices = new ArrayList<String>();
-	devices.add("android-devphone1/dream_devphone/dream");
-	devices.add("generic/sdk/generic");
-	devices.add("vodafone/vfpioneer/sapphire");
-	devices.add("tmobile/kila/dream");
-	devices.add("verizon/voles/sholes");
-	devices.add("google_ion/google_ion/sapphire");
-	devices.add("SEMC/X10i_1232-9897/X10i");
-
-	return devices.contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
-		+ android.os.Build.DEVICE);
-    }
-
-    public static String getPath(Context context, Uri uri) throws NullPointerException {
-	final String[] projection = { MediaColumns.DATA };
-	final Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
-	final int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
-	cursor.moveToFirst();
-	return cursor.getString(column_index);
-    }
-    
-    public final static String asUpperCaseFirstChar(final String target) {
-
-        if ((target == null) || (target.length() == 0)) {
-            return target; 
-        }
-        return Character.toUpperCase(target.charAt(0))
-                + (target.length() > 1 ? target.substring(1) : "");
-    }
-    
-    public static GCAccountMediaCollection getPhotoCollection(ArrayList<String> paths) {
-		final GCAccountMediaCollection collection = new GCAccountMediaCollection();
-		for (String path : paths) {
-			final GCAccountMediaModel model = new GCAccountMediaModel();
-			path = Uri.fromFile(new File(path)).toString();
-			model.setLargeUrl(path);
-			model.setThumbUrl(path);
-			model.setUrl(path);
-			collection.add(model);
-		}
-		return collection;
-	}
-    
-    public static GCAccountMediaModel getMediaModel(String path) {
-		final GCAccountMediaModel model = new GCAccountMediaModel();
-		path = Uri.fromFile(new File(path)).toString();
-		model.setLargeUrl(path);
-		model.setThumbUrl(path);
-		model.setUrl(path);
-		return model;
-	}
-    
-    public static String convertMediaUriToPath(Context context, Uri uri) {
-    	String[] proj = { MediaStore.Images.Media.DATA };
-    	Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
-    	int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-    	cursor.moveToFirst();
-    	String path = cursor.getString(column_index);
-    	cursor.close();
-    	return path;
-        }
 }

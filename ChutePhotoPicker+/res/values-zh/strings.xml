@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Account type -->
+    <string name="take_photos">拍摄照片</string>
+    <string name="last_photo">最后合影留念</string>
+    <string name="all_photos">所有照片</string>
+    <string name="camera_shots">相机镜头</string>
+
+    <!-- Exceptions -->
+    <string name="parsing_exception">无效的响应格式</string>
+    <string name="http_exception">请检查您的互联网连接，然后再试一次</string>
+    <string name="http_error">服务器问题，请尝试再次</string>
+
+    <!-- UI -->
+    <string name="cancel">取消</string>
+    <string name="ok">行</string>
+    <string name="albums">相册</string>
+    <string name="loading_albums">加载专辑</string>
+    <string name="loading_photos">加载照片</string>
+    <string name="select_a_photo">选择一个照片</string>
+    <string name="select_photos">选择照片</string>
+    <string name="select_an_album">选择图片来源</string>
+    <string name="title_default">默认</string>
+    <string name="title_user">用户</string>
+
+    <!-- Toast -->
+    <string name="toast_choose_photos">请选择“照片”</string>
+    <string name="toast_feature_camera">您的设备不会有一个摄像头</string>
+    <string name="no_camera_photos">相机胶卷中没有照片</string>
+     <string name="no_albums_found">没有相册</string>
+     <string name="no_album_selected">没有选择专辑</string>
+    <string name="connect_to_internet_to_cofigure_services">配置服务将设备连接到互联网</string>
+    <string name="expired_session_logging_in">您的会话已过期。请重新登录</string>
+
+</resources>

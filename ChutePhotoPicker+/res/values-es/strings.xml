@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Account type -->
+    <string name="take_photos">Tomar una foto</string>
+    <string name="last_photo">Última foto tomada</string>
+    <string name="all_photos">Todas las fotos</string>
+    <string name="camera_shots">Tomas de cámara</string>
+
+    <!-- Exceptions -->
+    <string name="parsing_exception">Formato de respuesta no válida</string>
+    <string name="http_exception">Compruebe su conexión a internet y vuelve a intentarlo</string>
+    <string name="http_error">Problema en el servidor intente de nuevo</string>
+
+    <!-- UI -->
+    <string name="cancel">Cancelar</string>
+    <string name="ok">OK</string>
+    <string name="albums">Álbumes</string>
+    <string name="loading_albums">Álbumes de carga...</string>
+    <string name="loading_photos">Fotos loading...</string>
+    <string name="select_a_photo">Seleccionar una foto</string>
+    <string name="select_photos">Seleccionar fotos</string>
+    <string name="select_an_album">Seleccione Foto Fuente</string>
+    <string name="title_default">Defecto</string>
+    <string name="title_user">Usuario</string>
+
+    <!-- Toast -->
+    <string name="toast_choose_photos">Por favor, seleccione las fotos</string>
+    <string name="toast_feature_camera">El dispositivo no dispone de una cámara</string>
+    <string name="no_camera_photos">Hay fotos en rollo de la cámara</string>
+    <string name="no_albums_found">No hay discos</string>
+    <string name="no_album_selected">No álbum seleccionado</string>
+    <string name="connect_to_internet_to_cofigure_services">Conecte su dispositivo a Internet para configurar los servicios</string>
+    <string name="expired_session_logging_in">Su sesión ha expirado. Por favor, entre de nuevo</string>
+
+</resources>

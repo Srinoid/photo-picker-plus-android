@@ -10,17 +10,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package com.chute.android.photopickerplus.util;
 
 public class Constants {
-	
-	@SuppressWarnings("unused")
-	private static final String TAG = Constants.class.getSimpleName();
-	
-	public static final int DELAY_TIME = 500;
-	public static final String CLIENT_SECRET = "c9a8cb57c52f49384ab6117c4f6483a1a5c5a14c4a50d4cef276a9a13286efc9";
-	public static final String CLIENT_ID = "4f3c39ff38ecef0c89000003";
-	public static final String CALLBACK_URL = "http://getchute.com/oauth/callback";
-	public static final String PERMISSIONS_SCOPE = "all_resources manage_resources profile resources";
-    
-	public static final int CAMERA_PIC_REQUEST = 2500;
-    
 
+  @SuppressWarnings("unused")
+  private static final String TAG = Constants.class.getSimpleName();
+
+  public static final int DELAY_TIME = 500;
+  public static final int CAMERA_PIC_REQUEST = 2500;
+
+  public static final String TAG_FRAGMENT_FOLDER = "FolderFrag";
+  public static final String TAG_FRAGMENT_FILES = "FilesFrag";
+  public static final String TAG_FRAGMENT_EMPTY = "EmptyFrag";
+
+  public static final String KEY_SELECTED_ITEMS = "keySelectedItems";
+  public static final String KEY_FOLDER_ID = "keyFolderId";
+  public static final String KEY_ACCOUNT = "keyAccount";
+  public static final String KEY_PHOTO_FILTER_TYPE = "keyPhotoFilterType";
+
+  public static final String KEY_EXPIRED_SESSION = "keyExpiredSession";
+
+  public static final int HTTP_ERROR_CODE_UNAUTHORIZED = 401;
+
+  public static final String SELECTED_IMAGES_URL = "http://api.getchute.com/v2/widgets/native";
 }

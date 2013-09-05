@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="numberOfLoadedPhotos">
+        <item quantity="one">Geladen 1 Foto</item>
+        <item quantity="other">Geladenen %d Bilder in diesem Album</item>
+    </plurals>
+    <plurals name="numberOfLoadedAlbums">
+        <item quantity="one">Geladen 1 Album</item>
+        <item quantity="other">%d alben geladen</item>
+    </plurals>
+
+</resources>

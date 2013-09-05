@@ -9,58 +9,60 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 package com.chute.android.photopickerplus.util.intent;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.chute.android.photopickerplus.app.ChooseServiceActivity;
+import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 
 public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
-    public static final int REQUEST_CODE = 1;
-    public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
-    public static final String FLAG_MULTI_PP = "flagMultiPp";
-    public static final String FLAG_SERVICES_HIDE = "flagHideServices";
-    public static final String KEY_PP_CHUTE_ID = "chuteID";
+  public static final int REQUEST_CODE = 1;
+  public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
+  public static final String FLAG_SERVICES_HIDE = "flagHideServices";
+  public static final String KEY_ALBUM_ID = "albumID";
+  public static final String KEY_SERVICE_LIST = "serviceList";
 
-    public PhotoPickerPlusIntentWrapper(Intent intent) {
-	super(intent);
-    }
+  public PhotoPickerPlusIntentWrapper(Intent intent) {
+    super(intent);
+  }
 
-    public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
-	super(packageContext, cls);
-    }
+  public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
+    super(packageContext, cls);
+  }
 
-    public PhotoPickerPlusIntentWrapper(Context packageContext) {
-	super(new Intent(packageContext, ChooseServiceActivity.class));
-    }
+  public PhotoPickerPlusIntentWrapper(Context packageContext) {
+    super(new Intent(packageContext, ServicesActivity.class));
+  }
 
-    public boolean getIsMultiPicker() {
-	return getIntent().getExtras().getBoolean(FLAG_MULTI_PP);
-    }
+  public String getAlbumId() {
+    return getIntent().getExtras().getString(KEY_ALBUM_ID);
+  }
 
-    public void setMultiPicker(boolean flag) {
-	getIntent().putExtra(FLAG_MULTI_PP, flag);
-    }
+  public void setAlbumId(String id) {
+    getIntent().putExtra(KEY_ALBUM_ID, id);
+  }
 
-    public String getChuteId() {
-	return getIntent().getExtras().getString(KEY_PP_CHUTE_ID);
-    }
+  public boolean areServicesHidden() {
+    return getIntent().getExtras().getBoolean(FLAG_SERVICES_HIDE);
+  }
 
-    public void setChuteId(String id) {
-	getIntent().putExtra(KEY_PP_CHUTE_ID, id);
-    }
+  public void setServicesHidden(boolean flag) {
+    getIntent().putExtra(FLAG_SERVICES_HIDE, flag);
+  }
 
-    public boolean areServicesHidden() {
-	return getIntent().getExtras().getBoolean(FLAG_SERVICES_HIDE);
-    }
+  public void setServiceList(ArrayList<String> services) {
+    getIntent().putStringArrayListExtra(KEY_SERVICE_LIST, services);
+  }
 
-    public void setServicesHidden(boolean flag) {
-	getIntent().putExtra(FLAG_SERVICES_HIDE, flag);
-    }
+  public ArrayList<String> getServiceList() {
+    return getIntent().getExtras().getStringArrayList(KEY_SERVICE_LIST);
+  }
 
-    public void startActivityForResult(Activity context, int code) {
-	context.startActivityForResult(getIntent(), code);
-    }
+  public void startActivityForResult(Activity context, int code) {
+    context.startActivityForResult(getIntent(), code);
+  }
 
 }
