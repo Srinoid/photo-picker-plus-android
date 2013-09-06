@@ -23,7 +23,7 @@ When started for the first time the app displays the initialized local and remot
 Default configuration
 ====
 
-If the local and remote services are not initialized, the PhotoPicker will be initialized with default settings. DefaultConfigurationFactory sets <code>LocalMediaType.ALL_PHOTOS</code> and <code>LocalMediaType.CAMERA_PHOTOS</code> as local and <code>AccountType.FACEBOOK</code> and <code>AccountType.INSTAGRAM</code> as remote services.
+If the local and remote services are not initialized, PhotoPicker will be initialized with default settings. DefaultConfigurationFactory sets <code>LocalMediaType.ALL_PHOTOS</code> and <code>LocalMediaType.CAMERA_PHOTOS</code> as local and <code>AccountType.FACEBOOK</code> and <code>AccountType.INSTAGRAM</code> as remote services.
 
 
 Configuration URL
@@ -31,7 +31,22 @@ Configuration URL
 
 If you wish to configure services by getting a list from the server, you should create a file containing JSON model as the following one:
 <code><pre>
- {"services":["facebook","instagram","skydrive","googledrive","google","picasa","flickr","dropbox"],"local_features":["all_photos","take_photo","last_taken_photo","camera_photos"]}
+ {  
+    "services":[  
+               "facebook",  
+               "instagram",  
+               "skydrive",  
+               "googledrive",  
+               "google",  
+               "picasa",  
+               "flickr",  
+               "dropbox"],  
+     "local_features":[  
+               "all_photos",  
+               "take_photo",  
+               "last_taken_photo",  
+               "camera_photos"]  
+}
 </pre></code>
 
 **NOTE:** Supported remote services include: Facebook, Instagram, Flickr, Picasa, Google, GoogleDrive, SkyDrive, Dropbox.  

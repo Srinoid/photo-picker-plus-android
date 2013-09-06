@@ -202,8 +202,10 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
 
     @Override
     public void onClick(View v) {
-      ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
-          accountAssetAdapter.getPhotoCollection(), accountListener);
+      if (!accountAssetAdapter.getPhotoCollection().isEmpty()) {
+        ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
+            accountAssetAdapter.getPhotoCollection(), accountListener);
+      }
     }
   }
 

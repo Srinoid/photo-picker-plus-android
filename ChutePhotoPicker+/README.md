@@ -7,7 +7,7 @@ PhotoPicker+ is a component made for developers to easily integrate it inside th
 Screenshots
 ====
 
-![SS_Slidechute1](/screenshots/SS_Slidechute1.png)![SS_Slidechute2](/screenshots/SS_Slidechute2.png)![SS_Slidechute3](/screenshots/SS_Slidechute3.png)
+![nexus_screenshot1](/screenshots/nexus_screenshot1.png)![nexus_screenshot2](/screenshots/nexus_screenshot2.png)![nexus_screenshot3](/screenshots/nexus_screenshot3.png)![nexus_screenshot4](/screenshots/nexus_screenshot4.png)![nexus_screenshot5](/screenshots/nexus_screenshot5.png)
 
 Setup
 ====

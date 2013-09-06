@@ -278,12 +278,16 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     @Override
     public void onClick(View v) {
       if (filterType == PhotoFilterType.SOCIAL_PHOTOS) {
-        ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
-            accountAssetAdapter.getPhotoCollection(), accountListener);
+        if (!accountAssetAdapter.getPhotoCollection().isEmpty()) {
+          ImageDataResponseLoader.postImageData(getActivity().getApplicationContext(),
+              accountAssetAdapter.getPhotoCollection(), accountListener);
+        }
       } else if ((filterType == PhotoFilterType.ALL_PHOTOS)
           || (filterType == PhotoFilterType.CAMERA_ROLL)) {
-        cursorListener.onDeliverCursorAssets(cursorAssetAdapter
-            .getSelectedFilePaths());
+        if (!cursorAssetAdapter.getSelectedFilePaths().isEmpty()) {
+          cursorListener.onDeliverCursorAssets(cursorAssetAdapter
+              .getSelectedFilePaths());
+        }
       }
     }
   }
@@ -310,6 +314,5 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
     }
 
   }
-
 
 }

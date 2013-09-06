@@ -4,7 +4,7 @@ pp_styles.xml defnies the pp+ application theme and styles for different views.
 
 Styles
 ====
-A style is a set of one or more formatting attributes that you can apply as a unit to single elements in your layout XML file(s). For example, you could set the styles of all of your TextViews to have the style textViewTitle. This style could have custom text font, background color, gravity and padding properties.
+A style is a set of one or more formatting attributes that you can apply as a unit to single elements in your layout XML file(s). For example, you could set the styles of all of your TextViews to have the style textViewTitle. This style could have custom text size, color, background, and gravity properties.
 
 
 XML file for the style (saved in res/values/):  

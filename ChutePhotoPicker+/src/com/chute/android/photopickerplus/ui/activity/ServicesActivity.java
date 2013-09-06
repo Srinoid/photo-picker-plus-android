@@ -404,10 +404,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
     fragmentSingle = (FragmentSingle) getSupportFragmentManager().findFragmentByTag(
         Constants.TAG_FRAGMENT_FILES);
     if (fragmentRoot != null && fragmentRoot.isVisible()) {
-      fragmentRoot.onDestroy();
-      if (fragmentSingle != null) {
-        fragmentSingle.onDestroy();
-      }
+      this.finish();
     } else {
       super.onBackPressed();
     }
