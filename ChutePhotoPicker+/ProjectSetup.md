@@ -23,7 +23,7 @@ Basic SDK Setup
 * Download the SDK 
 * In Eclipse click File -> Import -> Maven -> Existing Maven Projects
 
-![image3](https://raw.github.com/chute/photo-picker-plus/v2-photopickerplus/Android/PhotoPickerPlusTutorial/screenshots/3.png)
+![basicsetup](/screenshots/basicsetup.png)
 
 * Browse and select the downloaded root directory of the SDK
 * Check the SDK project and click Finish
@@ -63,16 +63,16 @@ Android manifest setup
 * Add the following permissions that are required for the Chute SDK:
 
     ```
-        Standard Permission to access the internet
-        <uses-permission android:name="android.permission.INTERNET" />
-        Permission for caching the images on the SD card
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        The following permissions are used by chute to track the phone id and version to determine the device used for managing the uploads and users
+        <!-- Standard Permission to access the internet -->
+        <uses-permission android:name="android.permission.INTERNET" />  
+        <!-- Permission for caching the images on the SD card -->
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />  
+        <!-- The following permissions are used by chute to track the phone id and version to determine the device used for managing the uploads and users -->
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         <uses-permission android:name="android.permission.READ_PHONE_STATE" />
         <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
         <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-        Used for the http request service for the long running uploads.
+        <!-- Used for the http request service for the long running uploads. -->
         <uses-permission android:name="android.permission.WAKE_LOCK" />
     ```
 

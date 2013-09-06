@@ -10,7 +10,7 @@ Setup
 
 * Add the PhotoPicker+ component to your project by either copying all the resources and source code or by adding it as an Android Library project.
 
-* Go through [PhotoPicker+ documentation] (../ChutePhotoPicker+/README.md)for more info.
+* Go through [ProjectSetup.md](../ChutePhotoPicker+/ProjectSetup.md) and [PhotoPicker+ documentation](../ChutePhotoPicker+/README.md) for more info.
 
 * Register the activities, services and the application class into AndroidManifest.xml file:
 
