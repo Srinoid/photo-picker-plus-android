@@ -99,7 +99,7 @@ public class PhotoPicker {
 
   public void setAvailableRemoteServices(List<AccountType> remoteServices) {
     this.remoteServices = remoteServices;
-    checkIfServiceIsSupported(remoteServices);
+//    checkIfServiceIsSupported(remoteServices);
   }
 
   public void setAvailableLocalServices(List<LocalMediaType> localServices) {
@@ -156,18 +156,18 @@ public class PhotoPicker {
     }
   }
 
-  private void checkIfServiceIsSupported(List<AccountType> remoteServices) {
-    Iterator<AccountType> iterator = remoteServices.iterator();
-    while (iterator.hasNext()) {
-      AccountType accountType = iterator.next();
-      if (accountType.equals(AccountType.CHUTE)
-          || accountType.equals(AccountType.FOURSQUARE)
-          || accountType.equals(AccountType.TWITTER)) {
-        ALog.w(WARNING_UNSUPPORTED_SERVICES);
-        iterator.remove();
-      }
-    }
-  }
+//  private void checkIfServiceIsSupported(List<AccountType> remoteServices) {
+//    Iterator<AccountType> iterator = remoteServices.iterator();
+//    while (iterator.hasNext()) {
+//      AccountType accountType = iterator.next();
+//      if (accountType.equals(AccountType.CHUTE)
+//          || accountType.equals(AccountType.FOURSQUARE)
+//          || accountType.equals(AccountType.TWITTER)) {
+//        ALog.w(WARNING_UNSUPPORTED_SERVICES);
+//        iterator.remove();
+//      }
+//    }
+//  }
 
   public void destroy() {
     if (configuration != null)

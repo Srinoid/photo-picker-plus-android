@@ -261,6 +261,12 @@ public class ServicesAdapter extends BaseAdapter {
           R.drawable.dropbox));
       break;
     default:
+      holder.imageView.setBackgroundDrawable(context.getResources().getDrawable(
+          R.drawable.album_default));
+      holder.textViewServiceTitle.setVisibility(View.VISIBLE);
+      String loginMethod = type.getLoginMethod();
+      String accountTypeName = loginMethod.substring(0,1).toUpperCase() + loginMethod.substring(1);
+      holder.textViewServiceTitle.setText(accountTypeName);
       break;
     }
   }
