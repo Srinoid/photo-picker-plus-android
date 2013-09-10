@@ -27,21 +27,21 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
     super.onCreate();
     ALog.setDebugTag("PhotoPicker");
     ALog.setDebugLevel(DebugLevel.ALL);
-    final String APP_ID = "4f3c39ff38ecef0c89000003";
-    final String APP_SECRET = "c9a8cb57c52f49384ab6117c4f6483a1a5c5a14c4a50d4cef276a9a13286efc9";
+
     /**
      * Fill in using "app_id" and "app_secret" values from your Chute
-     * application. 
-     * See <a href="https://apps.getchute.com">https://apps.getchute.com</a>
+     * application. See <a
+     * href="https://apps.getchute.com">https://apps.getchute.com</a>
      */
-    Chute.init(this, new AuthConstants(APP_ID, APP_SECRET));
+    Chute.init(this, new AuthConstants("app_id", "app_secret"));
 
     PhotoPickerConfiguration config = new PhotoPickerConfiguration.Builder(
         getApplicationContext())
         .isMultiPicker(true)
-        .accountList(AccountType.FLICKR, AccountType.TWITTER, AccountType.FACEBOOK)
+        .accountList(AccountType.FLICKR, AccountType.TWITTER, AccountType.FACEBOOK,
+            AccountType.FOURSQUARE)
         .localMediaList(LocalMediaType.ALL_PHOTOS, LocalMediaType.CAMERA_PHOTOS)
-//        .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
+        .configUrl(ConfigEndpointURLs.SERVICES_CONFIG_URL)
         .build();
     PhotoPicker.getInstance().init(config);
 

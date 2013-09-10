@@ -26,7 +26,8 @@ public class PhotoPicker {
       "PhotoPicker configuration can not be initialized with null";
   private static final String ERROR_HTTP =
       "Error when trying to get services from server: ";
-  private static final String WARNING_UNSUPPORTED_SERVICES = "Invalid service type. Supported valid services: Facebook, Google, Googledrive, Instagram, Flickr, Picasa, Dropbox, Skydrive";
+  private static final String WARNING_UNSUPPORTED_REMOTE_SERVICES = "Invalid service type. Supported valid services: Facebook, Google, Googledrive, Instagram, Flickr, Picasa, Dropbox, Skydrive";
+  private static final String WARNING_UNSUPPORTED_LOCAL_SERVICES = "Invalid service type. Supported valid services: Camera Photos, All Photos, Last Taken Photo, Take Photo";
 
   private List<AccountType> remoteServices;
   private List<LocalMediaType> localServices;
@@ -74,12 +75,12 @@ public class PhotoPicker {
         .getLocalServiceList();
     if (localServiceListInPrefs.isEmpty()) {
       if (configuration.localMediaList != null) {
-        return configuration.localMediaList;
+        return checkIfLocalServiceIsSupported(configuration.localMediaList);
       } else {
         return new ArrayList<LocalMediaType>();
       }
     } else {
-      return localServiceListInPrefs;
+      return checkIfLocalServiceIsSupported(localServiceListInPrefs);
     }
   }
 
@@ -88,23 +89,13 @@ public class PhotoPicker {
         .getAccountServiceList();
     if (accountServiceListInPrefs.isEmpty()) {
       if (configuration.accountList != null) {
-        return configuration.accountList;
+        return checkIfRemoteServiceIsSupported(configuration.accountList);
       } else {
         return new ArrayList<AccountType>();
       }
     } else {
-      return accountServiceListInPrefs;
+      return checkIfRemoteServiceIsSupported(accountServiceListInPrefs);
     }
-  }
-
-  public void setAvailableRemoteServices(List<AccountType> remoteServices) {
-    this.remoteServices = remoteServices;
-//    checkIfServiceIsSupported(remoteServices);
-  }
-
-  public void setAvailableLocalServices(List<LocalMediaType> localServices) {
-    this.localServices = localServices;
-
   }
 
   public void fetchConfigFromServer(String url) {
@@ -126,23 +117,30 @@ public class PhotoPicker {
       localServices = new ArrayList<LocalMediaType>();
       if (data.getServices() != null) {
         for (String service : data.getServices()) {
-          AccountType accountType = AccountType.valueOf(service.toUpperCase());
-          remoteServices.add(accountType);
+          if (isInEnum(service, AccountType.class)) {
+            AccountType accountType = AccountType.valueOf(service.toUpperCase());
+            remoteServices.add(accountType);
+          } else {
+            ALog.w(WARNING_UNSUPPORTED_REMOTE_SERVICES);
+          }
         }
         PhotoPickerPreferenceUtil.get().setAccountServiceList(
-            (ArrayList<AccountType>) remoteServices);
+            (ArrayList<AccountType>) checkIfRemoteServiceIsSupported(remoteServices));
       }
       if (data.getLocalFeatures() != null) {
         for (String localFeature : data.getLocalFeatures()) {
+          if (isInEnum(localFeature, LocalMediaType.class)) {
           LocalMediaType localMediaType = LocalMediaType.valueOf(localFeature
               .toUpperCase());
           localServices.add(localMediaType);
+        } else {
+          ALog.w(WARNING_UNSUPPORTED_LOCAL_SERVICES);
+        }
         }
         PhotoPickerPreferenceUtil.get().setLocalServiceList(
-            (ArrayList<LocalMediaType>) localServices);
+            (ArrayList<LocalMediaType>) checkIfLocalServiceIsSupported(localServices));
       }
     }
-
   }
 
   public boolean isMultiPicker() {
@@ -156,18 +154,61 @@ public class PhotoPicker {
     }
   }
 
-//  private void checkIfServiceIsSupported(List<AccountType> remoteServices) {
-//    Iterator<AccountType> iterator = remoteServices.iterator();
-//    while (iterator.hasNext()) {
-//      AccountType accountType = iterator.next();
-//      if (accountType.equals(AccountType.CHUTE)
-//          || accountType.equals(AccountType.FOURSQUARE)
-//          || accountType.equals(AccountType.TWITTER)) {
-//        ALog.w(WARNING_UNSUPPORTED_SERVICES);
-//        iterator.remove();
-//      }
-//    }
-//  }
+  private List<AccountType> checkIfRemoteServiceIsSupported(List<AccountType> remoteServices) {
+    List<AccountType> accountList = new ArrayList<AccountType>(remoteServices);
+    Iterator<AccountType> iterator = accountList.iterator();
+    while (iterator.hasNext()) {
+      AccountType accountType = iterator.next();
+      if (!accountType.equals(AccountType.FACEBOOK)
+          && !accountType.equals(AccountType.FLICKR)
+          && !accountType.equals(AccountType.PICASA)
+          && !accountType.equals(AccountType.INSTAGRAM)
+          && !accountType.equals(AccountType.DROPBOX)
+          && !accountType.equals(AccountType.GOOGLE)
+          && !accountType.equals(AccountType.GOOGLEDRIVE)
+          && !accountType.equals(AccountType.SKYDRIVE)) {
+        ALog.w(WARNING_UNSUPPORTED_REMOTE_SERVICES);
+        iterator.remove();
+      }
+    }
+    if (accountList.isEmpty()) {
+      return new ArrayList<AccountType>();
+    } else {
+      return accountList;
+    }
+
+  }
+  
+  private List<LocalMediaType> checkIfLocalServiceIsSupported(List<LocalMediaType> localServices) {
+    List<LocalMediaType> localServiceList = new ArrayList<LocalMediaType>(localServices);
+    Iterator<LocalMediaType> iterator = localServiceList.iterator();
+    while (iterator.hasNext()) {
+      LocalMediaType localMediaType = iterator.next();
+      if (!localMediaType.equals(LocalMediaType.ALL_PHOTOS)
+          && !localMediaType.equals(LocalMediaType.CAMERA_PHOTOS)
+          && !localMediaType.equals(LocalMediaType.LAST_TAKEN_PHOTO)
+          && !localMediaType.equals(LocalMediaType.TAKE_PHOTO)) {
+        ALog.w(WARNING_UNSUPPORTED_LOCAL_SERVICES);
+        iterator.remove();
+      }
+    }
+    if (localServiceList.isEmpty()) {
+      return new ArrayList<LocalMediaType>();
+    } else {
+      return localServiceList;
+    }
+
+  }
+
+
+  public <E extends Enum<E>> boolean isInEnum(String value, Class<E> enumClass) {
+    for (E e : enumClass.getEnumConstants()) {
+      if (e.name().equalsIgnoreCase(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   public void destroy() {
     if (configuration != null)
