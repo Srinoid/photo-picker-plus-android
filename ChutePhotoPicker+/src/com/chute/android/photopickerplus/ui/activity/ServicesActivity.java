@@ -248,15 +248,15 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
             path = MediaDAO.getLastPhotoFromCameraPhotos(getApplicationContext())
                 .toString();
           } catch (FileNotFoundException e) {
-            Log.d(TAG, "", e);
+            ALog.d(TAG, "", e);
           }
         } else {
-          Log.e(TAG, "Bug " + data.getData().getPath());
+          ALog.e(TAG, "Bug " + data.getData().getPath());
           path = Uri.fromFile(
               new File(AppUtil.getPath(getApplicationContext(), data.getData())))
               .toString();
         }
-        Log.d(TAG, path);
+        ALog.d(TAG, path);
         final AssetModel model = new AssetModel();
         model.setThumbnail(path);
         model.setUrl(path);

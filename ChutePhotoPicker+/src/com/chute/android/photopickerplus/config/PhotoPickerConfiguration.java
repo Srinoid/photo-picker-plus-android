@@ -138,10 +138,13 @@ public final class PhotoPickerConfiguration {
     }
 
     private void initEmptyFieldsWithDefaultValues() {
-      if (localMediaList == null && accountList == null) {
+      if (localMediaList == null){
         localMediaList = DefaultConfigurationFactory.createLocalMediaList();
+      }
+      if(accountList == null) {
         accountList = DefaultConfigurationFactory.createAccountTypeList();
       }
+      
     }
   }
 }
