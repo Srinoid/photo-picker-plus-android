@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # built application files
 *.apk
 *.ap_
@@ -19,6 +18,3 @@ local.properties
 # Eclipse project files
 .classpath
 .project
-=======
-/SDK/
->>>>>>> e8641621dd204c148de51278df2b10876f48c078
