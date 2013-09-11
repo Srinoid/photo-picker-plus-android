@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="numberOfLoadedPhotos">
+        <item quantity="one">このアルバムのロード写真1枚</item>
+        <item quantity="other">%d このアルバムにロードされた写真</item>
+    </plurals>
+    <plurals name="numberOfLoadedAlbums">
+        <item quantity="one">1アルバムをロード</item>
+        <item quantity="other">%d ロードされたアルバム</item>
+    </plurals>
+
+</resources>

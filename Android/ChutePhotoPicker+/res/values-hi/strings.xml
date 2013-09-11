@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Account type -->
+    <string name="take_photos">एक तस्वीर ले लो</string>
+    <string name="last_photo">लिया अंतिम तस्वीर</string>
+    <string name="all_photos">सभी तस्वीरें</string>
+    <string name="camera_shots">कैमरा शॉट्स</string>
+
+    <!-- Exceptions -->
+    <string name="parsing_exception">बुरा प्रतिक्रिया स्वरूप</string>
+    <string name="http_exception">आपके इंटरनेट कनेक्शन की जाँच करें और पुन: प्रयास करें</string>
+    <string name="http_error">सर्वर की समस्या है, फिर कोशिश</string>
+
+    <!-- UI -->
+    <string name="cancel">रद्द करें</string>
+    <string name="ok">अच्छा</string>
+    <string name="albums">एलबम</string>
+    <string name="loading_albums">लोड हो रहा है एल्बमों</string>
+    <string name="loading_photos">लोड हो तस्वीरें</string>
+    <string name="select_a_photo">एक तस्वीर का चयन करें</string>
+    <string name="select_photos">फ़ोटो का चयन करें</string>
+    <string name="select_an_album">फोटो स्रोत का चयन करें</string>
+    <string name="title_default">चूक</string>
+    <string name="title_user">उपयोगकर्ता</string>
+
+    <!-- Toast -->
+    <string name="toast_choose_photos">तस्वीरों का चयन करें</string>
+    <string name="toast_feature_camera">आपकी डिवाइस एक कैमरा नहीं है</string>
+    <string name="no_camera_photos">कैमरा रोल में कोई फ़ोटो</string>
+    <string name="no_albums_found">कोई एल्बम नहीं मिला</string>
+    <string name="no_album_selected">चुनाव नहीं किया एलबम</string>
+    <string name="connect_to_internet_to_cofigure_services">सेवाओं को संरचित करने के लिए इंटरनेट के लिए अपनी डिवाइस कनेक्ट</string>
+    <string name="expired_session_logging_in">आपका सत्र समाप्त हो गया है. फिर से लॉग इन करें</string>
+
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="numberOfLoadedPhotos">
+        <item quantity="one">在这张专辑中装载1张照片</item>
+        <item quantity="other">%d 在这张专辑中的加载的照片</item>
+    </plurals>
+    <plurals name="numberOfLoadedAlbums">
+        <item quantity="one">装1张专辑</item>
+        <item quantity="other">%d 加载的相册</item>
+    </plurals>
+
+</resources>

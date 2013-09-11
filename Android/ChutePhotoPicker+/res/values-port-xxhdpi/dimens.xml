@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="text_size_service_title">10dp</dimen>
+    <dimen name="fragment_title">18dp</dimen>
+    <dimen name="album_name">18dp</dimen>
+
+    <integer name="grid_columns_services">4</integer>
+    <integer name="image_dimensions_services">70</integer>
+    <integer name="grid_columns_assets">3</integer>
+    <integer name="image_dimensions_assets">80</integer>
+
+</resources>
