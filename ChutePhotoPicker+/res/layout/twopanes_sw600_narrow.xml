@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentServices"
-        android:layout_width="500dp"
+        android:layout_width="450dp"
         android:layout_height="match_parent"
         class="com.chute.android.photopickerplus.ui.fragment.FragmentServices" />
 

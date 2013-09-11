@@ -17,6 +17,11 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+/**
+ * The definition of the Database Access Objects that handles the reading and
+ * writing a class from the database.
+ * 
+ */
 public class MediaDAO {
 
   public static final String TAG = MediaDAO.class.getSimpleName();
@@ -24,6 +29,14 @@ public class MediaDAO {
   private MediaDAO() {
   }
 
+  /**
+   * Request a specific record in {@link MediaStore.Images.Media} database.
+   * 
+   * @param context
+   *          The application context.
+   * @return Cursor object enabling read-write access to camera photos on the
+   *         device.
+   */
   public static Cursor getCameraPhotos(final Context context) {
     final String[] projection = new String[] { MediaStore.Images.Media._ID,
         MediaStore.Images.Media.DATA };
@@ -33,6 +46,14 @@ public class MediaDAO {
         MediaStore.Images.Media.DATE_ADDED + " DESC");
   }
 
+  /**
+   * Request a specific record in {@link MediaStore.Images.Media} database.
+   * 
+   * @param context
+   *          The application context.
+   * @return Cursor object enabling read-write access to all photos on
+   *         the device.
+   */
   public static Cursor getAllMediaPhotos(final Context context) {
     final String[] projection = new String[] { MediaStore.Images.Media._ID,
         MediaStore.Images.Media.DATA };
@@ -41,6 +62,13 @@ public class MediaDAO {
         MediaStore.Images.Media.DATE_ADDED + " DESC");
   }
 
+  /**
+   * Returns the last photo URI from all photos on the device.
+   * 
+   * @param context
+   *          The application context.
+   * @return The URI for the requested query.
+   */
   public static Uri getLastPhotoFromAllPhotos(final Context context) {
     Cursor allMediaPhotos = getAllMediaPhotos(context);
     Uri uri = getFirstItemUri(allMediaPhotos);
@@ -51,6 +79,13 @@ public class MediaDAO {
     return uri;
   }
 
+  /**
+   * Returns the last photo URI from the camera photos on the device.
+   * 
+   * @param context
+   *          The application context.
+   * @return The URI for the requested query.
+   */
   public static Uri getLastPhotoFromCameraPhotos(final Context context) {
     Cursor allMediaPhotos = getCameraPhotos(context);
     Uri uri = getFirstItemUri(allMediaPhotos);
@@ -61,6 +96,14 @@ public class MediaDAO {
     return uri;
   }
 
+  /**
+   * Returns the URI of the first item from all photos on the device.
+   * 
+   * @param Cursor
+   *          Cursor object enabling read-write access to all photos on the
+   *          device.
+   * @return The URI for the requested query.
+   */
   private static Uri getFirstItemUri(Cursor allMediaPhotos) {
     if (allMediaPhotos != null && allMediaPhotos.moveToFirst()) {
       return Uri.fromFile(new File(allMediaPhotos.getString(allMediaPhotos
@@ -69,6 +112,14 @@ public class MediaDAO {
     return null;
   }
 
+  /**
+   * Closes the Cursor, releasing all of its resources and making it completely
+   * invalid.
+   * 
+   * @param c
+   *          Cursor object enabling random read-write access to the result set
+   *          returned by a database query.
+   */
   public static void safelyCloseCursor(final Cursor c) {
     try {
       if (c != null) {

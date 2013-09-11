@@ -62,7 +62,7 @@ public class AppUtil {
   }
 
   public static boolean hasImageCaptureBug() {
-    // list of known devices with image capturing bug
+    /* list of known devices with image capturing bug. */
     ArrayList<String> devices = new ArrayList<String>();
     devices.add("android-devphone1/dream_devphone/dream");
     devices.add("generic/sdk/generic");
@@ -133,14 +133,15 @@ public class AppUtil {
     int displayMetricsWidth = context.getResources().getDisplayMetrics().widthPixels;
     int displayMetricsHeight = context.getResources().getDisplayMetrics().heightPixels;
     int gridColumns = context.getResources().getInteger(R.integer.grid_columns_assets);
-    if (context.getResources().getBoolean(R.bool.has_two_panes) && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+    if (context.getResources().getBoolean(R.bool.has_two_panes)
+        && orientation == Configuration.ORIENTATION_LANDSCAPE) {
       imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsHeight
           / gridColumns, (displayMetricsHeight - imageDimension)
           / gridColumns));
     } else {
-    imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsWidth
-        / gridColumns, (displayMetricsWidth - imageDimension)
-        / gridColumns));
+      imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(displayMetricsWidth
+          / gridColumns, (displayMetricsWidth - imageDimension)
+          / gridColumns));
     }
   }
 
@@ -153,14 +154,15 @@ public class AppUtil {
     int gridColumns = context.getResources().getInteger(R.integer.grid_columns_services);
     int imageDimension = context.getResources().getInteger(
         R.integer.image_dimensions_services);
-    if (context.getResources().getBoolean(R.bool.has_two_panes) && orientation == Configuration.ORIENTATION_LANDSCAPE) {
-    imageViewDimension = displayMetrics.heightPixels - imageDimension;
+    if (context.getResources().getBoolean(R.bool.has_two_panes)
+        && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      imageViewDimension = displayMetrics.heightPixels - imageDimension;
     } else {
-    imageViewDimension = displayMetrics.widthPixels - imageDimension;
+      imageViewDimension = displayMetrics.widthPixels - imageDimension;
     }
     imageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(imageViewDimension
         / gridColumns,
         imageViewDimension / gridColumns));
-    }
+  }
 
 }

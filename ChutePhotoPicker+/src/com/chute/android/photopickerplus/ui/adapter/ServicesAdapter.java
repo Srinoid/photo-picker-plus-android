@@ -75,9 +75,9 @@ public class ServicesAdapter extends BaseAdapter {
 
   @Override
   public int getItemViewType(int position) {
-    // local accounts will come first in the adapter
+    /* Local services will come first in the adapter. */
     if (position < localAccounts.size()) {
-      // Its type Local Account
+      /* Its type Local Account */
       return VIEW_TYPE_LOCAL_ACCOUNT;
     }
     return VIEW_TYPE_REMOTE_ACCOUNT;
@@ -120,7 +120,7 @@ public class ServicesAdapter extends BaseAdapter {
     }
 
     if (getItemViewType(position) == VIEW_TYPE_LOCAL_ACCOUNT) {
-      // Set an image as background
+      /* Set an image as a background. */
       holder.textViewServiceTitle.setVisibility(View.VISIBLE);
       setupLocalService(holder, getLocalAccount(position));
     } else {
@@ -172,7 +172,7 @@ public class ServicesAdapter extends BaseAdapter {
       break;
     }
 
-    // Click listeners
+    /* Click listeners */
     switch (type) {
     case ALL_PHOTOS:
       holder.imageView.setOnClickListener(new OnClickListener() {

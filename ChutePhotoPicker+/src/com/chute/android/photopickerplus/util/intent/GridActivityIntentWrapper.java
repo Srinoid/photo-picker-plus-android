@@ -28,7 +28,6 @@ public class GridActivityIntentWrapper extends IntentWrapper {
   private static final String KEY_ACCOUNT_ID = "accountId";
   private static final String KEY_ALBUM_ID = "albumId";
   private static final String KEY_PHOTO_COLLECTION = "photoCollection";
-  private static final String KEY_CHUTE_ID = "key_chuteId";
 
   public GridActivityIntentWrapper(Context context) {
     super(context, AssetActivity.class);
@@ -62,14 +61,6 @@ public class GridActivityIntentWrapper extends IntentWrapper {
   public void setMediaCollection(ArrayList<AssetModel> mediaCollection) {
     getIntent()
         .putExtra(KEY_PHOTO_COLLECTION, mediaCollection);
-  }
-
-  public String getChuteId() {
-    return getIntent().getExtras().getString(KEY_CHUTE_ID);
-  }
-
-  public void setChuteId(String id) {
-    getIntent().putExtra(KEY_CHUTE_ID, id);
   }
 
   public void startActivityForResult(Activity context, int code) {

@@ -30,8 +30,9 @@ public class PhotoPickerPlusTutorialApp extends PhotoPickerPlusApp {
 
     /**
      * Fill in using "app_id" and "app_secret" values from your Chute
-     * application. See <a
-     * href="https://apps.getchute.com">https://apps.getchute.com</a>
+     * application.
+     * 
+     * See <a href="https://apps.getchute.com">https://apps.getchute.com</a>
      */
     Chute.init(this, new AuthConstants("app_id", "app_secret"));
 

@@ -25,7 +25,6 @@ public class Constants {
   public static final String KEY_FOLDER_ID = "keyFolderId";
   public static final String KEY_ACCOUNT = "keyAccount";
   public static final String KEY_PHOTO_FILTER_TYPE = "keyPhotoFilterType";
-
   public static final String KEY_EXPIRED_SESSION = "keyExpiredSession";
 
   public static final int HTTP_ERROR_CODE_UNAUTHORIZED = 401;

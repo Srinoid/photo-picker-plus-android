@@ -28,7 +28,7 @@ import com.chute.android.photopickerplus.ui.fragment.FragmentRoot;
 import com.chute.android.photopickerplus.ui.fragment.FragmentSingle;
 import com.chute.android.photopickerplus.util.AppUtil;
 import com.chute.android.photopickerplus.util.Constants;
-import com.chute.android.photopickerplus.util.PhotoFilterType;
+import com.chute.android.photopickerplus.models.enums.PhotoFilterType;
 import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
@@ -42,6 +42,13 @@ import com.chute.sdk.v2.utils.PreferenceUtil;
 import com.dg.libs.rest.callbacks.HttpCallback;
 import com.dg.libs.rest.domain.ResponseStatus;
 
+/**
+ * Activity for displaying the content of the selected service.
+ * 
+ * This activity is used to display albums and assets for both local and remote
+ * services in a GridView.
+ * 
+ */
 public class AssetActivity extends FragmentActivity implements CursorFilesListener,
     AccountFilesListener {
 

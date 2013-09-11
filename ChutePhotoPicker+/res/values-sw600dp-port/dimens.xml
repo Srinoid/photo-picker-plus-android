@@ -5,7 +5,7 @@
     <dimen name="fragment_title">18dp</dimen>
     <dimen name="album_name">18dp</dimen>
 
-    <integer name="grid_columns_services">4</integer>
+    <integer name="grid_columns_services">5</integer>
     <integer name="image_dimensions_services">70</integer>
     <integer name="grid_columns_assets">4</integer>
     <integer name="image_dimensions_assets">70</integer>

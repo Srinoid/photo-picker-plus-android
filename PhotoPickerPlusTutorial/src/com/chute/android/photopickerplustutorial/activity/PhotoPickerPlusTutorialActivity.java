@@ -25,8 +25,6 @@ import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
-import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusIntentWrapper;
-import com.chute.sdk.v2.model.AccountMediaModel;
 import com.chute.sdk.v2.model.AssetModel;
 
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {

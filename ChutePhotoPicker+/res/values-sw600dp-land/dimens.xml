@@ -6,7 +6,7 @@
     <dimen name="album_name">18dp</dimen>
 
     <integer name="grid_columns_services">4</integer>
-    <integer name="image_dimensions_services">120</integer>
+    <integer name="image_dimensions_services">180</integer>
     <integer name="grid_columns_assets">4</integer>
     <integer name="image_dimensions_assets">100</integer>
 
