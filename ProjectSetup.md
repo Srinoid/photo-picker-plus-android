@@ -71,7 +71,6 @@ Android manifest setup
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         <uses-permission android:name="android.permission.READ_PHONE_STATE" />
         <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
         <!-- Used for the http request service for the long running uploads. -->
         <uses-permission android:name="android.permission.WAKE_LOCK" />
     ```

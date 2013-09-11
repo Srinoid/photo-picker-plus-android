@@ -30,24 +30,24 @@ Configuration URL
 ====
 
 If you wish to configure services by getting a list from the server, you should create a file containing JSON model as the following one:
-<code><pre>
- {  
-    "services":[  
-               "facebook",  
-               "instagram",  
-               "skydrive",  
-               "googledrive",  
-               "google",  
-               "picasa",  
-               "flickr",  
-               "dropbox"],  
-     "local_features":[  
-               "all_photos",  
-               "take_photo",  
-               "last_taken_photo",  
-               "camera_photos"]  
-}
-</pre></code>
+```
+     {
+        "services":[
+                   "facebook",
+                   "instagram",
+                   "skydrive",
+                   "googledrive",
+                   "google",
+                   "picasa",
+                   "flickr",
+                   "dropbox"],
+         "local_features":[
+                   "all_photos",
+                   "take_photo",
+                   "last_taken_photo",
+                   "camera_photos"]
+     }
+```
 
 **NOTE:** Supported remote services include: Facebook, Instagram, Flickr, Picasa, Google, GoogleDrive, SkyDrive, Dropbox.  
 Supported local services include: All photos, Camera photos, Last photo taken, Take photo.
