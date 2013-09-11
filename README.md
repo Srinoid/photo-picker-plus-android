@@ -1,3 +1,30 @@
+Important
+==========
+
+This is the new official standalone repository for the Chute Photo Picker Plus Component.
+There has been a complete rework of the PhotoPicker component. previously found at:
+https://github.com/chute/photo-picker-plus-ios
+
+If you are using the old legacy code you can find it in the pp-v1-legacy branch inside the old repository (link above).
+Read the documentation and migrate to the new version of the Photo Picker. It contains the Library and a Sample Project which you can use as a reference.
+
+### Native IOS Component
+
+
+The IOS component has been moved into its own separate GitHub Repository.
+
+You can find it on the following link along with the sample project:
+https://github.com/chute/photo-picker-plus-ios
+
+
+PhotoPickerPlus
+==============
+
+no external dependancies beyond Chute SDK which you can also find here:
+
+https://github.com/chute/Chute-SDK-V2-Android
+
+
 Introduction
 ====
 
