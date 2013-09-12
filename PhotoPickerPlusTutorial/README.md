@@ -3,7 +3,7 @@ Introduction
 
 PhotoPickerPlusTutorial is a tutorial project that shows how to use the PhotoPicker+ component. It contains Chute SDK library as well as PhotoPicker+ library. This tutorial enables browsing your locally-stored photos as weel as your albums and photos from your social galleries, photo selection and display.
 
-![tutorial1](/screenshots/tutorial1.png)![tutorial2](/screenshots/tutorial2.png)![tutorial3](/screenshots/tutorial3.png)![tutorial4](/screenshots/tutorial4.png)![tutorial5](/screenshots/tutorial5.png)
+![tutorial1](../screenshots/tutorial1.png)![tutorial2](../screenshots/tutorial2.png)![tutorial3](../screenshots/tutorial3.png)![tutorial4](../screenshots/tutorial4.png)![tutorial5](../screenshots/tutorial5.png)
 
 Setup
 ====
