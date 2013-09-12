@@ -17,6 +17,11 @@ import android.support.v4.app.FragmentActivity;
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.sdk.v2.model.AssetModel;
 
+/**
+ * Helper class that contains methods for delivering the result to the main
+ * activity i.e. the activity that started the PhotoPicker.
+ * 
+ */
 public class IntentUtil {
 
   public static void deliverDataToInitialActivity(final FragmentActivity context,

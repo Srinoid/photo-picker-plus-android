@@ -21,6 +21,19 @@ import com.chute.android.photopickerplus.models.enums.PhotoFilterType;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.AssetModel;
 
+/**
+ * {@link PhotosIntentWrapper} is a wrapper class that wraps the following
+ * parameters needed for the intent:
+ * <ul>
+ * <li> {@link AccountModel}
+ * <li>Album ID
+ * <li>List of {@link AssetModel}s
+ * <li>List of image paths
+ * <li>{@link AssetModel} path
+ * <li>{@link PhotoFilterType}
+ * </ul>
+ * 
+ */
 public class PhotosIntentWrapper extends IntentWrapper {
 
   public static final String TAG = PhotosIntentWrapper.class.getSimpleName();
@@ -36,14 +49,7 @@ public class PhotosIntentWrapper extends IntentWrapper {
   // cursor photos
   private static final String EXTRA_KEY_PATH_LIST = "key_path_list";
   private static final String EXTRA_KEY_PATH = "key_path";
-  private static final String EXTRA_KEY_CURSOR_PHOTOS = "cursor_photos";
-
-  // types
-  public static final int TYPE_CAMERA_ROLL = 0;
-  public static final int TYPE_ALL_PHOTOS = 1;
-  public static final int TYPE_SOCIAL_PHOTOS = 2;
-
-  private static final String EXTRA_KEY_CHUTE_ID = "key_chute_id";
+  private static final String EXTRA_KEY_FILTER_TYPE = "filter_type";
 
   public PhotosIntentWrapper(Context context) {
     super(context, AssetActivity.class);
@@ -94,19 +100,11 @@ public class PhotosIntentWrapper extends IntentWrapper {
   }
 
   public PhotoFilterType getFilterType() {
-    return (PhotoFilterType) getIntent().getExtras().get(EXTRA_KEY_CURSOR_PHOTOS);
+    return (PhotoFilterType) getIntent().getExtras().get(EXTRA_KEY_FILTER_TYPE);
   }
 
   public void setFilterType(PhotoFilterType type) {
-    getIntent().putExtra(EXTRA_KEY_CURSOR_PHOTOS, type);
-  }
-
-  public String getChuteId() {
-    return getIntent().getExtras().getString(EXTRA_KEY_CHUTE_ID);
-  }
-
-  public void setChuteId(String id) {
-    getIntent().putExtra(EXTRA_KEY_CHUTE_ID, id);
+    getIntent().putExtra(EXTRA_KEY_FILTER_TYPE, type);
   }
 
   public void startActivityForResult(Activity context, int code) {

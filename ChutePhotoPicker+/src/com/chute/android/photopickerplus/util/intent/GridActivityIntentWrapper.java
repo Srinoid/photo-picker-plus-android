@@ -18,6 +18,16 @@ import android.content.Intent;
 import com.chute.android.photopickerplus.ui.activity.AssetActivity;
 import com.chute.sdk.v2.model.AssetModel;
 
+/**
+ * {@link GridActivityIntentWrapper} is a wrapper class that wraps the following
+ * parameters needed for the intent:
+ * <ul>
+ * <li>Account ID
+ * <li>Album ID
+ * <li>List of {@link AssetModel}s
+ * </ul>
+ * 
+ */
 public class GridActivityIntentWrapper extends IntentWrapper {
 
   @SuppressWarnings("unused")
@@ -53,6 +63,7 @@ public class GridActivityIntentWrapper extends IntentWrapper {
     getIntent().putExtra(KEY_ALBUM_ID, albumId);
   }
 
+  @SuppressWarnings("unchecked")
   public ArrayList<AssetModel> getMediaCollection() {
     return (ArrayList<AssetModel>) getIntent().getExtras().getSerializable(
         KEY_PHOTO_COLLECTION);

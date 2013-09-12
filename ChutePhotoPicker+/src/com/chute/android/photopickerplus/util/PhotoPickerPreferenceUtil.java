@@ -18,6 +18,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+/**
+ * {@link PhotoPickerPreferenceUtil} contains name value pairs that can be
+ * stored and retrieved across various activity in an application.
+ * 
+ * {@link PhotoPickerPreferenceUtil} stores {@link AccountType}, list of
+ * {@link AccountType} services as well as list of {@link LocalMediaType}
+ * services.
+ * 
+ */
 public class PhotoPickerPreferenceUtil {
 
   public static final String TAG = PhotoPickerPreferenceUtil.class.getSimpleName();

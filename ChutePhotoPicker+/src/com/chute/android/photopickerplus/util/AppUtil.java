@@ -30,6 +30,17 @@ import com.chute.android.photopickerplus.R;
 import com.chute.sdk.v2.model.AssetModel;
 import com.chute.sdk.v2.utils.Utils;
 
+/**
+ * The {@link AppUtil} class contains helper methods including:
+ * <ul>
+ * <li>Get image thumbnail URL in 100x100 dimension
+ * <li>Get chache directorium
+ * <li>Check if the device has an image capture bug
+ * <li>Set ImageView dimensions according to the device size
+ * <li>Create {@link AssetModel}(s) using the image path
+ * </ul>
+ * 
+ */
 public class AppUtil {
 
   private static final String TAG = AppUtil.class.getSimpleName();

@@ -17,6 +17,16 @@ import android.content.Intent;
 
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 
+/**
+ * {@link PhotoPickerPlusIntentWrapper} is a wrapper class that wraps the
+ * following parameters needed for the intent:
+ * <ul>
+ * <li>Flag indicating whether the remote services should be hidden or not
+ * <li>Album ID
+ * <li>List of services
+ * </ul>
+ * 
+ */
 public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
   public static final int REQUEST_CODE = 1;

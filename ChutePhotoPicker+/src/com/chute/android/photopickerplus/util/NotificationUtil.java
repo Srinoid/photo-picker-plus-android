@@ -18,6 +18,10 @@ import android.widget.Toast;
 
 import com.chute.android.photopickerplus.R;
 
+/**
+ * {@link NotificationUtil} contains a lot of common methods considering
+ * manipulations of toast messages.
+ */
 public class NotificationUtil {
 
   public static final String TAG = NotificationUtil.class.getSimpleName();

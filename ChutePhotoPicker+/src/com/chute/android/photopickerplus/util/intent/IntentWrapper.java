@@ -15,6 +15,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * {@link IntentWrapper} is a helper class that wraps up the Intent object and
+ * its data.
+ * 
+ */
 public class IntentWrapper {
 
   public static final String TAG = IntentWrapper.class.getSimpleName();
