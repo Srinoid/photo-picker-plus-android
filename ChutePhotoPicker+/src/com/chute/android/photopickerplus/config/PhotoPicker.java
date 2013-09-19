@@ -138,6 +138,7 @@ public class PhotoPicker {
    * @return List of {@link LocalMediaType} services.
    */
   public List<LocalMediaType> getLocalServices() {
+    checkConfiguration();
     ArrayList<LocalMediaType> localServiceListInPrefs = PhotoPickerPreferenceUtil.get()
         .getLocalServiceList();
     if (localServiceListInPrefs.isEmpty()) {
@@ -161,6 +162,7 @@ public class PhotoPicker {
    * @return List of {@link AccountType} services.
    */
   public List<AccountType> getRemoteServices() {
+    checkConfiguration();
     ArrayList<AccountType> accountServiceListInPrefs = PhotoPickerPreferenceUtil.get()
         .getAccountServiceList();
     if (accountServiceListInPrefs.isEmpty()) {
