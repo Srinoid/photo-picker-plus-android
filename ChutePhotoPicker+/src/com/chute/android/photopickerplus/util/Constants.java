@@ -27,6 +27,7 @@ public class Constants {
   @SuppressWarnings("unused")
   private static final String TAG = Constants.class.getSimpleName();
 
+  public static final int HTTP_ERROR_CODE_UNAUTHORIZED = 401;
   public static final int DELAY_TIME = 500;
   public static final int CAMERA_PIC_REQUEST = 2500;
 
@@ -39,8 +40,6 @@ public class Constants {
   public static final String KEY_ACCOUNT = "keyAccount";
   public static final String KEY_PHOTO_FILTER_TYPE = "keyPhotoFilterType";
   public static final String KEY_EXPIRED_SESSION = "keyExpiredSession";
-
-  public static final int HTTP_ERROR_CODE_UNAUTHORIZED = 401;
 
   public static final String SELECTED_IMAGES_URL = "http://api.getchute.com/v2/widgets/native";
 }

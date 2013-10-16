@@ -75,8 +75,8 @@ public class FragmentServices extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = null;
-    view = inflater.inflate(R.layout.fragment_services, container, false);
-    gridViewServices = (GridView) view.findViewById(R.id.gridViewServicesVertical);
+    view = inflater.inflate(R.layout.gc_fragment_services, container, false);
+    gridViewServices = (GridView) view.findViewById(R.id.gcGridViewServices);
     gridViewServices.setNumColumns(getResources().getInteger(
         R.integer.grid_columns_services));
     return view;

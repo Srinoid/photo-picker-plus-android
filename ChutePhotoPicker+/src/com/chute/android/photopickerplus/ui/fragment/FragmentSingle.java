@@ -98,11 +98,11 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_assets, container, false);
+    View view = inflater.inflate(R.layout.gc_fragment_assets, container, false);
 
-    textViewSelectPhotos = (TextView) view.findViewById(R.id.textViewSelectPhotos);
-    gridView = (GridView) view.findViewById(R.id.gridViewAssets);
-    emptyView = view.findViewById(R.id.empty_view_layout);
+    textViewSelectPhotos = (TextView) view.findViewById(R.id.gcTextViewSelectPhotos);
+    gridView = (GridView) view.findViewById(R.id.gcGridViewAssets);
+    emptyView = view.findViewById(R.id.gc_empty_view_layout);
     gridView.setEmptyView(emptyView);
 
     if (getArguments() != null) {
@@ -113,9 +113,9 @@ public class FragmentSingle extends Fragment implements AdapterItemClickListener
       updateFragment(account, folderId, selectedItemsPositions);
     }
 
-    Button ok = (Button) view.findViewById(R.id.buttonOk);
+    Button ok = (Button) view.findViewById(R.id.gcButtonOk);
     ok.setOnClickListener(new OkClickListener());
-    Button cancel = (Button) view.findViewById(R.id.buttonCancel);
+    Button cancel = (Button) view.findViewById(R.id.gcButtonCancel);
     cancel.setOnClickListener(new CancelClickListener());
 
     gridView.setNumColumns(getResources().getInteger(R.integer.grid_columns_assets));

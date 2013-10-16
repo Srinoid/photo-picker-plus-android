@@ -131,13 +131,13 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
     ViewHolder holder;
     int type = getItemViewType(position);
     if (convertView == null) {
-      convertView = inflater.inflate(R.layout.adapter_assets, null);
+      convertView = inflater.inflate(R.layout.gc_adapter_assets, null);
       holder = new ViewHolder();
-      holder.imageViewThumb = (ImageView) convertView.findViewById(R.id.imageViewThumb);
-      holder.imageViewTick = (ImageView) convertView.findViewById(R.id.imageViewTick);
+      holder.imageViewThumb = (ImageView) convertView.findViewById(R.id.gcImageViewThumb);
+      holder.imageViewTick = (ImageView) convertView.findViewById(R.id.gcImageViewTick);
       holder.imageViewTick.setTag(position);
       holder.textViewFolderTitle = (TextView) convertView
-          .findViewById(R.id.textViewFolderTitle);
+          .findViewById(R.id.gcTextViewFolderTitle);
       convertView.setTag(holder);
     } else {
       holder = (ViewHolder) convertView.getTag();

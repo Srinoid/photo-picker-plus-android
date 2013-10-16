@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     The MIT License (MIT)
+The MIT License (MIT)
 
 Copyright (c) 2013 Chute
 
@@ -22,25 +22,40 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayoutServicesRoot"
-    style="@style/relativeLayoutAdapterItemHolder"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_gravity="center" >
+    android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/imageViewService"
-        style="@style/imageViewAdapterItemAssets"
-        android:layout_centerInParent="true" >
-    </ImageView>
-
-    <TextView
-        android:id="@+id/textViewServiceTitle"
-        style="@style/textViewServiceName"
-        android:layout_width="match_parent"
+    <GridView
+        android:id="@+id/gcGrid"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/imageViewService"
-        android:layout_alignBottom="@+id/imageViewService"
-        android:layout_alignLeft="@+id/imageViewService" />
+        android:layout_above="@+id/btnPhotoPicker"
+        android:layout_alignParentTop="true"
+        android:fadingEdgeLength="0dip"
+        android:fastScrollEnabled="true"
+        android:horizontalSpacing="10dip"
+        android:numColumns="3"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:scrollbars="none"
+        android:verticalSpacing="10dip" />
+
+    <Button
+        android:id="@+id/gcButtonPhotoPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:drawableLeft="@drawable/btn_icon"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/start_photo_picker"
+        android:textColor="@color/grey"
+        android:textSize="15sp" />
 
 </RelativeLayout>

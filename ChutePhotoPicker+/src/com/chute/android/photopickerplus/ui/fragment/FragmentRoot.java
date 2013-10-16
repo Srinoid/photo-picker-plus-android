@@ -111,15 +111,15 @@ public class FragmentRoot extends Fragment implements AdapterItemClickListener {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_assets, container, false);
+    View view = inflater.inflate(R.layout.gc_fragment_assets, container, false);
 
-    textViewSelectPhotos = (TextView) view.findViewById(R.id.textViewSelectPhotos);
-    gridView = (GridView) view.findViewById(R.id.gridViewAssets);
-    emptyView = view.findViewById(R.id.empty_view_layout);
+    textViewSelectPhotos = (TextView) view.findViewById(R.id.gcTextViewSelectPhotos);
+    gridView = (GridView) view.findViewById(R.id.gcGridViewAssets);
+    emptyView = view.findViewById(R.id.gc_empty_view_layout);
     gridView.setEmptyView(emptyView);
 
-    Button ok = (Button) view.findViewById(R.id.buttonOk);
-    Button cancel = (Button) view.findViewById(R.id.buttonCancel);
+    Button ok = (Button) view.findViewById(R.id.gcButtonOk);
+    Button cancel = (Button) view.findViewById(R.id.gcButtonCancel);
 
     ok.setOnClickListener(new OkClickListener());
     cancel.setOnClickListener(new CancelClickListener());

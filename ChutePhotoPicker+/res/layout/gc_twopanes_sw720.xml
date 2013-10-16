@@ -22,13 +22,13 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragments"
+    android:id="@+id/gcFragments"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <fragment
-        android:id="@+id/fragmentServices"
+        android:id="@+id/gcFragmentServices"
         android:layout_width="match_parent"
         android:layout_height="530dp"
         class="com.chute.android.photopickerplus.ui.fragment.FragmentServices" />

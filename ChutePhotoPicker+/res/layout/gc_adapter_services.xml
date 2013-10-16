@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-The MIT License (MIT)
+     The MIT License (MIT)
 
 Copyright (c) 2013 Chute
 
@@ -21,14 +21,26 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gcRelativeLayoutServicesRoot"
+    style="@style/relativeLayoutAdapterItemHolder"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center" >
 
-    <fragment
-        android:id="@+id/fragmentServices"
+    <ImageView
+        android:id="@+id/gcImageViewService"
+        style="@style/imageViewAdapterItemAssets"
+        android:layout_centerInParent="true" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/gcTextViewServiceTitle"
+        style="@style/textViewServiceName"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.chute.android.photopickerplus.ui.fragment.FragmentServices" />
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/gcImageViewService"
+        android:layout_alignBottom="@+id/gcImageViewService"
+        android:layout_alignLeft="@+id/gcImageViewService" />
 
-</LinearLayout>
+</RelativeLayout>

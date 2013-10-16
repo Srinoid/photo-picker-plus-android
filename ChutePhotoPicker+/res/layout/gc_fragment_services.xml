@@ -27,13 +27,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/gcTextViewTitle"
         style="@style/textViewServiceFragmentLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <GridView
-        android:id="@+id/gridViewServicesVertical"
+        android:id="@+id/gcGridViewServices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fadingEdgeLength="0dip"

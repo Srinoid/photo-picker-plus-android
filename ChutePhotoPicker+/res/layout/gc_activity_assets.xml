@@ -21,18 +21,15 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayoutToastLoadedPhotos"
-    style="@style/linearLayoutNotificationDialog"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gcFragments"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/textViewToastLoadedPhotos"
-        style="@style/textViewNotificationDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="false" />
+    <fragment
+        android:id="@+id/gcFragmentAssets"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.chute.android.photopickerplus.ui.fragment.FragmentRoot" />
 
-</LinearLayout>
+</FrameLayout>

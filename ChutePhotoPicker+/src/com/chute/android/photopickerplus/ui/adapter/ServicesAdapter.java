@@ -121,10 +121,10 @@ public class ServicesAdapter extends BaseAdapter {
     View vi = convertView;
     ViewHolder holder;
     if (convertView == null) {
-      vi = inflater.inflate(R.layout.adapter_services, null);
+      vi = inflater.inflate(R.layout.gc_adapter_services, null);
       holder = new ViewHolder();
-      holder.imageView = (ImageView) vi.findViewById(R.id.imageViewService);
-      holder.textViewServiceTitle = (TextView) vi.findViewById(R.id.textViewServiceTitle);
+      holder.imageView = (ImageView) vi.findViewById(R.id.gcImageViewService);
+      holder.textViewServiceTitle = (TextView) vi.findViewById(R.id.gcTextViewServiceTitle);
       AppUtil.configureServiceImageViewDimensions(context, holder.imageView,
           holder.textViewServiceTitle);
       vi.setTag(holder);

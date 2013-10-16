@@ -22,7 +22,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayoutRoot"
+    android:id="@+id/gcRelativeLayoutRoot"
     style="@style/relativeLayoutAssetFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,18 +31,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <!-- Select Photos Title -->
 
     <TextView
-        android:id="@+id/textViewSelectPhotos"
+        android:id="@+id/gcTextViewSelectPhotos"
         style="@style/textViewFragmentLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
     <GridView
-        android:id="@+id/gridViewAssets"
+        android:id="@+id/gcGridViewAssets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayoutButtons"
-        android:layout_below="@+id/textViewSelectPhotos"
+        android:layout_above="@+id/gcLinearLayoutButtons"
+        android:layout_below="@+id/gcTextViewSelectPhotos"
         android:fadingEdgeLength="0dip"
         android:fastScrollEnabled="true"
         android:horizontalSpacing="10dip"
@@ -58,28 +58,28 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <!-- Empty View -->
 
     <include
-        android:id="@+id/empty_view_layout"
+        android:id="@+id/gc_empty_view_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        layout="@layout/empty_view_photos_layout" />
+        layout="@layout/gc_empty_view_photos_layout" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutButtons"
+        android:id="@+id/gcLinearLayoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/buttonOk"
+            android:id="@+id/gcButtonOk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/ok" />
 
         <Button
-            android:id="@+id/buttonCancel"
+            android:id="@+id/gcButtonCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

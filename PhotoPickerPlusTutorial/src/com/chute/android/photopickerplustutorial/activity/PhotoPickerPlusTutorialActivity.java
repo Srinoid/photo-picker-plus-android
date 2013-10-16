@@ -51,11 +51,11 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_photo_picker_plus);
+    setContentView(R.layout.gc_activity_photo_picker_plus);
 
-    findViewById(R.id.btnPhotoPicker)
+    findViewById(R.id.gcButtonPhotoPicker)
         .setOnClickListener(new OnPhotoPickerClickListener());
-    grid = (GridView) findViewById(R.id.grid);
+    grid = (GridView) findViewById(R.id.gcGrid);
     if (savedInstanceState != null) {
       accountMediaList = savedInstanceState.getParcelableArrayList(KEY_SELECTED_ITEMS);
       adapter = new GridAdapter(PhotoPickerPlusTutorialActivity.this, accountMediaList);

@@ -88,9 +88,9 @@ public class GridAdapter extends BaseAdapter {
     View vi = convertView;
     ViewHolder holder;
     if (convertView == null) {
-      vi = inflater.inflate(R.layout.grid_adapter_item, null);
+      vi = inflater.inflate(R.layout.gc_grid_adapter_item, null);
       holder = new ViewHolder();
-      holder.image = (ImageView) vi.findViewById(R.id.imageViewThumb);
+      holder.image = (ImageView) vi.findViewById(R.id.gcImageViewThumb);
       configureImageViewDimensions(holder.image);
       vi.setTag(holder);
     } else {

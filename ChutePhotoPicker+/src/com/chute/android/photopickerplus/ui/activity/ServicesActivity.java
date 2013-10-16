@@ -202,7 +202,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   public void replaceContentWithSingleFragment(AccountModel account, String folderId,
       ArrayList<Integer> selectedItemPositions) {
     fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.replace(R.id.fragments,
+    fragmentTransaction.replace(R.id.gcFragments,
         FragmentSingle.newInstance(account, folderId, selectedItemPositions),
         Constants.TAG_FRAGMENT_FILES);
     fragmentTransaction.addToBackStack(null);
@@ -213,7 +213,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   public void replaceContentWithRootFragment(AccountModel account,
       PhotoFilterType filterType) {
     fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.replace(R.id.fragments,
+    fragmentTransaction.replace(R.id.gcFragments,
         FragmentRoot.newInstance(account, filterType, selectedItemPositions),
         Constants.TAG_FRAGMENT_FOLDER);
     fragmentTransaction.commit();
@@ -221,7 +221,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
 
   public void replaceContentWithEmptyFragment() {
     fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.replace(R.id.fragments, EmptyFragment.newInstance(),
+    fragmentTransaction.replace(R.id.gcFragments, EmptyFragment.newInstance(),
         Constants.TAG_FRAGMENT_EMPTY);
     fragmentTransaction.commit();
   }

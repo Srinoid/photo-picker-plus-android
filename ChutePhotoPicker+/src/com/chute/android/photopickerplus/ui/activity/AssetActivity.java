@@ -90,7 +90,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
 
     requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    setContentView(R.layout.activity_assets);
+    setContentView(R.layout.gc_activity_assets);
 
     selectedItemsPositions = savedInstanceState != null ? savedInstanceState
         .getIntegerArrayList(Constants.KEY_SELECTED_ITEMS)
@@ -105,7 +105,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     filterType = wrapper.getFilterType();
 
     fragmentRoot = (FragmentRoot) getSupportFragmentManager().findFragmentById(
-        R.id.fragmentAssets);
+        R.id.gcFragmentAssets);
     fragmentRoot.setRetainInstance(true);
     fragmentRoot.updateFragment(account, filterType,
         selectedItemsPositions);
@@ -151,7 +151,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
     FragmentTransaction fragmentTransaction = getSupportFragmentManager()
         .beginTransaction();
     fragmentTransaction
-        .replace(R.id.fragments,
+        .replace(R.id.gcFragments,
             FragmentSingle.newInstance(account, folderId, selectedItemsPositions),
             Constants.TAG_FRAGMENT_FILES);
     fragmentTransaction.addToBackStack(null);

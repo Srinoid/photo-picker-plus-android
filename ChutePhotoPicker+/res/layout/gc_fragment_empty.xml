@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    The MIT License (MIT)
+The MIT License (MIT)
 
 Copyright (c) 2013 Chute
 
@@ -22,33 +22,16 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/relativeLayoutAdapterItemHolder"
+    android:id="@+id/gcRelativeLayoutEmptyFragment"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_gravity="center" >
+    android:background="@color/white" >
 
-    <ImageView
-        android:id="@+id/imageViewThumb"
-        style="@style/imageViewAdapterItemAssets"
-        android:layout_centerInParent="true"
-        android:scaleType="centerCrop" >
-    </ImageView>
-
-    <ImageView
-        android:id="@+id/imageViewTick"
-        style="@style/imageViewTick"
-        android:layout_alignBaseline="@+id/imageViewThumb"
-        android:layout_alignBottom="@+id/imageViewThumb"
-        android:layout_alignRight="@+id/imageViewThumb" >
-    </ImageView>
-
-    <TextView
-        android:id="@+id/textViewFolderTitle"
-        style="@style/textViewServiceName"
+    <LinearLayout
+        android:id="@+id/gcViewLabel"
+        style="@style/linearLayoutEmptyFragmentLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/imageViewThumb"
-        android:layout_alignBottom="@+id/imageViewThumb"
-        android:layout_alignLeft="@+id/imageViewThumb" />
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>
