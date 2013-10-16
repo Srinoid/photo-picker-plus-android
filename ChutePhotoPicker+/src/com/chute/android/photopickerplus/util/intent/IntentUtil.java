@@ -46,7 +46,7 @@ public class IntentUtil {
 
   public static void deliverDataToInitialActivity(final FragmentActivity context,
       final ArrayList<AssetModel> collection) {
-    final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(new Intent(
+    final PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(new Intent(
         context,
         ServicesActivity.class));
     wrapper.setMediaCollection(collection);

@@ -28,21 +28,20 @@ import android.content.Intent;
 
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 
-public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
+public class PhotoPickerPlusTutorialIntentWrapper extends IntentWrapper {
 
-  public static final int REQUEST_CODE = 1;
-  public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
-  public static final String FLAG_SERVICE_LIST = "flagServiceList";
+  public static final int REQUEST_CODE = 189;
+  public static final String TAG = PhotoPickerPlusTutorialIntentWrapper.class.getSimpleName();
 
-  public PhotoPickerPlusIntentWrapper(Intent intent) {
+  public PhotoPickerPlusTutorialIntentWrapper(Intent intent) {
     super(intent);
   }
 
-  public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
+  public PhotoPickerPlusTutorialIntentWrapper(Context packageContext, Class<?> cls) {
     super(packageContext, cls);
   }
 
-  public PhotoPickerPlusIntentWrapper(Context packageContext) {
+  public PhotoPickerPlusTutorialIntentWrapper(Context packageContext) {
     super(new Intent(packageContext, ServicesActivity.class));
   }
 

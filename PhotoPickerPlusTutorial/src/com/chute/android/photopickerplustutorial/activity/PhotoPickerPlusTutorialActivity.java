@@ -34,23 +34,17 @@ import android.view.View.OnClickListener;
 import android.widget.GridView;
 
 import com.araneaapps.android.libs.logger.ALog;
-import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
-import com.chute.android.photopickerplus.util.intent.GridActivityIntentWrapper;
+import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
+import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusTutorialIntentWrapper;
 import com.chute.sdk.v2.model.AssetModel;
 
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
   public static final String TAG = PhotoPickerPlusTutorialActivity.class.getSimpleName();
-  public static final int REQUEST_CODE = 189;
   private static final String KEY_SELECTED_ITEMS = "keySelectedItems";
   private GridView grid;
-  /**
-   * PhotoPicker+ component enables choosing multiple photos or a single photo
-   * in a grid. If you wish to enable multi-picking functionality, set
-   * isMultipicker=true, otherwise set isMultiPicker=false.
-   */
   private GridAdapter adapter;
   private ArrayList<AssetModel> accountMediaList;
 
@@ -82,8 +76,10 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
     @Override
     public void onClick(View v) {
-      Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
-      startActivityForResult(intent, REQUEST_CODE);
+      PhotoPickerPlusTutorialIntentWrapper wrapper = new PhotoPickerPlusTutorialIntentWrapper(
+          PhotoPickerPlusTutorialActivity.this);
+      wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this,
+          PhotoPickerPlusTutorialIntentWrapper.REQUEST_CODE);
     }
   }
 
@@ -93,7 +89,7 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
     if (resultCode != Activity.RESULT_OK) {
       return;
     }
-    final GridActivityIntentWrapper wrapper = new GridActivityIntentWrapper(data);
+    final PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(data);
     accountMediaList = wrapper.getMediaCollection();
     adapter.changeData(accountMediaList);
     ALog.d(wrapper.getMediaCollection().toString());

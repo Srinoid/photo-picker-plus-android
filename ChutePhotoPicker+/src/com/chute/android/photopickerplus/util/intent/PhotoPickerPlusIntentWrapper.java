@@ -28,44 +28,53 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
+import com.chute.android.photopickerplus.ui.activity.AssetActivity;
+import com.chute.sdk.v2.model.AssetModel;
 
 /**
  * {@link PhotoPickerPlusIntentWrapper} is a wrapper class that wraps the
  * following parameters needed for the intent:
  * <ul>
- * <li>Flag indicating whether the remote services should be hidden or not
+ * <li>Account ID
  * <li>Album ID
- * <li>List of services
+ * <li>List of {@link AssetModel}s
  * </ul>
  * 
  */
 public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
 
-  public static final int REQUEST_CODE = 1;
-  public static final String TAG = PhotoPickerPlusIntentWrapper.class.getSimpleName();
+  @SuppressWarnings("unused")
+  private static final String TAG = PhotoPickerPlusIntentWrapper.class
+      .getSimpleName();
+
+  public static final int ACTIVITY_FOR_RESULT_KEY = 115;
+  private static final String KEY_ACCOUNT_ID = "accountId";
+  private static final String KEY_ALBUM_ID = "albumId";
+  private static final String KEY_PHOTO_COLLECTION = "photoCollection";
   public static final String FLAG_SERVICES_HIDE = "flagHideServices";
-  public static final String KEY_ALBUM_ID = "albumID";
-  public static final String KEY_SERVICE_LIST = "serviceList";
+
+  public PhotoPickerPlusIntentWrapper(Context context) {
+    super(context, AssetActivity.class);
+  }
 
   public PhotoPickerPlusIntentWrapper(Intent intent) {
     super(intent);
   }
 
-  public PhotoPickerPlusIntentWrapper(Context packageContext, Class<?> cls) {
-    super(packageContext, cls);
+  public String getAccountId() {
+    return getIntent().getExtras().getString(KEY_ACCOUNT_ID);
   }
 
-  public PhotoPickerPlusIntentWrapper(Context packageContext) {
-    super(new Intent(packageContext, ServicesActivity.class));
+  public void setAccountId(String accountId) {
+    getIntent().putExtra(KEY_ACCOUNT_ID, accountId);
   }
 
   public String getAlbumId() {
     return getIntent().getExtras().getString(KEY_ALBUM_ID);
   }
 
-  public void setAlbumId(String id) {
-    getIntent().putExtra(KEY_ALBUM_ID, id);
+  public void setAlbumId(String albumId) {
+    getIntent().putExtra(KEY_ALBUM_ID, albumId);
   }
 
   public boolean areServicesHidden() {
@@ -76,16 +85,18 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
     getIntent().putExtra(FLAG_SERVICES_HIDE, flag);
   }
 
-  public void setServiceList(ArrayList<String> services) {
-    getIntent().putStringArrayListExtra(KEY_SERVICE_LIST, services);
+  @SuppressWarnings("unchecked")
+  public ArrayList<AssetModel> getMediaCollection() {
+    return (ArrayList<AssetModel>) getIntent().getExtras().getSerializable(
+        KEY_PHOTO_COLLECTION);
   }
 
-  public ArrayList<String> getServiceList() {
-    return getIntent().getExtras().getStringArrayList(KEY_SERVICE_LIST);
+  public void setMediaCollection(ArrayList<AssetModel> mediaCollection) {
+    getIntent()
+        .putExtra(KEY_PHOTO_COLLECTION, mediaCollection);
   }
 
   public void startActivityForResult(Activity context, int code) {
     context.startActivityForResult(getIntent(), code);
   }
-
 }
