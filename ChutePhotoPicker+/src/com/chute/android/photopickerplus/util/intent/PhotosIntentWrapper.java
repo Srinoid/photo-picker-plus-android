@@ -41,8 +41,6 @@ import com.chute.sdk.v2.model.AssetModel;
  * <li> {@link AccountModel}
  * <li>Album ID
  * <li>List of {@link AssetModel}s
- * <li>List of image paths
- * <li>{@link AssetModel} path
  * <li>{@link PhotoFilterType}
  * </ul>
  * 
@@ -59,9 +57,6 @@ public class PhotosIntentWrapper extends IntentWrapper {
   private static final String KEY_ALBUM_ID = "albumId";
   private static final String KEY_PHOTO_COLLECTION = "photoCollection";
 
-  // cursor photos
-  private static final String EXTRA_KEY_PATH_LIST = "key_path_list";
-  private static final String EXTRA_KEY_PATH = "key_path";
   private static final String EXTRA_KEY_FILTER_TYPE = "filter_type";
 
   public PhotosIntentWrapper(Context context) {
@@ -94,22 +89,6 @@ public class PhotosIntentWrapper extends IntentWrapper {
 
   public void setMediaCollection(ArrayList<AssetModel> mediaCollection) {
     getIntent().putExtra(KEY_PHOTO_COLLECTION, (Parcelable) mediaCollection);
-  }
-
-  public void setAssetPathList(ArrayList<String> pathList) {
-    getIntent().putStringArrayListExtra(EXTRA_KEY_PATH_LIST, pathList);
-  }
-
-  public ArrayList<String> getAssetPathList() {
-    return getIntent().getExtras().getStringArrayList(EXTRA_KEY_PATH_LIST);
-  }
-
-  public void setAssetPath(String path) {
-    getIntent().putExtra(EXTRA_KEY_PATH, path);
-  }
-
-  public String getAssetPath() {
-    return getIntent().getExtras().getString(EXTRA_KEY_PATH);
   }
 
   public PhotoFilterType getFilterType() {

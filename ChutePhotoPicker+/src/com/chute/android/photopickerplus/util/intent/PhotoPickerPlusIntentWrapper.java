@@ -28,7 +28,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.chute.android.photopickerplus.ui.activity.AssetActivity;
+import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.sdk.v2.model.AssetModel;
 
 /**
@@ -54,7 +54,7 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
   public static final String FLAG_SERVICES_HIDE = "flagHideServices";
 
   public PhotoPickerPlusIntentWrapper(Context context) {
-    super(context, AssetActivity.class);
+    super(context, ServicesActivity.class);
   }
 
   public PhotoPickerPlusIntentWrapper(Intent intent) {
@@ -96,7 +96,7 @@ public class PhotoPickerPlusIntentWrapper extends IntentWrapper {
         .putExtra(KEY_PHOTO_COLLECTION, mediaCollection);
   }
 
-  public void startActivityForResult(Activity context, int code) {
-    context.startActivityForResult(getIntent(), code);
+  public void startActivityForResult(Activity context) {
+    context.startActivityForResult(getIntent(), ACTIVITY_FOR_RESULT_KEY);
   }
 }

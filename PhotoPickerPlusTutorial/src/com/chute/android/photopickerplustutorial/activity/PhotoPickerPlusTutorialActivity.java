@@ -37,7 +37,6 @@ import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.util.intent.PhotoPickerPlusIntentWrapper;
 import com.chute.android.photopickerplustutorial.R;
 import com.chute.android.photopickerplustutorial.adapter.GridAdapter;
-import com.chute.android.photopickerplustutorial.intent.PhotoPickerPlusTutorialIntentWrapper;
 import com.chute.sdk.v2.model.AssetModel;
 
 public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
@@ -76,10 +75,9 @@ public class PhotoPickerPlusTutorialActivity extends FragmentActivity {
 
     @Override
     public void onClick(View v) {
-      PhotoPickerPlusTutorialIntentWrapper wrapper = new PhotoPickerPlusTutorialIntentWrapper(
+      PhotoPickerPlusIntentWrapper wrapper = new PhotoPickerPlusIntentWrapper(
           PhotoPickerPlusTutorialActivity.this);
-      wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this,
-          PhotoPickerPlusTutorialIntentWrapper.REQUEST_CODE);
+      wrapper.startActivityForResult(PhotoPickerPlusTutorialActivity.this);
     }
   }
 
