@@ -38,7 +38,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.araneaapps.android.libs.logger.ALog;
 import com.chute.android.photopickerplus.R;
@@ -58,7 +57,9 @@ import com.chute.android.photopickerplus.util.PhotoPickerPreferenceUtil;
 import com.chute.android.photopickerplus.util.intent.IntentUtil;
 import com.chute.android.photopickerplus.util.intent.PhotosIntentWrapper;
 import com.chute.sdk.v2.api.accounts.GCAccounts;
+import com.chute.sdk.v2.api.authentication.AuthenticationActivity;
 import com.chute.sdk.v2.api.authentication.AuthenticationFactory;
+import com.chute.sdk.v2.api.authentication.TokenAuthenticationProvider;
 import com.chute.sdk.v2.model.AccountModel;
 import com.chute.sdk.v2.model.AssetModel;
 import com.chute.sdk.v2.model.enums.AccountType;
@@ -184,6 +185,8 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   }
 
   public void accountClicked(AccountModel account) {
+    TokenAuthenticationProvider.getInstance().setToken(
+        PhotoPickerPreferenceUtil.get().getToken());
     photoFilterType = PhotoFilterType.SOCIAL_PHOTOS.ordinal();
     selectedItemPositions = null;
     this.account = account;
@@ -236,7 +239,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
       accountClicked(account);
     } else {
       AuthenticationFactory.getInstance().startAuthenticationActivity(
-          ServicesActivity.this, accountType);
+          ServicesActivity.this, accountType, false);
     }
 
   }
@@ -245,6 +248,9 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (resultCode == Activity.RESULT_OK) {
+      ALog.d("old token = " + TokenAuthenticationProvider.getInstance().getToken());
+      PhotoPickerPreferenceUtil.get().setToken(
+          TokenAuthenticationProvider.getInstance().getToken());
       GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback())
           .executeAsync();
       if (requestCode == PhotosIntentWrapper.ACTIVITY_FOR_RESULT_STREAM_KEY) {
@@ -276,6 +282,15 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
         IntentUtil.deliverDataToInitialActivity(this, model);
       }
     }
+    if (resultCode == AuthenticationActivity.RESULT_DIFFERENT_CHUTE_USER_AUTHENTICATED) {
+      ALog.d("Different Chute user authenticated. Use the newly retrieved token to get account ID and switch it back with the previously saved token.");
+      String token = data.getExtras().getString(
+          AuthenticationActivity.INTENT_DIFFERENT_CHUTE_USER_TOKEN);
+      TokenAuthenticationProvider.getInstance().setToken(token);
+      GCAccounts.allUserAccounts(getApplicationContext(), new AccountsCallback())
+          .executeAsync();
+
+    }
   }
 
   @Override
@@ -294,9 +309,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
         accountType = PhotoPickerPreferenceUtil.get().getAccountType();
       }
       if (responseData.getData().size() == 0) {
-        Toast.makeText(getApplicationContext(),
-            getResources().getString(R.string.no_albums_found),
-            Toast.LENGTH_SHORT).show();
+        NotificationUtil.makeToast(getApplicationContext(), R.string.no_albums_found);
         return;
       }
       for (AccountModel accountModel : responseData.getData()) {
@@ -422,7 +435,7 @@ public class ServicesActivity extends FragmentActivity implements AccountFilesLi
   public void onSessionExpired(AccountType accountType) {
     PhotoPickerPreferenceUtil.get().setAccountType(accountType);
     AuthenticationFactory.getInstance().startAuthenticationActivity(
-        ServicesActivity.this, accountType);
+        ServicesActivity.this, accountType, false);
   }
 
   @Override

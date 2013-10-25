@@ -187,7 +187,7 @@ public class AssetActivity extends FragmentActivity implements CursorFilesListen
   public void onSessionExpired(AccountType accountType) {
     PhotoPickerPreferenceUtil.get().setAccountType(accountType);
     AuthenticationFactory.getInstance().startAuthenticationActivity(
-        AssetActivity.this, accountType);
+        AssetActivity.this, accountType, false);
 
   }
 

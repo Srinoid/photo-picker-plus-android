@@ -46,6 +46,7 @@ public class PhotoPickerPreferenceUtil {
   private static final String KEY_ACCOUNT_TYPE = "accountType";
   private static final String KEY_ACCOUNT_SERVICE_LIST = "accountServiceList";
   private static final String KEY_LOCAL_SERVICE_LIST = "localServiceList";
+  private static final String KEY_TOKEN = "key_token";
   private final Context context;
 
   private PhotoPickerPreferenceUtil(Context context) {
@@ -136,6 +137,14 @@ public class PhotoPickerPreferenceUtil {
       }
     }
     return localServiceList;
+  }
+
+  public void setToken(String token) {
+    setPreference(KEY_TOKEN, token);
+  }
+
+  public String getToken() {
+    return getPreferences().getString(KEY_TOKEN, null);
   }
 
 }
