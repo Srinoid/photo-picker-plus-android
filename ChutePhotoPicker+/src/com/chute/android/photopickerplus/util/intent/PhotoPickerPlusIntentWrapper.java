@@ -22,14 +22,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package com.chute.android.photopickerplus.util.intent;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
 import com.chute.android.photopickerplus.ui.activity.ServicesActivity;
 import com.chute.sdk.v2.model.AssetModel;
+
+import java.util.ArrayList;
 
 /**
  * {@link PhotoPickerPlusIntentWrapper} is a wrapper class that wraps the

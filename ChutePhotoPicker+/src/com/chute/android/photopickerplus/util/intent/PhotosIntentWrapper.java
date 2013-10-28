@@ -84,7 +84,7 @@ public class PhotosIntentWrapper extends IntentWrapper {
   }
 
   public ArrayList<AssetModel> getMediaCollection() {
-    return getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
+    return (ArrayList<AssetModel>) getIntent().getExtras().getParcelable(KEY_PHOTO_COLLECTION);
   }
 
   public void setMediaCollection(ArrayList<AssetModel> mediaCollection) {
