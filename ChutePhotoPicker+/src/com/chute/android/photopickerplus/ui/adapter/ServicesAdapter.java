@@ -125,8 +125,6 @@ public class ServicesAdapter extends BaseAdapter {
       holder = new ViewHolder();
       holder.imageView = (ImageView) vi.findViewById(R.id.gcImageViewService);
       holder.textViewServiceTitle = (TextView) vi.findViewById(R.id.gcTextViewServiceTitle);
-      AppUtil.configureServiceImageViewDimensions(context, holder.imageView,
-          holder.textViewServiceTitle);
       vi.setTag(holder);
     } else {
       holder = (ViewHolder) vi.getTag();

@@ -158,7 +158,6 @@ public class AssetAccountAdapter extends BaseAdapter implements AssetSelectListe
           holder.imageViewThumb, null);
       holder.imageViewThumb.setOnClickListener(new OnFileClickedListener());
     }
-    AppUtil.configureAssetImageViewDimensions(context, holder.imageViewThumb);
 
     if (tick.containsKey(position)) {
       holder.imageViewTick.setVisibility(View.VISIBLE);

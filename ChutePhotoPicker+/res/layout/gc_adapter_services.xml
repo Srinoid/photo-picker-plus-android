@@ -21,7 +21,7 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chute.android.photopickerplus.ui.components.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/gcRelativeLayoutServicesRoot"
     style="@style/relativeLayoutAdapterItemHolder"
     android:layout_width="fill_parent"
@@ -30,8 +30,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     <ImageView
         android:id="@+id/gcImageViewService"
-        style="@style/imageViewAdapterItemAssets"
-        android:layout_centerInParent="true" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center" >
     </ImageView>
 
     <TextView
@@ -39,8 +41,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         style="@style/textViewServiceName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/gcImageViewService"
-        android:layout_alignBottom="@+id/gcImageViewService"
-        android:layout_alignLeft="@+id/gcImageViewService" />
+        android:layout_gravity="bottom|right"
+        />
 
-</RelativeLayout>
+</com.chute.android.photopickerplus.ui.components.SquareFrameLayout>
